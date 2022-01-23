@@ -8,9 +8,6 @@ public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement player;
 
-    private DialogBoxHandler Dialog;
-    private MapNameBoxHandler MapName;
-
     //before a script runs, it'll check if the player is busy with another script's GameObject.
     public GameObject busyWith = null;
 
@@ -56,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 mountPosition;
 
     private string animationName;
-    private Sprite[] spriteSheet;
     private Sprite[] mountSpriteSheet;
 
     private int frame;
@@ -87,9 +83,6 @@ public class PlayerMovement : MonoBehaviour
 
         //set up the reference to this script.
         player = this;
-
-        Dialog = GameObject.Find("GUI").GetComponent<DialogBoxHandler>();
-        MapName = GameObject.Find("GUI").GetComponent<MapNameBoxHandler>();
 
         canInput = true;
         speed = walkSpeed;
@@ -197,11 +190,6 @@ public class PlayerMovement : MonoBehaviour
                 accessedAudioLoopStartSamples = accessedMapSettings.getBGMLoopStartSamples();
                 BgmHandler.main.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
             }
-            if (accessedMapSettings.mapNameBoxTexture != null)
-            {
-                MapName.display(accessedMapSettings.mapNameBoxTexture, accessedMapSettings.mapName,
-                    accessedMapSettings.mapNameColor);
-            }
         }
 
 
@@ -240,9 +228,6 @@ public class PlayerMovement : MonoBehaviour
             }
             Debug.Log("Wild Pokemon for map \"" + accessedMapSettings.mapName + "\": " + namez);
         }
-        //
-
-        GlobalVariables.global.resetFollower();
     }
 
 
@@ -332,21 +317,6 @@ public class PlayerMovement : MonoBehaviour
                 }
                 if (Input.GetButton("Start"))
                 {
-                    //open Pause Menu
-                    if (moving || Input.GetButtonDown("Start"))
-                    {
-                        if (setCheckBusyWith(Scene.main.Pause.gameObject))
-                        {
-                            animPause = true;
-                            Scene.main.Pause.gameObject.SetActive(true);
-                            StartCoroutine(Scene.main.Pause.control());
-                            while (Scene.main.Pause.gameObject.activeSelf)
-                            {
-                                yield return null;
-                            }
-                            unsetCheckBusyWith(Scene.main.Pause.gameObject);
-                        }
-                    }
                 }
                 else if (Input.GetButtonDown("Select"))
                 {
@@ -450,7 +420,6 @@ public class PlayerMovement : MonoBehaviour
     public void updateDirection(int dir)
     {
         direction = dir;
-        pawnSprite.sprite = spriteSheet[direction * frames + frame];
         pawnReflectionSprite.sprite = pawnSprite.sprite;
         //pawnReflectionSprite.SetTextureOffset("_MainTex", GetUVSpriteMap(direction*frames+frame));
         if (mount.enabled)
@@ -476,13 +445,9 @@ public class PlayerMovement : MonoBehaviour
         if (animationName != newAnimationName)
         {
             animationName = newAnimationName;
-            spriteSheet =
-                Resources.LoadAll<Sprite>("PlayerSprites/" + SaveData.currentSave.getPlayerSpritePrefix() +
-                                          newAnimationName);
             //pawnReflectionSprite.SetTexture("_MainTex", Resources.Load<Texture>("PlayerSprites/"+SaveData.currentSave.getPlayerSpritePrefix()+newAnimationName));
             framesPerSec = fps;
             secPerFrame = 1f / (float) framesPerSec;
-            frames = Mathf.RoundToInt((float) spriteSheet.Length / 4f);
             if (frame >= frames)
             {
                 frame = 0;
@@ -517,7 +482,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     frame -= 1;
                 }
-                pawnSprite.sprite = spriteSheet[direction * frames + frame];
                 pawnReflectionSprite.sprite = pawnSprite.sprite;
                 //pawnReflectionSprite.SetTextureOffset("_MainTex", GetUVSpriteMap(direction*frames+frame));
                 yield return new WaitForSeconds(secPerFrame / 4f);
@@ -816,11 +780,6 @@ public class PlayerMovement : MonoBehaviour
                                 BgmHandler.main.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
                             }
                             destinationMap.BroadcastMessage("repair", SendMessageOptions.DontRequireReceiver);
-                            if (accessedMapSettings.mapNameBoxTexture != null)
-                            {
-                                MapName.display(accessedMapSettings.mapNameBoxTexture, accessedMapSettings.mapName,
-                                    accessedMapSettings.mapNameColor);
-                            }
                             Debug.Log(destinationMap.name + "   " + accessedAudio.name);
                         }
 
@@ -1073,85 +1032,7 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator surfCheck()
     {
-        Pokemon targetPokemon = SaveData.currentSave.Player.getFirstFEUserInParty(PokemonUnity.Moves.SURF);
-        if (targetPokemon.IsNotNullOrNone())
-        {
-            if (getForwardVector(direction, false) != Vector3.zero)
-            {
-                if (setCheckBusyWith(this.gameObject))
-                {
-                    Dialog.drawDialogBox();
-                    yield return
-                        Dialog.StartCoroutine("drawText",
-                            "The water is dyed a deep blue. Would you \nlike to surf on it?");
-                    Dialog.drawChoiceBox();
-                    yield return Dialog.StartCoroutine("choiceNavigate");
-                    Dialog.undrawChoiceBox();
-                    int chosenIndex = Dialog.chosenIndex;
-                    if (chosenIndex == 1)
-                    {
-                        Dialog.drawDialogBox();
-                        yield return
-                            Dialog.StartCoroutine("drawText",
-                                targetPokemon.Name + " used " + PokemonUnity.Moves.SURF.toString() + "!");
-                        while (!Input.GetButtonDown("Select") && !Input.GetButtonDown("Back"))
-                        {
-                            yield return null;
-                        }
-                        surfing = true;
-                        updateMount(true, "surf");
-
-                        BgmHandler.main.PlayMain(GlobalVariables.global.surfBGM, GlobalVariables.global.surfBgmLoopStart);
-
-                        //determine the vector for the space in front of the player by checking direction
-                        Vector3 spaceInFront = new Vector3(0, 0, 0);
-                        if (direction == 0)
-                        {
-                            spaceInFront = new Vector3(0, 0, 1);
-                        }
-                        else if (direction == 1)
-                        {
-                            spaceInFront = new Vector3(1, 0, 0);
-                        }
-                        else if (direction == 2)
-                        {
-                            spaceInFront = new Vector3(0, 0, -1);
-                        }
-                        else if (direction == 3)
-                        {
-                            spaceInFront = new Vector3(-1, 0, 0);
-                        }
-
-                        mount.transform.position = mount.transform.position + spaceInFront;
-
-                        followerScript.StartCoroutine("withdrawToBall");
-                        StartCoroutine("stillMount");
-                        forceMoveForward();
-                        yield return StartCoroutine("jump");
-
-                        updateAnimation("surf", walkFPS);
-                        speed = surfSpeed;
-                    }
-                    Dialog.undrawDialogBox();
-                    unsetCheckBusyWith(this.gameObject);
-                }
-            }
-        }
-        else
-        {
-            if (setCheckBusyWith(this.gameObject))
-            {
-                Dialog.drawDialogBox();
-                yield return Dialog.StartCoroutine("drawText", "The water is dyed a deep blue.");
-                while (!Input.GetButtonDown("Select") && !Input.GetButtonDown("Back"))
-                {
-                    yield return null;
-                }
-                Dialog.undrawDialogBox();
-                unsetCheckBusyWith(this.gameObject);
-            }
-        }
-        yield return new WaitForSeconds(0.2f);
+        yield return null;
     }
 
     public IEnumerator wildEncounter(WildPokemonInitialiser.Location encounterLocation)

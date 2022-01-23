@@ -5,7 +5,6 @@ using System.Collections;
 
 public class FollowerMovement : MonoBehaviour
 {
-    private DialogBoxHandler Dialog;
     private PlayerMovement Player;
 
     private Vector3 startPosition;
@@ -33,7 +32,6 @@ public class FollowerMovement : MonoBehaviour
     private SpriteRenderer sLRenderer;
     private SpriteRenderer sReflectionRenderer;
     private SpriteRenderer sLReflectionRenderer;
-    private Sprite[] spriteSheet;
     private Sprite[] lightSheet;
 
     private SpriteRenderer pawnShadow;
@@ -45,7 +43,6 @@ public class FollowerMovement : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        Dialog = GameObject.Find("GUI").GetComponent<DialogBoxHandler>();
         Player = PlayerMovement.player;
 
         pawn = transform.Find("Pawn");
@@ -207,13 +204,6 @@ public class FollowerMovement : MonoBehaviour
             followerLight = GetComponentInChildren<Light>();
         }
         followerIndex = index;
-        pokemonID = (int)SaveData.currentSave.Player.Party[followerIndex].Species;
-        spriteSheet = SaveData.currentSave.Player.Party[followerIndex].GetSprite(false);
-
-        hasLight = SaveData.currentSave.Player.Party[followerIndex].Species.hasLight();
-        lightIntensity = SaveData.currentSave.Player.Party[followerIndex].Species.getLuminance();
-        lightColor = SaveData.currentSave.Player.Party[followerIndex].Species.getLightColor();
-        lightSheet = SaveData.currentSave.Player.Party[followerIndex].GetSprite(true);
 
         followerLight.color = lightColor;
         followerLight.intensity = lightIntensity;
@@ -235,7 +225,6 @@ public class FollowerMovement : MonoBehaviour
             {
                 if (!hide)
                 {
-                    sRenderer.sprite = spriteSheet[direction * 2 + frame];
                     sLRenderer.sprite = lightSheet[direction * 2 + frame];
                     pawnShadow.enabled = true;
                 }
@@ -290,16 +279,10 @@ public class FollowerMovement : MonoBehaviour
                     direction = 0;
                 }
 
-                Dialog.drawDialogBox();
-                yield return
-                    Dialog.StartCoroutine("drawText",
-                        SaveData.currentSave.Player.Party[followerIndex].Name +
-                        " is enjoying walking around \\out of their ball.");
                 while (!Input.GetButtonDown("Select") && !Input.GetButtonDown("Back"))
                 {
                     yield return null;
                 }
-                Dialog.undrawDialogBox();
                 yield return new WaitForSeconds(0.2f);
                 Player.unsetCheckBusyWith(this.gameObject);
             }
