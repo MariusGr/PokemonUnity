@@ -877,7 +877,6 @@ MonoBehaviour:
   trainerParty:
   - ID: 197
     level: 12
-    gender: 1
     heldItem: 
     ability: 0
   battleBGM: {fileID: 0}
@@ -3425,12 +3424,10 @@ MonoBehaviour:
   trainerParty:
   - ID: 300
     level: 31
-    gender: 2
     heldItem: 
     ability: 0
   - ID: 301
     level: 42
-    gender: 2
     heldItem: 
     ability: 0
   battleBGM: {fileID: 0}
@@ -10155,7 +10152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &680184625
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11508,18 +11505,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 11428886, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
-      propertyPath: m_ScreenMatchMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11428886, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
-      propertyPath: m_UiScaleMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11428886, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
-      propertyPath: m_MatchWidthOrHeight
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 465166, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -11550,6 +11535,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 465166, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11428886, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
+      propertyPath: m_ScreenMatchMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11428886, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11428886, guid: b29bc2dec560e9a408a7645a4e4855ed, type: 3}
+      propertyPath: m_MatchWidthOrHeight
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -15380,7 +15377,6 @@ MonoBehaviour:
   trainerParty:
   - ID: 197
     level: 12
-    gender: 1
     heldItem: 
     ability: 0
   battleBGM: {fileID: 0}
@@ -23913,7 +23909,6 @@ MonoBehaviour:
   trainerParty:
   - ID: 448
     level: 62
-    gender: 1
     heldItem: 
     ability: 0
   battleBGM: {fileID: 0}
