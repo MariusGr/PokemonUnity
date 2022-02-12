@@ -8,5 +8,7 @@ public abstract class CharacterControllerBase : MonoBehaviour
 
     protected float horizontal = 0;
     protected float vertical = 0;
+    protected bool horizontalChanged = false;
+    protected bool verticalChanged = false;
     protected bool sprinting = false;
 }
