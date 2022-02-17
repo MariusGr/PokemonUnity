@@ -7,6 +7,12 @@ public class GridVector
     int x;
     int y;
 
+    static Dictionary<GridVector, Direction> directionMap = new Dictionary<GridVector, Direction>()
+    {
+        { new GridVector(0, 0), Direction.None },
+        { new GridVector(1, 0), Direction.Right },
+    };
+
     public GridVector(int x, int y)
     {
         this.x = x;
@@ -35,6 +41,8 @@ public class GridVector
         : this(currentPosition,
                beforePosition.x < currentPosition.x,
                beforePosition.y < currentPosition.z) { }
+
+    public Direction ToDirection() => directionMap[this];
 
     public override bool Equals(object obj)
     {
