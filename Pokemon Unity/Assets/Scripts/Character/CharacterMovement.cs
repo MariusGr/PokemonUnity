@@ -11,7 +11,7 @@ public class CharacterMovement : MonoBehaviour
         Vertical,
     }
 
-    [SerializeField] CharacterController characterController;
+    [SerializeField] Character character;
     public float walkingSpeed = 3f;
     public float sprintingSpeed = 6f;
     public float currentSpeed;
@@ -64,7 +64,7 @@ public class CharacterMovement : MonoBehaviour
         if (IsMovable(direction))
             StartCoroutine(MoveTo(new GridVector(transform.position + direction)));
         else
-            print("blocked");
+            character.Animator.Refresh(AnimationType.Walk, new GridVector(direction));
     }
 
     IEnumerator MoveTo(GridVector target)
@@ -77,7 +77,7 @@ public class CharacterMovement : MonoBehaviour
         while (!new GridVector(transform.position, start).Equals(target))
         {
             yield return new WaitForEndOfFrame();
-            characterController.Move((direction * currentSpeed + up) * Time.deltaTime);
+            character.Movement.Move((direction * currentSpeed + up) * Time.deltaTime);
         }
 
         transform.position = (Vector3)target + Vector3.up * transform.position.y;

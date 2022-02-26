@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-enum AnimationType
+public enum AnimationType
 {
+    None,
     Walk,
 }
 
@@ -32,16 +33,29 @@ public class CharacterAnimator : MonoBehaviour
         };
     }
 
+    public void Refresh(AnimationType animation, GridVector direction)
+    {
+        if (animation == AnimationType.None)
+            StopCycle();
+        else
+            StartCycle(animation, direction);
+    }
+
     void StartCycle(AnimationType animation, GridVector direction)
         => StartCycle(animation, direction.ToDirection());
 
     void StartCycle(AnimationType animation, Direction direction)
     {
         if (currentAnimation != null)
+            currentAnimation = StartCoroutine(Animation(
+                animationSpriteMap[new Tuple<AnimationType, Direction>(animation, direction)],
+                interval));
+    }
+
+    void StopCycle()
+    {
+        if (currentAnimation != null)
             StopCoroutine(currentAnimation);
-        currentAnimation = StartCoroutine(Animation(
-            animationSpriteMap[new Tuple<AnimationType, Direction>(animation, direction)],
-            interval));
     }
 
     IEnumerator Animation(Sprite[] imageSequence, float interval)
