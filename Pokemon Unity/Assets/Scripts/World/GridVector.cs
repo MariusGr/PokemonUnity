@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,13 +7,18 @@ public class GridVector
     int x;
     int y;
 
+    public static GridVector Zero => new GridVector();
+
     static Dictionary<GridVector, Direction> directionMap = new Dictionary<GridVector, Direction>()
     {
         { new GridVector(0, 0), Direction.None },
         { new GridVector(1, 0), Direction.Right },
+        { new GridVector(-1, 0), Direction.Left },
+        { new GridVector(0, 1), Direction.Up },
+        { new GridVector(0, -1), Direction.Down },
     };
 
-    public GridVector(int x, int y)
+    public GridVector(int x = 0, int y = 0)
     {
         this.x = x;
         this.y = y;
@@ -48,6 +53,12 @@ public class GridVector
     {
         GridVector other = (GridVector)obj;
         return x == other.x && y == other.y;
+    }
+
+    // This is very lazy but whatevrrrr
+    public override int GetHashCode()
+    {
+        return x + y * 167;
     }
 
     public override string ToString() => $"GridVector({x}, {y})";
