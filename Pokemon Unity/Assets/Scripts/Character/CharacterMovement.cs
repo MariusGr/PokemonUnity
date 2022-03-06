@@ -18,6 +18,7 @@ public class CharacterMovement : MonoBehaviour
     public float currentSpeed;
     bool moving = false;
     Axis lastChangedAxis = Axis.None;
+    GridVector currentDirection = GridVector.Down;
 
     void Start()
     {
@@ -59,20 +60,23 @@ public class CharacterMovement : MonoBehaviour
         else if (moveVertical)
             Move(Vector3.forward * Mathf.Sign(vertical));
         else
-            character.Animator.Refresh();
+            character.Animator.Refresh(AnimationType.None, currentDirection.ToDirection());
     }
 
     void Move(Vector3 direction)
     {
+        currentDirection = new GridVector(direction);
+        Direction d = currentDirection.ToDirection();
+
         if (IsMovable(direction))
         {
             StartCoroutine(MoveTo(new GridVector(transform.position + direction)));
-            character.Animator.Refresh(AnimationType.Walk, new GridVector(direction));
+            character.Animator.Refresh(AnimationType.Walk, d);
         }
         else
         {
             print("blocked");
-            character.Animator.Refresh(AnimationType.None);
+            character.Animator.Refresh(AnimationType.None, d);
         }
     }
 

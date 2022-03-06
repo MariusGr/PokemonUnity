@@ -8,6 +8,7 @@ public class GridVector
     int y;
 
     public static GridVector Zero => new GridVector();
+    public static GridVector Down => new GridVector(0, -1);
 
     static Dictionary<GridVector, Direction> directionMap = new Dictionary<GridVector, Direction>()
     {
