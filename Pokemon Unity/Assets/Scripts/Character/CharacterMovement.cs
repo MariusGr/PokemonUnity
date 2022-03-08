@@ -16,6 +16,10 @@ public class CharacterMovement : MonoBehaviour
     public float walkingSpeed = 3f;
     public float sprintingSpeed = 6f;
     public float currentSpeed;
+    public float horizontalLast = 0;
+    public float verticalLast = 0;
+    float horizontalChanged = 0;
+    float verticalChanged = 0;
     bool moving = false;
     Axis lastChangedAxis = Axis.None;
     GridVector currentDirection = GridVector.Down;
@@ -30,7 +34,7 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
-    public void ProcessMovement(float horizontal, float vertical, bool horizontalChanged, bool verticalChanged, bool sprinting)
+    public void ProcessMovement(float horizontal, float vertical, bool sprinting)
     {
         if (sprinting)
             currentSpeed = sprintingSpeed;
@@ -45,9 +49,18 @@ public class CharacterMovement : MonoBehaviour
         bool moveHorizontal = false;
         bool moveVertical = false;
 
-        if (verticalChanged && verticalActive)
+        if (horizontal != horizontalLast)
+            horizontalChanged = Time.time;
+        if (vertical != verticalLast)
+            verticalChanged = Time.time;
+
+        horizontalLast = horizontal;
+        verticalLast = vertical;
+
+
+        if (verticalChanged > horizontalChanged && verticalActive)
             moveVertical = true;
-        else if (horizontalChanged && horizontalActive)
+        else if (horizontalActive)
             moveHorizontal = true;
         else
         {
