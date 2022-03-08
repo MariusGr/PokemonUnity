@@ -22,16 +22,12 @@ public class CharacterMovement : MonoBehaviour
     float verticalChanged = 0;
     bool moving = false;
     Axis lastChangedAxis = Axis.None;
-    GridVector currentDirection = GridVector.Down;
+    GridVector currentDirectionVector = GridVector.Down;
+    Direction currentDirection = Direction.Down;
 
     void Start()
     {
         currentSpeed = walkingSpeed;
-    }
-
-    void Update()
-    {
-        
     }
 
     public void ProcessMovement(float horizontal, float vertical, bool sprinting)
@@ -42,7 +38,10 @@ public class CharacterMovement : MonoBehaviour
             currentSpeed = walkingSpeed;
 
         if (moving)
+        {
+            character.Animator.Tick();
             return;
+        }
 
         bool horizontalActive = horizontal != 0;
         bool verticalActive = vertical != 0;
@@ -73,24 +72,21 @@ public class CharacterMovement : MonoBehaviour
         else if (moveVertical)
             Move(Vector3.forward * Mathf.Sign(vertical));
         else
-            character.Animator.Refresh(AnimationType.None, currentDirection.ToDirection());
+            character.Animator.Tick(AnimationType.None, currentDirection);
     }
 
     void Move(Vector3 direction)
     {
-        currentDirection = new GridVector(direction);
-        Direction d = currentDirection.ToDirection();
+        currentDirectionVector = new GridVector(direction);
+        currentDirection = currentDirectionVector.ToDirection();
 
         if (IsMovable(direction))
         {
             StartCoroutine(MoveTo(new GridVector(transform.position + direction)));
-            character.Animator.Refresh(AnimationType.Walk, d);
+            character.Animator.Tick(AnimationType.Walk, currentDirection);
         }
         else
-        {
-            print("blocked");
-            character.Animator.Refresh(AnimationType.None, d);
-        }
+            character.Animator.Tick(AnimationType.None, currentDirection);
     }
 
     IEnumerator MoveTo(GridVector target)

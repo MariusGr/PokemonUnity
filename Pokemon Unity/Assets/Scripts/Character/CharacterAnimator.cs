@@ -26,12 +26,12 @@ public class CharacterAnimator : MonoBehaviour
     public float interval;
     Dictionary<Tuple<AnimationType, Direction>, Sprite[]> animationSpriteMap;
     Dictionary<AnimationType, float> animationTypeToInterval;
-    Coroutine currentAnimation;
     Sprite[] currentImageSequence;
     int currentSpriteIndex = 0;
-    bool animationRunning = false;
-    AnimationType currentAnimationType = AnimationType.None;
-    Direction currentDirection = Direction.None;
+    AnimationType currentAnimation = AnimationType.None;
+    Direction currentDirection = Direction.Down;
+    float lastTickTime = 0;
+    float intervalClock = 0;
 
     private void Start()
     {
@@ -69,39 +69,42 @@ public class CharacterAnimator : MonoBehaviour
         };
 
         currentImageSequence = walkSpritesDown;
+        lastTickTime = Time.time;
     }
 
-    public void Refresh(AnimationType animation, Direction direction)
-    {
-        SetImageSequence(animation, direction);
-        renderer.sprite = currentImageSequence[currentSpriteIndex];
-        if (direction != currentDirection || animation != currentAnimationType)
-            StartCycle();
+    public void Tick()
+        => Tick(currentAnimation, currentDirection);
 
+    public void Tick(AnimationType animation, Direction direction)
+    {
+        float deltaTime = Time.time - lastTickTime;
+        
+        if (animation != currentAnimation || direction != currentDirection)
+            SetImageSequence(animation, direction);
+        
         currentDirection = direction;
-        currentAnimationType = animation;
+        currentAnimation = animation;
+
+        if (currentAnimation != AnimationType.None)
+        {
+            intervalClock += deltaTime;
+            if (intervalClock >= interval)
+            {
+                intervalClock = 0;
+                IncrementSpriteIndex();
+            }
+        }
+        else
+            intervalClock = 0;
+
+        lastTickTime = Time.time;
     }
 
-    void StartCycle()
+    private void UpdateSpriteIndex()
     {
-        print("start");
-        if (currentAnimation != null)
-            StopCycleImmediatly();
-        animationRunning = true;
-        currentAnimation = StartCoroutine(Animation(interval));
+        currentSpriteIndex = currentSpriteIndex % currentImageSequence.Length;
+        renderer.sprite = currentImageSequence[currentSpriteIndex];
     }
-
-    void StopCycle() => animationRunning = false;
-
-    void StopCycleImmediatly()
-    {
-        StopCycle();
-        currentSpriteIndex = 0;
-        StopCoroutine(currentAnimation);
-        currentAnimation = null;
-    }
-
-    private void UpdateSpriteIndex() => currentSpriteIndex = currentSpriteIndex % currentImageSequence.Length;
 
     private void IncrementSpriteIndex()
     {
@@ -112,18 +115,8 @@ public class CharacterAnimator : MonoBehaviour
     private void SetImageSequence(AnimationType animation, Direction direction)
     {
         currentImageSequence = animationSpriteMap[new Tuple<AnimationType, Direction>(animation, direction)];
+        intervalClock = 0;
+        currentSpriteIndex = (animation == AnimationType.None) ? 0 : 1;
         UpdateSpriteIndex();
-    }
-
-    IEnumerator Animation(float interval)
-    {
-        while (true)
-        {
-            if (!animationRunning && currentSpriteIndex % 2 == 0)
-                StopCycleImmediatly();
-
-            yield return new WaitForSeconds(interval);
-            IncrementSpriteIndex();
-        }
     }
 }
