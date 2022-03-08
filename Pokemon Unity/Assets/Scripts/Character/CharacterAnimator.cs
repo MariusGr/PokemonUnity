@@ -7,6 +7,7 @@ public enum AnimationType
 {
     None,
     Walk,
+    Sprint,
 }
 
 public class CharacterAnimator : MonoBehaviour
@@ -23,7 +24,13 @@ public class CharacterAnimator : MonoBehaviour
     [SerializeField] Sprite[] walkSpritesUp;
     [SerializeField] Sprite[] walkSpritesDown;
 
-    public float interval;
+    [SerializeField] Sprite[] sprintSpritesRight;
+    [SerializeField] Sprite[] sprintSpritesLeft;
+    [SerializeField] Sprite[] sprintSpritesUp;
+    [SerializeField] Sprite[] sprintSpritesDown;
+
+    [SerializeField] float interval;
+
     Dictionary<Tuple<AnimationType, Direction>, Sprite[]> animationSpriteMap;
     Dictionary<AnimationType, float> animationTypeToInterval;
     Sprite[] currentImageSequence;
@@ -62,6 +69,19 @@ public class CharacterAnimator : MonoBehaviour
             { new Tuple<AnimationType, Direction>(
                 AnimationType.Walk, Direction.Down
             ), walkSpritesDown },
+
+            { new Tuple<AnimationType, Direction>(
+                AnimationType.Sprint, Direction.Right
+            ), sprintSpritesRight },
+            { new Tuple<AnimationType, Direction>(
+                AnimationType.Sprint, Direction.Left
+            ), sprintSpritesLeft },
+            { new Tuple<AnimationType, Direction>(
+                AnimationType.Sprint, Direction.Up
+            ), sprintSpritesUp },
+            { new Tuple<AnimationType, Direction>(
+                AnimationType.Sprint, Direction.Down
+            ), sprintSpritesDown },
         };
         animationTypeToInterval = new Dictionary<AnimationType, float>()
         {

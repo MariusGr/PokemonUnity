@@ -32,10 +32,17 @@ public class CharacterMovement : MonoBehaviour
 
     public void ProcessMovement(float horizontal, float vertical, bool sprinting)
     {
+        AnimationType animation;
         if (sprinting)
+        {
             currentSpeed = sprintingSpeed;
+            animation = AnimationType.Sprint;
+        }
         else
+        {
             currentSpeed = walkingSpeed;
+            animation = AnimationType.Walk;
+        }
 
         if (moving)
         {
@@ -68,14 +75,14 @@ public class CharacterMovement : MonoBehaviour
         }
 
         if (moveHorizontal)
-            Move(Vector3.right * Mathf.Sign(horizontal));
+            Move(Vector3.right * Mathf.Sign(horizontal), animation);
         else if (moveVertical)
-            Move(Vector3.forward * Mathf.Sign(vertical));
+            Move(Vector3.forward * Mathf.Sign(vertical), animation);
         else
             character.Animator.Tick(AnimationType.None, currentDirection);
     }
 
-    void Move(Vector3 direction)
+    void Move(Vector3 direction, AnimationType animation)
     {
         currentDirectionVector = new GridVector(direction);
         currentDirection = currentDirectionVector.ToDirection();
@@ -83,7 +90,7 @@ public class CharacterMovement : MonoBehaviour
         if (IsMovable(direction))
         {
             StartCoroutine(MoveTo(new GridVector(transform.position + direction)));
-            character.Animator.Tick(AnimationType.Walk, currentDirection);
+            character.Animator.Tick(animation, currentDirection);
         }
         else
             character.Animator.Tick(AnimationType.None, currentDirection);
