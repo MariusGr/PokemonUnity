@@ -28,6 +28,7 @@ public class CharacterMovement : MonoBehaviour
     void Start()
     {
         currentSpeed = walkingSpeed;
+        controller.Move(Vector3.down * .1f);
     }
 
     public void ProcessMovement(float horizontal, float vertical, bool sprinting)
