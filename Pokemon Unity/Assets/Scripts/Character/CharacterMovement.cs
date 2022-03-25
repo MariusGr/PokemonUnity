@@ -21,8 +21,15 @@ public class CharacterMovement : MonoBehaviour
     float horizontalChanged = 0;
     float verticalChanged = 0;
     bool moving = false;
-    Axis lastChangedAxis = Axis.None;
-    GridVector currentDirectionVector = GridVector.Down;
+    private GridVector currentDirectionVector = GridVector.Down;
+    public GridVector CurrentDirectionVector {
+        get => currentDirectionVector;
+        private set
+        {
+            currentDirectionVector = value;
+            currentDirection = currentDirectionVector.ToDirection();
+        }
+    }
     Direction currentDirection = Direction.Down;
 
     void Start()
@@ -85,8 +92,7 @@ public class CharacterMovement : MonoBehaviour
 
     void Move(Vector3 direction, AnimationType animation)
     {
-        currentDirectionVector = new GridVector(direction);
-        currentDirection = currentDirectionVector.ToDirection();
+        CurrentDirectionVector = new GridVector(direction);
 
         if (IsMovable(direction))
         {
@@ -95,6 +101,12 @@ public class CharacterMovement : MonoBehaviour
         }
         else
             character.Animator.Tick(AnimationType.None, currentDirection);
+    }
+
+    public void LookInDirection(GridVector direction)
+    {
+        CurrentDirectionVector = direction;
+        character.Animator.Tick(AnimationType.None, currentDirection);
     }
 
     IEnumerator MoveTo(GridVector target)
@@ -117,7 +129,5 @@ public class CharacterMovement : MonoBehaviour
     }
 
     bool IsMovable(Vector3 direction)
-    {
-        return !Physics.Raycast(origin: transform.position + Vector3.up * .5f, direction: direction, maxDistance: .8f, layerMask: LayerManager.Instance.MovementBlockingLayerMask);
-    }
+        => !character.RaycastForward(direction, layerMask: LayerManager.Instance.MovementBlockingLayerMask);
 }

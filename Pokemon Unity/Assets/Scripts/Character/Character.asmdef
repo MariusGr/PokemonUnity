@@ -2,7 +2,8 @@
     "name": "Character",
     "rootNamespace": "",
     "references": [
-        "GUID:1beb2850256c5b14281c85efd9f23839"
+        "GUID:1beb2850256c5b14281c85efd9f23839",
+        "GUID:2a2d6fa2235eb463984fdc78323a4563"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
