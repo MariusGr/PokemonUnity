@@ -283,7 +283,7 @@ public class MapSettings : MonoBehaviour
         return packedList;
     }
 
-    public Pokemon getRandomEncounter(WildPokemonInitialiser.Location location)
+    public PokemonData getRandomEncounter(WildPokemonInitialiser.Location location)
     {
         WildPokemonInitialiser[] list = getEncounterList(location);
 
@@ -319,7 +319,7 @@ public class MapSettings : MonoBehaviour
         //return new Pokemon((PokemonUnity.Pokemons)chanceSplitList[encounterIndex].ID, Pokemon.Gender.CALCULATE,
         //    Random.Range(chanceSplitList[encounterIndex].minLevel, chanceSplitList[encounterIndex].maxLevel + 1),
         //    null, null, null, -1);
-        return new Pokemon();
+        return new PokemonData();
     }
 }
 
