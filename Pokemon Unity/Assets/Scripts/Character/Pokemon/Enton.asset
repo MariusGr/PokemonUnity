@@ -15,5 +15,8 @@ MonoBehaviour:
   dex: 1
   fullName: Enton
   description: Hat immer Kopf aua
+  backSprite: {fileID: 2800000, guid: e8ebe9f1c3781354799f47541bda2512, type: 3}
   pokemonTypes: 04000000
   evolution: {fileID: 0}
+  hp: 0
+  attack: 0
