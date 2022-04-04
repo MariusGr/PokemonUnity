@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class DialogBox : MonoBehaviour
+public class DialogBox : MonoBehaviour, IDialogBox
 {
     public string debugBoxString;
 
@@ -32,11 +32,9 @@ public class DialogBox : MonoBehaviour
     public int defaultChoiceY = 0;
     public int defaultDialogLines = 2;
 
-    static public DialogBox Instance;
-
     void Awake()
     {
-        Instance = this;
+        Services.Register(this);
         Transform dialogBoxTrn = transform.Find("DialogBox");
         dialogBox = dialogBoxTrn.GetComponent<Image>();
         dialogBoxText = dialogBoxTrn.Find("BoxText").GetComponent<Text>();

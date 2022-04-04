@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
+  m_Name: Enton
+  m_EditorClassIdentifier: 
+  dex: 1
+  fullName: Enton
+  description: Hat immer Kopf aua
+  backSprite: {fileID: 2800000, guid: e8ebe9f1c3781354799f47541bda2512, type: 3}
+  pokemonTypes: 04000000
+  evolution: {fileID: 0}
+  hp: 0
+  attack: 0

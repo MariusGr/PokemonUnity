@@ -1,0 +1,19 @@
+public enum PokemonTypeEnum
+{
+    Normal,
+    Grass,
+    Rock,
+    Electric,
+    Water,
+    Fire,
+    Psy,
+    Ghost,
+    Ice,
+    Fighting,
+    Ground,
+    Poison,
+    Bug,
+    Flying,
+    Steel,
+    Dragon
+}

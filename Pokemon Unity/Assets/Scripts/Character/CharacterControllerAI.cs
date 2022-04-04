@@ -8,7 +8,7 @@ public class CharacterControllerAI : CharacterControllerBase, Interactable
 
     public void Interact(Character player)
     {
-        DialogBox.Instance.DrawText(text);
+        Services.Get<IDialogBox>().DrawText(text);
         GridVector direction = player.position - character.position;
         character.Movement.LookInDirection(direction);
     }
