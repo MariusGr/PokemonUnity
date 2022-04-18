@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class BattleUI : MonoBehaviour, IBattleUI
 {
+    [SerializeField] private Canvas canvas;
     [SerializeField] private MoveButtonsCollection moveButtons;
 
     void Awake()
     {
-        Services.Register(this);
+        Services.Register(this as IBattleUI);
     }
 
     void Update()
@@ -16,8 +17,9 @@ public class BattleUI : MonoBehaviour, IBattleUI
         
     }
 
-    public void StartNewBattle(CharacterData playerData, NPCData opponentData)
+    public void Initialize(CharacterData playerData, NPCData opponentData)
     {
-        moveButtons.AssignMoves(playerData.pokemons[0].moves);
+        moveButtons.AssignMoves(playerData.pokemons[0].moves.ToArray());
+        canvas.enabled = true;
     }
 }

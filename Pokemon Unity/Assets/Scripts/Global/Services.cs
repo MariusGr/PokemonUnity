@@ -1,15 +1,7 @@
 public static class Services
 {
-
-    public static T Get<T>() where T : IService
-    {
-        return ServiceEntry<T>.instance;
-    }
-
-    public static void Register<T>(T service) where T : IService
-    {
-        ServiceEntry<T>.instance = service;
-    }
+    public static T Get<T>() where T : IService => ServiceEntry<T>.instance;
+    public static void Register<T>(T service) where T : IService => ServiceEntry<T>.instance = service;
 
     public static void Unregister<T>(bool destroy = true) where T : IService
     {
@@ -22,7 +14,5 @@ public static class Services
     private static class ServiceEntry<T> where T : IService
     {
         public static T instance;
-
     }
-
 }

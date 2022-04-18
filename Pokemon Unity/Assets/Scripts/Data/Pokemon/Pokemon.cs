@@ -4,24 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct Pokemon
+public class Pokemon
 {
     public PokemonData data;
     public float level;
-    public List<Move> moves = new List<Move>();
+    public List<Move> moves;
 
-    public void OnAfterDeserialize()
+    public void Initialize()
     {
-        foreach(int key in data.levelToMoveMap.keys)
+        moves = new List<Move>();
+        foreach (int key in data.levelToMoveDataMap.keys)
         {
             if (key <= level)
-                moves.Add(xz);
+                AddMove(data.levelToMoveDataMap[key]);
         }
     }
-    
+
     private void AddMove(MoveData moveData)
     {
-        Move move = new Move(this, moveData, moves.Length);
-        moves.Add()
+        Move move = new Move(this, moveData, moves.Count);
+        moves.Add(move);
     }
 }

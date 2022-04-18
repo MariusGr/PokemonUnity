@@ -15,5 +15,5 @@ public class PokemonData : ScriptableObject
     public float hp;
     public float attack;
 
-    public CollectionExtensions.IntMoveDataDictionary levelToMoveMap;
+    public CollectionExtensions.IntMoveDataDictionary levelToMoveDataMap;
 }

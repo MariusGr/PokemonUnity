@@ -11,16 +11,18 @@ public class CharacterMovement : MonoBehaviour
         Vertical,
     }
 
-    [SerializeField] Character character;
-    [SerializeField] CharacterController controller;
+    [SerializeField] private Character character;
+    [SerializeField] private CharacterController controller;
+    [SerializeField] private Direction currentDirection = Direction.Down;
     public float walkingSpeed = 3f;
     public float sprintingSpeed = 6f;
     public float currentSpeed;
     public float horizontalLast = 0;
     public float verticalLast = 0;
-    float horizontalChanged = 0;
-    float verticalChanged = 0;
-    bool moving = false;
+    private float horizontalChanged = 0;
+    private float verticalChanged = 0;
+    private bool moving = false;
+
     private GridVector currentDirectionVector = GridVector.Down;
     public GridVector CurrentDirectionVector {
         get => currentDirectionVector;
@@ -30,12 +32,12 @@ public class CharacterMovement : MonoBehaviour
             currentDirection = currentDirectionVector.ToDirection();
         }
     }
-    Direction currentDirection = Direction.Down;
 
     void Start()
     {
         currentSpeed = walkingSpeed;
         controller.Move(Vector3.down * .1f);
+        LookInDirection(currentDirection);
     }
 
     public void ProcessMovement(float horizontal, float vertical, bool sprinting)
@@ -108,6 +110,8 @@ public class CharacterMovement : MonoBehaviour
         CurrentDirectionVector = direction;
         character.Animator.Tick(AnimationType.None, currentDirection);
     }
+
+    public void LookInDirection(Direction direction) => LookInDirection(new GridVector(direction));
 
     IEnumerator MoveTo(GridVector target)
     {

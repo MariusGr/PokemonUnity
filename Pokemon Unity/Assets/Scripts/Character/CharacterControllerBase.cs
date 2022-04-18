@@ -6,6 +6,8 @@ public abstract class CharacterControllerBase : MonoBehaviour
 {
     [SerializeField] protected Character character;
 
+    public CharacterData characterData;
+
     protected float horizontal = 0;
     protected float vertical = 0;
     protected bool horizontalChanged = false;

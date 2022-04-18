@@ -34,7 +34,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     void Awake()
     {
-        Services.Register(this);
+        Services.Register(this as IDialogBox);
+
         Transform dialogBoxTrn = transform.Find("DialogBox");
         dialogBox = dialogBoxTrn.GetComponent<Image>();
         dialogBoxText = dialogBoxTrn.Find("BoxText").GetComponent<Text>();

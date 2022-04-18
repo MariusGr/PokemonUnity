@@ -7,12 +7,24 @@ public class Character : MonoBehaviour
     [SerializeField] CharacterControllerBase controller;
     [SerializeField] CharacterMovement movement;
     [SerializeField] CharacterAnimator animator;
-    [SerializeField] public Pokemon[] pokemons;
 
     public CharacterControllerBase Controller => controller;
     public CharacterMovement Movement => movement;
     public CharacterAnimator Animator => animator;
     public GridVector position => new GridVector(transform.position);
+    public CharacterData characterData => controller.characterData;
+    public Pokemon[] pokemons => controller.characterData.pokemons;
+
+    public void Awake()
+    {
+        foreach (Pokemon pokemon in pokemons)
+            pokemon.Initialize();
+    }
+
+    public CharacterData GetCharacterData()
+    {
+        return new CharacterData();
+    }
 
     public bool RaycastForward(Vector3 direction, LayerMask layerMask, out RaycastHit hitInfo)
         => Physics.Raycast(

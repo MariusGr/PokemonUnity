@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class MoveButton : MonoBehaviour
 {
     [SerializeField] private int index;
-    [SerializeField] private Text textName;
-    [SerializeField] private Text textPP;
+    [SerializeField] private ShadowedText textName;
+    [SerializeField] private ShadowedText textPP;
     [SerializeField] private Image imageType;
     [SerializeField] private Image imageCover;
 

@@ -16,7 +16,11 @@ MonoBehaviour:
   fullName: Enton
   description: Hat immer Kopf aua
   backSprite: {fileID: 2800000, guid: e8ebe9f1c3781354799f47541bda2512, type: 3}
-  pokemonTypes: 04000000
+  pokemonTypes: []
   evolution: {fileID: 0}
-  hp: 0
-  attack: 0
+  hp: 50
+  attack: 50
+  levelToMoveDataMap:
+    keys: 00000000
+    values:
+    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}

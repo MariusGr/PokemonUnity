@@ -4,24 +4,19 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour, IBattleManager
 {
-    private Character player;
-    private Character opponent;
+    private CharacterData playerData;
+    private NPCData opponentData;
     private Pokemon playerPokemon;
     private Pokemon opponentPokemon;
 
-    void Awake()
+    void Awake() => Services.Register(this as IBattleManager);
+
+    public void StartNewBattle(CharacterData playerData, NPCData opponentData)
     {
-        Services.Register(this);
+        this.playerData = playerData;
+        this.opponentData = opponentData;
+
+        playerPokemon = playerData.pokemons[0];
+        Services.Get<IBattleUI>().Initialize(this.playerData, this.opponentData);
     }
-
-    public void StartNewBattle(Character player, Character opponent)
-    {
-        this.player = player;
-        this.opponent = opponent;
-
-        playerPokemon = player.pokemons[0];
-        //Services.Get<IBattleUI>().Start
-    }
-
-
 }

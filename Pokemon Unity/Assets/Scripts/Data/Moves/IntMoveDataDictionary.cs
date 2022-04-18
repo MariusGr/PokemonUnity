@@ -5,5 +5,5 @@ using System.Collections.Generic;
 namespace CollectionExtensions
 {
     [Serializable]
-    public class IntMoveDataDictionary : SerializableDictionary<int, MoveData> { }
+    public class IntMoveDataDictionary : InspectorFriendlySerializableDictionary<int, MoveData> { }
 }
