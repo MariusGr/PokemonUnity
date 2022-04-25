@@ -9,9 +9,11 @@ public class Pokemon
     public PokemonData data;
     public float level;
     public List<Move> moves;
+    public int hp;
 
     public void Initialize()
     {
+        hp = data.maxHp;
         moves = new List<Move>();
         foreach (int key in data.levelToMoveDataMap.keys)
         {

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6759210487594579931}
+  - component: {fileID: 4380921693584697835}
   - component: {fileID: 6759210487594579877}
   - component: {fileID: 6759210487594579930}
-  - component: {fileID: 4380921693584697835}
   m_Layer: 0
   m_Name: ShadowedText
   m_TagString: Untagged
@@ -39,6 +39,23 @@ RectTransform:
   m_AnchoredPosition: {x: 60, y: -3}
   m_SizeDelta: {x: 86, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4380921693584697835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6759210487594579928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b43620740e5936449abb1b0ee26ed58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textDefault: {fileID: 6759210487594579930}
+  textShadow: {fileID: 6759210487639851885}
+  _text: Enter text here
+  _alignment: 1
+  _font: {fileID: 12800000, guid: 3eb02d306bf842f4eb722dff9053a736, type: 3}
 --- !u!222 &6759210487594579877
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -80,21 +97,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20/20
---- !u!114 &4380921693584697835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6759210487594579928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b43620740e5936449abb1b0ee26ed58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _text: {fileID: 6759210487639851885}
-  textShadow: {fileID: 6759210487594579930}
+  m_Text: Enter text here
 --- !u!1 &6759210487639851875
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,4 +176,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20/20
+  m_Text: Enter text here

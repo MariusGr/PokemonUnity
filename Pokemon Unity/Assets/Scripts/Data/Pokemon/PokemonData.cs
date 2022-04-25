@@ -8,12 +8,13 @@ public class PokemonData : ScriptableObject
     public int dex;
     public string fullName;
     public string description;
-    public Texture2D backSprite;
+    public Sprite frontSprite;
+    public Sprite backSprite;
     public PokemonTypeData[] pokemonTypes;
     public PokemonData evolution;
 
-    public float hp;
-    public float attack;
+    public int maxHp;
+    public int attack;
 
     public CollectionExtensions.IntMoveDataDictionary levelToMoveDataMap;
 }

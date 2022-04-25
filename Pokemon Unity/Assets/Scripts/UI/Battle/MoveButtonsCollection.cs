@@ -21,5 +21,7 @@ public class MoveButtonsCollection : MonoBehaviour
     {
         for (int i = 0; i < moves.Length; i++)
             buttons[i].AssignMove(moves[i]);
+        for (int i = moves.Length; i < 4; i++)
+            buttons[i].AssignNone();
     }
 }
