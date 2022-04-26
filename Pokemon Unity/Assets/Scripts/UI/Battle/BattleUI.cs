@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour, IBattleUI
 {
-    [SerializeField] private Canvas canvas;
     [SerializeField] private MoveButtonsCollection moveButtons;
     [SerializeField] private Image playerPokemonImage;
     [SerializeField] private Image opponentImage;
     [SerializeField] private Image opponentPokemonImage;
+    [SerializeField] private PlayerPokemonStatsUI playerStats;
+    [SerializeField] private PokemonStatsUI opponentStats;
 
     private CharacterData playerData;
     private NPCData opponentData;
@@ -22,12 +23,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
     void Awake()
     {
         Services.Register(this as IBattleUI);
-        canvas.enabled = false;
-    }
-
-    void Update()
-    {
-        
+        gameObject.SetActive(false);
     }
 
     public void Initialize(CharacterData playerData, NPCData opponentData)
@@ -40,6 +36,9 @@ public class BattleUI : MonoBehaviour, IBattleUI
         opponentPokemonImage.sprite = opponentPokemon.data.frontSprite;
         opponentImage.sprite = opponentData.sprite;
 
-        canvas.enabled = true;
+        playerStats.AssignPokemon(playerPokemon);
+        opponentStats.AssignPokemon(opponentPokemon);
+
+        gameObject.SetActive(true);
     }
 }
