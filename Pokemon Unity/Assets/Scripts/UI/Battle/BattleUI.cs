@@ -12,6 +12,14 @@ public class BattleUI : MonoBehaviour, IBattleUI
     [SerializeField] private PlayerPokemonStatsUI playerStats;
     [SerializeField] private PokemonStatsUI opponentStats;
 
+    private enum BattleState
+    {
+        None,
+        ChoosingMove,
+        BatlleMenu,
+    }
+
+    private BattleState state;
     private CharacterData playerData;
     private NPCData opponentData;
     private int playerPokemonIndex = 0;
@@ -20,10 +28,14 @@ public class BattleUI : MonoBehaviour, IBattleUI
     private Pokemon playerPokemon => playerData.pokemons[playerPokemonIndex];
     private Pokemon opponentPokemon => opponentData.pokemons[opponentPokemonIndex];
 
-    void Awake()
+    private void Awake()
     {
         Services.Register(this as IBattleUI);
         gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
     }
 
     public void Initialize(CharacterData playerData, NPCData opponentData)
@@ -40,5 +52,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
         opponentStats.AssignPokemon(opponentPokemon);
 
         gameObject.SetActive(true);
+
+        state = BattleState.ChoosingMove;
     }
 }

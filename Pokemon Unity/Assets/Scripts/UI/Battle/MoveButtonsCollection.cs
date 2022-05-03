@@ -4,18 +4,7 @@ using UnityEngine;
 
 public class MoveButtonsCollection : MonoBehaviour
 {
-    [SerializeField] private MoveButton[] buttons;
-
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    [SerializeField] public MoveButton[] buttons;
 
     public void AssignMoves(Move[] moves)
     {

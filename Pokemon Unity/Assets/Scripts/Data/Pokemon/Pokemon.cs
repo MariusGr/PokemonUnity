@@ -8,7 +8,11 @@ public class Pokemon
 {
     public PokemonData data;
     public string nickname = null;
+
     public int level;
+    public int attack;
+    public int defense;
+
     public List<Move> moves;
     public int hp;
     public int xp;
@@ -38,5 +42,13 @@ public class Pokemon
     {
         Move move = new Move(this, moveData, moves.Count);
         moves.Add(move);
+    }
+
+    public bool MatchesType(PokemonTypeData type)
+    {
+        foreach (PokemonTypeData myType in data.pokemonTypes)
+            if (myType == type)
+                return true;
+        return false;
     }
 }

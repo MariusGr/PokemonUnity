@@ -11,7 +11,7 @@ public class Globals : MonoBehaviour
 
     public InspectorFriendlySerializableDictionary<Status, Sprite> statusToSpriteMap;
 
-    void Awake()
+    Globals()
     {
         Instance = this;
     }

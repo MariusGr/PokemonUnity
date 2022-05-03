@@ -8,4 +8,5 @@ public class MoveData : ScriptableObject
     public string fullName;
     public PokemonTypeData pokeType;
     public int maxPP;
+    public int power;
 }

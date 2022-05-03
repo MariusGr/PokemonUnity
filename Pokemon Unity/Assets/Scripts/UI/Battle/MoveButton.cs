@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveButton : MonoBehaviour
+public class MoveButton : SelectableUIElement
 {
     [SerializeField] private int index;
     [SerializeField] private ShadowedText textName;
@@ -12,8 +12,11 @@ public class MoveButton : MonoBehaviour
     [SerializeField] private Image imageBackground;
     [SerializeField] private Image imageCover;
 
+    public Move move { get; private set; }
+
     public void AssignMove(Move move)
     {
+        this.move = move;
         index = move.index;
         imageCover.enabled = true;
         imageType.enabled = true;

@@ -19,4 +19,9 @@ public class BattleManager : MonoBehaviour, IBattleManager
         playerPokemon = playerData.pokemons[0];
         Services.Get<IBattleUI>().Initialize(this.playerData, this.opponentData);
     }
+
+    public void DoMove(Move move)
+    {
+
+    }
 }
