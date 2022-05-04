@@ -51,4 +51,16 @@ public class Pokemon
                 return true;
         return false;
     }
+
+    // return true when dead
+    public bool InflictDamage(int damage)
+    {
+        hp -= damage;
+        if (hp < 1)
+        {
+            hp = 0;
+            return true;
+        }
+        return false;
+    }
 }

@@ -5,4 +5,5 @@ using UnityEngine;
 public interface IBattleUI : IService
 {
     public void Initialize(CharacterData playerData, NPCData opponentData);
+    public void DoPlayerMove(Move move);
 }

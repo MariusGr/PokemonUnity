@@ -38,7 +38,7 @@ public struct Move
         else
             effectiveness = Effectiveness.Normal;
 
-        int damage = (int)Mathf.Max(0, Mathf.Floor(((2f * pokemon.level + 2) * data.power * pokemon.attack / other.defense / 50f + 2f) * criticalFactor * stab * effectivenessFactor)));
+        int damage = (int)Mathf.Max(0, Mathf.Floor(((2f * pokemon.level + 2) * data.power * pokemon.attack / other.defense / 50f + 2f) * criticalFactor * stab * effectivenessFactor));
 
         if (damage < 1)
             effectiveness = Effectiveness.Ineffecitve;

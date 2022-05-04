@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour, IBattleUI
 {
-    [SerializeField] private MoveButtonsCollection moveButtons;
+    readonly private static int PLAYER = 0;
+    readonly private static int OPPONENT = 1;
+
+    [SerializeField] private MoveSelectionUI moveButtons;
     [SerializeField] private Image playerPokemonImage;
     [SerializeField] private Image opponentImage;
     [SerializeField] private Image opponentPokemonImage;
@@ -25,18 +28,24 @@ public class BattleUI : MonoBehaviour, IBattleUI
     private int playerPokemonIndex = 0;
     private int opponentPokemonIndex = 0;
 
-    private Pokemon playerPokemon => playerData.pokemons[playerPokemonIndex];
-    private Pokemon opponentPokemon => opponentData.pokemons[opponentPokemonIndex];
+    private Pokemon playerPokemon => GeActivePokemon(playerData);
+    private Pokemon opponentPokemon => GeActivePokemon(opponentData);
+
+    private PokemonStatsUI[] stats;
+    private CharacterData[] characterData;
 
     private void Awake()
     {
         Services.Register(this as IBattleUI);
         gameObject.SetActive(false);
+        stats = new PokemonStatsUI[] { playerStats, opponentStats };
     }
 
     private void Update()
     {
     }
+
+    private Pokemon GeActivePokemon(CharacterData character) => character.pokemons[playerPokemonIndex];
 
     public void Initialize(CharacterData playerData, NPCData opponentData)
     {
@@ -54,5 +63,26 @@ public class BattleUI : MonoBehaviour, IBattleUI
         gameObject.SetActive(true);
 
         state = BattleState.ChoosingMove;
+    }
+
+    public void DoPlayerMove(Move move)
+    {
+        DoMove(PLAYER, OPPONENT, move);
+    }
+
+    private void DoMove(int attacker, int receiver, Move move)
+    {
+        CharacterData attackerCharacter = characterData[attacker];
+        CharacterData receiverCharacter = characterData[receiver];
+
+        Pokemon receiverPokemon = GeActivePokemon(receiverCharacter);
+
+        bool critical;
+        Effectiveness effectiveness;
+        int damage = move.GetDamageAgainst(receiverPokemon, out critical, out effectiveness);
+
+        receiverPokemon.InflictDamage(damage);
+
+        stats[receiver].Refresh();
     }
 }

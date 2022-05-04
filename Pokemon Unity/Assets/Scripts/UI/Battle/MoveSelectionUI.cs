@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveButtonsCollection : MonoBehaviour
+public class MoveSelectionUI : SelectionWindow
 {
     [SerializeField] public MoveButton[] buttons;
+
+    private void Awake()
+    {
+        selectedElement = buttons[0];
+    }
 
     public void AssignMoves(Move[] moves)
     {
@@ -12,5 +17,10 @@ public class MoveButtonsCollection : MonoBehaviour
             buttons[i].AssignMove(moves[i]);
         for (int i = moves.Length; i < 4; i++)
             buttons[i].AssignNone();
+    }
+
+    protected override void SelectElement()
+    {
+        Services.Get<IBattleUI>().DoPlayerMove(((MoveButton)selectedElement).move);
     }
 }
