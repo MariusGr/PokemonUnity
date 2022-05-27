@@ -9,4 +9,14 @@ public class MoveData : ScriptableObject
     public PokemonTypeData pokeType;
     public int maxPP;
     public int power;
+
+    public AnimationClip animationClipPlayer;
+    public AnimationClip animationClipOpponent;
+
+    public AnimationClip GetAnimationClip(int character)
+    {
+        if (character == Constants.PlayerIndex)
+            return animationClipPlayer;
+        return animationClipOpponent;
+    }
 }

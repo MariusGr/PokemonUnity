@@ -11,7 +11,7 @@ public abstract class SelectionWindow : MonoBehaviour
         selectedElement = startElements;
     }
 
-    virtual protected void ProcesInput()
+    virtual protected void ProcessInput()
     {
         if (Input.GetButtonDown("Submit"))
             SelectElement();

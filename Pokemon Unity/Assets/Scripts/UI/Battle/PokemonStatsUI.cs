@@ -14,6 +14,8 @@ public class PokemonStatsUI : MonoBehaviour
 
     protected Pokemon pokemon;
 
+    private bool isPlayingAnimation;
+
     public void AssignPokemon(Pokemon pokemon)
     {
         this.pokemon = pokemon;
@@ -34,6 +36,16 @@ public class PokemonStatsUI : MonoBehaviour
             status.enabled = true;
         }
 
-        hpBar.Value = pokemon.hpNormalized;
+        RefreshHP();
     }
+
+    virtual public void RefreshHP() => hpBar.Value = pokemon.hpNormalized;
+
+    public System.Func<bool> RefreshHPAnimated(float speed)
+    {
+        hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
+        return hpBar.IsPlayingAnimation;
+    }
+
+    public bool IsPlayingAnimation() => isPlayingAnimation;
 }

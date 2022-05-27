@@ -40,7 +40,7 @@ public class Pokemon
 
     private void AddMove(MoveData moveData)
     {
-        Move move = new Move(this, moveData, moves.Count);
+        Move move = new Move(moveData, moves.Count);
         moves.Add(move);
     }
 

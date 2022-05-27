@@ -13,10 +13,15 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
     override public void Refresh()
     {
         base.Refresh();
+        
+        xpBar.Value = pokemon.xpNormalized;
+    }
+
+    public override void RefreshHP()
+    {
+        base.RefreshHP();
 
         hp.text = pokemon.hp.ToString();
         maxHP.text = pokemon.data.maxHp.ToString();
-        
-        xpBar.Value = pokemon.xpNormalized;
     }
 }

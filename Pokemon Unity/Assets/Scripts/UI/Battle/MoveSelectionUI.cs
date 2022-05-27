@@ -11,6 +11,11 @@ public class MoveSelectionUI : SelectionWindow
         selectedElement = buttons[0];
     }
 
+    private void Update()
+    {
+        ProcessInput();
+    }
+
     public void AssignMoves(Move[] moves)
     {
         for (int i = 0; i < moves.Length; i++)
@@ -21,6 +26,6 @@ public class MoveSelectionUI : SelectionWindow
 
     protected override void SelectElement()
     {
-        Services.Get<IBattleUI>().DoPlayerMove(((MoveButton)selectedElement).move);
+        Services.Get<IBattleManager>().DoPlayerMove(((MoveButton)selectedElement).move);
     }
 }

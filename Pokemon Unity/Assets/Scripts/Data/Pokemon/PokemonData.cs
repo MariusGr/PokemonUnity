@@ -11,7 +11,7 @@ public class PokemonData : ScriptableObject
     public Sprite frontSprite;
     public Sprite backSprite;
     public PokemonTypeData[] pokemonTypes;
-    public PokemonData evolution;
+    //public PokemonData evolution;
 
     public int maxHp;
     public int attack;

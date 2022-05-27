@@ -5,54 +5,31 @@ using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour, IBattleUI
 {
-    readonly private static int PLAYER = 0;
-    readonly private static int OPPONENT = 1;
-
-    [SerializeField] private MoveSelectionUI moveButtons;
+    [SerializeField] private MoveSelectionUI moveSelection;
     [SerializeField] private Image playerPokemonImage;
     [SerializeField] private Image opponentImage;
     [SerializeField] private Image opponentPokemonImage;
     [SerializeField] private PlayerPokemonStatsUI playerStats;
     [SerializeField] private PokemonStatsUI opponentStats;
-
-    private enum BattleState
-    {
-        None,
-        ChoosingMove,
-        BatlleMenu,
-    }
-
-    private BattleState state;
-    private CharacterData playerData;
-    private NPCData opponentData;
-    private int playerPokemonIndex = 0;
-    private int opponentPokemonIndex = 0;
-
-    private Pokemon playerPokemon => GeActivePokemon(playerData);
-    private Pokemon opponentPokemon => GeActivePokemon(opponentData);
+    [SerializeField] private PokemonSprite playerPokemonSprite;
+    [SerializeField] private PokemonSprite opponentPokemonSprite;
+    [SerializeField] private float hpRefreshSpeed = 1f;
 
     private PokemonStatsUI[] stats;
-    private CharacterData[] characterData;
+    private PokemonSprite[] pokemonSprites;
+
+    public BattleUI() => Services.Register(this as IBattleUI);
 
     private void Awake()
     {
-        Services.Register(this as IBattleUI);
         gameObject.SetActive(false);
         stats = new PokemonStatsUI[] { playerStats, opponentStats };
+        pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
 
-    private void Update()
+    public void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
-    }
-
-    private Pokemon GeActivePokemon(CharacterData character) => character.pokemons[playerPokemonIndex];
-
-    public void Initialize(CharacterData playerData, NPCData opponentData)
-    {
-        this.playerData = playerData;
-        this.opponentData = opponentData;
-
-        moveButtons.AssignMoves(playerPokemon.moves.ToArray());
+        moveSelection.AssignMoves(playerPokemon.moves.ToArray());
         playerPokemonImage.sprite = playerPokemon.data.backSprite;
         opponentPokemonImage.sprite = opponentPokemon.data.frontSprite;
         opponentImage.sprite = opponentData.sprite;
@@ -61,28 +38,21 @@ public class BattleUI : MonoBehaviour, IBattleUI
         opponentStats.AssignPokemon(opponentPokemon);
 
         gameObject.SetActive(true);
-
-        state = BattleState.ChoosingMove;
     }
+        
+    public void RefreshHP(int character) => stats[character].RefreshHP();
 
-    public void DoPlayerMove(Move move)
+    public System.Func<bool> RefreshHPAnimated(int character)
     {
-        DoMove(PLAYER, OPPONENT, move);
+        return stats[character].RefreshHPAnimated(hpRefreshSpeed);
     }
 
-    private void DoMove(int attacker, int receiver, Move move)
+    public System.Func<bool> PlayMoveAnimation(int attacker, Move move)
     {
-        CharacterData attackerCharacter = characterData[attacker];
-        CharacterData receiverCharacter = characterData[receiver];
-
-        Pokemon receiverPokemon = GeActivePokemon(receiverCharacter);
-
-        bool critical;
-        Effectiveness effectiveness;
-        int damage = move.GetDamageAgainst(receiverPokemon, out critical, out effectiveness);
-
-        receiverPokemon.InflictDamage(damage);
-
-        stats[receiver].Refresh();
+        PokemonSprite sprite = pokemonSprites[attacker];
+        sprite.PlayAnimation(move.data.GetAnimationClip(attacker));
+        return sprite.IsPlayingAnimation;
     }
+
+    public void SetMoveSelectionActive(bool active) => moveSelection.gameObject.SetActive(active);
 }

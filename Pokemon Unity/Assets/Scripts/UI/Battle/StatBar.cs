@@ -20,7 +20,34 @@ public class StatBar : MonoBehaviour
         }
     }
 
+    private bool isPlayingAnimation = false;
+
     private void Refresh() => image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width * _value);
+
+    public void SetValueAnimated(float value, float speed)
+    {
+        StartCoroutine(AnimateStatBarCoroutine(value, speed));
+    }
+
+    IEnumerator AnimateStatBarCoroutine(float target, float speed)
+    {
+        isPlayingAnimation = true;
+        float step = Mathf.Sign(target - Value) * speed;
+        System.Func<bool> targetNotYetReached;
+        if (Value > target)
+            targetNotYetReached = new System.Func<bool>(() => Value > target);
+        else
+            targetNotYetReached = new System.Func<bool>(() => Value < target);
+
+        while (targetNotYetReached())
+        {
+            Value += step;
+            yield return new WaitForFixedUpdate();
+        }
+        Value = target;
+        isPlayingAnimation = false;
+    }
+    public bool IsPlayingAnimation() => isPlayingAnimation;
 
 #if (UNITY_EDITOR)
     private void Update() => Refresh();
