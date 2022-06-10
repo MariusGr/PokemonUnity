@@ -2,87 +2,94 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class DialogBox : MonoBehaviour, IDialogBox
 {
+    [SerializeField] Transform dialogBoxT;
+    [SerializeField] Transform dialogBoxTrn;
+
     public string debugBoxString;
 
-    private Image dialogBox;
-    private Text dialogBoxText;
-    private Text dialogBoxTextShadow;
-    private Image dialogBoxBorder;
+    [SerializeField] private Image dialogBox;
+    [SerializeField] private Text dialogBoxText;
+    [SerializeField] private Text dialogBoxTextShadow;
+    [SerializeField] private Image dialogBoxBorder;
 
-    private Image choiceBox;
-    private Text choiceBoxText;
-    private Text choiceBoxTextShadow;
-    private Image choiceBoxSelect;
+    [SerializeField] private Image choiceBox;
+    [SerializeField] private Text choiceBoxText;
+    [SerializeField] private Text choiceBoxTextShadow;
+    [SerializeField] private Image choiceBoxSelect;
 
-    public AudioClip selectClip;
+    [SerializeField] private AudioClip selectClip;
 
     private float charPerSec = 60f;
     public float scrollSpeed = 0.1f;
 
     public int chosenIndex;
 
-    public bool hideDialogOnStart = true;
-    public bool hideChoiceOnStart = true;
-
     public int defaultChoiceWidth = 86;
     public int defaultChoiceY = 0;
     public int defaultDialogLines = 2;
 
+    private Dictionary<Effectiveness, string> EffectivenessToTextMap = new Dictionary<Effectiveness, string> {
+        { Effectiveness.Ineffecitve, "Es hat keinen Effekt." },
+        { Effectiveness.Strong, "Es ist sehr effektiv!" },
+        { Effectiveness.Weak, "Es ist nicht sehr effektiv..." },
+        { Effectiveness.Normal, "" },
+    };
+
+    public DialogBox() => Services.Register(this as IDialogBox);
+
     void Awake()
     {
-        Services.Register(this as IDialogBox);
-
-        Transform dialogBoxTrn = transform.Find("DialogBox");
-        dialogBox = dialogBoxTrn.GetComponent<Image>();
-        dialogBoxText = dialogBoxTrn.Find("BoxText").GetComponent<Text>();
-        dialogBoxTextShadow = dialogBoxTrn.Find("BoxTextShadow").GetComponent<Text>();
-        dialogBoxBorder = dialogBoxTrn.Find("BoxBorder").GetComponent<Image>();
-
-        Transform choiceBoxTrn = transform.Find("ChoiceBox");
-        choiceBox = choiceBoxTrn.GetComponent<Image>();
-        choiceBoxText = choiceBoxTrn.Find("BoxText").GetComponent<Text>();
-        choiceBoxTextShadow = choiceBoxTrn.Find("BoxTextShadow").GetComponent<Text>();
-        choiceBoxSelect = choiceBoxTrn.Find("BoxSelect").GetComponent<Image>();
-
         defaultDialogLines = Mathf.RoundToInt((dialogBoxBorder.rectTransform.sizeDelta.y - 16f) / 14f);
         defaultChoiceY = Mathf.FloorToInt(choiceBox.rectTransform.localPosition.y);
     }
 
-    void Start()
+    public void Open() => gameObject.SetActive(true);
+    public void Close() => gameObject.SetActive(false);
+    public bool IsOpen() => gameObject.activeSelf;
+
+    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxCloseMode closeMode)
     {
-        if (hideDialogOnStart)
-        {
-            dialogBox.gameObject.SetActive(false);
-        }
-        if (hideChoiceOnStart)
-        {
-            choiceBox.gameObject.SetActive(false);
-        }
+        Open();
+        return StartCoroutine(DrawStringsRoutine(new string[] { EffectivenessToTextMap[effectiveness] }, closeMode));
     }
 
-    public void DrawText(string[] text)
+    public Coroutine DrawText(string[] text, DialogBoxCloseMode closeMode)
     {
-        StartCoroutine(DrawStringsRoutine(text));
+        Open();
+        return StartCoroutine(DrawStringsRoutine(text, closeMode));
     }
 
-    IEnumerator DrawStringsRoutine(string[] text)
+    public Coroutine DrawTextPausing(string[] text, DialogBoxCloseMode closeMode)
+    {
+        Open();
+        return StartCoroutine(DrawStringsRoutinePausing(text, closeMode));
+    }
+
+    IEnumerator DrawStringsRoutinePausing(string[] text, DialogBoxCloseMode closeMode)
     {
         EventManager.Pause();
+        Open();
+        yield return StartCoroutine(DrawStringsRoutine(text, closeMode));
+        EventManager.Unpause();
+    }
+
+    IEnumerator DrawStringsRoutine(string[] text, DialogBoxCloseMode closeMode)
+    {
         DrawDialogBox();
         for (int i = 0; i < text.Length; i++)
         {
             yield return StartCoroutine(DrawTextRoutine(text[i]));
-            while (!Input.GetButtonDown("Submit") && !Input.GetButtonDown("Back"))
-            {
-                yield return null;
-            }
+            if (closeMode == DialogBoxCloseMode.User)
+                while (!Input.GetButtonDown("Submit") && !Input.GetButtonDown("Back"))
+                    yield return null;
         }
-        UndrawDialogBox();
-        EventManager.Unpause();
+        if (closeMode == DialogBoxCloseMode.Automatic)
+            Close();
     }
 
     private IEnumerator DrawTextRoutine(string text)
@@ -417,12 +424,6 @@ public class DialogBox : MonoBehaviour, IDialogBox
         chosenIndex = newIndex;
         SfxHandler.Play(selectClip);
         return true;
-    }
-
-
-    public void UndrawDialogBox()
-    {
-        dialogBox.gameObject.SetActive(false);
     }
 
     public IEnumerator UndrawSignBox()

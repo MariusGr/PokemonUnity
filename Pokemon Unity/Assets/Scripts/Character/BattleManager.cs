@@ -25,10 +25,15 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private Pokemon opponentPokemon => GeActivePokemon(opponentData);
 
     private IBattleUI ui;
+    private IDialogBox dialogBox;
 
     public BattleManager() => Services.Register(this as IBattleManager);
 
-    void Awake() => ui = Services.Get<IBattleUI>();
+    void Awake()
+    {
+        ui = Services.Get<IBattleUI>();
+        dialogBox = Services.Get<IDialogBox>();
+    }
 
     private Pokemon GeActivePokemon(CharacterData character) => character.pokemons[playerPokemonIndex];
 
@@ -43,7 +48,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         opponentPokemonIndex = 0;
         activePlayer = 0;
 
-        Services.Get<IBattleUI>().Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
+        ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
         StartRound();
     }
@@ -66,10 +71,14 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
         Pokemon attackerPokemon = GeActivePokemon(attackerCharacter);
         Pokemon targetPokemon = GeActivePokemon(targetCharacter);
-
+        
         // Play attack animation
+        print(Services.Get<IDialogBox>());
+        yield return dialogBox.DrawText(new string[] { $"{attackerPokemon.Name} setzt {move.data.fullName} ein!" }, DialogBoxCloseMode.External);
+        yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
-
+        yield return new WaitForSeconds(1f);
+        
         // Deal Damage to target
         bool critical;
         Effectiveness effectiveness;
@@ -78,5 +87,14 @@ public class BattleManager : MonoBehaviour, IBattleManager
         targetPokemon.InflictDamage(damage);
 
         yield return new WaitWhile(ui.RefreshHPAnimated(target));
+
+        if (effectiveness != Effectiveness.Normal)
+            yield return dialogBox.DrawText(effectiveness, DialogBoxCloseMode.User);
+
+        if (critical)
+            yield return dialogBox.DrawText(new string[] { $"Es war ein kritischer Treffer!" }, DialogBoxCloseMode.User);
+
+
+        dialogBox.Close();
     }
 }

@@ -10,8 +10,8 @@ public class Pokemon
     public string nickname = null;
 
     public int level;
-    public int attack;
-    public int defense;
+    public int attack => data.attack;
+    public int defense => data.defense;
 
     public List<Move> moves;
     public int hp;
@@ -19,10 +19,10 @@ public class Pokemon
     public int nextLevelXp = 1;
     public Status status = Status.None;
 
-    public float hpNormalized => hp / data.maxHp;
+    public float hpNormalized => (float)hp / data.maxHp;
     public float xpNormalized => xp / nextLevelXp;
 
-    public string Name => nickname.Length < 1 || nickname is null ? data.name : nickname;
+    public string Name => nickname.Length < 1 || nickname is null ? data.fullName : nickname;
     public Gender gender;
 
     public void Initialize()
@@ -55,6 +55,7 @@ public class Pokemon
     // return true when dead
     public bool InflictDamage(int damage)
     {
+        Debug.Log($"Inflict {damage} on currently {hp}");
         hp -= damage;
         if (hp < 1)
         {
