@@ -10,8 +10,11 @@ public class Pokemon
     public string nickname = null;
 
     public int level;
-    public int attack => data.attack;
-    public int defense => data.defense;
+    // TODO increase stats with level
+    public int attack => BasteStatToStat(data.attack);
+    public int defense => BasteStatToStat(data.defense);
+    public int speed => BasteStatToStat(data.speed);
+    public int maxHp => BasteStatToStat(data.maxHp);
 
     public List<Move> moves;
     public int hp;
@@ -19,15 +22,17 @@ public class Pokemon
     public int nextLevelXp = 1;
     public Status status = Status.None;
 
-    public float hpNormalized => (float)hp / data.maxHp;
+    public float hpNormalized => (float)hp / maxHp;
     public float xpNormalized => xp / nextLevelXp;
 
     public string Name => nickname.Length < 1 || nickname is null ? data.fullName : nickname;
     public Gender gender;
 
+    int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
+
     public void Initialize()
     {
-        hp = data.maxHp;
+        hp = maxHp;
         moves = new List<Move>();
         foreach (int key in data.levelToMoveDataMap.keys)
             if (key <= level)
@@ -40,7 +45,7 @@ public class Pokemon
 
     private void AddMove(MoveData moveData)
     {
-        Move move = new Move(moveData, moves.Count);
+        Move move = new Move(moveData, moves.Count, this);
         moves.Add(move);
     }
 

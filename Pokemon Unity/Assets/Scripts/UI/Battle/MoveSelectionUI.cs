@@ -26,6 +26,6 @@ public class MoveSelectionUI : SelectionWindow
 
     protected override void SelectElement()
     {
-        Services.Get<IBattleManager>().DoPlayerMove(((MoveButton)selectedElement).move);
+        Services.Get<IBattleManager>().ChoosePlayerMove(((MoveButton)selectedElement).move);
     }
 }

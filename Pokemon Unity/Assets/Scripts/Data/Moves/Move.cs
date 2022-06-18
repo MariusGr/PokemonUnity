@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct Move
+public class Move
 {
     public MoveData data;
     public int index;
     public int pp;
+    public Pokemon pokemon;
 
-    public Move(MoveData data, int index)
+    public Move(MoveData data, int index, Pokemon pokemon)
     {
         this.index = index;
         this.data = data;
+        this.pokemon = pokemon;
         pp = data.maxPP;
     }
 
@@ -50,5 +52,12 @@ public struct Move
             effectiveness = Effectiveness.Ineffecitve;
 
         return damage;
+    }
+
+    public bool IsFaster(Move other)
+    {
+        if (pokemon.speed != other.pokemon.speed)
+            return pokemon.speed > other.pokemon.speed;
+        return Random.value > .5f;
     }
 }

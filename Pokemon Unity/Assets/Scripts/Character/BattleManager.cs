@@ -16,8 +16,12 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private CharacterData playerData;
     private NPCData opponentData;
     private int activePlayer = 0;
+    private int otherPlayer = 1;
     private int playerPokemonIndex = 0;
     private int opponentPokemonIndex = 0;
+
+    public delegate void UserMoveChooseEventHandler(Move move);
+    public event UserMoveChooseEventHandler UserChooseMoveEvent;
 
     private CharacterData[] characterData;
 
@@ -50,21 +54,52 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
-        StartRound();
+        StartCoroutine(RoundCoroutine());
     }
 
-    private void StartRound()
+    private IEnumerator RoundCoroutine()
     {
         activePlayer = 0;
+        Move opponentMove = GetOpponentMove();
+        Move playerMove = null;
+        yield return GetPlayerMove(choosenMove => playerMove = choosenMove);
+
+        IEnumerator playerCoroutine = MoveCoroutine(Constants.PlayerIndex, Constants.OpponentIndex, playerMove);
+        IEnumerator opponentCoroutine = MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
+
+        if (playerMove.IsFaster(opponentMove))
+        {
+            yield return playerCoroutine;
+            yield return opponentCoroutine;
+        }
+        else
+        {
+            yield return opponentCoroutine;
+            yield return playerCoroutine;
+        }
     }
 
-    public void DoPlayerMove(Move move)
+    private Move GetOpponentMove()
     {
-        ui.SetMoveSelectionActive(false);
-        StartCoroutine(MoveRoutine(Constants.PlayerIndex, Constants.OpponentIndex, move));
+        // TODO: implement more intelligent move choose
+        return opponentPokemon.moves[UnityEngine.Random.Range(0, opponentPokemon.moves.Count)];
     }
 
-    private IEnumerator MoveRoutine(int attacker, int target, Move move)
+    private IEnumerator GetPlayerMove(Action<Move> callback)
+    {
+        ui.SetMoveSelectionActive(true);
+
+        Move choosenMove = null;
+        UserMoveChooseEventHandler action = (Move move) => choosenMove = move;
+        UserChooseMoveEvent += action;
+        yield return new WaitUntil(() => choosenMove != null);
+        UserChooseMoveEvent -= action;
+        callback(choosenMove);
+    }
+
+    public void ChoosePlayerMove(Move move) => UserChooseMoveEvent?.Invoke(move);
+
+    private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
         CharacterData attackerCharacter = characterData[attacker];
         CharacterData targetCharacter = characterData[target];
@@ -93,7 +128,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
         if (critical)
             yield return dialogBox.DrawText(new string[] { $"Es war ein kritischer Treffer!" }, DialogBoxCloseMode.User);
-
 
         dialogBox.Close();
     }
