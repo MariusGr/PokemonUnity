@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Tackle
+  m_Name: TackleOpponent
   serializedVersion: 6
   m_Legacy: 1
   m_Compressed: 0
@@ -24,26 +24,26 @@ AnimationClip:
         time: 0
         value: 0
         inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        outSlope: -39.342857
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: 6.62
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        value: -4.59
+        inSlope: -39.342857
+        outSlope: 39.342857
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.23333333
         value: 0
-        inSlope: 0
+        inSlope: 39.342857
         outSlope: 0
-        tangentMode: 136
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
@@ -59,36 +59,36 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -57.6
+        value: 0
         inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        outSlope: -47.485714
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: -55.52
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        value: -5.54
+        inSlope: -47.485714
+        outSlope: 47.485714
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.23333333
-        value: -57.6
-        inSlope: 0
+        value: 0
+        inSlope: 47.485714
         outSlope: 0
-        tangentMode: 136
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_AnchoredPosition.y
-    path: Mask/Sprite
+    attribute: m_AnchoredPosition.x
+    path: Mask/Shadow
     classID: 224
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -128,26 +128,26 @@ AnimationClip:
         time: 0
         value: 0
         inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        outSlope: -39.342857
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: 6.62
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        value: -4.59
+        inSlope: -39.342857
+        outSlope: 39.342857
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.23333333
         value: 0
-        inSlope: 0
+        inSlope: 39.342857
         outSlope: 0
-        tangentMode: 136
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
@@ -163,36 +163,36 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -57.6
+        value: 0
         inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        outSlope: -47.485714
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: -55.52
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
+        value: -5.54
+        inSlope: -47.485714
+        outSlope: 47.485714
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.23333333
-        value: -57.6
-        inSlope: 0
+        value: 0
+        inSlope: 47.485714
         outSlope: 0
-        tangentMode: 136
+        tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_AnchoredPosition.y
-    path: Mask/Sprite
+    attribute: m_AnchoredPosition.x
+    path: Mask/Shadow
     classID: 224
     script: {fileID: 0}
   m_EulerEditorCurves: []

@@ -31,10 +31,10 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: 3.72
-        inSlope: 31.885714
-        outSlope: -31.885714
-        tangentMode: 69
+        value: 6.62
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
@@ -51,7 +51,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: 
+    path: Mask/Sprite
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -59,7 +59,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: -57.6
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -68,16 +68,16 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: 0.64
-        inSlope: 5.485714
-        outSlope: -5.485714
-        tangentMode: 69
+        value: -55.52
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.23333333
-        value: 0
+        value: -57.6
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -88,7 +88,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: 
+    path: Mask/Sprite
     classID: 224
     script: {fileID: 0}
   m_PPtrCurves: []
@@ -135,10 +135,10 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: 3.72
-        inSlope: 31.885714
-        outSlope: -31.885714
-        tangentMode: 69
+        value: 6.62
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
@@ -155,7 +155,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.x
-    path: 
+    path: Mask/Sprite
     classID: 224
     script: {fileID: 0}
   - curve:
@@ -163,7 +163,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: -57.6
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -172,16 +172,16 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.11666667
-        value: 0.64
-        inSlope: 5.485714
-        outSlope: -5.485714
-        tangentMode: 69
+        value: -55.52
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.23333333
-        value: 0
+        value: -57.6
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -192,7 +192,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_AnchoredPosition.y
-    path: 
+    path: Mask/Sprite
     classID: 224
     script: {fileID: 0}
   m_EulerEditorCurves: []

@@ -22,7 +22,6 @@ public class BattleUI : MonoBehaviour, IBattleUI
 
     private void Awake()
     {
-        gameObject.SetActive(false);
         stats = new PokemonStatsUI[] { playerStats, opponentStats };
         pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
@@ -37,6 +36,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
         playerStats.AssignPokemon(playerPokemon);
         opponentStats.AssignPokemon(opponentPokemon);
 
+        EventManager.Pause();
         gameObject.SetActive(true);
     }
         

@@ -15,8 +15,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private BattleState state;
     private CharacterData playerData;
     private NPCData opponentData;
-    private int activePlayer = 0;
-    private int otherPlayer = 1;
     private int playerPokemonIndex = 0;
     private int opponentPokemonIndex = 0;
 
@@ -43,6 +41,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     public void StartNewBattle(CharacterData playerData, NPCData opponentData)
     {
+        print("StartNewBattle");
         this.playerData = playerData;
         this.opponentData = opponentData;
         characterData = new CharacterData[] { this.playerData, this.opponentData };
@@ -50,7 +49,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
         state = BattleState.ChoosingMove;
         playerPokemonIndex = 0;
         opponentPokemonIndex = 0;
-        activePlayer = 0;
 
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
@@ -59,23 +57,26 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private IEnumerator RoundCoroutine()
     {
-        activePlayer = 0;
-        Move opponentMove = GetOpponentMove();
-        Move playerMove = null;
-        yield return GetPlayerMove(choosenMove => playerMove = choosenMove);
-
-        IEnumerator playerCoroutine = MoveCoroutine(Constants.PlayerIndex, Constants.OpponentIndex, playerMove);
-        IEnumerator opponentCoroutine = MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
-
-        if (playerMove.IsFaster(opponentMove))
+        print("RoundCoroutine");
+        while (true)
         {
-            yield return playerCoroutine;
-            yield return opponentCoroutine;
-        }
-        else
-        {
-            yield return opponentCoroutine;
-            yield return playerCoroutine;
+            Move opponentMove = GetOpponentMove();
+            Move playerMove = null;
+            yield return GetPlayerMove(choosenMove => playerMove = choosenMove);
+
+            IEnumerator playerCoroutine = MoveCoroutine(Constants.PlayerIndex, Constants.OpponentIndex, playerMove);
+            IEnumerator opponentCoroutine = MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
+
+            if (playerMove.IsFaster(opponentMove))
+            {
+                yield return playerCoroutine;
+                yield return opponentCoroutine;
+            }
+            else
+            {
+                yield return opponentCoroutine;
+                yield return playerCoroutine;
+            }
         }
     }
 
@@ -92,7 +93,9 @@ public class BattleManager : MonoBehaviour, IBattleManager
         Move choosenMove = null;
         UserMoveChooseEventHandler action = (Move move) => choosenMove = move;
         UserChooseMoveEvent += action;
+        print("wait...");
         yield return new WaitUntil(() => choosenMove != null);
+        print("got: " + choosenMove);
         UserChooseMoveEvent -= action;
         callback(choosenMove);
     }
@@ -101,6 +104,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
+        print("Move attacker " + attacker);
         CharacterData attackerCharacter = characterData[attacker];
         CharacterData targetCharacter = characterData[target];
 
