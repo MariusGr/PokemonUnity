@@ -41,7 +41,7 @@ public class PokemonStatsUI : MonoBehaviour
 
     virtual public void RefreshHP() => hpBar.Value = pokemon.hpNormalized;
 
-    public System.Func<bool> RefreshHPAnimated(float speed)
+    virtual public System.Func<bool> RefreshHPAnimated(float speed)
     {
         hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
         return hpBar.IsPlayingAnimation;

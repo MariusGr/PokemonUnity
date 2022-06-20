@@ -13,7 +13,6 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
     override public void Refresh()
     {
         base.Refresh();
-        
         xpBar.Value = pokemon.xpNormalized;
     }
 
@@ -22,6 +21,24 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
         base.RefreshHP();
 
         hp.text = pokemon.hp.ToString();
-        maxHP.text = pokemon.data.maxHp.ToString();
+        maxHP.text = pokemon.maxHp.ToString();
+    }
+
+    override public System.Func<bool> RefreshHPAnimated(float speed)
+    {
+        hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
+        StartCoroutine(AnimateHPTextCoroutine());
+        return hpBar.IsPlayingAnimation;
+    }
+
+    IEnumerator AnimateHPTextCoroutine()
+    {
+        while(hpBar.IsPlayingAnimation())
+        {
+            hp.text = (pokemon.maxHp * hpBar.Value).ToString();
+            yield return new WaitForEndOfFrame();
+        }
+
+        RefreshHP();
     }
 }
