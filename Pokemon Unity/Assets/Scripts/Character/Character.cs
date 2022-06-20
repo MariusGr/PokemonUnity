@@ -12,8 +12,8 @@ public class Character : MonoBehaviour
     public CharacterMovement Movement => movement;
     public CharacterAnimator Animator => animator;
     public GridVector position => new GridVector(transform.position);
-    public CharacterData characterData => controller.characterData;
-    public Pokemon[] pokemons => controller.characterData.pokemons;
+    public CharacterData characterData => controller.CharacterData;
+    public Pokemon[] pokemons => controller.CharacterData.pokemons;
 
     public void Awake()
     {
@@ -48,6 +48,6 @@ public class Character : MonoBehaviour
     {
         RaycastHit hitInfo;
         if (RaycastForward(movement.CurrentDirectionVector, LayerManager.Instance.InteractableLayerMask, out hitInfo))
-            hitInfo.collider.gameObject.GetComponent<Interactable>()?.Interact(this); ;
+            hitInfo.collider.gameObject.GetComponent<IInteractable>()?.Interact(this); ;
     }
 }

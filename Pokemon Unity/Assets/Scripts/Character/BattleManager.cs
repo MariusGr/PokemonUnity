@@ -57,7 +57,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private IEnumerator RoundCoroutine()
     {
-        print("RoundCoroutine");
         while (true)
         {
             Move opponentMove = GetOpponentMove();
@@ -93,9 +92,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
         Move choosenMove = null;
         UserMoveChooseEventHandler action = (Move move) => choosenMove = move;
         UserChooseMoveEvent += action;
-        print("wait...");
         yield return new WaitUntil(() => choosenMove != null);
-        print("got: " + choosenMove);
+        ui.SetMoveSelectionActive(false);
         UserChooseMoveEvent -= action;
         callback(choosenMove);
     }
@@ -104,7 +102,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
-        print("Move attacker " + attacker);
         CharacterData attackerCharacter = characterData[attacker];
         CharacterData targetCharacter = characterData[target];
 
@@ -112,8 +109,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
         Pokemon targetPokemon = GeActivePokemon(targetCharacter);
         
         // Play attack animation
-        print(Services.Get<IDialogBox>());
-        yield return dialogBox.DrawText(new string[] { $"{attackerPokemon.Name} setzt {move.data.fullName} ein!" }, DialogBoxCloseMode.External);
+        string pokemonIdentifier = attackerPokemon.Name == opponentPokemon.Name ? $"{attackerCharacter.nameGenitive} {attackerPokemon.Name}" : attackerPokemon.Name;
+        yield return dialogBox.DrawText(new string[] { $"{pokemonIdentifier} setzt {move.data.fullName} ein!" }, DialogBoxCloseMode.External);
         yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
         yield return new WaitForSeconds(1f);

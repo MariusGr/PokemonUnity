@@ -6,6 +6,9 @@ public class CharacterControllerPlayer : CharacterControllerBase
 {
     bool paused = false;
 
+    public CharacterData characterData;
+    override public CharacterData CharacterData => characterData;
+
     void Awake()
     {
         EventManager.Instance.PauseEvent += Pause;

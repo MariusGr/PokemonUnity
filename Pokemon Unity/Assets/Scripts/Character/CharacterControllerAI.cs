@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControllerAI : CharacterControllerBase, Interactable
+public class CharacterControllerAI : CharacterControllerBase, IInteractable
 {
     [SerializeField] public NPCData npcData;
 
-    void Awake()
-    {
-        base.characterData = npcData;
-    }
+    override public CharacterData CharacterData => npcData;
 
     public void Interact(Character player)
     {
