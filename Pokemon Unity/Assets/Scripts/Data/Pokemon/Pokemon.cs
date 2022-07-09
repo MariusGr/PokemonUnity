@@ -21,6 +21,7 @@ public class Pokemon
     public int xp;
     public int nextLevelXp = 1;
     public Status status = Status.None;
+    public bool isFainted => hp < 1;
 
     public float hpNormalized => (float)hp / maxHp;
     public float xpNormalized => xp / nextLevelXp;

@@ -15,16 +15,15 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private BattleState state;
     private CharacterData playerData;
     private NPCData opponentData;
-    private int playerPokemonIndex = 0;
-    private int opponentPokemonIndex = 0;
+    private int[] pokemonIndex = new int[] { 0, 0 };
 
     public delegate void UserMoveChooseEventHandler(Move move);
     public event UserMoveChooseEventHandler UserChooseMoveEvent;
 
     private CharacterData[] characterData;
 
-    private Pokemon playerPokemon => GeActivePokemon(playerData);
-    private Pokemon opponentPokemon => GeActivePokemon(opponentData);
+    private Pokemon playerPokemon => GeActivePokemon(Constants.PlayerIndex);
+    private Pokemon opponentPokemon => GeActivePokemon(Constants.OpponentIndex);
 
     private IBattleUI ui;
     private IDialogBox dialogBox;
@@ -34,10 +33,11 @@ public class BattleManager : MonoBehaviour, IBattleManager
     void Awake()
     {
         ui = Services.Get<IBattleUI>();
+        ui.Close();
         dialogBox = Services.Get<IDialogBox>();
     }
 
-    private Pokemon GeActivePokemon(CharacterData character) => character.pokemons[playerPokemonIndex];
+    private Pokemon GeActivePokemon(int character) => characterData[character].pokemons[pokemonIndex[character]];
 
     public void StartNewBattle(CharacterData playerData, NPCData opponentData)
     {
@@ -47,8 +47,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
         characterData = new CharacterData[] { this.playerData, this.opponentData };
 
         state = BattleState.ChoosingMove;
-        playerPokemonIndex = 0;
-        opponentPokemonIndex = 0;
+        pokemonIndex[Constants.PlayerIndex] = 0;
+        pokemonIndex[Constants.OpponentIndex] = 0;
 
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
@@ -79,6 +79,14 @@ public class BattleManager : MonoBehaviour, IBattleManager
         }
     }
 
+    private void GetNextPokemon(int character)
+    {
+        if (character == Constants.OpponentIndex)
+        {
+
+        }
+    }
+
     private Move GetOpponentMove()
     {
         // TODO: implement more intelligent move choose
@@ -100,27 +108,31 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     public void ChoosePlayerMove(Move move) => UserChooseMoveEvent?.Invoke(move);
 
+    string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
+        => pokemon.Name == other.Name ? $"{character.nameGenitive} {pokemon.Name}" : pokemon.Name;
+
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
         CharacterData attackerCharacter = characterData[attacker];
         CharacterData targetCharacter = characterData[target];
+        Pokemon attackerPokemon = GeActivePokemon(attacker);
+        Pokemon targetPokemon = GeActivePokemon(target);
 
-        Pokemon attackerPokemon = GeActivePokemon(attackerCharacter);
-        Pokemon targetPokemon = GeActivePokemon(targetCharacter);
-        
         // Play attack animation
-        string pokemonIdentifier = attackerPokemon.Name == opponentPokemon.Name ? $"{attackerCharacter.nameGenitive} {attackerPokemon.Name}" : attackerPokemon.Name;
-        yield return dialogBox.DrawText(new string[] { $"{pokemonIdentifier} setzt {move.data.fullName} ein!" }, DialogBoxCloseMode.External);
+        string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);
+        string targetPokemonIdentifier = GetUniqueIdentifier(targetPokemon, attackerPokemon, targetCharacter);
+        yield return dialogBox.DrawText(new string[] { $"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!" }, DialogBoxCloseMode.External);
         yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
         yield return new WaitForSeconds(1f);
         
         // Deal Damage to target
+        // TODO: special branch for attacks with no damage infliction
         bool critical;
         Effectiveness effectiveness;
         int damage = move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
 
-        targetPokemon.InflictDamage(damage);
+        bool fainted = targetPokemon.InflictDamage(damage);
 
         yield return new WaitWhile(ui.RefreshHPAnimated(target));
 
@@ -128,7 +140,34 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return dialogBox.DrawText(effectiveness, DialogBoxCloseMode.User);
 
         if (critical)
-            yield return dialogBox.DrawText(new string[] { $"Es war ein kritischer Treffer!" }, DialogBoxCloseMode.User);
+            yield return dialogBox.DrawText(new string[] { $"Ein Volltreffer!" }, DialogBoxCloseMode.User);
+
+        // Aftermath: Faint, Poison, etc.
+        if (fainted)
+        {
+            // target pokemon fainted
+            yield return dialogBox.DrawText(new string[] { $"{targetPokemonIdentifier} wurde besiegt!" }, DialogBoxCloseMode.External);
+            yield return new WaitForSeconds(1f);
+            yield return new WaitWhile(ui.PlayFaintAnimation(target));
+            yield return new WaitForSeconds(1f);
+
+            if (targetCharacter.IsDefeated())
+            {
+                // target character has lost the battle
+                yield return dialogBox.DrawText(new string[] { $"{targetCharacter.name} wurde besiegt!" }, DialogBoxCloseMode.External);
+                yield return new WaitForSeconds(1f);
+                if (target == Constants.OpponentIndex)
+                    ui.MakeOpponentAppear();
+            }
+            else
+            {
+                // target character must choose new pokemon
+            }
+        }
+        else
+        {
+            // Status effects etc.
+        }
 
         dialogBox.Close();
     }

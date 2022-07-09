@@ -198,6 +198,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 2816467820062953056}
+  spriteImage: {fileID: 2816467820188346821}
+  owner: 0
+  faintAnimation:
+  - {fileID: 7400000, guid: 8a6fc8cb342254374aafc809440f4fa1, type: 2}
+  - {fileID: 7400000, guid: 5107f317fe6894e61846e5edb03c3634, type: 2}
 --- !u!111 &2816467820062953056
 Animation:
   m_ObjectHideFlags: 0

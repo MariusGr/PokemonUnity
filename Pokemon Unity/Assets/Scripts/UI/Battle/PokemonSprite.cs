@@ -2,25 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokemonSprite : MonoBehaviour
+public class PokemonSprite : AnimatedSprite
 {
-    [SerializeField] new Animation animation;
+    [SerializeField] int owner;
+    [SerializeField] AnimationClip[] faintAnimation;
 
-    private bool isPlayingAnimation;
-
-    public void PlayAnimation(AnimationClip animationClip)
-    {
-        isPlayingAnimation = true;
-        animation.clip = animationClip;
-        animation.Play();
-        StartCoroutine(WaitForAnimationFinish());
-    }
-
-    IEnumerator WaitForAnimationFinish()
-    {
-        yield return new WaitForSeconds(animation.clip.length);
-        isPlayingAnimation = false;
-    }
-
-    public bool IsPlayingAnimation() => isPlayingAnimation;
+    public void PlayFaintAnimation() => PlayAnimation(faintAnimation[owner]);
+    public void PlayAnimation(Move move) => PlayAnimation(move.data.GetAnimationClip(owner));
 }
