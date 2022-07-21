@@ -34,7 +34,6 @@ public class BattleUI : MonoBehaviour, IBattleUI
         playerStats.AssignPokemon(playerPokemon);
         opponentStats.AssignPokemon(opponentPokemon);
 
-        EventManager.Pause();
         gameObject.SetActive(true);
     }
 

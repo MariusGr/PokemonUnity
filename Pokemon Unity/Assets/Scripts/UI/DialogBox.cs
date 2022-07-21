@@ -58,6 +58,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
         return StartCoroutine(DrawStringsRoutine(new string[] { EffectivenessToTextMap[effectiveness] }, closeMode));
     }
 
+    public Coroutine DrawText(string text, DialogBoxCloseMode closeMode) => DrawText(new string[] { text }, closeMode);
     public Coroutine DrawText(string[] text, DialogBoxCloseMode closeMode)
     {
         Open();

@@ -8,6 +8,7 @@ public class CharacterData
 {
     public string name;
     public string nameGenitive => name.Length > 0 && name[name.Length - 1] == 's' ? $"{name}'" : $"{name}s";
+    public float priceMoneyBase = 0;
     public Pokemon[] pokemons;
 
     public bool IsDefeated()
@@ -17,4 +18,7 @@ public class CharacterData
                 return false;
         return true;
     }
+
+    public float GetPriceMoney() => pokemons[pokemons.Length - 1].level * priceMoneyBase;
+    public string GetPriceMoneyFormatted() => Money.FormatMoneyToString(GetPriceMoney());
 }

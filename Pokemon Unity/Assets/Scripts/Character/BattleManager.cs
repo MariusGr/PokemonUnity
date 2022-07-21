@@ -13,6 +13,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     }
 
     private BattleState state;
+    private bool battleEnded = false;
     private CharacterData playerData;
     private NPCData opponentData;
     private int[] pokemonIndex = new int[] { 0, 0 };
@@ -42,6 +43,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     public void StartNewBattle(CharacterData playerData, NPCData opponentData)
     {
         print("StartNewBattle");
+        battleEnded = false;
         this.playerData = playerData;
         this.opponentData = opponentData;
         characterData = new CharacterData[] { this.playerData, this.opponentData };
@@ -50,9 +52,17 @@ public class BattleManager : MonoBehaviour, IBattleManager
         pokemonIndex[Constants.PlayerIndex] = 0;
         pokemonIndex[Constants.OpponentIndex] = 0;
 
+        EventManager.Pause();
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
         StartCoroutine(RoundCoroutine());
+    }
+
+    private void EndBattle()
+    {
+        battleEnded = true;
+        ui.Close();
+        EventManager.Unpause();
     }
 
     private IEnumerator RoundCoroutine()
@@ -69,13 +79,21 @@ public class BattleManager : MonoBehaviour, IBattleManager
             if (playerMove.IsFaster(opponentMove))
             {
                 yield return playerCoroutine;
+                if (battleEnded)
+                    break;
                 yield return opponentCoroutine;
+
             }
             else
             {
                 yield return opponentCoroutine;
+                if (battleEnded)
+                    break;
                 yield return playerCoroutine;
             }
+
+            if (battleEnded)
+                break;
         }
     }
 
@@ -121,7 +139,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         // Play attack animation
         string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);
         string targetPokemonIdentifier = GetUniqueIdentifier(targetPokemon, attackerPokemon, targetCharacter);
-        yield return dialogBox.DrawText(new string[] { $"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!" }, DialogBoxCloseMode.External);
+        yield return dialogBox.DrawText($"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!", DialogBoxCloseMode.External);
         yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
         yield return new WaitForSeconds(1f);
@@ -140,24 +158,32 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return dialogBox.DrawText(effectiveness, DialogBoxCloseMode.User);
 
         if (critical)
-            yield return dialogBox.DrawText(new string[] { $"Ein Volltreffer!" }, DialogBoxCloseMode.User);
+            yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxCloseMode.User);
 
         // Aftermath: Faint, Poison, etc.
         if (fainted)
         {
             // target pokemon fainted
-            yield return dialogBox.DrawText(new string[] { $"{targetPokemonIdentifier} wurde besiegt!" }, DialogBoxCloseMode.External);
-            yield return new WaitForSeconds(1f);
+            yield return dialogBox.DrawText($"{targetPokemonIdentifier} wurde besiegt!", DialogBoxCloseMode.User);
             yield return new WaitWhile(ui.PlayFaintAnimation(target));
-            yield return new WaitForSeconds(1f);
+            //yield return new WaitForSeconds(1f);
 
             if (targetCharacter.IsDefeated())
             {
                 // target character has lost the battle
-                yield return dialogBox.DrawText(new string[] { $"{targetCharacter.name} wurde besiegt!" }, DialogBoxCloseMode.External);
-                yield return new WaitForSeconds(1f);
+                ui.MakeOpponentAppear();
+                yield return dialogBox.DrawText($"{targetCharacter.name} wurde besiegt!", DialogBoxCloseMode.User);
                 if (target == Constants.OpponentIndex)
-                    ui.MakeOpponentAppear();
+                {
+                    // AI opponent has been defeated
+                    yield return dialogBox.DrawText(new string[]
+                    {
+                        ((NPCData)targetCharacter).battleDefeatText,
+                        $"Du erhältst {targetCharacter.GetPriceMoneyFormatted()}.",
+                    }, DialogBoxCloseMode.User);
+                }
+
+                EndBattle();
             }
             else
             {

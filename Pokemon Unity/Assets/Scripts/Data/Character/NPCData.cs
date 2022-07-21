@@ -11,5 +11,5 @@ public class NPCData : CharacterData
     public string battleDefeatText;
     public string battleWinText;
     public string afterBattleText;
-    public string defeatetText;
+    public string defeatedText;
 }
