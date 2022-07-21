@@ -50,6 +50,13 @@ public class BattleUI : MonoBehaviour, IBattleUI
         return sprite.IsPlayingAnimation;
     }
 
+    public System.Func<bool> PlayBlinkAnimation(int blinkingPokemon)
+    {
+        PokemonSprite sprite = pokemonSprites[blinkingPokemon];
+        sprite.PlayBlinkAnimation();
+        return sprite.IsPlayingAnimation;
+    }
+
     public System.Func<bool> MakeOpponentAppear()
     {
         opponentSprite.PlayAppearAnimation();

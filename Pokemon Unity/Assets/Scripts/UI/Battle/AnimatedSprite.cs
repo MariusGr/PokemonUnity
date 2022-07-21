@@ -26,5 +26,21 @@ public abstract class AnimatedSprite : MonoBehaviour
         isPlayingAnimation = false;
     }
 
+    public void PlayBlinkAnimation(float duration = 1f, int times = 3) => StartCoroutine(BlinkRoutine(duration, times));
+
+    IEnumerator BlinkRoutine(float duration, int times)
+    {
+        isPlayingAnimation = true;
+        float interval = duration / ((float)times * 2f);
+
+        for (int i = 0; i < times * 2; i++)
+        {
+            spriteImage.enabled = !spriteImage.enabled;
+            yield return new WaitForSeconds(interval);
+        }
+
+        isPlayingAnimation = false;
+    }
+
     public bool IsPlayingAnimation() => isPlayingAnimation;
 }

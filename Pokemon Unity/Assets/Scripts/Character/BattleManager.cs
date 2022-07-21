@@ -143,7 +143,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
         yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
         yield return new WaitForSeconds(1f);
-        
+        yield return new WaitWhile(ui.PlayBlinkAnimation(target));
+
         // Deal Damage to target
         // TODO: special branch for attacks with no damage infliction
         bool critical;
