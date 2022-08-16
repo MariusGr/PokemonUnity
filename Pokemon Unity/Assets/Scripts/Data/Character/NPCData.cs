@@ -10,6 +10,10 @@ public class NPCData : CharacterData
     public string challengeText;
     public string battleDefeatText;
     public string battleWinText;
-    public string afterBattleText;
+    public string afterDefeatText;
     public string defeatedText;
+    public float priceMoneyBase = 0;
+    public bool hasBeenDefeated = false;
+
+    override public float GetPriceMoney() => pokemons[pokemons.Length - 1].level * priceMoneyBase;
 }

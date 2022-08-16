@@ -6,7 +6,7 @@ public class CharacterControllerPlayer : CharacterControllerBase
 {
     bool paused = false;
 
-    public CharacterData characterData;
+    public PlayerData characterData;
     override public CharacterData CharacterData => characterData;
 
     void Awake()

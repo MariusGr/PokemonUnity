@@ -10,10 +10,24 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     public void Interact(Character player)
     {
-        //Services.Get<IDialogBox>().DrçawText(new string[] { "hi!!!!" });
-        GridVector direction = player.position - character.position;
-        character.Movement.LookInDirection(direction);
+        if (npcData.hasBeenDefeated)
+        {
+            Services.Get<IDialogBox>().DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true);
+        }
+        else
+        {
+            GridVector direction = player.position - character.position;
+            character.Movement.LookInDirection(direction);
 
-        Services.Get<IBattleManager>().StartNewBattle(player.characterData, npcData);
+            Services.Get<IBattleManager>().StartNewBattle(player.characterData, npcData, DefeatReaction);
+        }
+    }
+
+    public bool DefeatReaction(bool npcDefeated)
+    {
+        Services.Get<IBattleManager>().EndBattle();
+        Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
+
+        return true;
     }
 }

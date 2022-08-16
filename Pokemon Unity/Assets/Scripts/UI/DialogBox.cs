@@ -48,48 +48,64 @@ public class DialogBox : MonoBehaviour, IDialogBox
         defaultChoiceY = Mathf.FloorToInt(choiceBox.rectTransform.localPosition.y);
     }
 
-    public void Open() => gameObject.SetActive(true);
-    public void Close() => gameObject.SetActive(false);
-    public bool IsOpen() => gameObject.activeSelf;
-
-    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxCloseMode closeMode)
+    public void Open()
     {
-        Open();
-        return StartCoroutine(DrawStringsRoutine(new string[] { EffectivenessToTextMap[effectiveness] }, closeMode));
-    }
-
-    public Coroutine DrawText(string text, DialogBoxCloseMode closeMode) => DrawText(new string[] { text }, closeMode);
-    public Coroutine DrawText(string[] text, DialogBoxCloseMode closeMode)
-    {
-        Open();
-        return StartCoroutine(DrawStringsRoutine(text, closeMode));
-    }
-
-    public Coroutine DrawTextPausing(string[] text, DialogBoxCloseMode closeMode)
-    {
-        Open();
-        return StartCoroutine(DrawStringsRoutinePausing(text, closeMode));
-    }
-
-    IEnumerator DrawStringsRoutinePausing(string[] text, DialogBoxCloseMode closeMode)
-    {
+        print("Open Dialogbox");
+        gameObject.SetActive(true);
         EventManager.Pause();
-        Open();
-        yield return StartCoroutine(DrawStringsRoutine(text, closeMode));
+    }
+
+    public void Close()
+    {
+        print("Close Dialogbox");
+        gameObject.SetActive(false);
         EventManager.Unpause();
     }
 
-    IEnumerator DrawStringsRoutine(string[] text, DialogBoxCloseMode closeMode)
+    public bool IsOpen() => gameObject.activeSelf;
+
+    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    {
+        Open();
+        return StartCoroutine(DrawStringsRoutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish));
+    }
+
+    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false) => DrawText(new string[] { text }, continueMode, closeAfterFinish);
+    public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    {
+        Open();
+        return StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish));
+    }
+
+    public Coroutine DrawTextPausing(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    {
+        Open();
+        return StartCoroutine(DrawStringsRoutinePausing(text, continueMode, closeAfterFinish));
+    }
+
+    IEnumerator DrawStringsRoutinePausing(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    {
+        EventManager.Pause();
+        Open();
+        yield return StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish));
+        EventManager.Unpause();
+    }
+
+    IEnumerator DrawStringsRoutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
         DrawDialogBox();
         for (int i = 0; i < text.Length; i++)
         {
             yield return StartCoroutine(DrawTextRoutine(text[i]));
-            if (closeMode == DialogBoxCloseMode.User)
+            if (continueMode == DialogBoxContinueMode.User)
+            {
                 while (!Input.GetButtonDown("Submit") && !Input.GetButtonDown("Back"))
                     yield return null;
+                if (closeAfterFinish)
+                    Close();
+            }
         }
-        if (closeMode == DialogBoxCloseMode.Automatic)
+        if (closeAfterFinish)
             Close();
     }
 

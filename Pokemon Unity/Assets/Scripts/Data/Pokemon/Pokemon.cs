@@ -70,4 +70,10 @@ public class Pokemon
         }
         return false;
     }
+
+    public void Heal()
+    {
+        hp = data.maxHp;
+        // TODO: HEal status effects
+    }
 }

@@ -10,10 +10,12 @@ public class BattleManager : MonoBehaviour, IBattleManager
         None,
         ChoosingMove,
         BatlleMenu,
+        Fled,
+        OpponentDefeated,
+        PlayerDefeated,
     }
 
     private BattleState state;
-    private bool battleEnded = false;
     private CharacterData playerData;
     private NPCData opponentData;
     private int[] pokemonIndex = new int[] { 0, 0 };
@@ -40,10 +42,10 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private Pokemon GeActivePokemon(int character) => characterData[character].pokemons[pokemonIndex[character]];
 
-    public void StartNewBattle(CharacterData playerData, NPCData opponentData)
+    public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcDefeatReactionCallback)
     {
         print("StartNewBattle");
-        battleEnded = false;
+        state = BattleState.None;
         this.playerData = playerData;
         this.opponentData = opponentData;
         characterData = new CharacterData[] { this.playerData, this.opponentData };
@@ -55,17 +57,18 @@ public class BattleManager : MonoBehaviour, IBattleManager
         EventManager.Pause();
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
-        StartCoroutine(RoundCoroutine());
+        StartCoroutine(RoundCoroutine(npcDefeatReactionCallback));
     }
 
-    private void EndBattle()
+    private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) || state.Equals(BattleState.PlayerDefeated);
+
+    public void EndBattle()
     {
-        battleEnded = true;
         ui.Close();
         EventManager.Unpause();
     }
 
-    private IEnumerator RoundCoroutine()
+    private IEnumerator RoundCoroutine(Func<bool, bool> npcDefeatReactionCallback)
     {
         while (true)
         {
@@ -79,7 +82,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
             if (playerMove.IsFaster(opponentMove))
             {
                 yield return playerCoroutine;
-                if (battleEnded)
+                if (BattleHasEnded())
                     break;
                 yield return opponentCoroutine;
 
@@ -87,14 +90,16 @@ public class BattleManager : MonoBehaviour, IBattleManager
             else
             {
                 yield return opponentCoroutine;
-                if (battleEnded)
+                if (BattleHasEnded())
                     break;
                 yield return playerCoroutine;
             }
 
-            if (battleEnded)
+            if (BattleHasEnded())
                 break;
         }
+
+        npcDefeatReactionCallback?.Invoke(state.Equals(BattleState.OpponentDefeated));
     }
 
     private void GetNextPokemon(int character)
@@ -139,7 +144,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         // Play attack animation
         string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);
         string targetPokemonIdentifier = GetUniqueIdentifier(targetPokemon, attackerPokemon, targetCharacter);
-        yield return dialogBox.DrawText($"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!", DialogBoxCloseMode.External);
+        yield return dialogBox.DrawText($"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!", DialogBoxContinueMode.External);
         yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
         yield return new WaitForSeconds(1f);
@@ -156,16 +161,16 @@ public class BattleManager : MonoBehaviour, IBattleManager
         yield return new WaitWhile(ui.RefreshHPAnimated(target));
 
         if (effectiveness != Effectiveness.Normal)
-            yield return dialogBox.DrawText(effectiveness, DialogBoxCloseMode.User);
+            yield return dialogBox.DrawText(effectiveness, DialogBoxContinueMode.User);
 
         if (critical)
-            yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxCloseMode.User);
+            yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
 
         // Aftermath: Faint, Poison, etc.
         if (fainted)
         {
             // target pokemon fainted
-            yield return dialogBox.DrawText($"{targetPokemonIdentifier} wurde besiegt!", DialogBoxCloseMode.User);
+            yield return dialogBox.DrawText($"{targetPokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
             yield return new WaitWhile(ui.PlayFaintAnimation(target));
             //yield return new WaitForSeconds(1f);
 
@@ -173,18 +178,34 @@ public class BattleManager : MonoBehaviour, IBattleManager
             {
                 // target character has lost the battle
                 ui.MakeOpponentAppear();
-                yield return dialogBox.DrawText($"{targetCharacter.name} wurde besiegt!", DialogBoxCloseMode.User);
+                yield return dialogBox.DrawText($"{targetCharacter.name} wurde besiegt!", DialogBoxContinueMode.User);
                 if (target == Constants.OpponentIndex)
                 {
                     // AI opponent has been defeated
+                    NPCData npc = (NPCData)targetCharacter;
                     yield return dialogBox.DrawText(new string[]
                     {
-                        ((NPCData)targetCharacter).battleDefeatText,
+                        npc.battleDefeatText,
                         $"Du erhältst {targetCharacter.GetPriceMoneyFormatted()}.",
-                    }, DialogBoxCloseMode.User);
+                    }, DialogBoxContinueMode.User);
+                    ((PlayerData)attackerCharacter).GiveMoney(targetCharacter.GetPriceMoney());
+                    npc.hasBeenDefeated = true;
+                    state = BattleState.OpponentDefeated;
                 }
-
-                EndBattle();
+                else
+                {
+                    // player has been defeated
+                    NPCData npc = (NPCData)attackerCharacter;
+                    yield return dialogBox.DrawText(new string[]
+                    {
+                        npc.battleWinText,
+                        $"Dir werden {targetCharacter.GetPriceMoneyFormatted()} abgezogen.",
+                    }, DialogBoxContinueMode.User);
+                    ((PlayerData)targetCharacter).TakeMoney(targetCharacter.GetPriceMoney());
+                    targetCharacter.HealAllPokemons();
+                    // TODO: set player to last pokecenter entrance
+                    state = BattleState.PlayerDefeated;
+                }
             }
             else
             {
@@ -195,7 +216,5 @@ public class BattleManager : MonoBehaviour, IBattleManager
         {
             // Status effects etc.
         }
-
-        dialogBox.Close();
     }
 }

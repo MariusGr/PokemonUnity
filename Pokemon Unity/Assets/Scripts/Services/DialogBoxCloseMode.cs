@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DialogBoxCloseMode
+public enum DialogBoxContinueMode
 {
-    Automatic,
-    External,
+    Automatic, // TODO: Not implemented
+    External, // TODO: Not implemented
     User,
 }
