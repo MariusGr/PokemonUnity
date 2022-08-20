@@ -35,7 +35,7 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
     {
         while(hpBar.IsPlayingAnimation())
         {
-            hp.text = (pokemon.maxHp * hpBar.Value).ToString();
+            hp.text = ((int)(pokemon.maxHp * hpBar.Value)).ToString();
             yield return new WaitForEndOfFrame();
         }
 

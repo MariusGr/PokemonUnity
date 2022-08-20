@@ -8,6 +8,7 @@ using System;
 public class PlayerData : CharacterData
 {
     public float money = 0;
+    public Transform lastPokeCenterEntrance;
 
     public override float GetPriceMoney() => Mathf.Clamp(0.05f * money, 0, 50000f);
 
