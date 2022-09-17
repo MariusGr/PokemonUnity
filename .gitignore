@@ -49,3 +49,7 @@ Thumbs.db.meta
 _git-journal
 git-journal.bash-completion
 git-journal.fish
+
+# Logs
+[Ll]ogs/
+.DS_Store
