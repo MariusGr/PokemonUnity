@@ -10,10 +10,16 @@ public abstract class AnimatedSprite : MonoBehaviour
 
     private bool isPlayingAnimation;
 
-    public void SetSprite(Sprite sprite) => spriteImage.sprite = sprite;
+    public void SetSprite(Sprite sprite)
+    {
+        ResetAnimation();
+        spriteImage.sprite = sprite;
+    }
 
     public void PlayAnimation(AnimationClip clip)
     {
+        if (animation.GetClip(clip.name) == null)
+            animation.AddClip(clip, clip.name);
         isPlayingAnimation = true;
         animation.clip = clip;
         animation.Play();
@@ -24,6 +30,16 @@ public abstract class AnimatedSprite : MonoBehaviour
     {
         yield return new WaitForSeconds(animation.clip.length);
         isPlayingAnimation = false;
+    }
+
+    public void ResetAnimation()
+    {
+        isPlayingAnimation = false;
+        animation.Rewind();
+        animation.Play();
+        animation.Sample();
+        animation.Stop();
+        print("Play Idle");
     }
 
     public void PlayBlinkAnimation(float duration = 1f, int times = 3) => StartCoroutine(BlinkRoutine(duration, times));

@@ -73,7 +73,7 @@ public class Pokemon
 
     public void Heal()
     {
-        hp = data.maxHp;
+        hp = maxHp;
         // TODO: HEal status effects
     }
 }

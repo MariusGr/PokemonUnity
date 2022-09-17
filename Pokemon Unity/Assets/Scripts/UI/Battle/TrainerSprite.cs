@@ -12,7 +12,7 @@ public class TrainerSprite : AnimatedSprite
     public void PlayAppearAnimation()
     {
         disableAtEnd = false;
-        spriteImage.enabled = true;
+        SetVisiblity(true);
         PlayAnimation(appearAnimation);
     }
 
@@ -25,6 +25,8 @@ public class TrainerSprite : AnimatedSprite
     protected override IEnumerator WaitForAnimationFinish()
     {
         yield return base.WaitForAnimationFinish();
-        spriteImage.enabled = !disableAtEnd;
+        SetVisiblity(!disableAtEnd);
     }
+
+    public void SetVisiblity(bool visivle) => spriteImage.enabled = visivle;
 }

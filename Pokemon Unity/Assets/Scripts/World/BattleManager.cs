@@ -123,6 +123,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         Move choosenMove = null;
         UserMoveChooseEventHandler action = (Move move) => choosenMove = move;
         UserChooseMoveEvent += action;
+        print("wait for play to choose move");
         yield return new WaitUntil(() => choosenMove != null);
         ui.SetMoveSelectionActive(false);
         UserChooseMoveEvent -= action;
@@ -203,6 +204,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
                     }, DialogBoxContinueMode.User);
                     PlayerData playerData = (PlayerData)targetCharacter;
                     playerData.TakeMoney(targetCharacter.GetPriceMoney());
+                    attackerCharacter.HealAllPokemons();
                     targetCharacter.HealAllPokemons();
                     Character.PlayerCharacter.transform.position = playerData.lastPokeCenterEntrance.position;
                     state = BattleState.PlayerDefeated;

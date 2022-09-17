@@ -30,6 +30,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
         playerPokemonSprite.SetSprite(playerPokemon.data.backSprite);
         opponentPokemonSprite.SetSprite(opponentPokemon.data.frontSprite);
         opponentSprite.SetSprite(opponentData.sprite);
+        opponentSprite.SetVisiblity(false);
 
         playerStats.AssignPokemon(playerPokemon);
         opponentStats.AssignPokemon(opponentPokemon);
@@ -59,12 +60,14 @@ public class BattleUI : MonoBehaviour, IBattleUI
 
     public System.Func<bool> MakeOpponentAppear()
     {
+        opponentSprite.SetVisiblity(true);
         opponentSprite.PlayAppearAnimation();
         return opponentSprite.IsPlayingAnimation;
     }
 
     public System.Func<bool> MakeOpponentDisappear()
     {
+        opponentSprite.SetVisiblity(true);
         opponentSprite.PlayDisappearAnimation();
         return opponentSprite.IsPlayingAnimation;
     }
