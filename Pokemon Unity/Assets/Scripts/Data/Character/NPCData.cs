@@ -7,6 +7,7 @@ using System;
 public class NPCData : CharacterData
 {
     public Sprite sprite;
+    public string defaultText;
     public string challengeText;
     public string battleDefeatText;
     public string battleWinText;
