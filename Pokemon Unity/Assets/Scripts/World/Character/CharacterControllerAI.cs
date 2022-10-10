@@ -33,6 +33,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     private IEnumerator Challenge(Character player)
     {
+        yield return character.Animator.PlayExclaimBubbleAnimation();
         yield return Services.Get<IDialogBox>().DrawText(npcData.challengeText, DialogBoxContinueMode.User, true);
         Services.Get<IBattleManager>().StartNewBattle(player.characterData, npcData, BattleEndReaction);
     }

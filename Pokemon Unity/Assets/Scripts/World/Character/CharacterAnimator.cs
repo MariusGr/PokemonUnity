@@ -14,6 +14,8 @@ public class CharacterAnimator : MonoBehaviour
 {
     [SerializeField] new SpriteRenderer renderer;
 
+    [SerializeField] GameObject exclaimBubble;
+
     [SerializeField] Sprite[] idleSpritesRight;
     [SerializeField] Sprite[] idleSpritesLeft;
     [SerializeField] Sprite[] idleSpritesUp;
@@ -138,5 +140,17 @@ public class CharacterAnimator : MonoBehaviour
         intervalClock = 0;
         currentSpriteIndex = (animation == AnimationType.None) ? 0 : 1;
         UpdateSpriteIndex();
+    }
+
+    public Coroutine PlayExclaimBubbleAnimation()
+    {
+        return StartCoroutine(ExclaimAnimationCoroutine());
+    }
+
+    private IEnumerator ExclaimAnimationCoroutine()
+    {
+        exclaimBubble.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        exclaimBubble.SetActive(false);
     }
 }
