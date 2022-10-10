@@ -30,14 +30,17 @@ public class Character : MonoBehaviour
         movement.LookInStartDirection();
     }
 
-    public bool RaycastForward(Vector3 direction, LayerMask layerMask, out RaycastHit hitInfo)
-        => Physics.Raycast(
-            origin: transform.position + Vector3.up * .5f,
-            direction: direction,
-            maxDistance: .8f,
-            layerMask: layerMask,
-            hitInfo: out hitInfo
-            );
+    public bool RaycastForward(Vector3 direction, LayerMask layerMask, out RaycastHit hitInfo, float maxDistance = .8f)
+    {
+        Debug.DrawLine(transform.position + Vector3.up * .5f, transform.position + Vector3.up * .5f + direction * maxDistance, Color.red, .2f);
+        return Physics.Raycast(
+                   origin: transform.position + Vector3.up * .5f,
+                   direction: direction,
+                   maxDistance: maxDistance,
+                   layerMask: layerMask,
+                   hitInfo: out hitInfo
+                   );
+    }
 
     public bool RaycastForward(Vector3 direction, LayerMask layerMask)
     {

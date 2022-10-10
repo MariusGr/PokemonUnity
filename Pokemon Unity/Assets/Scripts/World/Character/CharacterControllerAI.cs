@@ -6,8 +6,14 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 {
     [SerializeField] public NPCData npcData;
     [SerializeField] public bool wantsToBattle;
+    [SerializeField] public float challengeVisionDistance = 5f;
 
     override public CharacterData CharacterData => npcData;
+
+    private void Awake()
+    {
+        EventManager.Instance.CheckNPCVisionEvent += CheckChallengeVision;    
+    }
 
     public void Interact(Character player)
     {
@@ -22,7 +28,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
             if (wantsToBattle)
             {
-                StartCoroutine(Challenge(player));
+                Challenge(player);
             }
             else
             {
@@ -31,8 +37,11 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         }
     }
 
-    private IEnumerator Challenge(Character player)
+    private void Challenge(Character player) => StartCoroutine(ChallengeCoroutine(player));
+
+    private IEnumerator ChallengeCoroutine(Character player)
     {
+        EventManager.Pause();
         yield return character.Animator.PlayExclaimBubbleAnimation();
         yield return Services.Get<IDialogBox>().DrawText(npcData.challengeText, DialogBoxContinueMode.User, true);
         Services.Get<IBattleManager>().StartNewBattle(player.characterData, npcData, BattleEndReaction);
@@ -50,5 +59,12 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         character.Reset();
 
         return true;
+    }
+
+    public void CheckChallengeVision()
+    {
+        RaycastHit hitInfo;
+        if (character.RaycastForward(character.Movement.CurrentDirectionVector, LayerManager.Instance.PlayerLayerMask, out hitInfo, maxDistance: challengeVisionDistance -.2f))
+            Challenge(hitInfo.collider.gameObject.GetComponent<Character>());
     }
 }

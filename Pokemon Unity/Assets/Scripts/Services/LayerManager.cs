@@ -22,11 +22,13 @@ public class LayerManager : MonoBehaviour
     [SerializeField] LayerMask groundLayerMask;
     [SerializeField] LayerMask movementBlockingLayerMask;
     [SerializeField] LayerMask interactableLayerMask;
+    [SerializeField] LayerMask playerLayerMask;
 
     public LayerMask DefaultLayerMask => defaultLayerMask;
     public LayerMask GroundLayerMask => groundLayerMask;
     public LayerMask MovementBlockingLayerMask => movementBlockingLayerMask;
     public LayerMask InteractableLayerMask => interactableLayerMask;
+    public LayerMask PlayerLayerMask => playerLayerMask;
 
     public static int ToLayer(int bitmask)
     {
