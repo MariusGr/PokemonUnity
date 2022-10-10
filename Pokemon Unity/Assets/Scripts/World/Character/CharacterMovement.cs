@@ -23,6 +23,7 @@ public class CharacterMovement : MonoBehaviour
     private float verticalChanged = 0;
     private bool moving = false;
 
+    private GridVector startDirection;
     private GridVector currentDirectionVector = GridVector.Down;
     public GridVector CurrentDirectionVector {
         get => currentDirectionVector;
@@ -38,6 +39,7 @@ public class CharacterMovement : MonoBehaviour
         currentSpeed = walkingSpeed;
         controller.Move(Vector3.down * .1f);
         LookInDirection(currentDirection);
+        startDirection = CurrentDirectionVector;
     }
 
     public void ProcessMovement(float horizontal, float vertical, bool sprinting)
@@ -112,6 +114,7 @@ public class CharacterMovement : MonoBehaviour
     }
 
     public void LookInDirection(Direction direction) => LookInDirection(new GridVector(direction));
+    public void LookInStartDirection() => LookInDirection(startDirection);
 
     IEnumerator MoveTo(GridVector target)
     {

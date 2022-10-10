@@ -32,6 +32,8 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         else
             Services.Get<IDialogBox>().Close();
 
+        character.Reset();
+
         return true;
     }
 }

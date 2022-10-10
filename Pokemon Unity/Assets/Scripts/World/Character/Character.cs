@@ -25,6 +25,11 @@ public class Character : MonoBehaviour
             pokemon.Initialize();
     }
 
+    public void Reset()
+    {
+        movement.LookInStartDirection();
+    }
+
     public bool RaycastForward(Vector3 direction, LayerMask layerMask, out RaycastHit hitInfo)
         => Physics.Raycast(
             origin: transform.position + Vector3.up * .5f,
