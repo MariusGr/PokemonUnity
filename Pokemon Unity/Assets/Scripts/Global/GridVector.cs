@@ -5,8 +5,8 @@ using UnityEngine;
 [Serializable]
 public class GridVector
 {
-    int x;
-    int y;
+    public int x;
+    public int y;
 
     public static GridVector Zero => new GridVector();
     public static GridVector Down => new GridVector(0, -1);
@@ -53,6 +53,8 @@ public class GridVector
             this.y = Mathf.CeilToInt(vector.z);
     }
 
+    /**
+     * Creates a GridVector from a Vector3. Any dimension (x or/and y) will be set to 
     public GridVector(Vector3 currentPosition, GridVector beforePosition)
         : this(currentPosition,
                beforePosition.x < currentPosition.x,

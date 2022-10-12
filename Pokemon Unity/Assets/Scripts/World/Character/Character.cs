@@ -17,17 +17,21 @@ public class Character : MonoBehaviour
     public CharacterData characterData => controller.CharacterData;
     public Pokemon[] pokemons => controller.CharacterData.pokemons;
 
+    private GridVector startPosition;
+
     public void Awake()
     {
         if (controller.GetType() == typeof(CharacterControllerPlayer))
             PlayerCharacter = this;
         foreach (Pokemon pokemon in pokemons)
             pokemon.Initialize();
+        startPosition = new GridVector(transform.position);
     }
 
     public void Reset()
     {
         movement.LookInStartDirection();
+        transform.position = startPosition;
     }
 
     public bool RaycastForward(Vector3 direction, LayerMask layerMask, out RaycastHit hitInfo, float maxDistance = .8f)

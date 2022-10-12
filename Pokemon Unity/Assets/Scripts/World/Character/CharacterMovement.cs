@@ -49,6 +49,8 @@ public class CharacterMovement : MonoBehaviour
         moving = false;
     }
 
+    public void ProcessMovement(GridVector direction, bool sprinting = false) => ProcessMovement(direction.x, direction.y, sprinting);
+
     public void ProcessMovement(float horizontal, float vertical, bool sprinting)
     {
         AnimationType animation;

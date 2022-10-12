@@ -26,6 +26,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         {
             GridVector direction = player.position - character.position;
             character.Movement.LookInDirection(direction);
+            MoveToPosition()
 
             if (wantsToBattle)
             {
@@ -68,5 +69,18 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         RaycastHit hitInfo;
         if (character.RaycastForward(character.Movement.CurrentDirectionVector, LayerManager.Instance.PlayerLayerMask, out hitInfo, maxDistance: challengeVisionDistance -.2f))
             Challenge(hitInfo.collider.gameObject.GetComponent<Character>());
+    }
+
+    public void MoveToPosition(GridVector target) => StartCoroutine(MoveToPositionCoroutine(target));
+
+    private IEnumerator MoveToPositionCoroutine(GridVector target)
+    {
+        GridVector direction = target - character.position;
+
+        while (!new GridVector(transform.position, start).Equals(target))
+        {
+            yield return new WaitForEndOfFrame();
+            character.Movement.ProcessMovement(direction)
+        }
     }
 }
