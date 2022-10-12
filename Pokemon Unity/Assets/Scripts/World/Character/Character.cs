@@ -16,8 +16,7 @@ public class Character : MonoBehaviour
     public GridVector position => new GridVector(transform.position);
     public CharacterData characterData => controller.CharacterData;
     public Pokemon[] pokemons => controller.CharacterData.pokemons;
-
-    private GridVector startPosition;
+    public Vector3 startPosition { get; private set; }
 
     public void Awake()
     {
@@ -25,7 +24,9 @@ public class Character : MonoBehaviour
             PlayerCharacter = this;
         foreach (Pokemon pokemon in pokemons)
             pokemon.Initialize();
-        startPosition = new GridVector(transform.position);
+        startPosition = transform.position;
+
+        controller.Init();
     }
 
     public void Reset()

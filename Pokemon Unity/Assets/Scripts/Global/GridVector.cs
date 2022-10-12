@@ -11,6 +11,21 @@ public class GridVector
     public static GridVector Zero => new GridVector();
     public static GridVector Down => new GridVector(0, -1);
 
+    private GridVector _normalized = null;
+    public GridVector normalized
+    {
+        get
+        {
+            if (_normalized is null)
+            {
+                int xNorm = x == 0 ? 0 : Math.Sign(x);
+                int yNorm = y == 0 ? 0 : Math.Sign(y);
+                _normalized = new GridVector(xNorm, yNorm);
+            }
+            return _normalized;
+        }
+    }
+
     static Dictionary<GridVector, Direction> gridVectorToDirectionMap = new Dictionary<GridVector, Direction>()
     {
         { new GridVector(0, 0), Direction.None },
@@ -28,6 +43,8 @@ public class GridVector
         { Direction.Up, new GridVector(0, 1) },
         { Direction.Down, new GridVector(0, -1) },
     };
+
+    static public GridVector GetLookAt(GridVector position, GridVector target) => (target - position).normalized;
 
     public GridVector(int x = 0, int y = 0)
     {
@@ -54,7 +71,12 @@ public class GridVector
     }
 
     /**
-     * Creates a GridVector from a Vector3. Any dimension (x or/and y) will be set to 
+     * Creates a GridVector from a Vector3. Any dimension (x or/and y) of the resulting Vector will thus only be different
+     * than the respective dimension of currentPosition, if it is at least different by 1.0 to that dimension.
+     * This constructor is used to check whether a position has changed so that we can safely assume the actor
+     * has moved a full 1.0 units away from beforePosition on at least one of the axis.
+     * **/
+    public GridVector(Vector3 currentPosition, Vector3 beforePosition) : this(currentPosition, new GridVector(beforePosition)) { }
     public GridVector(Vector3 currentPosition, GridVector beforePosition)
         : this(currentPosition,
                beforePosition.x < currentPosition.x,
@@ -83,6 +105,15 @@ public class GridVector
 
     public static GridVector operator -(GridVector a, GridVector b)
         => new GridVector(a.x - b.x, a.y - b.y);
+
+    public static GridVector operator *(int d, GridVector v)
+        => new GridVector(d * v.x, d * v.y);
+
+    public static GridVector operator *(float d, GridVector v)
+        => new GridVector((int)d * v.x, (int)d * v.y);
+
+    public static GridVector operator -(GridVector v)
+        => new GridVector(-v.x, -v.y);
 
     public static implicit operator Vector3(GridVector v)
         => new Vector3(v.x, 0, v.y);

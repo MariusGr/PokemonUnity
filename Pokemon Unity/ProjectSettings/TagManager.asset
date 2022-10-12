@@ -13,7 +13,7 @@ TagManager:
   - UI
   - MovementBlocking
   - Ground
-  - Character
+  - Player
   - NPC
   - 
   - 
