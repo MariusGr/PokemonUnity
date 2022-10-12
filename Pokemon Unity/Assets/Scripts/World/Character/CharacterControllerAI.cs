@@ -12,7 +12,8 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     private void Awake()
     {
-        EventManager.Instance.CheckNPCVisionEvent += CheckChallengeVision;    
+        if (wantsToBattle && !npcData.IsDefeated())
+            EventManager.Instance.CheckNPCVisionEvent += CheckChallengeVision;    
     }
 
     public void Interact(Character player)
@@ -57,6 +58,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
             Services.Get<IDialogBox>().Close();
 
         character.Reset();
+        EventManager.Instance.CheckNPCVisionEvent -= CheckChallengeVision;
 
         return true;
     }
