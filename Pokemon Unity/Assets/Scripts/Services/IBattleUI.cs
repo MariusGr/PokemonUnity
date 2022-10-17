@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IBattleUI : IService
 {
+    public void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon);
     public void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon);
     public void Close();
     public void RefreshHP(int character);

@@ -24,18 +24,24 @@ public class BattleUI : MonoBehaviour, IBattleUI
         pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
 
-    public void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    public void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
         moveSelection.AssignMoves(playerPokemon.moves.ToArray());
         playerPokemonSprite.SetSprite(playerPokemon.data.backSprite);
         opponentPokemonSprite.SetSprite(opponentPokemon.data.frontSprite);
-        opponentSprite.SetSprite(opponentData.sprite);
         opponentSprite.SetVisiblity(false);
 
         playerStats.AssignPokemon(playerPokemon);
         opponentStats.AssignPokemon(opponentPokemon);
 
         gameObject.SetActive(true);
+    }
+
+    public void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    {
+        opponentSprite.SetSprite(opponentData.sprite);
+        opponentStats.AssignPokemon(opponentPokemon);
+        Initialize(playerData, opponentData, playerPokemon, opponentPokemon);
     }
 
     public void Close() => gameObject.SetActive(false);

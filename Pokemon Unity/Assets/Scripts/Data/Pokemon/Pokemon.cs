@@ -31,6 +31,17 @@ public class Pokemon
 
     int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
 
+    public Pokemon(EncounterPokemon encounterPokemonData) :
+        this(encounterPokemonData.data, UnityEngine.Random.Range(encounterPokemonData.minLevel, encounterPokemonData.maxLevel))
+    { }
+
+    public Pokemon(PokemonData pokemonData, int level)
+    {
+        this.data = pokemonData;
+        this.level = level;
+        Initialize();
+    }
+
     public void Initialize()
     {
         hp = maxHp;

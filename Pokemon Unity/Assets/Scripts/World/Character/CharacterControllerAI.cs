@@ -4,16 +4,29 @@ using UnityEngine;
 
 public class CharacterControllerAI : CharacterControllerBase, IInteractable
 {
+    private static List<CharacterControllerAI> battlingNPCs = new List<CharacterControllerAI>();
+
+    public static bool CheckAllNPCVision()
+    {
+        foreach (CharacterControllerAI c in battlingNPCs)
+            if (c.CheckChallengeVision())
+                return true;
+        return false;
+    }
+
     [SerializeField] public NPCData npcData;
     [SerializeField] public bool wantsToBattle;
     [SerializeField] public float challengeVisionDistance = 5f;
 
+    public bool willChallengePlayer => wantsToBattle || !npcData.IsDefeated();
     override public CharacterData CharacterData => npcData;
+
+    private bool isInBattle = false;
 
     override public void Init()
     {
-        if (wantsToBattle && !npcData.IsDefeated())
-            EventManager.Instance.CheckNPCVisionEvent += CheckChallengeVision;
+        if (willChallengePlayer)
+            battlingNPCs.Add(this);
     }
 
     public void Interact(Character player)
@@ -39,7 +52,8 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     private IEnumerator ChallengeCoroutine(Character player)
     {
-        EventManager.Instance.CheckNPCVisionEvent -= CheckChallengeVision;
+        isInBattle = true;
+
         EventManager.Pause();
 
         GridVector direction = GridVector.GetLookAt(character.position, player.position);
@@ -62,20 +76,28 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
             Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
         else
         {
-            EventManager.Instance.CheckNPCVisionEvent += CheckChallengeVision;
             Services.Get<IDialogBox>().Close();
         }
 
+        isInBattle = false;
         character.Reset();
 
         return true;
     }
 
-    public void CheckChallengeVision()
+    public bool CheckChallengeVision()
     {
+        if (willChallengePlayer)
+            return false;
+
         RaycastHit hitInfo;
-        if (character.RaycastForward(character.Movement.CurrentDirectionVector, LayerManager.Instance.PlayerLayerMask, out hitInfo, maxDistance: challengeVisionDistance -.2f))
+        if (character.RaycastForward(character.Movement.CurrentDirectionVector, LayerManager.Instance.PlayerLayerMask, out hitInfo, maxDistance: challengeVisionDistance - .2f))
+        {
             Challenge(hitInfo.collider.gameObject.GetComponent<Character>());
+            return true;
+        }
+
+        return false;
     }
 
     public Coroutine MoveToPosition(GridVector target, GridVector direction, int keepDistance = 0)

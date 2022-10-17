@@ -186,6 +186,16 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 4499516146788302776}
+    - target: {fileID: 3388435532939442026, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3992589594016741337, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
         type: 3}
       propertyPath: m_Name

@@ -42,6 +42,21 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private Pokemon GeActivePokemon(int character) => characterData[character].pokemons[pokemonIndex[character]];
 
+    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon)
+    {
+        print("StartNewEncounter");
+        state = BattleState.None;
+        this.playerData = playerData;
+        this.opponentData = null;
+        characterData = new CharacterData[] { this.playerData };
+
+        state = BattleState.ChoosingMove;
+        pokemonIndex[Constants.PlayerIndex] = 0;
+
+        EventManager.Pause();
+        ui.Initialize(this.playerData, playerPokemon, opponentPokemon);
+    }
+
     public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndtionCallback)
     {
         print("StartNewBattle");

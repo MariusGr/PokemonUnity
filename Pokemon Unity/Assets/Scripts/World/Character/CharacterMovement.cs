@@ -142,7 +142,7 @@ public class CharacterMovement : MonoBehaviour
         moving = false;
 
         yield return null;
-        EventManager.CheckNPCVision();
+        EncounterArea.CheckPositionRelatedEvents();
     }
 
     bool IsMovable(Vector3 direction)
