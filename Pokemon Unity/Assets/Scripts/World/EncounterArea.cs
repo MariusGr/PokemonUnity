@@ -8,18 +8,23 @@ public class EncounterArea : MonoBehaviour
     private static EncounterArea currentArea;
 
     [SerializeField] float encounterChance = .2f;
-
-    public EncounterPokemon[] pokemons;
+    [SerializeField] EncounterPokemon[] pokemons;
 
     private Dictionary<EncounterRarity, List<EncounterPokemon>> rarityToPokemonMap = new Dictionary<EncounterRarity, List<EncounterPokemon>>();
     private Dictionary<EncounterRarity, float> rarityToValueMap = new Dictionary<EncounterRarity, float>();
 
     HashSet<EncounterRarity> givenRarities = new HashSet<EncounterRarity>();
 
-    private void Awake()
+    private void Awake() => Initialize();
+
+    protected void Initialize()
     {
         foreach (EncounterPokemon p in pokemons)
+        {
             givenRarities.Add(p.data.encounterRarity);
+            print(givenRarities.Count);
+            print("---------");
+        }
 
         foreach (EncounterRarity e in givenRarities)
         {
@@ -36,7 +41,8 @@ public class EncounterArea : MonoBehaviour
     {
         if (CharacterControllerAI.CheckAllNPCVision())
             return;
-        currentArea.CheckEncounter();
+        if (!(currentArea is null))
+            currentArea.CheckEncounter();
     }
 
     public void Enter()
@@ -46,17 +52,29 @@ public class EncounterArea : MonoBehaviour
 
     public void CheckEncounter()
     {
+        float f = UnityEngine.Random.value;
+        print(f);
         // Does an encounter happen at all?
-        if (UnityEngine.Random.value > encounterChance)
+        if (f > encounterChance)
             return;
 
         // Choose current ancounter rarity randomly
-        EncounterRarity currentRarity = givenRarities.GetEnumerator().Current;
+        EncounterRarity currentRarity = EncounterRarity.Common;
+        bool encounterFound = false;
+        print(givenRarities.Count);
         foreach (EncounterRarity e in givenRarities)
         {
-            if (UnityEngine.Random.value <= rarityToValueMap[e])
+            float calue = UnityEngine.Random.value;
+            print(calue + "   " + rarityToValueMap[e]);
+            if (calue <= rarityToValueMap[e])
+            {
                 currentRarity = e;
+                encounterFound = true;
+            }
         }
+
+        if (!encounterFound)
+            return;
 
         // Get all pokemon with that rarity in this area
         List<EncounterPokemon> currentPokemons = new List<EncounterPokemon>();
@@ -69,6 +87,16 @@ public class EncounterArea : MonoBehaviour
         Pokemon pokemon = new Pokemon(chosenPokemon);
 
         // Start wild encounter
-        Services.Get<BattleManager>().StartNewEncounter(Character.PlayerCharacter.characterData, pokemon);
+        Services.Get<IBattleManager>().StartNewEncounter(Character.PlayerCharacter.characterData, pokemon, EncounterEndReaction);
+    }
+
+    public bool EncounterEndReaction(bool wildPokemonDefeated)
+    {
+        Services.Get<IBattleManager>().EndBattle();
+
+        if (!wildPokemonDefeated)
+            Services.Get<IDialogBox>().Close();
+
+        return true;
     }
 }

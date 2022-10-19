@@ -19,12 +19,14 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private CharacterData playerData;
     private NPCData opponentData;
     private int[] pokemonIndex = new int[] { 0, 0 };
+    private bool opponentIsWild = false;
 
     public delegate void UserMoveChooseEventHandler(Move move);
     public event UserMoveChooseEventHandler UserChooseMoveEvent;
 
     private CharacterData[] characterData;
 
+    private Pokemon wildPokemon;
     private Pokemon playerPokemon => GeActivePokemon(Constants.PlayerIndex);
     private Pokemon opponentPokemon => GeActivePokemon(Constants.OpponentIndex);
 
@@ -40,14 +42,18 @@ public class BattleManager : MonoBehaviour, IBattleManager
         dialogBox = Services.Get<IDialogBox>();
     }
 
-    private Pokemon GeActivePokemon(int character) => characterData[character].pokemons[pokemonIndex[character]];
+    private Pokemon GeActivePokemon(int character)
+        => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
 
-    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon)
+    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, System.Func<bool, bool> encounterEndtionCallback)
     {
         print("StartNewEncounter");
+        this.wildPokemon = wildPokemon;
+        this.wildPokemon.Initialize();
+        opponentIsWild = true;
         state = BattleState.None;
         this.playerData = playerData;
-        this.opponentData = null;
+        opponentData = null;
         characterData = new CharacterData[] { this.playerData };
 
         state = BattleState.ChoosingMove;
@@ -55,11 +61,14 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
         EventManager.Pause();
         ui.Initialize(this.playerData, playerPokemon, opponentPokemon);
+
+        StartCoroutine(RoundCoroutine(encounterEndtionCallback));
     }
 
-    public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndtionCallback)
+    public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndReactionCallback)
     {
         print("StartNewBattle");
+        opponentIsWild = false;
         state = BattleState.None;
         this.playerData = playerData;
         this.opponentData = opponentData;
@@ -72,7 +81,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         EventManager.Pause();
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
-        StartCoroutine(RoundCoroutine(npcBattleEndtionCallback));
+        StartCoroutine(RoundCoroutine(npcBattleEndReactionCallback));
     }
 
     private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) || state.Equals(BattleState.PlayerDefeated);
@@ -148,12 +157,16 @@ public class BattleManager : MonoBehaviour, IBattleManager
     public void ChoosePlayerMove(Move move) => UserChooseMoveEvent?.Invoke(move);
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
-        => pokemon.Name == other.Name ? $"{character.nameGenitive} {pokemon.Name}" : pokemon.Name;
+        => pokemon.Name == other.Name ? (
+            opponentIsWild ? $"Wildes {pokemon.Name}" : $"{character.nameGenitive} {pokemon.Name}"
+        ) : pokemon.Name;
 
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
         CharacterData attackerCharacter = characterData[attacker];
-        CharacterData targetCharacter = characterData[target];
+        CharacterData targetCharacter = null;
+        if (!opponentIsWild)
+            targetCharacter = characterData[target];
         Pokemon attackerPokemon = GeActivePokemon(attacker);
         Pokemon targetPokemon = GeActivePokemon(target);
 

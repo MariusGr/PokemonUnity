@@ -10,5 +10,7 @@ public class GrassCluster : EncounterArea
     {
         foreach (Transform t in transform)
             ChildToInstanceMap[t.gameObject] = this;
+
+        Initialize();
     }
 }

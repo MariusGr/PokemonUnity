@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class EncounterPokemon : MonoBehaviour
+public class EncounterPokemon
 {
     public PokemonData data;
     public int minLevel = 2;
