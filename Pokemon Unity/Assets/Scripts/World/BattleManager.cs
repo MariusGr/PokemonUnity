@@ -48,6 +48,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, System.Func<bool, bool> encounterEndtionCallback)
     {
         print("StartNewEncounter");
+        EventManager.Pause();
         this.wildPokemon = wildPokemon;
         this.wildPokemon.Initialize();
         opponentIsWild = true;
@@ -59,7 +60,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
         state = BattleState.ChoosingMove;
         pokemonIndex[Constants.PlayerIndex] = 0;
 
-        EventManager.Pause();
         ui.Initialize(this.playerData, playerPokemon, opponentPokemon);
 
         StartCoroutine(RoundCoroutine(encounterEndtionCallback));
@@ -68,6 +68,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndReactionCallback)
     {
         print("StartNewBattle");
+        EventManager.Pause();
         opponentIsWild = false;
         state = BattleState.None;
         this.playerData = playerData;
@@ -78,7 +79,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
         pokemonIndex[Constants.PlayerIndex] = 0;
         pokemonIndex[Constants.OpponentIndex] = 0;
 
-        EventManager.Pause();
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
         StartCoroutine(RoundCoroutine(npcBattleEndReactionCallback));
@@ -158,15 +158,17 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
         => pokemon.Name == other.Name ? (
-            opponentIsWild ? $"Wildes {pokemon.Name}" : $"{character.nameGenitive} {pokemon.Name}"
+            opponentIsWild ? (pokemon == opponentPokemon ? $"Wildes {pokemon.Name}" : pokemon.Name) : $"{character.nameGenitive} {pokemon.Name}"
         ) : pokemon.Name;
 
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
-        CharacterData attackerCharacter = characterData[attacker];
+        CharacterData attackerCharacter = null;
         CharacterData targetCharacter = null;
-        if (!opponentIsWild)
+        if (target == Constants.PlayerIndex || !opponentIsWild)
             targetCharacter = characterData[target];
+        if (attacker == Constants.PlayerIndex || !opponentIsWild)
+            attackerCharacter = characterData[attacker];
         Pokemon attackerPokemon = GeActivePokemon(attacker);
         Pokemon targetPokemon = GeActivePokemon(target);
 
@@ -203,7 +205,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return new WaitWhile(ui.PlayFaintAnimation(target));
             //yield return new WaitForSeconds(1f);
 
-            if (targetCharacter.IsDefeated())
+            if (!opponentIsWild && targetCharacter.IsDefeated() || opponentPokemon.isFainted)
             {
                 // target character has lost the battle
                 ui.MakeOpponentAppear();
@@ -224,15 +226,22 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 else
                 {
                     // player has been defeated
-                    NPCData npc = (NPCData)attackerCharacter;
-                    yield return dialogBox.DrawText(new string[]
-                    {
-                        npc.battleWinText,
-                        $"Dir werden {targetCharacter.GetPriceMoneyFormatted()} abgezogen.",
-                    }, DialogBoxContinueMode.User);
                     PlayerData playerData = (PlayerData)targetCharacter;
-                    playerData.TakeMoney(targetCharacter.GetPriceMoney());
-                    attackerCharacter.HealAllPokemons();
+
+                    if (!opponentIsWild)
+                    {
+                        NPCData npc = (NPCData)attackerCharacter;
+                        yield return dialogBox.DrawText(new string[]
+                        {
+                            npc.battleWinText,
+                            $"Dir werden {targetCharacter.GetPriceMoneyFormatted()} abgezogen.",
+                        }, DialogBoxContinueMode.User);
+                        playerData.TakeMoney(targetCharacter.GetPriceMoney());
+                        attackerCharacter.HealAllPokemons();
+                    }
+
+                    yield return dialogBox.DrawText($"Tja... ab ins Poke-Center. Scheiße gelaufen...", DialogBoxContinueMode.User);
+
                     targetCharacter.HealAllPokemons();
                     Character.PlayerCharacter.transform.position = playerData.lastPokeCenterEntrance.position;
                     state = BattleState.PlayerDefeated;
@@ -245,6 +254,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         }
         else
         {
+            dialogBox.Close();
             // Status effects etc.
         }
     }
