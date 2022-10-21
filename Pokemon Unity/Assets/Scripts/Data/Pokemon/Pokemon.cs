@@ -61,6 +61,14 @@ public class Pokemon
         moves.Add(move);
     }
 
+    public bool HasUsableMoves()
+    {
+        foreach (Move move in moves)
+            if (move.isUsable)
+                return true;
+        return false;
+    }
+
     public bool MatchesType(PokemonTypeData type)
     {
         foreach (PokemonTypeData myType in data.pokemonTypes)

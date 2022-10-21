@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [System.Serializable]
 public class Move
@@ -9,6 +10,9 @@ public class Move
     public int index;
     public int pp;
     public Pokemon pokemon;
+    public bool isBlocked;
+
+    public bool isUsable => pp > 0 && !isBlocked;
 
     public Move(MoveData data, int index, Pokemon pokemon)
     {
@@ -20,7 +24,7 @@ public class Move
 
     public int GetDamageAgainst(Pokemon attacker, Pokemon target, out bool critcal, out Effectiveness effectiveness)
     {
-        critcal = Random.value * 255f <= attacker.data.speed / 2f;
+        critcal = UnityEngine.Random.value * 255f <= attacker.data.speed / 2f;
         float criticalFactor = 1f;
         if (critcal)
             criticalFactor = 1.5f;
@@ -58,6 +62,8 @@ public class Move
     {
         if (pokemon.speed != other.pokemon.speed)
             return pokemon.speed > other.pokemon.speed;
-        return Random.value > .5f;
+        return UnityEngine.Random.value > .5f;
     }
+
+    public void DecrementPP() => pp--;
 }

@@ -15,6 +15,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
         PlayerDefeated,
     }
 
+    [SerializeField] Move struggleMove;
+
     private BattleState state;
     private CharacterData playerData;
     private NPCData opponentData;
@@ -142,6 +144,12 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private IEnumerator GetPlayerMove(Action<Move> callback)
     {
+        if(!playerPokemon.HasUsableMoves())
+        {
+            callback(struggleMove);
+            yield break;
+        }
+
         ui.SetMoveSelectionActive(true);
 
         Move choosenMove = null;
@@ -171,6 +179,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
             attackerCharacter = characterData[attacker];
         Pokemon attackerPokemon = GeActivePokemon(attacker);
         Pokemon targetPokemon = GeActivePokemon(target);
+        move.DecrementPP();
 
         // Play attack animation
         string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);
