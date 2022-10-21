@@ -86,10 +86,10 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) || state.Equals(BattleState.PlayerDefeated);
 
-    public void EndBattle()
+    private void EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
     {
         ui.Close();
-        EventManager.Unpause();
+        npcBattleEndReactionCallback?.Invoke(state.Equals(BattleState.OpponentDefeated));
     }
 
     private IEnumerator RoundCoroutine(Func<bool, bool> npcBattleEndReactionCallback)
@@ -123,7 +123,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 break;
         }
 
-        npcBattleEndReactionCallback?.Invoke(state.Equals(BattleState.OpponentDefeated));
+        EndBattle(npcBattleEndReactionCallback);
     }
 
     private void GetNextPokemon(int character)

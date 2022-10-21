@@ -41,7 +41,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
     {
         opponentSprite.SetSprite(opponentData.sprite);
         opponentStats.AssignPokemon(opponentPokemon);
-        Initialize(playerData, opponentData, playerPokemon, opponentPokemon);
+        Initialize(playerData, playerPokemon, opponentPokemon);
     }
 
     public void Close() => gameObject.SetActive(false);

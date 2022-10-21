@@ -18,7 +18,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
     [SerializeField] public bool wantsToBattle;
     [SerializeField] public float challengeVisionDistance = 5f;
 
-    public bool willChallengePlayer => wantsToBattle || !npcData.IsDefeated();
+    public bool willChallengePlayer => wantsToBattle && !npcData.IsDefeated();
     override public CharacterData CharacterData => npcData;
 
     private bool isInBattle = false;
@@ -31,9 +31,12 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     public void Interact(Character player)
     {
-        if (npcData.hasBeenDefeated)
+        EventManager.Pause();
+        if (wantsToBattle && npcData.hasBeenDefeated)
         {
-            Services.Get<IDialogBox>().DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true);
+            character.Movement.LookInPlayerDirection();
+            EventManager.UnpauseDelayed(
+                Services.Get<IDialogBox>().DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true));
         }
         else
         {
@@ -43,12 +46,18 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
             }
             else
             {
-                Services.Get<IDialogBox>().DrawText(npcData.defaultText, DialogBoxContinueMode.User, true);
+                character.Movement.LookInPlayerDirection();
+                EventManager.UnpauseDelayed(
+                    Services.Get<IDialogBox>().DrawText(npcData.defaultText, DialogBoxContinueMode.User, true));
             }
         }
     }
 
-    private void Challenge(Character player) => StartCoroutine(ChallengeCoroutine(player));
+    private void Challenge(Character player)
+    {
+        print("Challenge");
+        StartCoroutine(ChallengeCoroutine(player));
+    }
 
     private IEnumerator ChallengeCoroutine(Character player)
     {
@@ -70,26 +79,23 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     public bool BattleEndReaction(bool npcDefeated)
     {
-        Services.Get<IBattleManager>().EndBattle();
+        isInBattle = false;
+        battlingNPCs.Remove(this);
 
         if (npcDefeated)
-            Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
+            EventManager.UnpauseDelayed(
+                Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true));
         else
         {
             Services.Get<IDialogBox>().Close();
+            EventManager.Unpause();
         }
-
-        isInBattle = false;
-        character.Reset();
 
         return true;
     }
 
     public bool CheckChallengeVision()
     {
-        if (willChallengePlayer)
-            return false;
-
         RaycastHit hitInfo;
         if (character.RaycastForward(character.Movement.CurrentDirectionVector, LayerManager.Instance.PlayerLayerMask, out hitInfo, maxDistance: challengeVisionDistance - .2f))
         {
@@ -100,17 +106,17 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         return false;
     }
 
-    public Coroutine MoveToPosition(GridVector target, GridVector direction, int keepDistance = 0)
-        => StartCoroutine(MoveToPositionCoroutine(target, direction, keepDistance));
+    public Coroutine MoveToPosition(GridVector target, GridVector direction, int keepDistance = 0, bool checkPositionEvents = false)
+        => StartCoroutine(MoveToPositionCoroutine(target, direction, keepDistance, checkPositionEvents));
 
-    private IEnumerator MoveToPositionCoroutine(GridVector target, GridVector direction, int keepDistance = 0)
+    private IEnumerator MoveToPositionCoroutine(GridVector target, GridVector direction, int keepDistance = 0, bool checkPositionEvents = false)
     {
         character.Movement.LookInDirection(direction);
         target -= keepDistance * direction;
         while (!new GridVector(transform.position, character.startPosition).Equals(target))
         {
             yield return new WaitForEndOfFrame();
-            character.Movement.ProcessMovement(direction);
+            character.Movement.ProcessMovement(direction, checkPositionEvents: checkPositionEvents);
         }
     }
 }

@@ -49,9 +49,10 @@ public class CharacterMovement : MonoBehaviour
         moving = false;
     }
 
-    public void ProcessMovement(GridVector direction, bool sprinting = false) => ProcessMovement(direction.x, direction.y, sprinting);
+    public void ProcessMovement(GridVector direction, bool sprinting = false, bool checkPositionEvents = true)
+        => ProcessMovement(direction.x, direction.y, sprinting, checkPositionEvents);
 
-    public void ProcessMovement(float horizontal, float vertical, bool sprinting)
+    public void ProcessMovement(float horizontal, float vertical, bool sprinting, bool checkPositionEvents = true)
     {
         AnimationType animation;
         if (sprinting)
@@ -96,26 +97,27 @@ public class CharacterMovement : MonoBehaviour
         }
 
         if (moveHorizontal)
-            Move(Vector3.right * Mathf.Sign(horizontal), animation);
+            Move(Vector3.right * Mathf.Sign(horizontal), animation, checkPositionEvents);
         else if (moveVertical)
-            Move(Vector3.forward * Mathf.Sign(vertical), animation);
+            Move(Vector3.forward * Mathf.Sign(vertical), animation, checkPositionEvents);
         else
             character.Animator.Tick(AnimationType.None, currentDirection);
     }
 
-    void Move(Vector3 direction, AnimationType animation)
+    void Move(Vector3 direction, AnimationType animation, bool checkPositionEvents)
     {
         CurrentDirectionVector = new GridVector(direction);
 
         if (IsMovable(direction))
         {
-            StartCoroutine(MoveTo(new GridVector(transform.position + direction)));
+            StartCoroutine(MoveTo(new GridVector(transform.position + direction), checkPositionEvents));
             character.Animator.Tick(animation, currentDirection);
         }
         else
             character.Animator.Tick(AnimationType.None, currentDirection);
     }
 
+    public void LookInPlayerDirection() => LookInDirection(GridVector.GetLookAt(character.position, Character.PlayerCharacter.position));
     public void LookInDirection(GridVector direction)
     {
         CurrentDirectionVector = direction;
@@ -125,7 +127,7 @@ public class CharacterMovement : MonoBehaviour
     public void LookInDirection(Direction direction) => LookInDirection(new GridVector(direction));
     public void LookInStartDirection() => LookInDirection(startDirection);
 
-    IEnumerator MoveTo(GridVector target)
+    IEnumerator MoveTo(GridVector target, bool checkPositionEvents)
     {
         moving = true;
         GridVector start = new GridVector(transform.position);
@@ -142,7 +144,9 @@ public class CharacterMovement : MonoBehaviour
         moving = false;
 
         yield return null;
-        EncounterArea.CheckPositionRelatedEvents();
+
+        if (checkPositionEvents)
+            EncounterArea.CheckPositionRelatedEvents();
     }
 
     bool IsMovable(Vector3 direction)

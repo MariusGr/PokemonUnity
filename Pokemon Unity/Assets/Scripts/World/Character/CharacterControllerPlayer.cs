@@ -39,11 +39,12 @@ public class CharacterControllerPlayer : CharacterControllerBase
     private void Pause()
     {
         paused = true;
-        print("pause");
+        print("Pause");
     }
 
     private void Unpause()
     {
         paused = false;
+        print("Unpause");
     }
 }

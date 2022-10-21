@@ -52,14 +52,12 @@ public class DialogBox : MonoBehaviour, IDialogBox
     {
         print("Open Dialogbox");
         gameObject.SetActive(true);
-        EventManager.Pause();
     }
 
     public void Close()
     {
         print("Close Dialogbox");
         gameObject.SetActive(false);
-        EventManager.Unpause();
     }
 
     public bool IsOpen() => gameObject.activeSelf;
@@ -85,10 +83,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     IEnumerator DrawStringsRoutinePausing(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
-        EventManager.Pause();
         Open();
         yield return StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish));
-        EventManager.Unpause();
     }
 
     IEnumerator DrawStringsRoutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
