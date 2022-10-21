@@ -50,6 +50,11 @@ public class EncounterArea : MonoBehaviour
         currentArea = this;
     }
 
+    public void Leave()
+    {
+        currentArea = null;
+    }
+
     public void CheckEncounter()
     {
         float f = UnityEngine.Random.value;
@@ -93,10 +98,7 @@ public class EncounterArea : MonoBehaviour
     public bool EncounterEndReaction(bool wildPokemonDefeated)
     {
         Services.Get<IBattleManager>().EndBattle();
-
-        if (!wildPokemonDefeated)
-            Services.Get<IDialogBox>().Close();
-
+        Services.Get<IDialogBox>().Close();
         return true;
     }
 }

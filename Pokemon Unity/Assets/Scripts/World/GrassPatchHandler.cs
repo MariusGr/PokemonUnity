@@ -19,7 +19,6 @@ public class GrassPatchHandler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        print(area);
         area.Enter();
         overlay.SetActive(true);
         SfxHandler.Play(walkClip, Random.Range(0.85f, 1.1f));
@@ -27,6 +26,7 @@ public class GrassPatchHandler : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        area.Leave();
         overlay.SetActive(false);
     }
 }

@@ -205,22 +205,27 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return new WaitWhile(ui.PlayFaintAnimation(target));
             //yield return new WaitForSeconds(1f);
 
-            if (!opponentIsWild && targetCharacter.IsDefeated() || opponentPokemon.isFainted)
+            if (!opponentIsWild && targetCharacter.IsDefeated() || opponentIsWild)
             {
                 // target character has lost the battle
-                ui.MakeOpponentAppear();
-                yield return dialogBox.DrawText($"{targetCharacter.name} wurde besiegt!", DialogBoxContinueMode.User);
+                if (!opponentIsWild)
+                    ui.MakeOpponentAppear();
+                if (opponentIsWild && target == Constants.PlayerIndex || !opponentIsWild)
+                    yield return dialogBox.DrawText($"{targetCharacter.name} wurde besiegt!", DialogBoxContinueMode.User);
                 if (target == Constants.OpponentIndex)
                 {
                     // AI opponent has been defeated
-                    NPCData npc = (NPCData)targetCharacter;
-                    yield return dialogBox.DrawText(new string[]
+                    if (!opponentIsWild)
                     {
-                        npc.battleDefeatText,
-                        $"Du erhältst {targetCharacter.GetPriceMoneyFormatted()}.",
-                    }, DialogBoxContinueMode.User);
-                    ((PlayerData)attackerCharacter).GiveMoney(targetCharacter.GetPriceMoney());
-                    npc.hasBeenDefeated = true;
+                        NPCData npc = (NPCData)targetCharacter;
+                        yield return dialogBox.DrawText(new string[]
+                        {
+                            npc.battleDefeatText,
+                            $"Du erhältst {targetCharacter.GetPriceMoneyFormatted()}.",
+                        }, DialogBoxContinueMode.User);
+                        ((PlayerData)attackerCharacter).GiveMoney(targetCharacter.GetPriceMoney());
+                        npc.hasBeenDefeated = true;
+                    }
                     state = BattleState.OpponentDefeated;
                 }
                 else
