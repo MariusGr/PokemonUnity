@@ -68,7 +68,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
         return StartCoroutine(DrawStringsRoutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish));
     }
 
-    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false) => DrawText(new string[] { text }, continueMode, closeAfterFinish);
+    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+        => DrawText(text.Split('|'), continueMode, closeAfterFinish);
     public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
         Open();
@@ -97,8 +98,6 @@ public class DialogBox : MonoBehaviour, IDialogBox
             {
                 while (!Input.GetButtonDown("Submit") && !Input.GetButtonDown("Back"))
                     yield return null;
-                if (closeAfterFinish)
-                    Close();
             }
         }
         if (closeAfterFinish)
