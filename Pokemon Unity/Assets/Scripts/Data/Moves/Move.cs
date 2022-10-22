@@ -9,10 +9,11 @@ public class Move
     public MoveData data;
     public int index;
     public int pp;
-    public Pokemon pokemon;
     public bool isBlocked;
 
     public bool isUsable => pp > 0 && !isBlocked;
+
+    private Pokemon pokemon;
 
     public Move(MoveData data, int index, Pokemon pokemon)
     {
