@@ -146,6 +146,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     {
         if(!playerPokemon.HasUsableMoves())
         {
+            struggleMove.SetPokemon(playerPokemon);
             callback(struggleMove);
             yield break;
         }
@@ -184,7 +185,21 @@ public class BattleManager : MonoBehaviour, IBattleManager
         // Play attack animation
         string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);
         string targetPokemonIdentifier = GetUniqueIdentifier(targetPokemon, attackerPokemon, targetCharacter);
-        yield return dialogBox.DrawText($"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!", DialogBoxContinueMode.External);
+
+        // Display usage text
+        string defaultUsageText = $"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!";
+        string usageText = null;
+        if (move.data.hasSpecialUsageText)
+        {
+            usageText = move.data.specialUsageText;
+            usageText = TextKeyManager.ReplaceKey(TextKeyManager.TextKeyAttackerPokemon, usageText, attackingPokemonIdentifier);
+            usageText = TextKeyManager.ReplaceKey(TextKeyManager.TextKeyDefaultUsageText, usageText, defaultUsageText);
+        }
+        else
+            usageText = defaultUsageText;
+
+        yield return dialogBox.DrawText(usageText, DialogBoxContinueMode.External);
+
         yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
         yield return new WaitForSeconds(1f);

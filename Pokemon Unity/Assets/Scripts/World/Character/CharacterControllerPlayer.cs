@@ -9,7 +9,7 @@ public class CharacterControllerPlayer : CharacterControllerBase
     public PlayerData characterData;
     override public CharacterData CharacterData => characterData;
 
-    void Awake()
+    void Start()
     {
         EventManager.Instance.PauseEvent += Pause;
         EventManager.Instance.UnpauseEvent += Unpause;

@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-
 public static class Constants
 {
     readonly public static int PlayerIndex = 0;

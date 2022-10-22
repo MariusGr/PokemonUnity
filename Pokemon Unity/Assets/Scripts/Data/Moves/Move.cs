@@ -23,6 +23,8 @@ public class Move
         pp = data.maxPP;
     }
 
+    public void SetPokemon(Pokemon pokemon) => this.pokemon = pokemon;
+
     public int GetDamageAgainst(Pokemon attacker, Pokemon target, out bool critcal, out Effectiveness effectiveness)
     {
         critcal = UnityEngine.Random.value * 255f <= attacker.data.speed / 2f;
@@ -66,5 +68,9 @@ public class Move
         return UnityEngine.Random.value > .5f;
     }
 
-    public void DecrementPP() => pp--;
+    public void DecrementPP()
+    {
+        if (data.maxPP > 0)
+            pp--;
+    }
 }

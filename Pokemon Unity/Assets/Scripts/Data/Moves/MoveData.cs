@@ -13,6 +13,9 @@ public class MoveData : ScriptableObject
     public AnimationClip animationClipPlayer;
     public AnimationClip animationClipOpponent;
 
+    public bool hasSpecialUsageText;
+    public string specialUsageText;
+
     public AnimationClip GetAnimationClip(int character)
     {
         if (character == Constants.PlayerIndex)
