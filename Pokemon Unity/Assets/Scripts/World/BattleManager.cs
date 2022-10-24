@@ -198,7 +198,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         else
             usageText = defaultUsageText;
 
-        yield return dialogBox.DrawText(usageText, DialogBoxContinueMode.External);
+        yield return dialogBox.DrawText(usageText, DialogBoxContinueMode.Automatic);
 
         yield return new WaitForSeconds(1f);
         yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));

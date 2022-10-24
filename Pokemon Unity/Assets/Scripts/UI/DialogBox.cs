@@ -24,6 +24,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     [SerializeField] private AudioClip selectClip;
 
+    private bool automaticContinueBlocked = false;
+
     private float charPerSec = 60f;
     public float scrollSpeed = 0.1f;
 
@@ -47,6 +49,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
         defaultDialogLines = Mathf.RoundToInt((dialogBoxBorder.rectTransform.sizeDelta.y - 16f) / 14f);
         defaultChoiceY = Mathf.FloorToInt(choiceBox.rectTransform.localPosition.y);
     }
+
+    public void Continue() => automaticContinueBlocked = false;
 
     public void Open()
     {
@@ -93,12 +97,20 @@ public class DialogBox : MonoBehaviour, IDialogBox
         DrawDialogBox();
         for (int i = 0; i < text.Length; i++)
         {
+            print(automaticContinueBlocked);
+            if (continueMode == DialogBoxContinueMode.External)
+                automaticContinueBlocked = true;
             yield return StartCoroutine(DrawTextRoutine(text[i]));
             if (continueMode == DialogBoxContinueMode.User)
             {
                 while (!Input.GetButtonDown("Submit") && !Input.GetButtonDown("Back"))
                     yield return null;
             }
+            else if (continueMode == DialogBoxContinueMode.Automatic && i < text.Length - 1)
+                // wait some time in between lines
+                yield return new WaitForSeconds(1.5f);
+            else
+                yield return new WaitWhile(() => automaticContinueBlocked);
         }
         if (closeAfterFinish)
             Close();
