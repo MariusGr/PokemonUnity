@@ -93,6 +93,9 @@ public class Pokemon
     public void Heal()
     {
         hp = maxHp;
+
+        foreach (Move move in moves)
+            move.ReplenishPP();
         // TODO: HEal status effects
     }
 }

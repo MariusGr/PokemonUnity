@@ -73,4 +73,6 @@ public class Move
         if (data.maxPP > 0)
             pp--;
     }
+
+    public void ReplenishPP() => pp = data.maxPP;
 }
