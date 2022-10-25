@@ -21,3 +21,4 @@ MonoBehaviour:
     type: 2}
   hasSpecialUsageText: 1
   specialUsageText: "<attacking-pkmn-name> hat keine Attacken mehr \xFCbrig!|<default-usage-text>"
+  recoil: 0.5

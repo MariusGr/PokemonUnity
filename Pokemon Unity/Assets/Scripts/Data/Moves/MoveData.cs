@@ -16,6 +16,8 @@ public class MoveData : ScriptableObject
     public bool hasSpecialUsageText;
     public string specialUsageText;
 
+    public float recoil = 0;
+
     public AnimationClip GetAnimationClip(int character)
     {
         if (character == Constants.PlayerIndex)
