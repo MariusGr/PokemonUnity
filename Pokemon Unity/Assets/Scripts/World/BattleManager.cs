@@ -21,6 +21,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private CharacterData playerData;
     private NPCData opponentData;
     private int[] pokemonIndex = new int[] { 0, 0 };
+    private bool[] isDefeated = new bool[] { false, false };
     private bool opponentIsWild = false;
 
     public delegate void UserMoveChooseEventHandler(Move move);
@@ -216,7 +217,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         Effectiveness effectiveness;
         int damage = move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
 
-        bool fainted = targetPokemon.InflictDamage(damage);
+        bool targetFainted = targetPokemon.InflictDamage(damage);
 
         yield return new WaitWhile(ui.RefreshHPAnimated(target));
 
@@ -227,21 +228,9 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
 
         // Aftermath: Faint, Poison, etc.
-        if (fainted)
-        {
+        if (targetFainted)
             // target pokemon fainted
             yield return Faint(target, targetPokemonIdentifier);
-
-            if (CharacterHasBeenDefeated(target, targetCharacter))
-            {
-                // target character has lost the battle
-                yield return Defeat(target, attackerCharacter, targetCharacter);
-            }
-            else
-            {
-                // target character must choose new pokemon
-            }
-        }
         else
         {
             // Aftermath e.g. Status effects etc.
@@ -257,26 +246,40 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 yield return new WaitWhile(ui.RefreshHPAnimated(attacker));
             }
 
+            // TODO wann aftermath für Opponent anwenden, wann Opponent faint
             if (attackerFainted)
             {
                 yield return Faint(attacker, attackingPokemonIdentifier);
-                if (CharacterHasBeenDefeated(attacker, attackerCharacter))
-                    if (attacker == Constants.PlayerIndex)
-                    {
-                        yield return Defeat(attacker, targetCharacter, attackerCharacter);
-                    }
-                    else
-                    {
-                        // attacker character must choose new pokemon
-                    }
+
+                bool attackerIsDefeated = CharacterHasBeenDefeated(attacker, attackerCharacter);
+                characterIsDefeated[attacker] = attackerIsDefeated;
+
+                if 
+                {
+                    // attacker character must choose new pokemon
+                }
             }
         }
+
+        // If one character has been defeated, detect which one (player always looses when out of pokemon)
+        if(true)
+            yield return Defeat(target, attackerCharacter, targetCharacter);
+        else if (true)
+            yield return Defeat(attacker, targetCharacter, attackerCharacter);
+
     }
 
     private IEnumerator Faint(int index, string pokemonIdentifier)
     {
         yield return dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
         yield return new WaitWhile(ui.PlayFaintAnimation(index));
+
+        bool characterHasBeenDefeated = CharacterHasBeenDefeated(index, characterData[index]);
+        isDefeated[index] = characterHasBeenDefeated;
+        if (!characterHasBeenDefeated)
+        {
+            // target character must choose new pokemon
+        }
     }
 
     private IEnumerator Defeat(int target, CharacterData attackerCharacter, CharacterData targetCharacter)
@@ -293,8 +296,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 NPCData npc = (NPCData)targetCharacter;
                 yield return dialogBox.DrawText(new string[]
                 {
-                            npc.battleDefeatText,
-                            $"Du erhältst {targetCharacter.GetPriceMoneyFormatted()}.",
+                    npc.battleDefeatText,
+                    $"Du erhältst {targetCharacter.GetPriceMoneyFormatted()}.",
                 }, DialogBoxContinueMode.User);
                 ((PlayerData)attackerCharacter).GiveMoney(targetCharacter.GetPriceMoney());
                 npc.hasBeenDefeated = true;
