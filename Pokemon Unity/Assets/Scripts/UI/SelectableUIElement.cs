@@ -4,4 +4,6 @@ using UnityEngine;
 
 public abstract class SelectableUIElement : MonoBehaviour
 {
+    abstract public void AssignElement(object element);
+    abstract public void AssignNone();
 }

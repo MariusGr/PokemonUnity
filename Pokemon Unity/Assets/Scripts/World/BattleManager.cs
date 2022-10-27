@@ -199,7 +199,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         UserPokemonChooseEventHandler action = (int index) => choosenPokemonIndex = index;
         UserChoosePokemonEvent += action;
         print("wait for play to choose pkmn");
-        yield return new WaitUntil(() => choosenPokemonIndex > 1-);
+        yield return new WaitUntil(() => choosenPokemonIndex > -1);
         ui.SetPokemonSwitchSelectionActive(false);
         UserChoosePokemonEvent -= action;
         ChoosePokemon(Constants.PlayerIndex, choosenPokemonIndex);

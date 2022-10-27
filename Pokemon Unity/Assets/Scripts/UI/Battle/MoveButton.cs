@@ -14,8 +14,9 @@ public class MoveButton : SelectableUIElement
 
     public Move move { get; private set; }
 
-    public void AssignMove(Move move)
+    override public void AssignElement(object element)
     {
+        Move move = (Move) element;
         this.move = move;
         index = move.index;
         imageCover.enabled = true;
@@ -27,7 +28,7 @@ public class MoveButton : SelectableUIElement
         imageCover.color = move.data.pokeType.color;
     }
 
-    public void AssignNone()
+    override public void AssignNone()
     {
         textName.text = "";
         textPP.text = "";

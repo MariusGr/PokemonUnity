@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using CollectionExtensions;
 
-public class PokemonStatsUI : MonoBehaviour
+public class PokemonStatsUI : SelectableUIElement
 {
     [SerializeField] protected ShadowedText nameText;
     [SerializeField] protected ShadowedText level;
@@ -18,9 +18,13 @@ public class PokemonStatsUI : MonoBehaviour
 
     public void AssignPokemon(Pokemon pokemon)
     {
+        gameObject.SetActive(true);
         this.pokemon = pokemon;
         Refresh();
     }
+
+    public override void AssignElement(object element) => AssignPokemon((Pokemon)element);
+    public override void AssignNone() => gameObject.SetActive(false);
 
     virtual public void Refresh()
     {

@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class BattleUI : MonoBehaviour, IBattleUI
 {
     [SerializeField] private MoveSelectionUI moveSelection;
+    [SerializeField] private PokemonSwitchSelection pokemonSwitchSelection;
     [SerializeField] private PokemonSprite playerPokemonSprite;
     [SerializeField] private PokemonSprite opponentPokemonSprite;
     [SerializeField] private TrainerSprite opponentSprite;
-    [SerializeField] private PlayerPokemonStatsUI playerStats;
+    [SerializeField] private PlayerPokemonStatsBattleUI playerStats;
     [SerializeField] private PokemonStatsUI opponentStats;
     [SerializeField] private float hpRefreshSpeed = 1f;
 
@@ -26,15 +27,18 @@ public class BattleUI : MonoBehaviour, IBattleUI
 
     public void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
-        moveSelection.AssignMoves(playerPokemon.moves.ToArray());
-        playerPokemonSprite.SetSprite(playerPokemon.data.backSprite);
-        opponentPokemonSprite.SetSprite(opponentPokemon.data.frontSprite);
+        SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
+        SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
-
-        playerStats.AssignPokemon(playerPokemon);
-        opponentStats.AssignPokemon(opponentPokemon);
-
         gameObject.SetActive(true);
+    }
+
+    public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
+    {
+        stats[characterIndex].AssignPokemon(pokemon);
+        pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
+        if (characterIndex == Constants.PlayerIndex)
+            moveSelection.AssignElements(pokemon.moves.ToArray());
     }
 
     public void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
@@ -86,4 +90,8 @@ public class BattleUI : MonoBehaviour, IBattleUI
     }
 
     public void SetMoveSelectionActive(bool active) => moveSelection.gameObject.SetActive(active);
+    public void SetPokemonSwitchSelectionActive(bool active, bool forceSelection)
+    {
+        pokemonSwitchSelection.gameObject.SetActive(active);
+    }
 }

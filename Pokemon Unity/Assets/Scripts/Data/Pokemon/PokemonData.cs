@@ -20,4 +20,6 @@ public class PokemonData : ScriptableObject
     public int speed;
 
     public CollectionExtensions.IntMoveDataDictionary levelToMoveDataMap;
+
+    public Sprite GetBattleSprite(int characterIndex) => characterIndex == Constants.PlayerIndex ? backSprite : frontSprite;
 }

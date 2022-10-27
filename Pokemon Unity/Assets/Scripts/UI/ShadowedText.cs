@@ -11,6 +11,8 @@ public class ShadowedText : MonoBehaviour
     [SerializeField] string _text = "Enter text here";
     [SerializeField] TextAnchor _alignment = TextAnchor.UpperCenter;
     [SerializeField] Font _font;
+    [SerializeField] bool useDifferentFontForShadow;
+    [SerializeField] Font shadowFont;
 
     public string text
     {
@@ -40,7 +42,7 @@ public class ShadowedText : MonoBehaviour
         {
             _font = value;
             textDefault.font = _font;
-            textShadow.font = _font;
+            textShadow.font = useDifferentFontForShadow ? shadowFont : _font;
         }
     }
 
