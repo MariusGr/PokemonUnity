@@ -25,7 +25,9 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private bool opponentIsWild = false;
 
     public delegate void UserMoveChooseEventHandler(Move move);
+    public delegate void UserPokemonChooseEventHandler(int index);
     public event UserMoveChooseEventHandler UserChooseMoveEvent;
+    public event UserPokemonChooseEventHandler UserChoosePokemonEvent;
 
     private CharacterData[] characterData;
 
@@ -104,9 +106,9 @@ public class BattleManager : MonoBehaviour, IBattleManager
     {
         while (true)
         {
-            Move opponentMove = GetOpponentMove();
+            Move opponentMove = GetMoveOpponent();
             Move playerMove = null;
-            yield return GetPlayerMove(choosenMove => playerMove = choosenMove);
+            yield return GetMovePlayer(choosenMove => playerMove = choosenMove);
 
             IEnumerator playerCoroutine = MoveCoroutine(Constants.PlayerIndex, Constants.OpponentIndex, playerMove);
             IEnumerator opponentCoroutine = MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
@@ -142,13 +144,13 @@ public class BattleManager : MonoBehaviour, IBattleManager
         }
     }
 
-    private Move GetOpponentMove()
+    private Move GetMoveOpponent()
     {
         // TODO: implement more intelligent move choose
         return opponentPokemon.moves[UnityEngine.Random.Range(0, opponentPokemon.moves.Count)];
     }
 
-    private IEnumerator GetPlayerMove(Action<Move> callback)
+    private IEnumerator GetMovePlayer(Action<Move> callback)
     {
         if(!playerPokemon.HasUsableMoves())
         {
@@ -168,6 +170,43 @@ public class BattleManager : MonoBehaviour, IBattleManager
         UserChooseMoveEvent -= action;
         callback(choosenMove);
     }
+
+    private IEnumerator ChooseNextPokemon(int characterIndex)
+    {
+        if (characterIndex == Constants.OpponentIndex)
+            ChooseNextPokemonOpponent();
+        else
+            yield return ChooseNextPokemonPlayer();
+    }
+
+    private void ChooseNextPokemonOpponent()
+    {
+        for (int i = 0; i < opponentData.pokemons.Length; i++)
+        {
+            if (!opponentData.pokemons[i].isFainted)
+            {
+                ChoosePokemon(Constants.OpponentIndex, i);
+                return;
+            }
+        }
+    }
+
+    private IEnumerator ChooseNextPokemonPlayer()
+    {
+        ui.SetPokemonSwitchSelectionActive(true, true);
+
+        int choosenPokemonIndex = -1;
+        UserPokemonChooseEventHandler action = (int index) => choosenPokemonIndex = index;
+        UserChoosePokemonEvent += action;
+        print("wait for play to choose pkmn");
+        yield return new WaitUntil(() => choosenPokemonIndex > 1-);
+        ui.SetPokemonSwitchSelectionActive(false);
+        UserChoosePokemonEvent -= action;
+        ChoosePokemon(Constants.PlayerIndex, choosenPokemonIndex);
+    }
+
+    private void ChoosePokemon(int characterIndex, int pokemonIndex)
+        => this.pokemonIndex[characterIndex] = pokemonIndex;
 
     public void ChoosePlayerMove(Move move) => UserChooseMoveEvent?.Invoke(move);
 

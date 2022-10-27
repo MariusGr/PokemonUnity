@@ -15,4 +15,5 @@ public interface IBattleUI : IService
     public System.Func<bool> MakeOpponentAppear();
     public System.Func<bool> MakeOpponentDisappear();
     public void SetMoveSelectionActive(bool active);
+    public void SetPokemonSwitchSelectionActive(bool active, bool forceSelection = false);
 }
