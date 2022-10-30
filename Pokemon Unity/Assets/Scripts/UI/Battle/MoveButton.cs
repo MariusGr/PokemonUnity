@@ -25,6 +25,8 @@ public class MoveButton : SelectableImage
         textPP.text = $"{move.pp}/{move.data.maxPP}";
         imageType.sprite = move.data.pokeType.titleSprite;
         imageCover.color = move.data.pokeType.color;
+
+        base.AssignElement(element);
     }
 
     override public void AssignNone()
@@ -34,5 +36,7 @@ public class MoveButton : SelectableImage
         imageType.enabled = false;
         imageCover.enabled = false;
         imageBackground.color = Color.grey;
+
+        base.AssignNone();
     }
 }

@@ -23,8 +23,17 @@ public class PokemonStatsUI : SelectableImage
         Refresh();
     }
 
-    public override void AssignElement(object element) => AssignPokemon((Pokemon)element);
-    public override void AssignNone() => gameObject.SetActive(false);
+    public override void AssignElement(object element)
+    {
+        AssignPokemon((Pokemon)element);
+        base.AssignElement(element);
+    }
+
+    public override void AssignNone()
+    {
+        gameObject.SetActive(false);
+        base.AssignNone();
+    }
 
     virtual public void Refresh()
     {

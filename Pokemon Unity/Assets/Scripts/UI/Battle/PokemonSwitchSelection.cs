@@ -16,7 +16,7 @@ public class PokemonSwitchSelection : SelectionWindow
 
     protected override void ChooseSelectedElement()
     {
-        print("Select");
+        print("Choose Pkmn");
         Services.Get<IBattleManager>().ChoosePlayerPokemon((selectedElement).index);
     }
 }

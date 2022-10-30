@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveSelectionUI : SelectionWindow
+public class MoveSelectionUI : SelectionGraphWindow
 {
     private void Awake() => Initialize();
     private void Update() => ProcessInput();
@@ -10,13 +10,14 @@ public class MoveSelectionUI : SelectionWindow
     protected override void ChooseSelectedElement()
     {
         base.ChooseSelectedElement();
-        print("Select Pkmn");
+        print("Choose Move");
         Services.Get<IBattleManager>().ChoosePlayerMove(((MoveButton)selectedElement).move, false);
     }
 
     protected override void GoBack()
     {
         base.GoBack();
-        Services.Get<IBattleManager>().ChoosePlayerMove(null, false);
+        print("back");
+        Services.Get<IBattleManager>().ChoosePlayerMove(null, true);
     }
 }

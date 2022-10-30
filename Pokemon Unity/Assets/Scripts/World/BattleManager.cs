@@ -185,6 +185,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     {
         ui.SetBattleMenuActive(false);
         yield return dialogBox.DrawText($"Du kannst nicht fliehen!", DialogBoxContinueMode.User);
+        dialogBox.Close();
         ui.SetBattleMenuActive(true);
         //TODO: aus encounter fliehen - wovon hängt Erfolg ab?
     }
@@ -381,6 +382,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return Defeat(Constants.PlayerIndex, opponentData, playerData);
         else if (isDefeated[Constants.OpponentIndex])
             yield return Defeat(Constants.OpponentIndex, playerData, opponentData);
+        else
+            dialogBox.Close();
     }
 
     private IEnumerator Faint(int index, string pokemonIdentifier)
