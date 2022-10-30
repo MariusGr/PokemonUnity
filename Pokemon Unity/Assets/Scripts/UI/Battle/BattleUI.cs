@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour, IBattleUI
 {
+    [SerializeField] private BattleMenu battleMenu;
     [SerializeField] private MoveSelectionUI moveSelection;
     [SerializeField] private PokemonSwitchSelection pokemonSwitchSelection;
     [SerializeField] private PokemonSprite playerPokemonSprite;
@@ -21,20 +22,22 @@ public class BattleUI : MonoBehaviour, IBattleUI
 
     private void Awake()
     {
+        print("awaake");
         stats = new PokemonStatsUI[] { playerStats, opponentStats };
         pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
 
     public void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
+        gameObject.SetActive(true);
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
-        gameObject.SetActive(true);
     }
 
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
     {
+        print(stats + "   " + characterIndex);
         stats[characterIndex].AssignPokemon(pokemon);
         pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
         if (characterIndex == Constants.PlayerIndex)
@@ -90,6 +93,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
     }
 
     public void SetMoveSelectionActive(bool active) => moveSelection.gameObject.SetActive(active);
+    public void SetBattleMenuActive(bool active) => battleMenu.gameObject.SetActive(active);
     public void SetPokemonSwitchSelectionActive(bool active, bool forceSelection)
     {
         pokemonSwitchSelection.gameObject.SetActive(active);

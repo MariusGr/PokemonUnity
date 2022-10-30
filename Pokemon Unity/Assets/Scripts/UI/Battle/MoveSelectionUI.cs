@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class MoveSelectionUI : SelectionWindow
 {
-    private void Awake()
+    private void Awake() => Initialize();
+    private void Update() => ProcessInput();
+
+    protected override void ChooseSelectedElement()
     {
-        selectedElement = buttons[0];
+        base.ChooseSelectedElement();
+        print("Select Pkmn");
+        Services.Get<IBattleManager>().ChoosePlayerMove(((MoveButton)selectedElement).move, false);
     }
 
-    private void Update()
+    protected override void GoBack()
     {
-        ProcessInput();
-    }
-
-    protected override void SelectElement()
-    {
-        print("Select");
-        Services.Get<IBattleManager>().ChoosePlayerMove(((MoveButton)selectedElement).move);
+        base.GoBack();
+        Services.Get<IBattleManager>().ChoosePlayerMove(null, false);
     }
 }

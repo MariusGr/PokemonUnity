@@ -24,8 +24,10 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private bool[] isDefeated = new bool[] { false, false };
     private bool opponentIsWild = false;
 
-    public delegate void UserMoveChooseEventHandler(Move move);
+    public delegate void UserBattleOptionChooseEventHandler(BattleOption option);
+    public delegate void UserMoveChooseEventHandler(Move move, bool goBack);
     public delegate void UserPokemonChooseEventHandler(int index);
+    public event UserBattleOptionChooseEventHandler UserChooseBattleOptionEvent;
     public event UserMoveChooseEventHandler UserChooseMoveEvent;
     public event UserPokemonChooseEventHandler UserChoosePokemonEvent;
 
@@ -106,9 +108,52 @@ public class BattleManager : MonoBehaviour, IBattleManager
     {
         while (true)
         {
+            // Get opponent move for this round
             Move opponentMove = GetMoveOpponent();
             Move playerMove = null;
-            yield return GetMovePlayer(choosenMove => playerMove = choosenMove);
+            bool goBack = false;
+
+            // Battle can only continue if the user chose a move or runs from battle
+            while (true)
+            {
+                // Wait for player to choose from battle menu
+                BattleOption battleOption = BattleOption.None;
+                yield return GetBattleMenuOption(choosenOption => battleOption = choosenOption);
+
+                if (battleOption == BattleOption.Run)
+                {
+                    yield return TryRun();
+                    if (BattleHasEnded())
+                        break;
+                }
+                else if (battleOption == BattleOption.Bag)
+                {
+                    //TODO
+                }
+                else if (battleOption == BattleOption.PokemonSwitch)
+                {
+                    //TODO
+                }
+                else
+                {
+                    // Fight!
+                    // Get player move and perform moves from both sides
+                    playerMove = null;
+                    goBack = false;
+                    yield return GetMovePlayer((choosenMove, back) =>
+                    {
+                        playerMove = choosenMove;
+                        goBack = back;
+                    });
+
+                    // Only continue with battle if player did not want to go back
+                    if (!goBack) break;
+                }
+            }
+
+            // In case running was succesfull, battle needs to end immideatly
+            if (BattleHasEnded())
+                break;
 
             IEnumerator playerCoroutine = MoveCoroutine(Constants.PlayerIndex, Constants.OpponentIndex, playerMove);
             IEnumerator opponentCoroutine = MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
@@ -136,6 +181,27 @@ public class BattleManager : MonoBehaviour, IBattleManager
         EndBattle(npcBattleEndReactionCallback);
     }
 
+    private IEnumerator TryRun()
+    {
+        ui.SetBattleMenuActive(false);
+        yield return dialogBox.DrawText($"Du kannst nicht fliehen!", DialogBoxContinueMode.User);
+        ui.SetBattleMenuActive(true);
+        //TODO: aus encounter fliehen - wovon hängt Erfolg ab?
+    }
+
+    private IEnumerator GetBattleMenuOption(Action<BattleOption> callback)
+    {
+        ui.SetBattleMenuActive(true);
+        BattleOption choosenOption = BattleOption.None;
+        UserBattleOptionChooseEventHandler action = (BattleOption option) => choosenOption = option;
+        UserChooseBattleOptionEvent += action;
+        print("wait for play to choose option");
+        yield return new WaitUntil(() => choosenOption != BattleOption.None);
+        ui.SetBattleMenuActive(false);
+        UserChooseBattleOptionEvent -= action;
+        callback(choosenOption);
+    }
+
     private void GetNextPokemon(int character)
     {
         if (character == Constants.OpponentIndex)
@@ -150,25 +216,31 @@ public class BattleManager : MonoBehaviour, IBattleManager
         return opponentPokemon.moves[UnityEngine.Random.Range(0, opponentPokemon.moves.Count)];
     }
 
-    private IEnumerator GetMovePlayer(Action<Move> callback)
+    private IEnumerator GetMovePlayer(Action<Move, bool> callback)
     {
         if(!playerPokemon.HasUsableMoves())
         {
             struggleMove.SetPokemon(playerPokemon);
-            callback(struggleMove);
+            callback(struggleMove, false);
             yield break;
         }
 
         ui.SetMoveSelectionActive(true);
 
         Move choosenMove = null;
-        UserMoveChooseEventHandler action = (Move move) => choosenMove = move;
+        bool goBack = false;
+        UserMoveChooseEventHandler action =
+            (Move move, bool back) =>
+            {
+                choosenMove = move;
+                goBack = back;
+            };
         UserChooseMoveEvent += action;
         print("wait for play to choose move");
-        yield return new WaitUntil(() => choosenMove != null);
+        yield return new WaitUntil(() => choosenMove != null || goBack);
         ui.SetMoveSelectionActive(false);
         UserChooseMoveEvent -= action;
-        callback(choosenMove);
+        callback(choosenMove, goBack);
     }
 
     private IEnumerator ChooseNextPokemon(int characterIndex)
@@ -208,7 +280,9 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private void ChoosePokemon(int characterIndex, int pokemonIndex)
         => this.pokemonIndex[characterIndex] = pokemonIndex;
 
-    public void ChoosePlayerMove(Move move) => UserChooseMoveEvent?.Invoke(move);
+    public void ChooseBattleMenuOption(BattleOption option) => UserChooseBattleOptionEvent?.Invoke(option);
+    public void ChoosePlayerMove(Move move, bool goBack) => UserChooseMoveEvent?.Invoke(move, goBack);
+    public void ChoosePlayerPokemon(int index) => UserChoosePokemonEvent?.Invoke(index);
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
         => pokemon.Name == other.Name ? (

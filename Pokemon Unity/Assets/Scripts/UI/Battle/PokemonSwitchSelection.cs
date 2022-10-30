@@ -6,7 +6,7 @@ public class PokemonSwitchSelection : SelectionWindow
 {
     private void Awake()
     {
-        selectedElement = buttons[0];
+        Initialize();
     }
 
     private void Update()
@@ -14,9 +14,9 @@ public class PokemonSwitchSelection : SelectionWindow
         ProcessInput();
     }
 
-    protected override void SelectElement()
+    protected override void ChooseSelectedElement()
     {
         print("Select");
-        Services.Get<IBattleManager>().ChoosePlayerMove(((MoveButton)selectedElement).move);
+        Services.Get<IBattleManager>().ChoosePlayerPokemon((selectedElement).index);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using CollectionExtensions;
 
-public class PokemonStatsUI : SelectableUIElement
+public class PokemonStatsUI : SelectableImage
 {
     [SerializeField] protected ShadowedText nameText;
     [SerializeField] protected ShadowedText level;

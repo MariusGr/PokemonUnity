@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MoveButton : SelectableUIElement
+public class MoveButton : SelectableImage
 {
-    [SerializeField] private int index;
     [SerializeField] private ShadowedText textName;
     [SerializeField] private ShadowedText textPP;
     [SerializeField] private Image imageType;
