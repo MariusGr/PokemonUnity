@@ -13,6 +13,7 @@ public abstract class SelectionWindow : MonoBehaviour
     {
         for (int i = 0; i < elements.Length; i++)
             elements[i].index = i;
+        SelectElement(0);
     }
 
     virtual protected bool ProcessInput()

@@ -7,7 +7,7 @@ public abstract class SelectionGraphWindow : SelectionWindow
     public override void Initialize()
     {
         for (int i = 0; i < elements.Length; i++)
-            base.elements[i] = elements[i];
+            elements[i] = elements[i];
 
         base.Initialize();
     }
