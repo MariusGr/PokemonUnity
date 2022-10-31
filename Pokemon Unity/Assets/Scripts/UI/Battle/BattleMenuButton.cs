@@ -6,5 +6,9 @@ public class BattleMenuButton : SelectableImage
 {
     [SerializeField] public BattleOption option;
 
-    private void Awake() => Initialize();
+    private void Awake()
+    {
+        Initialize();
+        AssignElement(null);
+    }
 }

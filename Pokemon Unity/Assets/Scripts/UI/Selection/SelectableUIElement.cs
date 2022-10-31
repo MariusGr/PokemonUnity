@@ -12,7 +12,6 @@ public abstract class SelectableUIElement : MonoBehaviour
 
     public SelectableUIElement GetNeighbour(Direction direction)
         => neighbours.ContainsKey(direction) && neighbours[direction].assigned ? neighbours[direction] : null;
-
     public virtual void AssignNone() => assigned = false;
     public virtual void AssignElement(object element) => assigned = true;
     public abstract void Select();
