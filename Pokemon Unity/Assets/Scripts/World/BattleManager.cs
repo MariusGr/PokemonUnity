@@ -66,6 +66,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
         state = BattleState.ChoosingMove;
         pokemonIndex[Constants.PlayerIndex] = 0;
+        isDefeated = new bool[] { false, false };
 
         ui.Initialize(this.playerData, playerPokemon, opponentPokemon);
 
@@ -85,6 +86,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         state = BattleState.ChoosingMove;
         pokemonIndex[Constants.PlayerIndex] = 0;
         pokemonIndex[Constants.OpponentIndex] = 0;
+        isDefeated = new bool[] { false, false };
 
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
