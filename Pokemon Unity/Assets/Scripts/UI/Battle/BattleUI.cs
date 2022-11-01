@@ -22,7 +22,6 @@ public class BattleUI : MonoBehaviour, IBattleUI
 
     private void Awake()
     {
-        print("awaake");
         stats = new PokemonStatsUI[] { playerStats, opponentStats };
         pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
@@ -93,9 +92,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
     }
 
     public void SetMoveSelectionActive(bool active) => moveSelection.gameObject.SetActive(active);
+    public void RefreshMove(Move move) => moveSelection.RefreshElement(move.index);
     public void SetBattleMenuActive(bool active) => battleMenu.gameObject.SetActive(active);
-    public void SetPokemonSwitchSelectionActive(bool active, bool forceSelection)
-    {
-        pokemonSwitchSelection.gameObject.SetActive(active);
-    }
+    public void SetPokemonSwitchSelectionActive(bool active, bool forceSelection) => pokemonSwitchSelection.gameObject.SetActive(active);
 }

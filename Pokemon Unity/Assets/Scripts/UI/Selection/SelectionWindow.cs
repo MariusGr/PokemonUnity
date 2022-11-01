@@ -16,6 +16,11 @@ public abstract class SelectionWindow : MonoBehaviour
         SelectElement(0);
     }
 
+    virtual public void RefreshElement(int index)
+    {
+        if (index > -1) elements[index].Refresh();
+    }
+
     virtual protected bool ProcessInput()
     {
         if (Input.GetButtonDown("Submit"))

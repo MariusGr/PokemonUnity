@@ -140,11 +140,12 @@ public class BattleManager : MonoBehaviour, IBattleManager
                     // Get player move and perform moves from both sides
                     playerMove = null;
                     goBack = false;
-                    yield return GetMovePlayer((choosenMove, back) =>
-                    {
-                        playerMove = choosenMove;
-                        goBack = back;
-                    });
+                    while(playerMove is null && !goBack)
+                        yield return GetMovePlayer((choosenMove, back) =>
+                        {
+                            playerMove = choosenMove;
+                            goBack = back;
+                        });
 
                     // Only continue with battle if player did not want to go back
                     if (!goBack) break;
@@ -241,6 +242,13 @@ public class BattleManager : MonoBehaviour, IBattleManager
         yield return new WaitUntil(() => choosenMove != null || goBack);
         ui.SetMoveSelectionActive(false);
         UserChooseMoveEvent -= action;
+
+        if (choosenMove.pp < 1)
+        {
+            choosenMove = null;
+            yield return dialogBox.DrawText("Keine AP übrig!", DialogBoxContinueMode.User, true);
+        }
+
         callback(choosenMove, goBack);
     }
 
@@ -301,6 +309,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         Pokemon attackerPokemon = GeActivePokemon(attacker);
         Pokemon targetPokemon = GeActivePokemon(target);
         move.DecrementPP();
+        ui.RefreshMove(move);
 
         // Play attack animation
         string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);

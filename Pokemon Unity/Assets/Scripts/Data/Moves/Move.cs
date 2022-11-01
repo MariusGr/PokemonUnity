@@ -70,8 +70,7 @@ public class Move
 
     public void DecrementPP()
     {
-        if (data.maxPP > 0)
-            pp--;
+        pp = data.maxPP > 0 ? Math.Max(0, pp - 1) : pp;
     }
 
     public void ReplenishPP() => pp = data.maxPP;

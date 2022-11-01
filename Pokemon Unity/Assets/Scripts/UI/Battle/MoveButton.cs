@@ -13,6 +13,12 @@ public class MoveButton : SelectableImage
 
     public Move move { get; private set; }
 
+    public override void Refresh()
+    {
+        textPP.text = $"{move.pp}/{move.data.maxPP}";
+        base.Refresh();
+    }
+
     override public void AssignElement(object element)
     {
         Move move = (Move) element;
@@ -21,10 +27,10 @@ public class MoveButton : SelectableImage
         imageType.enabled = true;
         imageBackground.color = Color.white;
         textName.text = move.data.fullName;
-        textPP.text = $"{move.pp}/{move.data.maxPP}";
         imageType.sprite = move.data.pokeType.titleSprite;
         imageCover.color = move.data.pokeType.color;
 
+        Refresh();
         base.AssignElement(element);
     }
 

@@ -24,8 +24,7 @@ MonoBehaviour:
   defense: 50
   speed: 55
   levelToMoveDataMap:
-    keys: 000000000100000002000000
+    keys: 0000000001000000
     values:
-    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
     - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
     - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
