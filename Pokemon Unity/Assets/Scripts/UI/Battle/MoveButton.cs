@@ -13,13 +13,10 @@ public class MoveButton : SelectableImage
 
     public Move move { get; private set; }
 
-    private void Awake() => Initialize();
-
     override public void AssignElement(object element)
     {
         Move move = (Move) element;
         this.move = move;
-        index = move.index;
         imageCover.enabled = true;
         imageType.enabled = true;
         imageBackground.color = Color.white;

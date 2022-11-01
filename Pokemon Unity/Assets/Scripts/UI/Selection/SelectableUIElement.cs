@@ -7,9 +7,10 @@ public abstract class SelectableUIElement : MonoBehaviour
 {
     [SerializeField] InspectorFriendlySerializableDictionary<Direction, SelectableUIElement> neighbours;
 
-    [HideInInspector] public int index;
+    public int index { get; private set; }
     public bool assigned { get; private set; } = false;
 
+    public virtual void Initialize(int index) => this.index = index;
     public SelectableUIElement GetNeighbour(Direction direction)
         => neighbours.ContainsKey(direction) && neighbours[direction].assigned ? neighbours[direction] : null;
     public virtual void AssignNone() => assigned = false;

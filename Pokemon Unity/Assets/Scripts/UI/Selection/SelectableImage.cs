@@ -10,7 +10,12 @@ public abstract class SelectableImage : SelectableUIElement
 
     private Sprite spriteBefore;
 
-    protected void Initialize() => spriteBefore = image.sprite;
+    public override void Initialize(int index)
+    {
+        spriteBefore = image.sprite;
+        base.Initialize(index);
+    }
+
     public override void Select() => image.sprite = selectedSprite;
     public override void Deselect() => image.sprite = spriteBefore;
 }

@@ -12,7 +12,7 @@ public abstract class SelectionWindow : MonoBehaviour
     virtual public void Initialize()
     {
         for (int i = 0; i < elements.Length; i++)
-            elements[i].index = i;
+            elements[i].Initialize(i);
         SelectElement(0);
     }
 
