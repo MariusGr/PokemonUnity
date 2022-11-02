@@ -10,6 +10,7 @@ public class PokemonData : ScriptableObject
     public string description;
     public Sprite frontSprite;
     public Sprite backSprite;
+    public Sprite[] icons;
     public PokemonTypeData[] pokemonTypes;
     //public PokemonData evolution;
     public EncounterRarity encounterRarity;

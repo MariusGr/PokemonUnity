@@ -17,6 +17,9 @@ MonoBehaviour:
   description: Hat immer Kopf aua
   frontSprite: {fileID: 21300000, guid: f5abdfc3f18024305a95efb37fceeb1a, type: 3}
   backSprite: {fileID: 21300000, guid: e8ebe9f1c3781354799f47541bda2512, type: 3}
+  icons:
+  - {fileID: -5320860673121723558, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
+  - {fileID: -5776730608683299111, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
   pokemonTypes: []
   encounterRarity: 87
   maxHp: 50
