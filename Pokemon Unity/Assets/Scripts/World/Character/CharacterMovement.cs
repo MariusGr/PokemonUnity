@@ -49,6 +49,9 @@ public class CharacterMovement : MonoBehaviour
         moving = false;
     }
 
+    public void ProcessMovement(Direction direction, bool sprinting = false, bool checkPositionEvents = true)
+        => ProcessMovement(new GridVector(direction), sprinting, checkPositionEvents);
+
     public void ProcessMovement(GridVector direction, bool sprinting = false, bool checkPositionEvents = true)
         => ProcessMovement(direction.x, direction.y, sprinting, checkPositionEvents);
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class BattleMenu : SelectionGraphWindow
 {
     private void Awake() => Initialize();
-    private void Update() => ProcessInput();
 
     protected override void ChooseSelectedElement()
     {

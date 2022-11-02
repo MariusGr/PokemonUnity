@@ -9,5 +9,5 @@ public interface IBattleManager : IService
     public void StartNewBattle(CharacterData playerData, NPCData opponentData, System.Func<bool, bool> npcBattleEndReactionCallback);
     public void ChooseBattleMenuOption(BattleOption option);
     public void ChoosePlayerMove(Move move, bool goBack);
-    public void ChoosePlayerPokemon(int index);
+    public void ChoosePlayerPokemon(int index, bool goBack);
 }

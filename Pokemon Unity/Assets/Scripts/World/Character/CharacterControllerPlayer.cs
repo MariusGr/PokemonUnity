@@ -2,49 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControllerPlayer : CharacterControllerBase
+public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 {
-    bool paused = false;
-
     public PlayerData characterData;
     override public CharacterData CharacterData => characterData;
 
-    void Start()
+    InputData input = new InputData();
+
+    private void Start()
     {
-        EventManager.Instance.PauseEvent += Pause;
-        EventManager.Instance.UnpauseEvent += Unpause;
+        InputManager.Instance.Register(this);
     }
 
-    void Update()
+    private void Update()
     {
-        if (!paused)
-        {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
-            sprinting = Input.GetButton("Sprint");
-
-            if (Input.GetButtonDown("Submit"))
-                character.TryInteract();
-        }
-        else
-        {
-            horizontal = 0;
-            vertical = 0;
-            sprinting = false;
-        }
-
-        character.Movement.ProcessMovement(horizontal, vertical, sprinting);
+        character.Movement.ProcessMovement(input.digitalPad.heldDown, input.chancel.heldDown);
     }
 
-    private void Pause()
+    public bool ProcessInput(InputData input)
     {
-        paused = true;
-        print("Pause");
-    }
+        this.input = input;
 
-    private void Unpause()
-    {
-        paused = false;
-        print("Unpause");
+        if (input.submit.pressed)
+            character.TryInteract();
+
+        return false;
     }
 }

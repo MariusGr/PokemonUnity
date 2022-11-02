@@ -25,6 +25,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
     [SerializeField] private AudioClip selectClip;
 
     private bool automaticContinueBlocked = false;
+    InputData input = new InputData();
 
     private float charPerSec = 60f;
     public float scrollSpeed = 0.1f;
@@ -48,6 +49,12 @@ public class DialogBox : MonoBehaviour, IDialogBox
     {
         defaultDialogLines = Mathf.RoundToInt((dialogBoxBorder.rectTransform.sizeDelta.y - 16f) / 14f);
         defaultChoiceY = Mathf.FloorToInt(choiceBox.rectTransform.localPosition.y);
+    }
+
+    public bool ProcessInput(InputData input)
+    {
+        this.input = input;
+        return false;
     }
 
     public void Continue() => automaticContinueBlocked = false;
@@ -80,21 +87,13 @@ public class DialogBox : MonoBehaviour, IDialogBox
         return StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish));
     }
 
-    public Coroutine DrawTextPausing(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
-    {
-        Open();
-        return StartCoroutine(DrawStringsRoutinePausing(text, continueMode, closeAfterFinish));
-    }
-
-    IEnumerator DrawStringsRoutinePausing(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
-    {
-        Open();
-        yield return StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish));
-    }
-
     IEnumerator DrawStringsRoutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
         DrawDialogBox();
+
+        if (continueMode == DialogBoxContinueMode.User)
+            InputManager.Instance.Register(this);
+
         for (int i = 0; i < text.Length; i++)
         {
             print(automaticContinueBlocked);
@@ -103,7 +102,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
             yield return StartCoroutine(DrawTextRoutine(text[i]));
             if (continueMode == DialogBoxContinueMode.User)
             {
-                while (!Input.GetButtonDown("Submit") && !Input.GetButtonDown("Back"))
+                while (!input.submit.pressed && !input.chancel.pressed)
                     yield return null;
             }
             else if (continueMode == DialogBoxContinueMode.Automatic && i < text.Length - 1)
@@ -112,6 +111,10 @@ public class DialogBox : MonoBehaviour, IDialogBox
             else
                 yield return new WaitWhile(() => automaticContinueBlocked);
         }
+
+        if (continueMode == DialogBoxContinueMode.User)
+            InputManager.Instance.Unregister(this);
+
         if (closeAfterFinish)
             Close();
     }

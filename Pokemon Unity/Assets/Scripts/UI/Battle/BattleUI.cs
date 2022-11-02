@@ -92,8 +92,13 @@ public class BattleUI : MonoBehaviour, IBattleUI
         return sprite.IsPlayingAnimation;
     }
 
-    public void SetMoveSelectionActive(bool active) => moveSelection.gameObject.SetActive(active);
+    public void OpenMoveSelection() => moveSelection.Open();
+    public void OpenBattleMenu() => battleMenu.Open();
+    public void OpenPokemonSwitchSelection(bool forceSelection) => pokemonSwitchSelection.Open();
+
+    public void CloseMoveSelection() => moveSelection.Close();
+    public void CloseBattleMenu() => battleMenu.Close();
+    public void ClosePokemonSwitchSelection() => pokemonSwitchSelection.Close();
+
     public void RefreshMove(Move move) => moveSelection.RefreshElement(move.index);
-    public void SetBattleMenuActive(bool active) => battleMenu.gameObject.SetActive(active);
-    public void SetPokemonSwitchSelectionActive(bool active, bool forceSelection) => pokemonSwitchSelection.gameObject.SetActive(active);
 }

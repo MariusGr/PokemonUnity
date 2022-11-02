@@ -20,6 +20,11 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
         iconStartPosistion = icon.transform.localPosition;
     }
 
+    private void OnEnable()
+    {
+        StartCoroutine(IconAnimation());
+    }
+
     public override void Initialize(int index)
     {
         base.Initialize(index);
@@ -30,7 +35,6 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
     public override void Refresh()
     {
         base.Refresh();
-        iconOffset = Vector3.zero;
         item.SetActive(false);
         if (!(animation is null))
             StopCoroutine(animation);
@@ -45,7 +49,6 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
         spriteBefore = backgroundDefault;
         selectedSprite = backgroundDefaultSelected;
         image.sprite = currentSprite;
-        StartCoroutine(IconAnimation());
     }
 
     public void SetToFainted()

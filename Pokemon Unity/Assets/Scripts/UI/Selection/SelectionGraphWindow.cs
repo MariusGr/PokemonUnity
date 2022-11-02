@@ -12,31 +12,14 @@ public abstract class SelectionGraphWindow : SelectionWindow
         base.Initialize();
     }
 
-    protected override bool ProcessInput()
+    override public bool ProcessInput(InputData input)
     {
-        if(!base.ProcessInput())
-        {
-            if (Input.GetButtonDown("Right"))
+        if(!base.ProcessInput(input))
+            if (input.digitalPad.pressed != Direction.None)
             {
-                SelectElement(selectedElement.GetNeighbour(Direction.Right));
+                SelectElement(selectedElement.GetNeighbour(input.digitalPad.pressed));
                 return true;
             }
-            if (Input.GetButtonDown("Left"))
-            {
-                SelectElement(selectedElement.GetNeighbour(Direction.Left));
-                return true;
-            }
-            if (Input.GetButtonDown("Up"))
-            {
-                SelectElement(selectedElement.GetNeighbour(Direction.Up));
-                return true;
-            }
-            if (Input.GetButtonDown("Down"))
-            {
-                SelectElement(selectedElement.GetNeighbour(Direction.Down));
-                return true;
-            }
-        }
 
         return false;
     }

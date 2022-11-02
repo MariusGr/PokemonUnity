@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class PokemonSwitchSelection : SelectionGraphWindow
 {
-    private void Update() => ProcessInput();
-    protected override void ChooseSelectedElement() => Services.Get<IBattleManager>().ChoosePlayerPokemon((selectedElement).index);
+    protected override void ChooseSelectedElement() => Services.Get<IBattleManager>().ChoosePlayerPokemon((selectedElement).index, false);
+    protected override void GoBack() => Services.Get<IBattleManager>().ChoosePlayerPokemon(-1, true);
 }
