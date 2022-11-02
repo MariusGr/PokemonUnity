@@ -3,23 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
 public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
 {
-    [SerializeField] Image background;
-    [SerializeField] Sprite backgroundDefault;
+    Sprite backgroundDefault;
+    Sprite backgroundDefaultSelected;
+    [SerializeField] Sprite backgroundFaint;
+    [SerializeField] Sprite backgroundFaintSelected;
 
-    public void Awake()
+    public override void Initialize(int index)
     {
-        SetBackgroundToDefault();
+        base.Initialize(index);
+        backgroundDefault = spriteBefore;
+        backgroundDefaultSelected = selectedSprite;
     }
 
-    public void SetBackgroundToDefault() => background.sprite = backgroundDefault;
-
-#if (UNITY_EDITOR)
-    private void Update()
+    public override void Refresh()
     {
-        SetBackgroundToDefault();
+        base.Refresh();
+        if (pokemon.isFainted)
+            SetBackgroundToFainted();
+        else
+            SetBackgroundToDefault();
     }
-#endif
+
+    public void SetBackgroundToDefault()
+    {
+        spriteBefore = backgroundDefault;
+        selectedSprite = backgroundDefaultSelected;
+        image.sprite = currentSprite;
+    }
+
+    public void SetBackgroundToFainted()
+    {
+        spriteBefore = backgroundFaint;
+        selectedSprite = backgroundFaintSelected;
+        image.sprite = currentSprite;
+    }
 }

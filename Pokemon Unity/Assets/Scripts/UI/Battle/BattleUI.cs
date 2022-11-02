@@ -32,6 +32,9 @@ public class BattleUI : MonoBehaviour, IBattleUI
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
+
+        pokemonSwitchSelection.Initialize();
+        pokemonSwitchSelection.AssignElements(playerData.pokemons);
     }
 
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
@@ -51,9 +54,7 @@ public class BattleUI : MonoBehaviour, IBattleUI
     }
 
     public void Close() => gameObject.SetActive(false);
-        
     public void RefreshHP(int character) => stats[character].RefreshHP();
-
     public System.Func<bool> RefreshHPAnimated(int character) => stats[character].RefreshHPAnimated(hpRefreshSpeed);
 
     public System.Func<bool> PlayMoveAnimation(int attacker, Move move)

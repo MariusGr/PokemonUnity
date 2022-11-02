@@ -35,7 +35,7 @@ public class PokemonStatsUI : SelectableImage
         base.AssignNone();
     }
 
-    virtual public void Refresh()
+    override public void Refresh()
     {
         nameText.text = pokemon.Name;
         level.text = pokemon.level.ToString();

@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public abstract class SelectableImage : SelectableUIElement
 {
-    [SerializeField] Image image;
-    [SerializeField] Sprite selectedSprite;
+    [SerializeField] protected Image image;
+    [SerializeField] protected Sprite selectedSprite;
 
-    private Sprite spriteBefore;
+    protected Sprite spriteBefore;
+    protected Sprite currentSprite => selected ? selectedSprite : spriteBefore;
 
     public override void Initialize(int index)
     {
@@ -16,6 +17,15 @@ public abstract class SelectableImage : SelectableUIElement
         base.Initialize(index);
     }
 
-    public override void Select() => image.sprite = selectedSprite;
-    public override void Deselect() => image.sprite = spriteBefore;
+    public override void Select()
+    {
+        image.sprite = selectedSprite;
+        base.Select();
+    }
+
+    public override void Deselect()
+    {
+        image.sprite = spriteBefore;
+        base.Deselect();
+    }
 }

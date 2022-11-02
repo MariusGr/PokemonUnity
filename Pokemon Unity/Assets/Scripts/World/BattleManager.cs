@@ -134,7 +134,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 }
                 else if (battleOption == BattleOption.PokemonSwitch)
                 {
-                    //TODO
+                    yield return GetNextPokemonPlayer();
                 }
                 else
                 {
@@ -257,12 +257,12 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private IEnumerator ChooseNextPokemon(int characterIndex)
     {
         if (characterIndex == Constants.OpponentIndex)
-            ChooseNextPokemonOpponent();
+            GetNextPokemonOpponent();
         else
-            yield return ChooseNextPokemonPlayer();
+            yield return GetNextPokemonPlayer();
     }
 
-    private void ChooseNextPokemonOpponent()
+    private void GetNextPokemonOpponent()
     {
         for (int i = 0; i < opponentData.pokemons.Length; i++)
         {
@@ -274,7 +274,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         }
     }
 
-    private IEnumerator ChooseNextPokemonPlayer()
+    private IEnumerator GetNextPokemonPlayer()
     {
         ui.SetPokemonSwitchSelectionActive(true, true);
 

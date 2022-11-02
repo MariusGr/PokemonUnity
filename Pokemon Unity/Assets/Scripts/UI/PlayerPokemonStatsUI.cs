@@ -9,6 +9,11 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
     [SerializeField] ShadowedText hp;
     [SerializeField] ShadowedText maxHP;
 
+    public override void Refresh()
+    {
+        base.Refresh();
+    }
+
     public override void RefreshHP()
     {
         base.RefreshHP();

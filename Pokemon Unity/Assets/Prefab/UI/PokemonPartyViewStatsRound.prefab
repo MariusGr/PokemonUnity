@@ -7,6 +7,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6186461345723361113, guid: 6a846b2f6f9d44594b321d292b3d25f0,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 28f349551ca9bc443ae1c85285577226,
+        type: 3}
     - target: {fileID: 6186461345723361190, guid: 6a846b2f6f9d44594b321d292b3d25f0,
         type: 3}
       propertyPath: m_Pivot.x
@@ -119,9 +125,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6422445261687522717, guid: 6a846b2f6f9d44594b321d292b3d25f0,
         type: 3}
+      propertyPath: selectedSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 59336be6a167f2e46b5d6dd0ee4cbd97,
+        type: 3}
+    - target: {fileID: 6422445261687522717, guid: 6a846b2f6f9d44594b321d292b3d25f0,
+        type: 3}
+      propertyPath: backgroundFaint
+      value: 
+      objectReference: {fileID: 21300000, guid: 518b68144a3dbd84ea5b4f20ba16d926,
+        type: 3}
+    - target: {fileID: 6422445261687522717, guid: 6a846b2f6f9d44594b321d292b3d25f0,
+        type: 3}
       propertyPath: backgroundDefault
       value: 
       objectReference: {fileID: 21300000, guid: 28f349551ca9bc443ae1c85285577226,
+        type: 3}
+    - target: {fileID: 6422445261687522717, guid: 6a846b2f6f9d44594b321d292b3d25f0,
+        type: 3}
+      propertyPath: backgroundFaintSelected
+      value: 
+      objectReference: {fileID: 21300000, guid: e20c8fc762caa69488d92e839529bd0b,
         type: 3}
     - target: {fileID: 9170850735083363622, guid: 6a846b2f6f9d44594b321d292b3d25f0,
         type: 3}

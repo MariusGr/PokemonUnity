@@ -40,7 +40,7 @@ public abstract class SelectionWindow : MonoBehaviour
     {
         for (int i = 0; i < elements.Length; i++)
             this.elements[i].AssignElement(elements[i]);
-        for (int i = elements.Length; i < 4; i++)
+        for (int i = elements.Length; i < this.elements.Length; i++)
             this.elements[i].AssignNone();
     }
 
