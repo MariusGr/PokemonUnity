@@ -89,7 +89,7 @@ public class Pokemon
     public float hpNormalized => (float)hp / maxHp;
     public float xpNormalized => xp / nextLevelXp;
 
-    public string Name => nickname is null || nickname.Length < 1 ? data.fullName : nickname;
+    public string Name => nickname is null || nickname.Length < 1 ? data.fullName.ToUpper() : nickname;
     public Gender gender;
 
     int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
