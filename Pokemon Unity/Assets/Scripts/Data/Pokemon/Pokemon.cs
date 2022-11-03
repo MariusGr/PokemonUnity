@@ -65,11 +65,11 @@ public class Pokemon
 
     public int level;
     // TODO increase stats with level
-    public int attack => BasteStatToStat(data.attack);
-    public int specialAttack => BasteStatToStat(data.specialAttack);
-    public int defense => BasteStatToStat(data.defense);
-    public int specialDefense => BasteStatToStat(data.specialDefense);
-    public int speed => BasteStatToStat(data.speed);
+    public int attack => (int)(BasteStatToStat(data.attack) * stageAttack.multiplier);
+    public int specialAttack => (int)(BasteStatToStat(data.specialAttack) * stageSpecialAttack.multiplier);
+    public int defense => (int)(BasteStatToStat(data.defense) * stageDefense.multiplier);
+    public int specialDefense => (int)(BasteStatToStat(data.specialDefense) * stageSpecialDefense.multiplier);
+    public int speed => (int)(BasteStatToStat(data.speed) * stageSpeed.multiplier);
     public int maxHp => BasteStatToStat(data.maxHp);
 
     public List<Move> moves;
