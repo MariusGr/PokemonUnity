@@ -25,6 +25,18 @@ public class Move
 
     public void SetPokemon(Pokemon pokemon) => this.pokemon = pokemon;
 
+    // https://bulbapedia.bulbagarden.net/wiki/Accuracy
+    public bool TryHit(Pokemon attacker, Pokemon target)
+    {
+        if (data.accuracy < 0)
+            return true;
+
+        float adjustedStages = attacker.stageAccuracy.GetMultiplier(substractStage: target.stageEvasion.stage);
+        int accuracyModified = (int)(data.accuracy * adjustedStages);
+        Debug.Log($"accuracy: {data.accuracy}, adjustedStages: {adjustedStages}, accuracyModified: {accuracyModified}");
+        return UnityEngine.Random.Range(0, 100) < accuracyModified;
+    }
+
     public int GetDamageAgainst(Pokemon attacker, Pokemon target, out bool critcal, out Effectiveness effectiveness)
     {
         critcal = UnityEngine.Random.value * 255f <= attacker.data.speed / 2f;
@@ -46,7 +58,7 @@ public class Move
 
         int damage = (int)Mathf.Max(
             0, Mathf.Floor(
-                ((2f * attacker.level + 2) *
+                ((.4f * attacker.level + 2) *
                 data.power *
                 attacker.attack /
                 target.defense / 50f + 2f) *

@@ -434,25 +434,35 @@ public class BattleManager : MonoBehaviour, IBattleManager
         yield return dialogBox.DrawText(usageText, DialogBoxContinueMode.Automatic);
 
         yield return new WaitForSeconds(1f);
-        yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
-        yield return new WaitForSeconds(1f);
-        yield return new WaitWhile(ui.PlayBlinkAnimation(target));
 
-        // Deal Damage to target
-        // TODO: special branch for attacks with no damage infliction
-        bool critical;
-        Effectiveness effectiveness;
-        int damage = move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
+        bool critical = false;
+        bool targetFainted = false;
+        int damage = 0;
+        Effectiveness effectiveness = Effectiveness.Normal;
 
-        bool targetFainted = targetPokemon.InflictDamage(damage);
+        if (move.TryHit(attackerPokemon, targetPokemon))
+        {
+            // Attack hit successfully
 
-        yield return new WaitWhile(ui.RefreshHPAnimated(target));
+            // Animation
+            yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
+            yield return new WaitForSeconds(1f);
+            yield return new WaitWhile(ui.PlayBlinkAnimation(target));
 
-        if (effectiveness != Effectiveness.Normal)
-            yield return dialogBox.DrawText(effectiveness, DialogBoxContinueMode.User);
+            // Deal damage
+            damage = move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
+            targetFainted = targetPokemon.InflictDamage(damage);
+            yield return new WaitWhile(ui.RefreshHPAnimated(target));
+            if (effectiveness != Effectiveness.Normal)
+                yield return dialogBox.DrawText(effectiveness, DialogBoxContinueMode.User);
+            if (critical)
+                yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
 
-        if (critical)
-            yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
+            // TODO: special branch for attacks with no damage infliction
+        }
+        else
+            // Attack failed
+            yield return dialogBox.DrawText($"Attacke von {attackingPokemonIdentifier} geht daneben!", DialogBoxContinueMode.User);
 
         // Aftermath: Faint, Poison, etc.
         if (targetFainted)
@@ -465,7 +475,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
             // Aftermath e.g. Status effects etc.
             //dialogBox.Close();
             bool attackerFainted = false;
-            if (move.data.recoil > 0)
+            if (move.data.recoil > 0 && damage > 0)
             {
                 yield return dialogBox.DrawText($"{attackingPokemonIdentifier} wird durch Rückstoß getroffen!", DialogBoxContinueMode.Automatic);
                 yield return new WaitForSeconds(1f);

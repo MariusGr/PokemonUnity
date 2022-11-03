@@ -20,7 +20,8 @@ MonoBehaviour:
   icons:
   - {fileID: -5320860673121723558, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
   - {fileID: -5776730608683299111, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
-  pokemonTypes: []
+  pokemonTypes:
+  - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
   encounterRarity: 87
   maxHp: 50
   attack: 52

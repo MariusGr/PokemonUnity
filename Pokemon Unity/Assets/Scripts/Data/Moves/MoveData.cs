@@ -9,6 +9,7 @@ public class MoveData : ScriptableObject
     public PokemonTypeData pokeType;
     public int maxPP;
     public int power;
+    public int accuracy;
 
     public AnimationClip animationClipPlayer;
     public AnimationClip animationClipOpponent;

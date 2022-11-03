@@ -96,7 +96,6 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
         for (int i = 0; i < text.Length; i++)
         {
-            print(automaticContinueBlocked);
             if (continueMode == DialogBoxContinueMode.External)
                 automaticContinueBlocked = true;
             yield return StartCoroutine(DrawTextRoutine(text[i]));

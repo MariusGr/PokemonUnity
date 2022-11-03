@@ -6,6 +6,60 @@ using UnityEngine;
 [Serializable]
 public class Pokemon
 {
+    //https://bulbapedia.bulbagarden.net/wiki/Stat#Stage_multipliers
+    private static readonly float[] statStageMultipliers = new float[]
+    {
+        2f / 8f,
+        2f / 7f,
+        2f / 6f,
+        2f / 5f,
+        2f / 4f,
+        2f / 3f,
+        1f,
+        3f / 2f,
+        4f / 2f,
+        5f / 2f,
+        6f / 2f,
+        7f / 2f,
+        8f / 2f,
+    };
+    private static float[] accuracyStageMultipliers = new float[]
+    {
+        33f / 100f,
+        36f / 100f,
+        43f / 100f,
+        50f / 100f,
+        60f / 100f,
+        75f / 100f,
+        1f,
+        133f / 100f,
+        166f / 100f,
+        200f / 100f,
+        250f / 100f,
+        266f / 100f,
+        300f / 100f,
+    };
+
+    public class StageMultiplier
+    {
+        private float[] multipliers;
+        private int _stage;
+        public int stage
+        {
+            get => _stage - 6;
+            set => _stage = Math.Max(0, Math.Min(multipliers.Length, value + 6));
+        }
+        public float multiplier => multipliers[_stage];
+
+        public StageMultiplier(float[] multipliers)
+        {
+            _stage = 6;
+            this.multipliers = multipliers;
+        }
+
+        public float GetMultiplier(int substractStage = 0) => multipliers[Math.Max(0, Math.Min(multipliers.Length, stage - substractStage + 6))];
+    }
+
     public PokemonData data;
     public string nickname = null;
 
@@ -22,6 +76,13 @@ public class Pokemon
     public int nextLevelXp = 1;
     public Status status = Status.None;
     public bool isFainted => hp < 1;
+    public StageMultiplier stageAttack;
+    public StageMultiplier stageSpecialAttack;
+    public StageMultiplier stageDefense;
+    public StageMultiplier stageSpecialDefense;
+    public StageMultiplier stageSpeed;
+    public StageMultiplier stageAccuracy;
+    public StageMultiplier stageEvasion;
 
     public float hpNormalized => (float)hp / maxHp;
     public float xpNormalized => xp / nextLevelXp;
@@ -44,6 +105,14 @@ public class Pokemon
 
     public void Initialize()
     {
+        stageAttack = new StageMultiplier(statStageMultipliers);
+        stageSpecialAttack = new StageMultiplier(statStageMultipliers);
+        stageDefense = new StageMultiplier(statStageMultipliers);
+        stageSpecialDefense = new StageMultiplier(statStageMultipliers);
+        stageSpeed = new StageMultiplier(statStageMultipliers);
+        stageAccuracy = new StageMultiplier(accuracyStageMultipliers);
+        stageEvasion = new StageMultiplier(accuracyStageMultipliers);
+
         hp = maxHp;
         moves = new List<Move>();
         foreach (int key in data.levelToMoveDataMap.keys)
