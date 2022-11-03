@@ -24,6 +24,9 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private bool[] isDefeated = new bool[] { false, false };
     private bool opponentIsWild = false;
 
+    private BattleOption playerBattleOption = BattleOption.None;
+    private BattleOption opponentBattleOption = BattleOption.None;
+
     public delegate void UserBattleOptionChooseEventHandler(BattleOption option);
     public delegate void UserMoveChooseEventHandler(Move move, bool goBack);
     public delegate void UserPokemonChooseEventHandler(int index, bool goBack);
@@ -68,6 +71,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         pokemonIndex[Constants.PlayerIndex] = 0;
         isDefeated = new bool[] { false, false };
 
+        ui.Open();
         ui.Initialize(this.playerData, playerPokemon, opponentPokemon);
 
         StartCoroutine(RoundCoroutine(encounterEndtionCallback));
@@ -88,6 +92,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         pokemonIndex[Constants.OpponentIndex] = 0;
         isDefeated = new bool[] { false, false };
 
+        ui.Open();
         ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
 
         StartCoroutine(RoundCoroutine(npcBattleEndReactionCallback));
@@ -111,11 +116,11 @@ public class BattleManager : MonoBehaviour, IBattleManager
         while (true)
         {
             // Get Decisions
-            BattleOption opponentBattleOption = BattleOption.None;
+            opponentBattleOption = BattleOption.None;
             Move opponentMove;
             int opponentPokemonIndex = -1;
             GetDecisionOpponent(out opponentBattleOption, out opponentMove);
-            BattleOption playerBattleOption = BattleOption.None;
+            playerBattleOption = BattleOption.None;
             Move playerMove = null;
             int playerPokemonIndex = -1;
             yield return GetDecisionPlayer((battleOption, move, index) =>
@@ -136,14 +141,16 @@ public class BattleManager : MonoBehaviour, IBattleManager
                     yield return playerCoroutine;
                     if (BattleHasEnded())
                         break;
-                    yield return opponentCoroutine;
+                    if (opponentBattleOption == BattleOption.Fight)
+                        yield return opponentCoroutine;
                 }
                 else
                 {
                     yield return opponentCoroutine;
                     if (BattleHasEnded())
                         break;
-                    yield return playerCoroutine;
+                    if (playerBattleOption == BattleOption.Fight)
+                        yield return playerCoroutine;
                 }
 
                 if (BattleHasEnded())
@@ -198,14 +205,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
         callback(choosenOption);
     }
 
-    private void GetNextPokemon(int character)
-    {
-        if (character == Constants.OpponentIndex)
-        {
-
-        }
-    }
-
     private void GetDecisionOpponent(out BattleOption battleOption, out Move opponentMove)
     {
         // TODO: implement more intelligent decision making
@@ -218,7 +217,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         bool goBack = false;
         BattleOption battleOption;
         Move playerMove = null;
-        int pokemonIndex = -1;
+        int choosenPokemon = -1;
 
         // Battle can only continue if the user chose a move or runs from battle
         while (true)
@@ -243,7 +242,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 yield return GetNextPokemonPlayer(
                     (index, back) =>
                     {
-                        pokemonIndex = index;
+                        choosenPokemon = index;
                         goBack = back;
                     });
                 if (!goBack) break;
@@ -266,7 +265,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
             }
         }
 
-        callback(battleOption, playerMove, pokemonIndex);
+        callback(battleOption, playerMove, choosenPokemon);
     }
 
     private Move GetMoveOpponent()
@@ -312,27 +311,36 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private IEnumerator ChooseNextPokemon(int characterIndex)
     {
         if (characterIndex == Constants.OpponentIndex)
-            GetNextPokemonOpponent();
-        //else
-        //    yield return GetNextPokemonPlayer();
-        yield return null;
+            yield return GetNextPokemonOpponent();
+        else
+        {
+            int choosenPokemon = -1;
+            yield return GetNextPokemonPlayer(
+                (index, back) =>
+                {
+                    choosenPokemon = index;
+                }, true);
+            yield return ChoosePokemon(characterIndex, choosenPokemon);
+        }
     }
 
-    private void GetNextPokemonOpponent()
+    private IEnumerator GetNextPokemonOpponent()
     {
+        opponentBattleOption = BattleOption.None;
         for (int i = 0; i < opponentData.pokemons.Length; i++)
         {
             if (!opponentData.pokemons[i].isFainted)
             {
-                ChoosePokemon(Constants.OpponentIndex, i);
-                return;
+                yield return ChoosePokemon(Constants.OpponentIndex, i);
+                break;
             }
         }
     }
 
-    private IEnumerator GetNextPokemonPlayer(Action<int, bool> callback)
+    private IEnumerator GetNextPokemonPlayer(Action<int, bool> callback, bool forceSelection = false)
     {
-        ui.OpenPokemonSwitchSelection(true);
+        playerBattleOption = BattleOption.None;
+        ui.OpenPokemonSwitchSelection(forceSelection);
 
         int choosenPokemonIndex = -1;
         bool goBack = false;
@@ -346,16 +354,30 @@ public class BattleManager : MonoBehaviour, IBattleManager
         print("wait for player to choose pkmn");
         while(true)
         {
+            dialogBox.DrawText("Welches Pokemon wirst du als nächstes einsetzen?", DialogBoxContinueMode.External);
+
             yield return new WaitUntil(() => choosenPokemonIndex > -1 || goBack);
-            if (choosenPokemonIndex != pokemonIndex[Constants.PlayerIndex] || goBack)
+
+            if (goBack)
                 break;
-            else
+
+            if (playerData.pokemons[choosenPokemonIndex].isFainted)
             {
                 choosenPokemonIndex = -1;
-                yield return dialogBox.DrawText($"{playerPokemon.Name} kämpft bereits!", DialogBoxContinueMode.User, true);
+                yield return dialogBox.DrawText($"{playerPokemon.Name}\nist K.O.!", DialogBoxContinueMode.User, true);
+                continue;
             }
+            else if (choosenPokemonIndex == pokemonIndex[Constants.PlayerIndex])
+            {
+                choosenPokemonIndex = -1;
+                yield return dialogBox.DrawText($"{playerPokemon.Name}\nkämpft bereits!", DialogBoxContinueMode.User, true);
+            }
+            else
+                break;
         }
 
+        dialogBox.Continue();
+        dialogBox.Close();
         ui.ClosePokemonSwitchSelection();
         UserChoosePokemonEvent -= action;
 
@@ -437,10 +459,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
         {
             // target pokemon fainted
             yield return Faint(target, targetPokemonIdentifier);
-            if (!isDefeated[target])
-            {
-                // target character must choose new pokemon
-            }
         }
         else
         {
@@ -461,10 +479,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
             if (attackerFainted)
             {
                 yield return Faint(attacker, attackingPokemonIdentifier);
-                if (!isDefeated[attacker])
-                {
-                    // attacker character must choose new pokemon
-                }
             }
         }
 
@@ -477,17 +491,15 @@ public class BattleManager : MonoBehaviour, IBattleManager
             dialogBox.Close();
     }
 
-    private IEnumerator Faint(int index, string pokemonIdentifier)
+    private IEnumerator Faint(int characterIndex, string pokemonIdentifier)
     {
         yield return dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
-        yield return new WaitWhile(ui.PlayFaintAnimation(index));
+        yield return new WaitWhile(ui.PlayFaintAnimation(characterIndex));
 
-        bool characterHasBeenDefeated = CharacterHasBeenDefeated(index, characterData[index]);
-        isDefeated[index] = characterHasBeenDefeated;
+        bool characterHasBeenDefeated = CharacterHasBeenDefeated(characterIndex, characterData[characterIndex]);
+        isDefeated[characterIndex] = characterHasBeenDefeated;
         if (!characterHasBeenDefeated)
-        {
-            // target character must choose new pokemon
-        }
+            yield return ChooseNextPokemon(characterIndex);
     }
 
     private IEnumerator Defeat(int loserIndex, CharacterData winner, CharacterData loser)
@@ -525,8 +537,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 NPCData npc = (NPCData)winner;
                 yield return dialogBox.DrawText(new string[]
                 {
-                            npc.battleWinText,
-                            $"Dir werden {loser.GetPriceMoneyFormatted()} abgezogen.",
+                    npc.battleWinText,
+                    $"Dir werden {loser.GetPriceMoneyFormatted()} abgezogen.",
                 }, DialogBoxContinueMode.User);
                 playerData.TakeMoney(loser.GetPriceMoney());
                 winner.HealAllPokemons();

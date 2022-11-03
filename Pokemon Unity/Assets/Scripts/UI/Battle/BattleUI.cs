@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleUI : MonoBehaviour, IBattleUI
+public class BattleUI : OpenedInputConsumer, IBattleUI
 {
     [SerializeField] private BattleMenu battleMenu;
     [SerializeField] private MoveSelectionUI moveSelection;
@@ -28,7 +28,6 @@ public class BattleUI : MonoBehaviour, IBattleUI
 
     public void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
-        gameObject.SetActive(true);
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
@@ -53,7 +52,6 @@ public class BattleUI : MonoBehaviour, IBattleUI
         Initialize(playerData, playerPokemon, opponentPokemon);
     }
 
-    public void Close() => gameObject.SetActive(false);
     public void RefreshHP(int character) => stats[character].RefreshHP();
     public System.Func<bool> RefreshHPAnimated(int character) => stats[character].RefreshHPAnimated(hpRefreshSpeed);
 
@@ -94,11 +92,12 @@ public class BattleUI : MonoBehaviour, IBattleUI
 
     public void OpenMoveSelection() => moveSelection.Open();
     public void OpenBattleMenu() => battleMenu.Open();
-    public void OpenPokemonSwitchSelection(bool forceSelection) => pokemonSwitchSelection.Open();
+    public void OpenPokemonSwitchSelection(bool forceSelection) => pokemonSwitchSelection.Open(forceSelection);
 
     public void CloseMoveSelection() => moveSelection.Close();
     public void CloseBattleMenu() => battleMenu.Close();
     public void ClosePokemonSwitchSelection() => pokemonSwitchSelection.Close();
 
     public void RefreshMove(Move move) => moveSelection.RefreshElement(move.index);
+    public override bool ProcessInput(InputData input) => false;
 }

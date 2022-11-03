@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Tackle
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
-  maxPP: 1
-  power: 1
+  maxPP: 30
+  power: 35
   animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
   animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
     type: 2}

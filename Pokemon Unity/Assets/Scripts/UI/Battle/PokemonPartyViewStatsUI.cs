@@ -23,6 +23,7 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
     private void OnEnable()
     {
         StartCoroutine(IconAnimation());
+        Refresh();
     }
 
     public override void Initialize(int index)

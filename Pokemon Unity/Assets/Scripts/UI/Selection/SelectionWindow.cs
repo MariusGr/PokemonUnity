@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class SelectionWindow : MonoBehaviour, IInputConsumer
+public abstract class SelectionWindow : OpenedInputConsumer
 {
     [SerializeField] public SelectableUIElement[] elements;
 
     private int selectedIndex = 0;
     protected SelectableUIElement selectedElement => elements[selectedIndex];
-    bool pauseInputProcessing = false;
+    bool forceSelection = false;
 
     virtual public void Initialize()
     {
@@ -17,16 +17,10 @@ public abstract class SelectionWindow : MonoBehaviour, IInputConsumer
         SelectElement(0);
     }
 
-    public void Open()
+    public void Open(bool forceSelection)
     {
-        gameObject.SetActive(true);
-        InputManager.Instance.Register(this);
-    }
-
-    public void Close()
-    {
-        gameObject.SetActive(false);
-        InputManager.Instance.Unregister(this);
+        this.forceSelection = forceSelection;
+        Open();
     }
 
     virtual public void RefreshElement(int index)
@@ -34,17 +28,14 @@ public abstract class SelectionWindow : MonoBehaviour, IInputConsumer
         if (index > -1) elements[index].Refresh();
     }
 
-    public virtual bool ProcessInput(InputData input)
+    public override bool ProcessInput(InputData input)
     {
-        if (pauseInputProcessing)
-            return false;
-
         if (input.submit.pressed)
         {
             ChooseSelectedElement();
             return true;
         }
-        if (input.chancel.pressed)
+        if (!forceSelection && input.chancel.pressed)
         {
             GoBack();
             return true;
