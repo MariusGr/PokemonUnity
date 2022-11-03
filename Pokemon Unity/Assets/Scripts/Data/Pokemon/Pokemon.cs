@@ -66,7 +66,9 @@ public class Pokemon
     public int level;
     // TODO increase stats with level
     public int attack => BasteStatToStat(data.attack);
+    public int specialAttack => BasteStatToStat(data.specialAttack);
     public int defense => BasteStatToStat(data.defense);
+    public int specialDefense => BasteStatToStat(data.specialDefense);
     public int speed => BasteStatToStat(data.speed);
     public int maxHp => BasteStatToStat(data.maxHp);
 

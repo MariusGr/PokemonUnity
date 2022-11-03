@@ -25,7 +25,9 @@ MonoBehaviour:
   encounterRarity: 87
   maxHp: 50
   attack: 52
+  specialAttack: 65
   defense: 50
+  specialDefense: 50
   speed: 55
   levelToMoveDataMap:
     keys: 0000000001000000

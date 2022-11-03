@@ -17,7 +17,9 @@ public class PokemonData : ScriptableObject
 
     public int maxHp;
     public int attack;
+    public int specialAttack;
     public int defense;
+    public int specialDefense;
     public int speed;
 
     public CollectionExtensions.IntMoveDataDictionary levelToMoveDataMap;

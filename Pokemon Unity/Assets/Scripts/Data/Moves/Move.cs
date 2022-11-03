@@ -56,16 +56,19 @@ public class Move
         else
             effectiveness = Effectiveness.Normal;
 
+        int targetDefense = data.isSpecial ? attacker.specialDefense : attacker.defense;
+        int attackerAttack = data.isSpecial ? attacker.specialAttack : attacker.attack;
+
         int damage = (int)Mathf.Max(
             0, Mathf.Floor(
                 ((.4f * attacker.level + 2) *
                 data.power *
-                attacker.attack /
-                target.defense / 50f + 2f) *
+                attackerAttack /
+                targetDefense / 50f + 2f) *
             criticalFactor * stab * effectivenessFactor)
         );
-        Debug.Log($"level: {attacker.level}, power: {data.power}, attack: {attacker.attack}," +
-            $"defense: {target.defense}, critical: {criticalFactor}, stab: {stab}, effectiveness: {effectivenessFactor}, total: {damage}");
+        Debug.Log($"level: {attacker.level}, power: {data.power}, attack: {attackerAttack}," +
+            $"defense: {targetDefense}, critical: {criticalFactor}, stab: {stab}, effectiveness: {effectivenessFactor}, total: {damage}");
 
         if (damage < 1)
             effectiveness = Effectiveness.Ineffecitve;

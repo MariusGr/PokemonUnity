@@ -10,6 +10,7 @@ public class MoveData : ScriptableObject
     public int maxPP;
     public int power;
     public int accuracy;
+    public bool isSpecial;
 
     public AnimationClip animationClipPlayer;
     public AnimationClip animationClipOpponent;
