@@ -146,8 +146,6 @@ public class CharacterMovement : MonoBehaviour
         transform.position = target + Vector3.up * transform.position.y;
         moving = false;
 
-        yield return null;
-
         if (checkPositionEvents)
             EncounterArea.CheckPositionRelatedEvents();
     }
