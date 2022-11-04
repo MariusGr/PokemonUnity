@@ -40,13 +40,6 @@ public class CharacterMovement : MonoBehaviour
         controller.Move(Vector3.down * .1f);
         LookInDirection(currentDirection);
         startDirection = CurrentDirectionVector;
-        EventManager.Instance.PauseEvent += Stop;
-    }
-
-    void Stop()
-    {
-        StopAllCoroutines();
-        moving = false;
     }
 
     public void ProcessMovement(Direction direction, bool sprinting = false, bool checkPositionEvents = true)

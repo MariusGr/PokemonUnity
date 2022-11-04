@@ -31,12 +31,10 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     public void Interact(Character player)
     {
-        EventManager.Pause();
         if (wantsToBattle && npcData.hasBeenDefeated)
         {
             character.Movement.LookInPlayerDirection();
-            EventManager.UnpauseDelayed(
-                Services.Get<IDialogBox>().DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true));
+            Services.Get<IDialogBox>().DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true);
         }
         else
         {
@@ -47,8 +45,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
             else
             {
                 character.Movement.LookInPlayerDirection();
-                EventManager.UnpauseDelayed(
-                    Services.Get<IDialogBox>().DrawText(npcData.defaultText, DialogBoxContinueMode.User, true));
+                Services.Get<IDialogBox>().DrawText(npcData.defaultText, DialogBoxContinueMode.User, true);
             }
         }
     }
@@ -83,8 +80,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         battlingNPCs.Remove(this);
 
         if (npcDefeated)
-            EventManager.UnpauseDelayed(
-                Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true));
+            Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
         else
         {
             Services.Get<IDialogBox>().Close();

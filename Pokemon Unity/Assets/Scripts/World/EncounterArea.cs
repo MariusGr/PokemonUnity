@@ -97,7 +97,6 @@ public class EncounterArea : MonoBehaviour
 
     public bool EncounterEndReaction(bool wildPokemonDefeated)
     {
-        EventManager.Unpause();
         Services.Get<IDialogBox>().Close();
         return true;
     }
