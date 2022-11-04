@@ -83,10 +83,6 @@ public class Move
         return UnityEngine.Random.value > .5f;
     }
 
-    public void DecrementPP()
-    {
-        pp = data.maxPP > 0 ? Math.Max(0, pp - 1) : pp;
-    }
-
+    public void DecrementPP() => pp = data.maxPP > 0 ? Math.Max(0, pp - 1) : pp;
     public void ReplenishPP() => pp = data.maxPP;
 }

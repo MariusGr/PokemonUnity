@@ -69,7 +69,8 @@ public class Pokemon
     public int specialAttack => (int)(BasteStatToStat(data.specialAttack) * stageSpecialAttack.multiplier);
     public int defense => (int)(BasteStatToStat(data.defense) * stageDefense.multiplier);
     public int specialDefense => (int)(BasteStatToStat(data.specialDefense) * stageSpecialDefense.multiplier);
-    public int speed => (int)(BasteStatToStat(data.speed) * stageSpeed.multiplier);
+    public int speed => (int)(speedUnmodified * stageSpeed.multiplier);
+    public int speedUnmodified => BasteStatToStat(data.speed);
     public int maxHp => BasteStatToStat(data.maxHp);
 
     public List<Move> moves;

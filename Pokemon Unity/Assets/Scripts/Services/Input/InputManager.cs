@@ -51,6 +51,7 @@ public class InputManager : MonoBehaviour
     {
         if (inputConsumers.Count > 0 && consumer == inputConsumers.Peek())
             inputConsumers.Pop();
+        consumer.ProcessInput(inputZero);
     }
 
     private void GetInputForButton(InputData.Button button, string inputName)

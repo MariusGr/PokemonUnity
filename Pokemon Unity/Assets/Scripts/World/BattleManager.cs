@@ -9,8 +9,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
     {
         None,
         ChoosingMove,
-        BatlleMenu,
-        Fled,
+        BattleMenu,
+        Ran,
         OpponentDefeated,
         PlayerDefeated,
     }
@@ -23,6 +23,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private int[] pokemonIndex = new int[] { 0, 0 };
     private bool[] isDefeated = new bool[] { false, false };
     private bool opponentIsWild = false;
+    private int runTryCount = 0;
+    private int playerRunSuccessChance => (playerPokemon.speedUnmodified * 128 / Math.Min(1, opponentPokemon.speedUnmodified) + 30 * runTryCount) % 256;
 
     private BattleOption playerBattleOption = BattleOption.None;
     private BattleOption opponentBattleOption = BattleOption.None;
@@ -58,7 +60,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
     public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, System.Func<bool, bool> encounterEndtionCallback)
     {
         print("StartNewEncounter");
-        EventManager.Pause();
         this.wildPokemon = wildPokemon;
         this.wildPokemon.Initialize();
         opponentIsWild = true;
@@ -66,6 +67,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         this.playerData = playerData;
         opponentData = null;
         characterData = new CharacterData[] { this.playerData, null };
+        runTryCount = 0;
 
         state = BattleState.ChoosingMove;
         pokemonIndex[Constants.PlayerIndex] = 0;
@@ -80,7 +82,6 @@ public class BattleManager : MonoBehaviour, IBattleManager
     public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndReactionCallback)
     {
         print("StartNewBattle");
-        EventManager.Pause();
         opponentIsWild = false;
         state = BattleState.None;
         this.playerData = playerData;
@@ -103,7 +104,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 !(characterData is null) && characterData.IsDefeated() || characterData is null
         ) || index == Constants.PlayerIndex && characterData.IsDefeated();
 
-    private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) || state.Equals(BattleState.PlayerDefeated);
+    private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) || state.Equals(BattleState.PlayerDefeated) || state.Equals(BattleState.Ran);
 
     private void EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
     {
@@ -165,10 +166,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
                     yield return ChoosePokemon(Constants.PlayerIndex, playerPokemonIndex);
                 //else if (playerBattleOption == BattleOption.Bag)
                 // TODO
-                //else if (playerBattleOption == BattleOption.Run)
-                // TODO
-                //if (BattleHasEnded())
-                //    break;
+                else if (playerBattleOption == BattleOption.Run)
+                    break;
 
                 // Secondly, perform opponent actions
                 if (opponentBattleOption == BattleOption.Fight)
@@ -183,13 +182,23 @@ public class BattleManager : MonoBehaviour, IBattleManager
         EndBattle(npcBattleEndReactionCallback);
     }
 
-    private IEnumerator TryRun()
+    private IEnumerator TryRunPlayer(Action<bool> callback)
     {
         ui.CloseBattleMenu();
-        yield return dialogBox.DrawText($"Du kannst nicht fliehen!", DialogBoxContinueMode.User);
+        runTryCount++;
+        bool success = opponentIsWild && UnityEngine.Random.Range(0, 255) <= playerRunSuccessChance;
+
+        if (success)
+        {
+            yield return dialogBox.DrawText($"Du bist entkommen!", DialogBoxContinueMode.User);
+        }
+        else
+        {
+            yield return dialogBox.DrawText($"Du kannst nicht fliehen!", DialogBoxContinueMode.User);
+        }
+
         dialogBox.Close();
-        ui.OpenBattleMenu();
-        //TODO: aus encounter fliehen - wovon hängt Erfolg ab?
+        callback(success);
     }
 
     private IEnumerator GetBattleMenuOption(Action<BattleOption> callback)
@@ -228,9 +237,15 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
             if (battleOption == BattleOption.Run)
             {
-                yield return TryRun();
-                if (BattleHasEnded())
-                    break;
+                bool successfullyRan = false;
+                yield return TryRunPlayer((success) => successfullyRan = success);
+
+                if (successfullyRan)
+                    state = BattleState.Ran;
+                else
+                    battleOption = BattleOption.None;
+
+                break;
             }
             else if (battleOption == BattleOption.Bag)
             {
