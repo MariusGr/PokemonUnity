@@ -182,20 +182,17 @@ public class BattleManager : MonoBehaviour, IBattleManager
         EndBattle(npcBattleEndReactionCallback);
     }
 
-    private IEnumerator TryRunPlayer(Action<bool> callback)
+    private IEnumerator RunPlayer() => TryRunPlayer(null, true);
+    private IEnumerator TryRunPlayer(Action<bool> callback, bool forceSuccess = false)
     {
         ui.CloseBattleMenu();
         runTryCount++;
-        bool success = opponentIsWild && UnityEngine.Random.Range(0, 255) <= playerRunSuccessChance;
+        bool success = forceSuccess || opponentIsWild && UnityEngine.Random.Range(0, 255) <= playerRunSuccessChance;
 
         if (success)
-        {
             yield return dialogBox.DrawText($"Du bist entkommen!", DialogBoxContinueMode.User);
-        }
         else
-        {
             yield return dialogBox.DrawText($"Du kannst nicht fliehen!", DialogBoxContinueMode.User);
-        }
 
         dialogBox.Close();
         callback(success);
@@ -330,6 +327,29 @@ public class BattleManager : MonoBehaviour, IBattleManager
         else
         {
             int choosenPokemon = -1;
+            if (opponentIsWild)
+            {
+                while(true)
+                {
+                    yield return dialogBox.DrawChoiceBox("Nächstes Pokemon einwechseln oder besser die Kurve kratzen?", new string[] { "Wechsel", "Flucht" });
+                    if (dialogBox.GetChosenIndex() == 1)
+                    {
+                        yield return RunPlayer();
+                        yield break;
+                    }
+                    else
+                    {
+                        bool goBack = false;
+                        yield return GetNextPokemonPlayer(
+                           (index, back) =>
+                           {
+                               goBack = back;
+                               choosenPokemon = index;
+                           });
+                    }
+                }
+            }
+
             yield return GetNextPokemonPlayer(
                 (index, back) =>
                 {

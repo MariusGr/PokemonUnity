@@ -31,6 +31,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
     public float scrollSpeed = 0.1f;
 
     public int chosenIndex;
+    public int GetChosenIndex() => chosenIndex;
 
     public int defaultChoiceWidth = 86;
     public int defaultChoiceY = 0;
@@ -86,6 +87,9 @@ public class DialogBox : MonoBehaviour, IDialogBox
         Open();
         return StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish));
     }
+
+    IEnumerator DrawStringsRoutine(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+        => DrawStringsRoutine(new string[] { text }, continueMode, closeAfterFinish);
 
     IEnumerator DrawStringsRoutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
@@ -324,9 +328,11 @@ public class DialogBox : MonoBehaviour, IDialogBox
             StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, -1, defaultChoiceY, defaultChoiceWidth));
     }
 
-    public IEnumerator DrawChoiceBox(string[] choices)
+    public Coroutine DrawChoiceBox(string text, string[] choices)
     {
-        yield return StartCoroutine(DrawChoiceBox(choices, null, -1, defaultChoiceY, defaultChoiceWidth));
+        Open();
+        DrawStringsRoutine(text, DialogBoxContinueMode.External, true);
+        return StartCoroutine(DrawChoiceBox(choices, null, -1, defaultChoiceY, defaultChoiceWidth));
     }
 
     public IEnumerator DrawChoiceBox(int startIndex)
@@ -367,14 +373,13 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     public IEnumerator DrawChoiceBox(string[] choices, string[] flavourText, int startIndex, int yPosition, int width)
     {
+        InputManager.Instance.Register(this);
+
         if (startIndex < 0)
-        {
             startIndex = choices.Length - 1;
-        }
 
         choiceBox.gameObject.SetActive(true);
         choiceBox.sprite = Resources.Load<Sprite>("Frame/choice" + PlayerPrefs.GetInt("frameStyle"));
-        choiceBox.rectTransform.localPosition = new Vector3(171 - width - 1, yPosition - 96, 0);
         choiceBox.rectTransform.sizeDelta = new Vector2(width, 16f + (14f * choices.Length));
         choiceBoxSelect.rectTransform.localPosition = new Vector3(8, 9f + (14f * startIndex), 0);
         choiceBoxText.rectTransform.sizeDelta = new Vector2(width - 30, choiceBox.rectTransform.sizeDelta.y);
@@ -396,36 +401,24 @@ public class DialogBox : MonoBehaviour, IDialogBox
         UpdateChosenIndex(startIndex, choices.Length, flavourText);
         while (!selected)
         {
-            if (Input.GetButtonDown("Select"))
+            if (input.submit.pressed)
             {
                 selected = true;
             }
-            else if (Input.GetButtonDown("Back"))
+            else if (input.chancel.pressed)
             {
                 chosenIndex = 1;
-                    //a little hack to bypass the newIndex != chosenIndex in the below method, ensuring a true return
-                if (UpdateChosenIndex(0, choices.Length, flavourText))
-                {
-                    yield return new WaitForSeconds(0.2f);
-                }
+                UpdateChosenIndex(0, choices.Length, flavourText);
                 selected = true;
             }
-            else if (Input.GetAxisRaw("Vertical") > 0)
-            {
-                if (UpdateChosenIndex(chosenIndex + 1, choices.Length, flavourText))
-                {
-                    yield return new WaitForSeconds(0.2f);
-                }
-            }
-            else if (Input.GetAxisRaw("Vertical") < 0)
-            {
-                if (UpdateChosenIndex(chosenIndex - 1, choices.Length, flavourText))
-                {
-                    yield return new WaitForSeconds(0.2f);
-                }
-            }
+            else if (input.digitalPad.pressed == Direction.Up)
+                UpdateChosenIndex(chosenIndex + 1, choices.Length, flavourText);
+            else if (input.digitalPad.pressed == Direction.Down)
+                UpdateChosenIndex(chosenIndex - 1, choices.Length, flavourText);
             yield return null;
         }
+
+        InputManager.Instance.Unregister(this);
     }
 
     private bool UpdateChosenIndex(int newIndex, int choicesLength, string[] flavourText)
