@@ -10,11 +10,11 @@ public abstract class SelectionWindow : OpenedInputConsumer
     protected SelectableUIElement selectedElement => elements[selectedIndex];
     bool forceSelection = false;
 
-    virtual public void Initialize()
+    virtual public void Initialize(int startSelection = 0)
     {
         for (int i = 0; i < elements.Length; i++)
             elements[i].Initialize(i);
-        SelectElement(0);
+        SelectElement(startSelection);
     }
 
     public void Open(bool forceSelection)

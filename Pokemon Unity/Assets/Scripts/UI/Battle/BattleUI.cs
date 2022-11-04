@@ -32,7 +32,7 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
 
-        pokemonSwitchSelection.Initialize();
+        pokemonSwitchSelection.Initialize(playerData.GetFirstAlivePokemonIndex());
         pokemonSwitchSelection.AssignElements(playerData.pokemons);
     }
 

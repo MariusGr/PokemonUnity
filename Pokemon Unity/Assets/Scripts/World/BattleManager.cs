@@ -70,7 +70,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
         runTryCount = 0;
 
         state = BattleState.ChoosingMove;
-        pokemonIndex[Constants.PlayerIndex] = 0;
+        pokemonIndex[Constants.PlayerIndex] = playerData.GetFirstAlivePokemonIndex();
         isDefeated = new bool[] { false, false };
 
         ui.Open();
@@ -89,8 +89,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
         characterData = new CharacterData[] { this.playerData, this.opponentData };
 
         state = BattleState.ChoosingMove;
-        pokemonIndex[Constants.PlayerIndex] = 0;
-        pokemonIndex[Constants.OpponentIndex] = 0;
+        pokemonIndex[Constants.PlayerIndex] = playerData.GetFirstAlivePokemonIndex();
+        pokemonIndex[Constants.OpponentIndex] = opponentData.GetFirstAlivePokemonIndex();
         isDefeated = new bool[] { false, false };
 
         ui.Open();

@@ -27,4 +27,15 @@ public abstract class CharacterData
 
     abstract public float GetPriceMoney();
     public string GetPriceMoneyFormatted() => Money.FormatMoneyToString(GetPriceMoney());
+
+    public int GetFirstAlivePokemonIndex()
+    {
+        for (int i = 0; i < pokemons.Length; i++)
+        {
+            if (!pokemons[i].isFainted)
+                return i;
+        }
+
+        return -1;
+    }
 }

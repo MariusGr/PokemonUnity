@@ -47,6 +47,7 @@ public class InputManager : MonoBehaviour
         inputConsumers.Push(consumer);
         print("Input registered: " + consumer);
     }
+
     public void Unregister(IInputConsumer consumer)
     {
         if (inputConsumers.Count > 0 && consumer == inputConsumers.Peek())
