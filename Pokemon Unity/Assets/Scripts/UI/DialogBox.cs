@@ -376,10 +376,9 @@ public class DialogBox : MonoBehaviour, IDialogBox
         InputManager.Instance.Register(this);
 
         if (startIndex < 0)
-            startIndex = choices.Length - 1;
+            startIndex = 0;
 
         choiceBox.gameObject.SetActive(true);
-        choiceBox.sprite = Resources.Load<Sprite>("Frame/choice" + PlayerPrefs.GetInt("frameStyle"));
         choiceBox.rectTransform.sizeDelta = new Vector2(width, 16f + (14f * choices.Length));
         choiceBoxSelect.rectTransform.localPosition = new Vector3(8, 9f + (14f * startIndex), 0);
         choiceBoxText.rectTransform.sizeDelta = new Vector2(width - 30, choiceBox.rectTransform.sizeDelta.y);
@@ -412,13 +411,15 @@ public class DialogBox : MonoBehaviour, IDialogBox
                 selected = true;
             }
             else if (input.digitalPad.pressed == Direction.Up)
-                UpdateChosenIndex(chosenIndex + 1, choices.Length, flavourText);
-            else if (input.digitalPad.pressed == Direction.Down)
                 UpdateChosenIndex(chosenIndex - 1, choices.Length, flavourText);
+            else if (input.digitalPad.pressed == Direction.Down)
+                UpdateChosenIndex(chosenIndex + 1, choices.Length, flavourText);
             yield return null;
         }
 
         InputManager.Instance.Unregister(this);
+        choiceBox.gameObject.SetActive(false);
+        print(chosenIndex);
     }
 
     private bool UpdateChosenIndex(int newIndex, int choicesLength, string[] flavourText)
@@ -429,7 +430,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
             return false;
         }
         //Even if new index is the same as old, set the graphics in case of needing to override modified graphics.
-        choiceBoxSelect.rectTransform.localPosition = new Vector3(8, 9f + (14f * newIndex), 0);
+        choiceBoxSelect.rectTransform.localPosition = new Vector3(8, 9f + (14f * (choicesLength - newIndex) - 14), 0);
         if (flavourText != null)
         {
             DrawDialogBox();
