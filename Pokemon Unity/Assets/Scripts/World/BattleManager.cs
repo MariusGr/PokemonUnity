@@ -182,7 +182,11 @@ public class BattleManager : MonoBehaviour, IBattleManager
         EndBattle(npcBattleEndReactionCallback);
     }
 
-    private IEnumerator RunPlayer() => TryRunPlayer(null, true);
+    private IEnumerator RunPlayer()
+    {
+        state = BattleState.Ran;
+        return TryRunPlayer(null, true);
+    }
     private IEnumerator TryRunPlayer(Action<bool> callback, bool forceSuccess = false)
     {
         ui.CloseBattleMenu();
@@ -195,7 +199,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return dialogBox.DrawText($"Du kannst nicht fliehen!", DialogBoxContinueMode.User);
 
         dialogBox.Close();
-        callback(success);
+        if (!(callback is null))
+            callback(success);
     }
 
     private IEnumerator GetBattleMenuOption(Action<BattleOption> callback)
@@ -326,36 +331,47 @@ public class BattleManager : MonoBehaviour, IBattleManager
             yield return GetNextPokemonOpponent();
         else
         {
-            int choosenPokemon = -1;
+            yield return GetNextPokemonPlayer();
+        }
+    }
+
+    private IEnumerator GetNextPokemonPlayer()
+    {
+
+        while (true)
+        {
+            int chosenOption = 0;
             if (opponentIsWild)
             {
-                while(true)
-                {
-                    yield return dialogBox.DrawChoiceBox("Nächstes Pokemon einwechseln oder besser die Kurve kratzen?", new string[] { "Wechsel", "Flucht" });
-                    if (dialogBox.GetChosenIndex() == 1)
-                    {
-                        yield return RunPlayer();
-                        yield break;
-                    }
-                    else
-                    {
-                        bool goBack = false;
-                        yield return GetNextPokemonPlayer(
-                           (index, back) =>
-                           {
-                               goBack = back;
-                               choosenPokemon = index;
-                           });
-                    }
-                }
+                print("Ask player for after faint reaction");
+                yield return dialogBox.DrawChoiceBox("Nächstes Pokemon einwechseln oder besser die Kurve kratzen?", new string[] { "Wechsel", "Flucht" });
+                print("Choosen Index  " + dialogBox.GetChosenIndex());
+                chosenOption = dialogBox.GetChosenIndex();
             }
 
-            yield return GetNextPokemonPlayer(
-                (index, back) =>
+            if (chosenOption == 1)
+            {
+                print("Player Choose Run After Faint");
+                yield return RunPlayer();
+                yield break;
+            }
+            else
+            {
+                int choosenPokemon = -1;
+                print("Player Choose Switch After Faint");
+                bool goBack = false;
+                yield return GetNextPokemonPlayer(
+                    (index, back) =>
+                    {
+                        goBack = back;
+                        choosenPokemon = index;
+                    }, !opponentIsWild);
+                if (!goBack)
                 {
-                    choosenPokemon = index;
-                }, true);
-            yield return ChoosePokemon(characterIndex, choosenPokemon);
+                    yield return ChoosePokemon(Constants.PlayerIndex, choosenPokemon);
+                    yield break;
+                }
+            }
         }
     }
 

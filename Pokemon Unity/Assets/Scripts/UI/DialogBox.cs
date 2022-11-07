@@ -328,11 +328,11 @@ public class DialogBox : MonoBehaviour, IDialogBox
             StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, -1, defaultChoiceY, defaultChoiceWidth));
     }
 
-    public Coroutine DrawChoiceBox(string text, string[] choices)
+    public Coroutine DrawChoiceBox(string text, string[] choices, int chancelIndex = -1)
     {
         Open();
-        DrawStringsRoutine(text, DialogBoxContinueMode.External, true);
-        return StartCoroutine(DrawChoiceBox(choices, null, -1, defaultChoiceY, defaultChoiceWidth));
+        StartCoroutine(DrawStringsRoutine(text, DialogBoxContinueMode.External, true));
+        return StartCoroutine(DrawChoiceBox(choices, null, -1, defaultChoiceY, defaultChoiceWidth, chancelIndex));
     }
 
     public IEnumerator DrawChoiceBox(int startIndex)
@@ -371,7 +371,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
                 defaultChoiceWidth));
     }
 
-    public IEnumerator DrawChoiceBox(string[] choices, string[] flavourText, int startIndex, int yPosition, int width)
+    public IEnumerator DrawChoiceBox(string[] choices, string[] flavourText, int startIndex, int yPosition, int width, int chancelIndex = -1)
     {
         InputManager.Instance.Register(this);
 
@@ -404,9 +404,9 @@ public class DialogBox : MonoBehaviour, IDialogBox
             {
                 selected = true;
             }
-            else if (input.chancel.pressed)
+            else if (input.chancel.pressed && chancelIndex > -1)
             {
-                chosenIndex = 1;
+                chosenIndex = chancelIndex;
                 UpdateChosenIndex(0, choices.Length, flavourText);
                 selected = true;
             }
@@ -419,7 +419,6 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
         InputManager.Instance.Unregister(this);
         choiceBox.gameObject.SetActive(false);
-        print(chosenIndex);
     }
 
     private bool UpdateChosenIndex(int newIndex, int choicesLength, string[] flavourText)
