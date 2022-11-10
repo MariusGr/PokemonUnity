@@ -557,10 +557,18 @@ public class BattleManager : MonoBehaviour, IBattleManager
         yield return dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
         yield return new WaitWhile(ui.PlayFaintAnimation(characterIndex));
 
+        if (characterIndex == Constants.OpponentIndex)
+            yield return DistributePlayerXP();
+
         bool characterHasBeenDefeated = CharacterHasBeenDefeated(characterIndex, characterData[characterIndex]);
         isDefeated[characterIndex] = characterHasBeenDefeated;
         if (!characterHasBeenDefeated)
             yield return ChooseNextPokemon(characterIndex);
+    }
+
+    private IEnumerator DistributePlayerXP()
+    {
+        float gainedXPTotal = 
     }
 
     private IEnumerator Defeat(int loserIndex, CharacterData winner, CharacterData loser)

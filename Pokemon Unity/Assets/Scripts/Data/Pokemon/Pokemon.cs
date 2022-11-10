@@ -76,6 +76,7 @@ public class Pokemon
     public List<Move> moves;
     public int hp;
     public int xp;
+    public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
     public int nextLevelXp = 1;
     public Status status = Status.None;
     public bool isFainted => hp < 1;

@@ -25,4 +25,9 @@ public class PokemonData : ScriptableObject
     public CollectionExtensions.IntMoveDataDictionary levelToMoveDataMap;
 
     public Sprite GetBattleSprite(int characterIndex) => characterIndex == Constants.PlayerIndex ? backSprite : frontSprite;
+
+    public int GetXPForLevel(int level)
+    {
+        return (int)Mathf.Pow(level, 3);
+    }
 }
