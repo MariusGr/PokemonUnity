@@ -171,4 +171,11 @@ public class Pokemon
             move.ReplenishPP();
         // TODO: HEal status effects
     }
+
+    // https://bulbapedia.bulbagarden.net/wiki/Experience
+    public int GetXPGainedFromFaint(bool opponentIsWild)
+    {
+        float a = opponentIsWild ? 1f : 1.5f;
+        return (int)((data.baseXPGain * level / 7f) * a);
+    }
 }

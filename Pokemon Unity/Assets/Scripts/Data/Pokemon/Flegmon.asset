@@ -15,5 +15,18 @@ MonoBehaviour:
   dex: 2
   fullName: Flegmon
   description: :3
-  pokemonTypes: 0400000006000000
-  evolution: {fileID: 0}
+  frontSprite: {fileID: 0}
+  backSprite: {fileID: 0}
+  icons: []
+  pokemonTypes: []
+  encounterRarity: 0
+  maxHp: 0
+  attack: 0
+  specialAttack: 0
+  defense: 0
+  specialDefense: 0
+  speed: 0
+  baseXPGain: 63
+  levelToMoveDataMap:
+    keys: 
+    values: []

@@ -24,6 +24,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private bool[] isDefeated = new bool[] { false, false };
     private bool opponentIsWild = false;
     private int runTryCount = 0;
+    private Dictionary<Pokemon, HashSet<Pokemon>> unfaintedPlayerPokemons;
     private int playerRunSuccessChance => (playerPokemon.speedUnmodified * 128 / Math.Min(1, opponentPokemon.speedUnmodified) + 30 * runTryCount) % 256;
 
     private BattleOption playerBattleOption = BattleOption.None;
@@ -57,25 +58,31 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private Pokemon GeActivePokemon(int character)
         => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
 
-    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, System.Func<bool, bool> encounterEndtionCallback)
+    private void Initialize()
     {
-        print("StartNewEncounter");
-        this.wildPokemon = wildPokemon;
-        this.wildPokemon.Initialize();
-        opponentIsWild = true;
         state = BattleState.None;
-        this.playerData = playerData;
-        opponentData = null;
-        characterData = new CharacterData[] { this.playerData, null };
         runTryCount = 0;
-
         state = BattleState.ChoosingMove;
         pokemonIndex[Constants.PlayerIndex] = playerData.GetFirstAlivePokemonIndex();
         isDefeated = new bool[] { false, false };
 
         ui.Open();
         ui.Initialize(this.playerData, playerPokemon, opponentPokemon);
+        unfaintedPlayerPokemons = new Dictionary<Pokemon, HashSet<Pokemon>>();
+    }
 
+    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, System.Func<bool, bool> encounterEndtionCallback)
+    {
+        print("StartNewEncounter");
+        this.wildPokemon = wildPokemon;
+        this.wildPokemon.Initialize();
+        opponentIsWild = true;
+        this.playerData = playerData;
+        opponentData = null;
+        characterData = new CharacterData[] { this.playerData, null };
+
+        Initialize();
+        unfaintedPlayerPokemons[wildPokemon] = new HashSet<Pokemon>() { playerPokemon };
         StartCoroutine(RoundCoroutine(encounterEndtionCallback));
     }
 
@@ -87,14 +94,13 @@ public class BattleManager : MonoBehaviour, IBattleManager
         this.playerData = playerData;
         this.opponentData = opponentData;
         characterData = new CharacterData[] { this.playerData, this.opponentData };
-
-        state = BattleState.ChoosingMove;
-        pokemonIndex[Constants.PlayerIndex] = playerData.GetFirstAlivePokemonIndex();
         pokemonIndex[Constants.OpponentIndex] = opponentData.GetFirstAlivePokemonIndex();
-        isDefeated = new bool[] { false, false };
 
-        ui.Open();
-        ui.Initialize(this.playerData, this.opponentData, playerPokemon, opponentPokemon);
+        Initialize();
+
+        foreach(Pokemon p in this.opponentData.pokemons)
+            unfaintedPlayerPokemons[opponentPokemon] = new HashSet<Pokemon>();
+        unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
         StartCoroutine(RoundCoroutine(npcBattleEndReactionCallback));
     }
@@ -439,6 +445,10 @@ public class BattleManager : MonoBehaviour, IBattleManager
     {
         // TODO Animate pokemon retreat
         this.pokemonIndex[characterIndex] = pokemonIndex;
+
+        if (characterIndex == Constants.PlayerIndex)
+            unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
+
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, characterData[characterIndex].pokemons[pokemonIndex]);
         yield return null;
@@ -557,7 +567,10 @@ public class BattleManager : MonoBehaviour, IBattleManager
         yield return dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
         yield return new WaitWhile(ui.PlayFaintAnimation(characterIndex));
 
-        if (characterIndex == Constants.OpponentIndex)
+        if (characterIndex == Constants.PlayerIndex)
+            foreach (HashSet<Pokemon> set in unfaintedPlayerPokemons.Values)
+                set.Remove(playerPokemon);
+        else
             yield return DistributePlayerXP();
 
         bool characterHasBeenDefeated = CharacterHasBeenDefeated(characterIndex, characterData[characterIndex]);
@@ -568,7 +581,17 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private IEnumerator DistributePlayerXP()
     {
-        float gainedXPTotal = 
+        HashSet<Pokemon> gainingPokemons = unfaintedPlayerPokemons[opponentPokemon];
+        int gainedXP = opponentPokemon.GetXPGainedFromFaint(opponentIsWild) / gainingPokemons.Count;
+        foreach (Pokemon p in gainingPokemons)
+            yield return GainXP(p, gainedXP);
+        dialogBox.Close();
+    }
+
+    private IEnumerator GainXP(Pokemon pokemon, int xp)
+    {
+        yield return dialogBox.DrawText($"{pokemon.Name} erhält {xp} EP!", DialogBoxContinueMode.User);
+        yield return ui.RefreshXPAnimated();
     }
 
     private IEnumerator Defeat(int loserIndex, CharacterData winner, CharacterData loser)

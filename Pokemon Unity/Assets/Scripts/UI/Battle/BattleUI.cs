@@ -14,6 +14,7 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
     [SerializeField] private PlayerPokemonStatsBattleUI playerStats;
     [SerializeField] private PokemonStatsUI opponentStats;
     [SerializeField] private float hpRefreshSpeed = 1f;
+    [SerializeField] private float xpRefreshSpeed = 1f;
 
     private PokemonStatsUI[] stats;
     private PokemonSprite[] pokemonSprites;
@@ -53,7 +54,9 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
     }
 
     public void RefreshHP(int character) => stats[character].RefreshHP();
+    public void RefreshXP() => playerStats.RefreshXP();
     public System.Func<bool> RefreshHPAnimated(int character) => stats[character].RefreshHPAnimated(hpRefreshSpeed);
+    public System.Func<bool> RefreshXPAnimated() => playerStats.RefreshXPAnimated(xpRefreshSpeed);
 
     public System.Func<bool> PlayMoveAnimation(int attacker, Move move)
     {
