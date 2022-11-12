@@ -591,7 +591,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private IEnumerator GainXP(Pokemon pokemon, int xp)
     {
         yield return dialogBox.DrawText($"{pokemon.Name} erhält {xp} EP!", DialogBoxContinueMode.User);
-        yield return ui.RefreshXPAnimated();
+        pokemon.GainXP(xp);
+        yield return new WaitWhile(ui.RefreshXPAnimated());
     }
 
     private IEnumerator Defeat(int loserIndex, CharacterData winner, CharacterData loser)

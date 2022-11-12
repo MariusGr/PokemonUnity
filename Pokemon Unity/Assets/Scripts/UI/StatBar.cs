@@ -31,6 +31,7 @@ public class StatBar : MonoBehaviour
 
     IEnumerator AnimateStatBarCoroutine(float target, float speed)
     {
+        print($"Value {Value} target {target}");
         isPlayingAnimation = true;
         float step = Mathf.Sign(target - Value) * speed;
         System.Func<bool> targetNotYetReached;
@@ -41,6 +42,7 @@ public class StatBar : MonoBehaviour
 
         while (targetNotYetReached())
         {
+            print($"Value {Value} target {target}");
             Value += step;
             yield return new WaitForFixedUpdate();
         }

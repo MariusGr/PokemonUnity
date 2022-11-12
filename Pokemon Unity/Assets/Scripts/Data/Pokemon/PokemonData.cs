@@ -29,6 +29,7 @@ public class PokemonData : ScriptableObject
 
     public int GetXPForLevel(int level)
     {
-        return (int)Mathf.Pow(level, 3);
+        return level * 100;
+        //return (int)Mathf.Pow(level, 3);
     }
 }

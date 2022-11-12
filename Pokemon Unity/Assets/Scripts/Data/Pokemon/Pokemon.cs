@@ -77,7 +77,6 @@ public class Pokemon
     public int hp;
     public int xp;
     public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
-    public int nextLevelXp = 1;
     public Status status = Status.None;
     public bool isFainted => hp < 1;
     public StageMultiplier stageAttack;
@@ -89,7 +88,16 @@ public class Pokemon
     public StageMultiplier stageEvasion;
 
     public float hpNormalized => (float)hp / maxHp;
-    public float xpNormalized => xp / nextLevelXp;
+    public float xpNormalized
+    {
+        get
+        {
+            int xpMilestoneCurrent = data.GetXPForLevel(level);
+            Debug.Log($"current {xpMilestoneCurrent} next {xpNeededForNextLevel}, xp {xp} norm {(xp - xpMilestoneCurrent) / (xpNeededForNextLevel - xpMilestoneCurrent)}");
+
+            return Math.Min(1f, (xp - xpMilestoneCurrent) / (float)(xpNeededForNextLevel - xpMilestoneCurrent));
+        }
+    }
 
     public string Name => nickname is null || nickname.Length < 1 ? data.fullName.ToUpper() : nickname;
     public Gender gender;
@@ -124,8 +132,7 @@ public class Pokemon
                 AddMove(data.levelToMoveDataMap[key]);
 
         if (gender is null) gender = Gender.GetRandomGender();
-
-        nextLevelXp = 1;
+        xp = data.GetXPForLevel(level);
     }
 
     private void AddMove(MoveData moveData)
@@ -178,4 +185,6 @@ public class Pokemon
         float a = opponentIsWild ? 1f : 1.5f;
         return (int)((data.baseXPGain * level / 7f) * a);
     }
+
+    public void GainXP(int xp) => this.xp += xp;
 }
