@@ -21,13 +21,8 @@ public class StatBar : MonoBehaviour
     }
 
     private bool isPlayingAnimation = false;
-
     private void Refresh() => image.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width * _value);
-
-    public void SetValueAnimated(float value, float speed)
-    {
-        StartCoroutine(AnimateStatBarCoroutine(value, speed));
-    }
+    public void SetValueAnimated(float value, float speed) => StartCoroutine(AnimateStatBarCoroutine(value, speed));
 
     IEnumerator AnimateStatBarCoroutine(float target, float speed)
     {

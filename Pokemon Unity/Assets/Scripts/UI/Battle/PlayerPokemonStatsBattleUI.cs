@@ -16,6 +16,9 @@ public class PlayerPokemonStatsBattleUI : PlayerPokemonStatsUI
 
     virtual public System.Func<bool> RefreshXPAnimated(float speed)
     {
+        if (pokemon.xpNormalized < xpBar.Value)
+            xpBar.Value = 0;
+
         xpBar.SetValueAnimated(pokemon.xpNormalized, speed);
         return xpBar.IsPlayingAnimation;
     }

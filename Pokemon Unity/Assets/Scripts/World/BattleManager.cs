@@ -593,6 +593,14 @@ public class BattleManager : MonoBehaviour, IBattleManager
         yield return dialogBox.DrawText($"{pokemon.Name} erhält {xp} EP!", DialogBoxContinueMode.User);
         pokemon.GainXP(xp);
         yield return new WaitWhile(ui.RefreshXPAnimated());
+        while(pokemon.WillGrowLevel())
+        {
+            pokemon.GrowLevel();
+            yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            // TODO: Show stats
+            // TODO: Funzt das auch mit mehreren unfainted pkmn?
+            yield return new WaitWhile(ui.RefreshXPAnimated());
+        }
     }
 
     private IEnumerator Defeat(int loserIndex, CharacterData winner, CharacterData loser)

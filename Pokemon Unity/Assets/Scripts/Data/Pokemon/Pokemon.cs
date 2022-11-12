@@ -186,5 +186,7 @@ public class Pokemon
         return (int)((data.baseXPGain * level / 7f) * a);
     }
 
-    public void GainXP(int xp) => this.xp += xp;
+    public int GainXP(int xp) => this.xp += xp;
+    public int GrowLevel() => level++;
+    public bool WillGrowLevel() => xp >= xpNeededForNextLevel;
 }
