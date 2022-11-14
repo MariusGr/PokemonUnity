@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IBattleUI : IService
+public interface IBattleUI : IUIView
 {
-    public void Open();
     public void Close();
-    public void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon);
-    public void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon);
+    public void Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon);
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon);
     public void RefreshHP(int character);
     public void RefreshXP();

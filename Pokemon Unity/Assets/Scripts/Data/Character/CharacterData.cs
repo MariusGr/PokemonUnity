@@ -38,4 +38,10 @@ public abstract class CharacterData
 
         return -1;
     }
+
+    public void SwapPokemon(Pokemon before, Pokemon after)
+    {
+        int index = Array.IndexOf(pokemons, before);
+        pokemons[index] = after;
+    }
 }

@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenedInputConsumer : MonoBehaviour, IInputConsumer
+public class OpenedInputConsumer : UIView, IInputConsumer
 {
-    public void Open()
+    public override void Open()
     {
-        gameObject.SetActive(true);
+        base.Open();
         InputManager.Instance.Register(this);
     }
 
-    public void Close()
+    public override void Close()
     {
-        gameObject.SetActive(false);
+        base.Close();
         InputManager.Instance.Unregister(this);
     }
 

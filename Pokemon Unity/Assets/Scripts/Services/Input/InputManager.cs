@@ -8,15 +8,14 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private string submitButtonName;
     [SerializeField] private string chancelButtonName;
-    //[SerializeField] private string horizontalAxisName;
-    //[SerializeField] private string verticalAxisName;
     [SerializeField] private string RightInputName;
     [SerializeField] private string LeftInputName;
     [SerializeField] private string UpInputName;
     [SerializeField] private string DownInputName;
 
     private Dictionary<string, Direction> inputNameToDirection = new Dictionary<string, Direction>();
-    private Stack<IInputConsumer> inputConsumers = new Stack<IInputConsumer>();
+    private List<IInputConsumer> inputConsumers = new List<IInputConsumer>();
+    private IInputConsumer currentConsumer => inputConsumers[inputConsumers.Count - 1];
     private InputData input = new InputData();
     private InputData inputZero = new InputData();
 
@@ -37,21 +36,21 @@ public class InputManager : MonoBehaviour
         GetInputForDigitalPad();
         input.submit.heldDown = Input.GetButton(submitButtonName);
         if (inputConsumers.Count > 0)
-            inputConsumers.Peek().ProcessInput(input);
+            currentConsumer.ProcessInput(input);
     }
 
     public void Register(IInputConsumer consumer)
     {
         if (inputConsumers.Count > 0)
-            inputConsumers.Peek().ProcessInput(inputZero);
-        inputConsumers.Push(consumer);
+            currentConsumer.ProcessInput(inputZero);
+        inputConsumers.Add(consumer);
         print("Input registered: " + consumer);
     }
 
     public void Unregister(IInputConsumer consumer)
     {
-        if (inputConsumers.Count > 0 && consumer == inputConsumers.Peek())
-            inputConsumers.Pop();
+        if (inputConsumers.Contains(consumer))
+            inputConsumers.Remove(consumer);
         consumer.ProcessInput(inputZero);
     }
 

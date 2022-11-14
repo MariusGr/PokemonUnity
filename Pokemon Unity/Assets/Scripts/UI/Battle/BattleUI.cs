@@ -27,7 +27,13 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
 
-    public void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    public void Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    {
+        Open();
+        Initialize(playerData, playerPokemon, opponentPokemon);
+    }
+
+    private void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
@@ -37,6 +43,14 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         pokemonSwitchSelection.AssignElements(playerData.pokemons);
     }
 
+    //TODO needed?
+    private void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    {
+        opponentSprite.SetSprite(opponentData.sprite);
+        opponentStats.AssignPokemon(opponentPokemon);
+        Initialize(playerData, playerPokemon, opponentPokemon);
+    }
+
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
     {
         print(stats + "   " + characterIndex);
@@ -44,13 +58,6 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
         if (characterIndex == Constants.PlayerIndex)
             moveSelection.AssignElements(pokemon.moves.ToArray());
-    }
-
-    public void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
-    {
-        opponentSprite.SetSprite(opponentData.sprite);
-        opponentStats.AssignPokemon(opponentPokemon);
-        Initialize(playerData, playerPokemon, opponentPokemon);
     }
 
     public void RefreshHP(int character) => stats[character].RefreshHP();

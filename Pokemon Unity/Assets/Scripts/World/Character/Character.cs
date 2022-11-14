@@ -23,7 +23,7 @@ public class Character : MonoBehaviour
         if (controller.GetType() == typeof(CharacterControllerPlayer))
             PlayerCharacter = this;
         foreach (Pokemon pokemon in pokemons)
-            pokemon.Initialize();
+            pokemon.Initialize(characterData);
         startPosition = transform.position;
 
         controller.Init();

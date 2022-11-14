@@ -12,7 +12,8 @@ public class PokemonData : ScriptableObject
     public Sprite backSprite;
     public Sprite[] icons;
     public PokemonTypeData[] pokemonTypes;
-    //public PokemonData evolution;
+    public int evolutionLevel;
+    public PokemonData evolution;
     public EncounterRarity encounterRarity;
 
     public int maxHp;

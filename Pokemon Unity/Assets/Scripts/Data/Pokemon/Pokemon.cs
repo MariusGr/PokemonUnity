@@ -61,6 +61,7 @@ public class Pokemon
     }
 
     public PokemonData data;
+    public CharacterData character { get; private set; }
     public string nickname = null;
 
     public int level;
@@ -105,18 +106,19 @@ public class Pokemon
     int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
 
     public Pokemon(EncounterPokemon encounterPokemonData) :
-        this(encounterPokemonData.data, UnityEngine.Random.Range(encounterPokemonData.minLevel, encounterPokemonData.maxLevel))
+        this(encounterPokemonData.data, UnityEngine.Random.Range(encounterPokemonData.minLevel, encounterPokemonData.maxLevel), null)
     { }
 
-    public Pokemon(PokemonData pokemonData, int level)
+    public Pokemon(PokemonData pokemonData, int level, CharacterData character)
     {
         this.data = pokemonData;
         this.level = level;
-        Initialize();
+        Initialize(character);
     }
 
-    public void Initialize()
+    public void Initialize(CharacterData character)
     {
+        this.character = character;
         stageAttack = new StageMultiplier(statStageMultipliers);
         stageSpecialAttack = new StageMultiplier(statStageMultipliers);
         stageDefense = new StageMultiplier(statStageMultipliers);
@@ -187,6 +189,26 @@ public class Pokemon
     }
 
     public int GainXP(int xp) => this.xp += xp;
-    public int GrowLevel() => level++;
+    public int GrowLevel()
+    {
+        // TODO: learn new abilities
+        return level++;
+    }
+
     public bool WillGrowLevel() => xp >= xpNeededForNextLevel;
+    public bool WillEvolve() => data.evolutionLevel > 1 && !(data.evolution is null) && level >= data.evolutionLevel;
+
+    public Pokemon GetEvolvedVersion()
+    {
+        Pokemon evolved = new Pokemon(data.evolution, level, character);
+        evolved.xp = xp;
+        evolved.hp = (int)(evolved.maxHp * hpNormalized);
+        evolved.gender = gender;
+        evolved.nickname = nickname;
+        evolved.moves = new List<Move>();
+        foreach (Move m in moves)
+            evolved.moves.Add(m);
+        // TODO Learn all moves of new evolution
+        return evolved;
+    }
 }

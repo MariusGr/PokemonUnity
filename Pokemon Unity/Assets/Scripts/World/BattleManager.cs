@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleManager : MonoBehaviour, IBattleManager
+public class BattleManager : ManagerWithDialogBox, IBattleManager
 {
     private enum BattleState
     {
@@ -25,6 +25,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private bool opponentIsWild = false;
     private int runTryCount = 0;
     private Dictionary<Pokemon, HashSet<Pokemon>> unfaintedPlayerPokemons;
+    private HashSet<Pokemon> evolvingPokemons;
     private int playerRunSuccessChance => (playerPokemon.speedUnmodified * 128 / Math.Min(1, opponentPokemon.speedUnmodified) + 30 * runTryCount) % 256;
 
     private BattleOption playerBattleOption = BattleOption.None;
@@ -44,38 +45,39 @@ public class BattleManager : MonoBehaviour, IBattleManager
     private Pokemon opponentPokemon => GeActivePokemon(Constants.OpponentIndex);
 
     private IBattleUI ui;
-    private IDialogBox dialogBox;
+    private IEvolutionManager evolutionManager;
 
     public BattleManager() => Services.Register(this as IBattleManager);
 
     void Awake()
     {
         ui = Services.Get<IBattleUI>();
+        evolutionManager = Services.Get<IEvolutionManager>();
         ui.Close();
-        dialogBox = Services.Get<IDialogBox>();
     }
 
     private Pokemon GeActivePokemon(int character)
         => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
 
-    private void Initialize()
+    protected override void Initialize()
     {
+        base.Initialize();
+
         state = BattleState.None;
         runTryCount = 0;
         state = BattleState.ChoosingMove;
         pokemonIndex[Constants.PlayerIndex] = playerData.GetFirstAlivePokemonIndex();
         isDefeated = new bool[] { false, false };
 
-        ui.Open();
-        ui.Initialize(this.playerData, playerPokemon, opponentPokemon);
+        ui.Open(playerData, playerPokemon, opponentPokemon);
         unfaintedPlayerPokemons = new Dictionary<Pokemon, HashSet<Pokemon>>();
+        evolvingPokemons = new HashSet<Pokemon>();
     }
 
-    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, System.Func<bool, bool> encounterEndtionCallback)
+    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, Func<bool, bool> encounterEndtionCallback)
     {
         print("StartNewEncounter");
         this.wildPokemon = wildPokemon;
-        this.wildPokemon.Initialize();
         opponentIsWild = true;
         this.playerData = playerData;
         opponentData = null;
@@ -112,9 +114,14 @@ public class BattleManager : MonoBehaviour, IBattleManager
 
     private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) || state.Equals(BattleState.PlayerDefeated) || state.Equals(BattleState.Ran);
 
-    private void EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
+    private IEnumerator EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
     {
         ui.Close();
+
+        // Evolve pokemon if any leveled up enough
+        foreach (Pokemon p in evolvingPokemons)
+            yield return evolutionManager.EvolutionCoroutine(p);
+
         npcBattleEndReactionCallback?.Invoke(state.Equals(BattleState.OpponentDefeated));
     }
 
@@ -185,7 +192,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
             }
         }
 
-        EndBattle(npcBattleEndReactionCallback);
+        yield return EndBattle(npcBattleEndReactionCallback);
     }
 
     private IEnumerator RunPlayer()
@@ -597,6 +604,8 @@ public class BattleManager : MonoBehaviour, IBattleManager
         while(pokemon.WillGrowLevel())
         {
             pokemon.GrowLevel();
+            if (pokemon.WillEvolve())
+                evolvingPokemons.Add(pokemon);
             yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
             // TODO: Show stats
             if (pokemon == playerPokemon)
@@ -627,6 +636,7 @@ public class BattleManager : MonoBehaviour, IBattleManager
                 ((PlayerData)winner).GiveMoney(loser.GetPriceMoney());
                 npc.hasBeenDefeated = true;
             }
+
             state = BattleState.OpponentDefeated;
         }
         else
