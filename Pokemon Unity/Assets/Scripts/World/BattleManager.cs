@@ -161,15 +161,11 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
                 else
                 {
                     yield return opponentCoroutine;
-                    print(state);
                     if (BattleHasEnded())
                         break;
                     if (playerBattleOption == BattleOption.Fight)
                         yield return playerCoroutine;
                 }
-
-                if (BattleHasEnded())
-                    break;
             }
             else
             {
@@ -191,6 +187,9 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
                 //else if (playerBattleOption == BattleOption.Bag)
                 // TODO
             }
+
+            if (BattleHasEnded())
+                break;
         }
 
         yield return EndBattle(npcBattleEndReactionCallback);
@@ -537,7 +536,6 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
         if (targetFainted)
         {
             // target pokemon fainted
-                // TODO bug?
             yield return Faint(target, targetPokemonIdentifier);
         }
         else
