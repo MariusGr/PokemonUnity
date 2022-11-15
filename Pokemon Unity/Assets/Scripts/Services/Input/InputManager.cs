@@ -43,6 +43,9 @@ public class InputManager : MonoBehaviour
     {
         if (inputConsumers.Count > 0)
             currentConsumer.ProcessInput(inputZero);
+        // Remove all entries
+        while(inputConsumers.Remove(consumer));
+        // Put consumer on top
         inputConsumers.Add(consumer);
         print("Input registered: " + consumer);
     }

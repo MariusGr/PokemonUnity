@@ -24,6 +24,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     [SerializeField] private AudioClip selectClip;
 
+    private Coroutine currentCoroutine;
     private bool automaticContinueBlocked = false;
     InputData input = new InputData();
 
@@ -60,15 +61,26 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     public void Continue() => automaticContinueBlocked = false;
 
+    private void Clear()
+    {
+        if (!(currentCoroutine is null))
+        {
+            StopCoroutine(currentCoroutine);
+        }
+        dialogBoxText.text = "";
+    }
+
     public void Open()
     {
         print("Open Dialogbox");
+        Clear();
         gameObject.SetActive(true);
     }
 
     public void Close()
     {
         print("Close Dialogbox");
+        Clear();
         gameObject.SetActive(false);
     }
 
@@ -77,7 +89,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
     public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
         Open();
-        return StartCoroutine(DrawStringsRoutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish));
+        currentCoroutine = StartCoroutine(DrawStringsCoroutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish));
+        return currentCoroutine;
     }
 
     public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
@@ -85,13 +98,14 @@ public class DialogBox : MonoBehaviour, IDialogBox
     public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
         Open();
-        return StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish));
+        currentCoroutine = StartCoroutine(DrawStringsCoroutine(text, continueMode, closeAfterFinish));
+        return currentCoroutine;
     }
 
     IEnumerator DrawStringsRoutine(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
-        => DrawStringsRoutine(new string[] { text }, continueMode, closeAfterFinish);
+        => DrawStringsCoroutine(new string[] { text }, continueMode, closeAfterFinish);
 
-    IEnumerator DrawStringsRoutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    IEnumerator DrawStringsCoroutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
     {
         DrawDialogBox();
 
@@ -102,7 +116,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
         {
             if (continueMode == DialogBoxContinueMode.External)
                 automaticContinueBlocked = true;
-            yield return StartCoroutine(DrawTextRoutine(text[i]));
+            yield return DrawTextRoutine(text[i]);
             if (continueMode == DialogBoxContinueMode.User)
             {
                 while (!input.submit.pressed && !input.chancel.pressed)
@@ -125,22 +139,22 @@ public class DialogBox : MonoBehaviour, IDialogBox
     private IEnumerator DrawTextRoutine(string text)
     {
         dialogBoxText.text = "";
-        yield return StartCoroutine(DrawTextRoutine(text, 1f / charPerSec, false));
+        yield return DrawTextRoutine(text, 1f / charPerSec, false);
     }
 
     private IEnumerator DrawTextRoutine(string text, float secPerChar)
     {
-        yield return StartCoroutine(DrawTextRoutine(text, secPerChar, false));
+        yield return DrawTextRoutine(text, secPerChar, false);
     }
 
     private IEnumerator DrawTextRoutineSilent(string text)
     {
-        yield return StartCoroutine(DrawTextRoutine(text, 1f / charPerSec, true));
+        yield return DrawTextRoutine(text, 1f / charPerSec, true);
     }
 
     private IEnumerator DrawTextRoutineInstant(string text)
     {
-        yield return StartCoroutine(DrawTextRoutine(text, 0, false));
+        yield return DrawTextRoutine(text, 0, false);
     }
 
     private IEnumerator DrawTextRoutine(string text, float secPerChar, bool silent)
@@ -155,18 +169,18 @@ public class DialogBox : MonoBehaviour, IDialogBox
         {
             if (secPerChar > 0)
             {
-                yield return StartCoroutine(DrawWord(words[i], secPerChar));
+                yield return DrawWord(words[i], secPerChar);
             }
             else
             {
-                StartCoroutine(DrawWord(words[i], secPerChar));
+                DrawWord(words[i], secPerChar);
             }
         }
     }
 
     private IEnumerator DrawWord(string word, float secPerChar)
     {
-        yield return StartCoroutine(DrawWord(word, false, false, false, secPerChar));
+        yield return DrawWord(word, false, false, false, secPerChar);
     }
 
     private IEnumerator DrawWord(string word, bool large, bool bold, bool italic, float secPerChar)
@@ -211,7 +225,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
                     {
                         remainingWord += chars[i].ToString();
                     }
-                    yield return StartCoroutine(DrawWord(remainingWord, large, bold, italic, secPerChar));
+                    yield return DrawWord(remainingWord, large, bold, italic, secPerChar);
                 }
             }
             else
@@ -328,11 +342,11 @@ public class DialogBox : MonoBehaviour, IDialogBox
             StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, -1, defaultChoiceY, defaultChoiceWidth));
     }
 
-    public Coroutine DrawChoiceBox(string text, string[] choices, int chancelIndex = -1)
+    public IEnumerator DrawChoiceBox(string text, string[] choices, int chancelIndex = -1)
     {
         Open();
-        StartCoroutine(DrawStringsRoutine(text, DialogBoxContinueMode.External, true));
-        return StartCoroutine(DrawChoiceBox(choices, null, -1, defaultChoiceY, defaultChoiceWidth, chancelIndex));
+        currentCoroutine = StartCoroutine(DrawStringsRoutine(text, DialogBoxContinueMode.External, true));
+        return DrawChoiceBox(choices, null, -1, defaultChoiceY, defaultChoiceWidth, chancelIndex);
     }
 
     public IEnumerator DrawChoiceBox(int startIndex)
