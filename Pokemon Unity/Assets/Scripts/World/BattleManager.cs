@@ -161,6 +161,7 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
                 else
                 {
                     yield return opponentCoroutine;
+                    print(state);
                     if (BattleHasEnded())
                         break;
                     if (playerBattleOption == BattleOption.Fight)
@@ -536,6 +537,7 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
         if (targetFainted)
         {
             // target pokemon fainted
+                // TODO bug?
             yield return Faint(target, targetPokemonIdentifier);
         }
         else
@@ -609,7 +611,10 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
             yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
             // TODO: Show stats
             if (pokemon == playerPokemon)
+            {
+                ui.ResetXP();
                 yield return new WaitWhile(ui.RefreshXPAnimated());
+            }
         }
     }
 

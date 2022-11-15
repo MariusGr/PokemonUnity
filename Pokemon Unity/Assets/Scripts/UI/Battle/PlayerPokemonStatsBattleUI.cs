@@ -12,7 +12,8 @@ public class PlayerPokemonStatsBattleUI : PlayerPokemonStatsUI
         xpBar.Value = pokemon.xpNormalized;
     }
 
-    virtual public void RefreshXP() => hpBar.Value = pokemon.xpNormalized;
+    virtual public void RefreshXP() => xpBar.Value = pokemon.xpNormalized;
+    virtual public void ResetXP() => xpBar.Value = 0;
 
     virtual public System.Func<bool> RefreshXPAnimated(float speed)
     {

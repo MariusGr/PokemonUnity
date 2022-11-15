@@ -4,11 +4,11 @@ using UnityEngine;
 
 public interface IBattleUI : IUIView
 {
-    public void Close();
     public void Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon);
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon);
     public void RefreshHP(int character);
     public void RefreshXP();
+    public void ResetXP();
     public System.Func<bool> RefreshHPAnimated(int character);
     public System.Func<bool> RefreshXPAnimated();
     public System.Func<bool> PlayMoveAnimation(int attacker, Move move);
