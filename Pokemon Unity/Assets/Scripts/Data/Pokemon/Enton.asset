@@ -31,7 +31,7 @@ MonoBehaviour:
   defense: 50
   specialDefense: 50
   speed: 55
-  baseXPGain: 200
+  baseXPGain: 500
   levelToMoveDataMap:
     keys: 0000000001000000
     values:
