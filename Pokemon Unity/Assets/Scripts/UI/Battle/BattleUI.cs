@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class BattleUI : OpenedInputConsumer, IBattleUI
 {
     [SerializeField] private BattleMenu battleMenu;
-    [SerializeField] private MoveSelectionUI moveSelection;
     [SerializeField] private PokemonSwitchSelection pokemonSwitchSelection;
     [SerializeField] private PokemonSprite playerPokemonSprite;
     [SerializeField] private PokemonSprite opponentPokemonSprite;
@@ -54,10 +53,11 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         stats[characterIndex].AssignPokemon(pokemon);
         pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
         if (characterIndex == Constants.PlayerIndex)
-            moveSelection.AssignElements(pokemon.moves.ToArray());
+            Services.Get<IMoveSelectionUI>().Assign(pokemon);
     }
 
     public void Refresh(int character) => stats[character].Refresh();
+    public void RefreshPlayerStats() => playerStats.Refresh();
     public void RefreshHP(int character) => stats[character].RefreshHP();
     public void RefreshXP() => playerStats.RefreshXP();
     public void ResetXP() => playerStats.ResetXP();
@@ -99,15 +99,12 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         return sprite.IsPlayingAnimation;
     }
 
-    public void OpenMoveSelection() => moveSelection.Open();
     public void OpenBattleMenu() => battleMenu.Open();
     public void OpenPokemonSwitchSelection(bool forceSelection)
         => pokemonSwitchSelection.Open(forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
 
-    public void CloseMoveSelection() => moveSelection.Close();
     public void CloseBattleMenu() => battleMenu.Close();
     public void ClosePokemonSwitchSelection() => pokemonSwitchSelection.Close();
 
-    public void RefreshMove(Move move) => moveSelection.RefreshElement(move.index);
     public override bool ProcessInput(InputData input) => false;
 }

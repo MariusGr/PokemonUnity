@@ -47,7 +47,11 @@ public abstract class SelectionWindow : OpenedInputConsumer
     public void AssignElements(object[] elements)
     {
         for (int i = 0; i < elements.Length; i++)
+        {
+            print(elements[i]);
             this.elements[i].AssignElement(elements[i]);
+        }
+
         for (int i = elements.Length; i < this.elements.Length; i++)
             this.elements[i].AssignNone();
     }

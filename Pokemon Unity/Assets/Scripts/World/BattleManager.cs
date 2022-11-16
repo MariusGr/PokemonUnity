@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class BattleManager : ManagerWithDialogBox, IBattleManager
+public class BattleManager : ManagerWithMoveSelection, IBattleManager
 {
     private enum BattleState
     {
@@ -33,10 +33,8 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
     private BattleOption opponentBattleOption = BattleOption.None;
 
     public delegate void UserBattleOptionChooseEventHandler(BattleOption option);
-    public delegate void UserMoveChooseEventHandler(Move move, bool goBack);
     public delegate void UserPokemonChooseEventHandler(int index, bool goBack);
     public event UserBattleOptionChooseEventHandler UserChooseBattleOptionEvent;
-    public event UserMoveChooseEventHandler UserChooseMoveEvent;
     public event UserPokemonChooseEventHandler UserChoosePokemonEvent;
 
     private CharacterData[] characterData;
@@ -55,15 +53,14 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
         ui = Services.Get<IBattleUI>();
         evolutionManager = Services.Get<IEvolutionManager>();
         ui.Close();
+        Initialize();
     }
 
     private Pokemon GeActivePokemon(int character)
         => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
 
-    protected override void Initialize()
+    private void Reset()
     {
-        base.Initialize();
-
         state = BattleState.None;
         runTryCount = 0;
         state = BattleState.ChoosingMove;
@@ -84,7 +81,7 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
         opponentData = null;
         characterData = new CharacterData[] { this.playerData, null };
 
-        Initialize();
+        Reset();
         unfaintedPlayerPokemons[wildPokemon] = new HashSet<Pokemon>() { playerPokemon };
         StartCoroutine(RoundCoroutine(encounterEndtionCallback));
     }
@@ -99,7 +96,7 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
         characterData = new CharacterData[] { this.playerData, this.opponentData };
         pokemonIndex[Constants.OpponentIndex] = opponentData.GetFirstAlivePokemonIndex();
 
-        Initialize();
+        Reset();
 
         foreach(Pokemon p in this.opponentData.pokemons)
             unfaintedPlayerPokemons[opponentPokemon] = new HashSet<Pokemon>();
@@ -314,21 +311,21 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
             yield break;
         }
 
-        ui.OpenMoveSelection();
-
+        // Let player Choose move
+        moveSelectionUI.Open();
         Move choosenMove = null;
         bool goBack = false;
-        UserMoveChooseEventHandler action =
+        PokemonManager.UserMoveChooseEventHandler action =
             (Move move, bool back) =>
             {
                 choosenMove = move;
                 goBack = back;
             };
-        UserChooseMoveEvent += action;
+        pokemonManager.UserChooseMoveEvent += action;
         print("wait for play to choose move");
         yield return new WaitUntil(() => choosenMove != null || goBack);
-        ui.CloseMoveSelection();
-        UserChooseMoveEvent -= action;
+        moveSelectionUI.Close();
+        pokemonManager.UserChooseMoveEvent -= action;
 
         if (!(choosenMove is null) && choosenMove.pp < 1)
         {
@@ -463,7 +460,6 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
     }
 
     public void ChooseBattleMenuOption(BattleOption option) => UserChooseBattleOptionEvent?.Invoke(option);
-    public void ChoosePlayerMove(Move move, bool goBack) => UserChooseMoveEvent?.Invoke(move, goBack);
     public void ChoosePlayerPokemon(int index, bool goBack) => UserChoosePokemonEvent?.Invoke(index, goBack);
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
@@ -482,7 +478,7 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
         Pokemon attackerPokemon = GeActivePokemon(attacker);
         Pokemon targetPokemon = GeActivePokemon(target);
         move.DecrementPP();
-        ui.RefreshMove(move);
+        moveSelectionUI.RefreshMove(move);
 
         // Play attack animation
         string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);
@@ -605,13 +601,11 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
             yield return new WaitWhile(ui.RefreshXPAnimated());
             if (!pokemon.WillGrowLevel())
                 break;
-            pokemon.GrowLevel();
-            ui.Refresh(Constants.PlayerIndex);
+            yield return pokemonManager.GrowLevel(pokemon, ui.RefreshPlayerStats);
             if (pokemon.WillEvolve())
                 evolvingPokemons.Add(pokemon);
             // TODO: Show stats
             ui.ResetXP();
-            yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
         }
     }
 

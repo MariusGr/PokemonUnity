@@ -70,6 +70,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
             StopCoroutine(currentCoroutine);
         }
         dialogBoxText.text = "";
+        automaticContinueBlocked = false;
     }
 
     public void Open()
@@ -338,11 +339,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
         }
     }
 
-    public IEnumerator DrawChoiceBox()
-    {
-        yield return
-            StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, -1, defaultChoiceY, defaultChoiceWidth));
-    }
+    public IEnumerator DrawChoiceBox(string text, int chancelIndex = -1)
+        => DrawChoiceBox(text, new string[] { "Ja", "Nein" }, chancelIndex);
 
     public IEnumerator DrawChoiceBox(string text, string[] choices, int chancelIndex = -1)
     {

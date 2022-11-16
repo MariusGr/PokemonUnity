@@ -22,7 +22,7 @@ MonoBehaviour:
   - {fileID: -5776730608683299111, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
   pokemonTypes:
   - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
-  evolutionLevel: 51
+  evolutionLevel: 100
   evolution: {fileID: 11400000, guid: f300abc00eefc4ddd86dea61252cbe3f, type: 2}
   encounterRarity: 87
   maxHp: 50
@@ -31,9 +31,12 @@ MonoBehaviour:
   defense: 50
   specialDefense: 50
   speed: 55
-  baseXPGain: 50
+  baseXPGain: 400
   levelToMoveDataMap:
-    keys: 0000000001000000
+    keys: 0000000001000000020000000300000033000000
     values:
     - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
     - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
+    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
+    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
+    - {fileID: 11400000, guid: acc82a1970c50d64aaf0f346966dbd22, type: 2}

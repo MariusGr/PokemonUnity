@@ -103,7 +103,7 @@ public class Pokemon
     public string Name => nickname is null || nickname.Length < 1 ? data.fullName.ToUpper() : nickname;
     public Gender gender;
 
-    int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
+    private int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
 
     public Pokemon(EncounterPokemon encounterPokemonData) :
         this(encounterPokemonData.data, UnityEngine.Random.Range(encounterPokemonData.minLevel, encounterPokemonData.maxLevel), null)
@@ -137,11 +137,8 @@ public class Pokemon
         xp = data.GetXPForLevel(level);
     }
 
-    private void AddMove(MoveData moveData)
-    {
-        Move move = new Move(moveData, moves.Count, this);
-        moves.Add(move);
-    }
+    public void AddMove(MoveData moveData) => moves.Add(new Move(moveData, moves.Count, this));
+    public void ReplaceMove(Move move, MoveData newMove) => moves[move.index] = new Move(newMove, move.index, this);
 
     public bool HasUsableMoves()
     {
@@ -189,13 +186,12 @@ public class Pokemon
     }
 
     public int GainXP(int xp) => IsLeveledToMax() ? this.xp = data.GetXPForLevel(100) : this.xp += xp;
-    public int GrowLevel()
+    public void GrowLevel()
     {
         // TODO: learn new moves
         float hpBefore = hpNormalized;
         level++;
         hp = (int)Mathf.Ceil(hpBefore * maxHp);
-        return level;
     }
 
     public bool WillGrowLevel() => xp >= xpNeededForNextLevel && !IsLeveledToMax();
@@ -212,7 +208,6 @@ public class Pokemon
         evolved.moves = new List<Move>();
         foreach (Move m in moves)
             evolved.moves.Add(m);
-        // TODO Learn all moves of new evolution
         return evolved;
     }
 }
