@@ -599,21 +599,18 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
     {
         yield return dialogBox.DrawText($"{pokemon.Name} erhält {xp} EP!", DialogBoxContinueMode.User);
         pokemon.GainXP(xp);
-        if (pokemon == playerPokemon)
-            yield return new WaitWhile(ui.RefreshXPAnimated());
-        while(pokemon.WillGrowLevel())
+        while(true)
         {
+            yield return new WaitWhile(ui.RefreshXPAnimated());
+            if (!pokemon.WillGrowLevel())
+                break;
             pokemon.GrowLevel();
             ui.Refresh(Constants.PlayerIndex);
             if (pokemon.WillEvolve())
                 evolvingPokemons.Add(pokemon);
-            yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
             // TODO: Show stats
-            if (pokemon == playerPokemon)
-            {
-                ui.ResetXP();
-                yield return new WaitWhile(ui.RefreshXPAnimated());
-            }
+            ui.ResetXP();
+            yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
         }
     }
 
