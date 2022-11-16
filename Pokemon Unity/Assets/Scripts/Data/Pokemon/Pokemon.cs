@@ -191,8 +191,11 @@ public class Pokemon
     public int GainXP(int xp) => this.xp += xp;
     public int GrowLevel()
     {
-        // TODO: learn new abilities
-        return level++;
+        // TODO: learn new moves
+        float hpBefore = hpNormalized;
+        level++;
+        hp = (int)Mathf.Ceil(hpBefore * maxHp);
+        return level;
     }
 
     public bool WillGrowLevel() => xp >= xpNeededForNextLevel;
