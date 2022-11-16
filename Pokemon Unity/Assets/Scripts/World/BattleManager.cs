@@ -604,6 +604,7 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
         while(pokemon.WillGrowLevel())
         {
             pokemon.GrowLevel();
+            ui.Refresh(Constants.PlayerIndex);
             if (pokemon.WillEvolve())
                 evolvingPokemons.Add(pokemon);
             yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);

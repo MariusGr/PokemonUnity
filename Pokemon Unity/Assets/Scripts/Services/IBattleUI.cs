@@ -6,6 +6,7 @@ public interface IBattleUI : IUIView
 {
     public void Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon);
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon);
+    public void Refresh(int character);
     public void RefreshHP(int character);
     public void RefreshXP();
     public void ResetXP();

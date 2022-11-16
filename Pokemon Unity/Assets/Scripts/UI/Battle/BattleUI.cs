@@ -57,6 +57,7 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
             moveSelection.AssignElements(pokemon.moves.ToArray());
     }
 
+    public void Refresh(int character) => stats[character].Refresh();
     public void RefreshHP(int character) => stats[character].RefreshHP();
     public void RefreshXP() => playerStats.RefreshXP();
     public void ResetXP() => playerStats.ResetXP();
