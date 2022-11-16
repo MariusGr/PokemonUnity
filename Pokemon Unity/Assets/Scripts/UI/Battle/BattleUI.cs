@@ -57,7 +57,7 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
     }
 
     public void Refresh(int character) => stats[character].Refresh();
-    public void RefreshPlayerStats() => playerStats.Refresh();
+    public void RefreshPlayerStats(bool refreshXP = false) => playerStats.Refresh(refreshXP);
     public void RefreshHP(int character) => stats[character].RefreshHP();
     public void RefreshXP() => playerStats.RefreshXP();
     public void ResetXP() => playerStats.ResetXP();

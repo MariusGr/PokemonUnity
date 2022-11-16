@@ -6,10 +6,12 @@ public class PlayerPokemonStatsBattleUI : PlayerPokemonStatsUI
 {
     [SerializeField] private StatBar xpBar;
 
-    override public void Refresh()
+    override public void Refresh() => Refresh(true);
+    public void Refresh(bool refreshXP)
     {
         base.Refresh();
-        xpBar.Value = pokemon.xpNormalized;
+        if (refreshXP)
+            xpBar.Value = pokemon.xpNormalized;
     }
 
     virtual public void RefreshXP() => xpBar.Value = pokemon.xpNormalized;

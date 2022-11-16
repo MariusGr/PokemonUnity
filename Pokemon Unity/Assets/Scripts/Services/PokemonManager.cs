@@ -13,10 +13,10 @@ public class PokemonManager : ManagerWithMoveSelection, IPokemonManager
 
     public void ChoosePlayerMove(Move move, bool goBack) => UserChooseMoveEvent?.Invoke(move, goBack);
 
-    public IEnumerator GrowLevel(Pokemon pokemon, System.Action uiRefreshCallback)
+    public IEnumerator GrowLevel(Pokemon pokemon, System.Action<bool> uiRefreshCallback)
     {
         pokemon.GrowLevel();
-        uiRefreshCallback();
+        uiRefreshCallback(false);
         yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
 
         MoveData move;
