@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BattleManager : ManagerWithDialogBox, IBattleManager
 {
@@ -590,7 +591,7 @@ public class BattleManager : ManagerWithDialogBox, IBattleManager
     {
         HashSet<Pokemon> gainingPokemons = unfaintedPlayerPokemons[opponentPokemon];
         int gainedXP = opponentPokemon.GetXPGainedFromFaint(opponentIsWild) / gainingPokemons.Count;
-        foreach (Pokemon p in gainingPokemons)
+        foreach (Pokemon p in gainingPokemons.Where(p => !p.IsLeveledToMax()))
             yield return GainXP(p, gainedXP);
         dialogBox.Close();
     }

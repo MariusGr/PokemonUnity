@@ -188,7 +188,7 @@ public class Pokemon
         return (int)((data.baseXPGain * level / 7f) * a);
     }
 
-    public int GainXP(int xp) => this.xp += xp;
+    public int GainXP(int xp) => IsLeveledToMax() ? this.xp = data.GetXPForLevel(100) : this.xp += xp;
     public int GrowLevel()
     {
         // TODO: learn new moves
@@ -198,7 +198,8 @@ public class Pokemon
         return level;
     }
 
-    public bool WillGrowLevel() => xp >= xpNeededForNextLevel;
+    public bool WillGrowLevel() => xp >= xpNeededForNextLevel && !IsLeveledToMax();
+    public bool IsLeveledToMax() => level >= 100;
     public bool WillEvolve() => data.evolutionLevel > 1 && !(data.evolution is null) && level >= data.evolutionLevel;
 
     public Pokemon GetEvolvedVersion()
