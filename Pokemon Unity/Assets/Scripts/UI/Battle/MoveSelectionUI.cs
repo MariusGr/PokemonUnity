@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class MoveSelectionUI : SelectionGraphWindow
 {
-    private void Awake() => Initialize();
-
     protected override void ChooseSelectedElement()
     {
         base.ChooseSelectedElement();

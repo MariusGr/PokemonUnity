@@ -186,7 +186,8 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
   image: {fileID: 6186461345723361113}
-  selectedSprite: {fileID: 21300000, guid: c4f171c46f44ab34eb7d109c8c01da35, type: 3}
+  spriteBefore: {fileID: 0}
+  selectedSprite: {fileID: 0}
   nameText: {fileID: 2181091416446564271}
   level: {fileID: 1719941363693756738}
   gender: {fileID: 6677289866199653064}
@@ -194,6 +195,9 @@ MonoBehaviour:
   hpBar: {fileID: 1786940003211967858}
   hp: {fileID: 8840426857383548259}
   maxHP: {fileID: 1599929926757929209}
+  backgroundDefault: {fileID: 21300000, guid: cdc68d516b313d0429499db5d03ada24, type: 3}
+  backgroundDefaultSelected: {fileID: 21300000, guid: c4f171c46f44ab34eb7d109c8c01da35,
+    type: 3}
   backgroundFaint: {fileID: 21300000, guid: 8a56a809437859b4c8574418a9f15c3f, type: 3}
   backgroundFaintSelected: {fileID: 21300000, guid: a9b7b71582a89624f86d5ea4cf49c2a6,
     type: 3}

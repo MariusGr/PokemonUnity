@@ -6,16 +6,12 @@ using UnityEngine.UI;
 public abstract class SelectableImage : SelectableUIElement
 {
     [SerializeField] protected Image image;
+    [SerializeField] protected Sprite spriteBefore;
     [SerializeField] protected Sprite selectedSprite;
 
-    protected Sprite spriteBefore;
     protected Sprite currentSprite => selected ? selectedSprite : spriteBefore;
 
-    public override void Initialize(int index)
-    {
-        spriteBefore = image.sprite;
-        base.Initialize(index);
-    }
+    public override void Initialize(int index) => base.Initialize(index);
 
     public override void Select()
     {

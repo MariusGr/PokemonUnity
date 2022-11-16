@@ -7,6 +7,10 @@ using System;
 [Serializable]
 public class PlayerData : CharacterData
 {
+    static public PlayerData Instance;
+
+    public PlayerData() => Instance = this;
+
     public float money = 0;
     public Transform lastPokeCenterEntrance;
 

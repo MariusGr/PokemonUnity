@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BattleMenu : SelectionGraphWindow
 {
-    private void Awake() => Initialize();
-
     protected override void ChooseSelectedElement()
     {
         print("Select Battle Option");

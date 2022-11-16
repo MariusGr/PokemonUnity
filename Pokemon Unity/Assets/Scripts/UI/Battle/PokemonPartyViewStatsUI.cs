@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
 {
+    [SerializeField] private Sprite backgroundDefault;
+    [SerializeField] private Sprite backgroundDefaultSelected;
     [SerializeField] private Sprite backgroundFaint;
     [SerializeField] private Sprite backgroundFaintSelected;
     [SerializeField] private Image icon;
     [SerializeField] private GameObject item;
     private Vector3 iconOffset;
-    private Sprite backgroundDefault;
-    private Sprite backgroundDefaultSelected;
+    
     private new Coroutine animation;
     private Vector3 iconStartPosistion;
 
@@ -26,12 +27,7 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
         Refresh();
     }
 
-    public override void Initialize(int index)
-    {
-        base.Initialize(index);
-        backgroundDefault = spriteBefore;
-        backgroundDefaultSelected = selectedSprite;
-    }
+    public override void Initialize(int index) => base.Initialize(index);
 
     public override void Refresh()
     {

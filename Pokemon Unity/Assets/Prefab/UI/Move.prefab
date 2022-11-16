@@ -172,8 +172,8 @@ MonoBehaviour:
     values:
     - {fileID: 0}
     - {fileID: 0}
-  index: 0
   image: {fileID: 3829097771575925113}
+  spriteBefore: {fileID: 21300000, guid: 7e18faf20209faf48ba74d2eb9b266cc, type: 3}
   selectedSprite: {fileID: 21300000, guid: 8be1a9650f6d9654ca9ff9a69f4b9f65, type: 3}
   textName: {fileID: 4556127972656565584}
   textPP: {fileID: 6062429022075558248}

@@ -4,14 +4,6 @@ using UnityEngine;
 
 public abstract class SelectionGraphWindow : SelectionWindow
 {
-    public override void Initialize(int startSelection = 0)
-    {
-        for (int i = 0; i < elements.Length; i++)
-            elements[i] = elements[i];
-
-        base.Initialize(startSelection);
-    }
-
     override public bool ProcessInput(InputData input)
     {
         if(!base.ProcessInput(input))

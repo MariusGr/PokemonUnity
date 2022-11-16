@@ -1,4 +1,6 @@
 ﻿//Original Scripts by IIColour (IIColour_Spectrum)
+// Something about yield returning Coroutines: https://forum.unity.com/threads/difference-between-yield-return-ienumerator-and-yield-return-startcoroutine.432571/
+
 
 using UnityEngine;
 using System.Collections;

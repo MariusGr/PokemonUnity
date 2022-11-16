@@ -127,8 +127,7 @@ PrefabInstance:
         type: 3}
       propertyPath: selectedSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 59336be6a167f2e46b5d6dd0ee4cbd97,
-        type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6422445261687522717, guid: 6a846b2f6f9d44594b321d292b3d25f0,
         type: 3}
       propertyPath: backgroundFaint
@@ -146,6 +145,12 @@ PrefabInstance:
       propertyPath: backgroundFaintSelected
       value: 
       objectReference: {fileID: 21300000, guid: e20c8fc762caa69488d92e839529bd0b,
+        type: 3}
+    - target: {fileID: 6422445261687522717, guid: 6a846b2f6f9d44594b321d292b3d25f0,
+        type: 3}
+      propertyPath: backgroundDefaultSelected
+      value: 
+      objectReference: {fileID: 21300000, guid: 59336be6a167f2e46b5d6dd0ee4cbd97,
         type: 3}
     - target: {fileID: 9170850735083363622, guid: 6a846b2f6f9d44594b321d292b3d25f0,
         type: 3}

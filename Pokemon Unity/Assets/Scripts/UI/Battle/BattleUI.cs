@@ -38,8 +38,6 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
-
-        pokemonSwitchSelection.Initialize(playerData.GetFirstAlivePokemonIndex());
         pokemonSwitchSelection.AssignElements(playerData.pokemons);
     }
 
@@ -53,7 +51,6 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
 
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
     {
-        print(stats + "   " + characterIndex);
         stats[characterIndex].AssignPokemon(pokemon);
         pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
         if (characterIndex == Constants.PlayerIndex)
@@ -103,7 +100,8 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
 
     public void OpenMoveSelection() => moveSelection.Open();
     public void OpenBattleMenu() => battleMenu.Open();
-    public void OpenPokemonSwitchSelection(bool forceSelection) => pokemonSwitchSelection.Open(forceSelection);
+    public void OpenPokemonSwitchSelection(bool forceSelection)
+        => pokemonSwitchSelection.Open(forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
 
     public void CloseMoveSelection() => moveSelection.Close();
     public void CloseBattleMenu() => battleMenu.Close();
