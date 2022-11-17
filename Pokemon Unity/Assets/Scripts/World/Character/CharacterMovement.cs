@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovement : Pausable
 {
     enum Axis
     {
@@ -40,16 +40,20 @@ public class CharacterMovement : MonoBehaviour
         controller.Move(Vector3.down * .1f);
         LookInDirection(currentDirection);
         startDirection = CurrentDirectionVector;
+        SignUpForPause();
     }
 
-    public void ProcessMovement(Direction direction, bool sprinting = false, bool checkPositionEvents = true)
-        => ProcessMovement(new GridVector(direction), sprinting, checkPositionEvents);
+    public void ProcessMovement(Direction direction, bool sprinting = false, bool checkPositionEvents = true, bool ignorePaused = false)
+        => ProcessMovement(new GridVector(direction), sprinting, checkPositionEvents, ignorePaused);
 
-    public void ProcessMovement(GridVector direction, bool sprinting = false, bool checkPositionEvents = true)
-        => ProcessMovement(direction.x, direction.y, sprinting, checkPositionEvents);
+    public void ProcessMovement(GridVector direction, bool sprinting = false, bool checkPositionEvents = true, bool ignorePaused = false)
+        => ProcessMovement(direction.x, direction.y, sprinting, checkPositionEvents, ignorePaused);
 
-    public void ProcessMovement(float horizontal, float vertical, bool sprinting, bool checkPositionEvents = true)
+    public void ProcessMovement(float horizontal, float vertical, bool sprinting, bool checkPositionEvents = true, bool ignorePaused = false)
     {
+        if (!ignorePaused && paused)
+            return;
+
         AnimationType animation;
         if (sprinting)
         {

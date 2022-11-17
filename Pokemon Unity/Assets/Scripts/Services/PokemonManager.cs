@@ -75,5 +75,6 @@ public class PokemonManager : ManagerWithMoveSelection, IPokemonManager
         else
             pokemon.AddMove(move);
         yield return dialogBox.DrawText($"{pokemon.Name} hat {move.fullName} erlernt!", DialogBoxContinueMode.User);
+        Services.Get<IMoveSelectionUI>().Assign(pokemon);
     }
 }

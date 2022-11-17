@@ -26,7 +26,7 @@ public class Character : MonoBehaviour
             pokemon.Initialize(characterData);
         startPosition = transform.position;
 
-        controller.Init();
+        controller.Initialize();
     }
 
     public void Reset()

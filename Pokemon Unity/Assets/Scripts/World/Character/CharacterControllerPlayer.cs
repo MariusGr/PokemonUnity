@@ -12,6 +12,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     private void Start()
     {
         InputManager.Instance.Register(this);
+        SignUpForPause();
     }
 
     private void Update()
@@ -21,6 +22,9 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 
     public bool ProcessInput(InputData input)
     {
+        if (paused)
+            return false;
+
         this.input = input;
 
         if (input.submit.pressed)

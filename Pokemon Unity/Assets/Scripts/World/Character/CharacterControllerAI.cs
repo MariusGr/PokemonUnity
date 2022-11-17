@@ -23,7 +23,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     private bool isInBattle = false;
 
-    override public void Init()
+    override public void Initialize()
     {
         if (willChallengePlayer)
             battlingNPCs.Add(this);
@@ -53,14 +53,13 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
     private void Challenge(Character player)
     {
         print("Challenge");
+        EventManager.Pause();
         StartCoroutine(ChallengeCoroutine(player));
     }
 
     private IEnumerator ChallengeCoroutine(Character player)
     {
         isInBattle = true;
-
-        EventManager.Pause();
 
         GridVector direction = GridVector.GetLookAt(character.position, player.position);
         character.Movement.LookInDirection(direction);
@@ -80,13 +79,10 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         battlingNPCs.Remove(this);
 
         if (npcDefeated)
-            Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
-        else
-        {
-            Services.Get<IDialogBox>().Close();
-            EventManager.Unpause();
-        }
+            Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, false);
 
+        Services.Get<IDialogBox>().Close();
+        EventManager.Unpause();
         return true;
     }
 
@@ -112,7 +108,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         while (!new GridVector(transform.position, character.startPosition).Equals(target))
         {
             yield return new WaitForEndOfFrame();
-            character.Movement.ProcessMovement(direction, checkPositionEvents: checkPositionEvents);
+            character.Movement.ProcessMovement(direction, checkPositionEvents: checkPositionEvents, ignorePaused: true);
         }
     }
 }
