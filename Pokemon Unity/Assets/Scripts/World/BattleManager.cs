@@ -99,7 +99,7 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
         Reset();
 
         foreach(Pokemon p in this.opponentData.pokemons)
-            unfaintedPlayerPokemons[opponentPokemon] = new HashSet<Pokemon>();
+            unfaintedPlayerPokemons[p] = new HashSet<Pokemon>();
         unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
         StartCoroutine(RoundCoroutine(npcBattleEndReactionCallback));
@@ -451,8 +451,7 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
         // TODO Animate pokemon retreat
         this.pokemonIndex[characterIndex] = pokemonIndex;
 
-        if (characterIndex == Constants.PlayerIndex)
-            unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
+        unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, characterData[characterIndex].pokemons[pokemonIndex]);
