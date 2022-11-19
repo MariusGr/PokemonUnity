@@ -11,8 +11,6 @@ public abstract class SelectableImage : SelectableUIElement
 
     protected Sprite currentSprite => selected ? selectedSprite : spriteBefore;
 
-    public override void Initialize(int index) => base.Initialize(index);
-
     public override void Select()
     {
         image.sprite = selectedSprite;

@@ -100,8 +100,8 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
     }
 
     public void OpenBattleMenu() => battleMenu.Open();
-    public void OpenPokemonSwitchSelection(bool forceSelection)
-        => pokemonSwitchSelection.Open(forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
+    public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement> callback, bool forceSelection)
+        => pokemonSwitchSelection.Open(callback, forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
 
     public void CloseBattleMenu() => battleMenu.Close();
     public void ClosePokemonSwitchSelection() => pokemonSwitchSelection.Close();

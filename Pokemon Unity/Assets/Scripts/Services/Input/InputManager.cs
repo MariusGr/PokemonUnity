@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private string submitButtonName;
     [SerializeField] private string chancelButtonName;
+    [SerializeField] private string startButtonName;
     [SerializeField] private string RightInputName;
     [SerializeField] private string LeftInputName;
     [SerializeField] private string UpInputName;
@@ -33,6 +34,7 @@ public class InputManager : MonoBehaviour
     {
         GetInputForButton(input.submit, submitButtonName);
         GetInputForButton(input.chancel, chancelButtonName);
+        GetInputForButton(input.start, startButtonName);
         GetInputForDigitalPad();
         input.submit.heldDown = Input.GetButton(submitButtonName);
         if (inputConsumers.Count > 0)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class SelectionWindow : OpenedInputConsumer
 {
@@ -10,10 +11,10 @@ public abstract class SelectionWindow : OpenedInputConsumer
     protected SelectableUIElement selectedElement => elements[selectedIndex];
     bool forceSelection = false;
 
-    public override void Open() => Open(false, 0);
-    public virtual void Open(bool forceSelection) => Open(forceSelection, 0);
-    public virtual void Open(int startSelection) => Open(false, startSelection);
-    public virtual void Open(bool forceSelection, int startSelection)
+    public virtual void Open(Action<ISelectableUIElement> callback) => Open(callback, false, 0);
+    public virtual void Open(Action<ISelectableUIElement> callback, bool forceSelection) => Open(callback, forceSelection, 0);
+    public virtual void Open(Action<ISelectableUIElement> callback, int startSelection) => Open(callback, false, startSelection);
+    public virtual void Open(Action<ISelectableUIElement> callback, bool forceSelection, int startSelection)
     {
         this.forceSelection = forceSelection;
         for (int i = 0; i < elements.Length; i++)
@@ -56,7 +57,7 @@ public abstract class SelectionWindow : OpenedInputConsumer
             this.elements[i].AssignNone();
     }
 
-    virtual protected void ChooseSelectedElement() { /* TODO sound*/ }
+    private void ChooseSelectedElement() { /* TODO sound*/ }
     virtual protected void SelectElement(int index)
     {
         selectedElement.Deselect();

@@ -8,10 +8,13 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     override public CharacterData CharacterData => characterData;
 
     InputData input = new InputData();
+    private IPauseUI pauseUI;
 
     private void Start()
     {
         InputManager.Instance.Register(this);
+        pauseUI = Services.Get<IPauseUI>();
+        pauseUI.Assign(characterData);
         SignUpForPause();
     }
 
@@ -29,6 +32,8 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 
         if (input.submit.pressed)
             character.TryInteract();
+        else if (input.start.pressed)
+            pauseUI.Open();
 
         return false;
     }

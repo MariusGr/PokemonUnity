@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
 {
-    [SerializeField] private Sprite backgroundDefault;
-    [SerializeField] private Sprite backgroundDefaultSelected;
-    [SerializeField] private Sprite backgroundFaint;
-    [SerializeField] private Sprite backgroundFaintSelected;
+    [SerializeField] protected Sprite backgroundDefault;
+    [SerializeField] protected Sprite backgroundDefaultSelected;
+    [SerializeField] protected Sprite backgroundFaint;
+    [SerializeField] protected Sprite backgroundFaintSelected;
     [SerializeField] private Image icon;
     [SerializeField] private GameObject item;
     private Vector3 iconOffset;
@@ -16,12 +16,13 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
     private new Coroutine animation;
     private Vector3 iconStartPosistion;
 
-    private void Awake()
-    {
-        iconStartPosistion = icon.transform.localPosition;
-    }
+    private void Awake() => DoOnAwake();
+    private void OnEnable() => DoOnEnable();
+    protected void DoOnAwake() => iconStartPosistion = icon.transform.localPosition;
+    protected virtual Sprite GetCurrentBackgroundIdle() => pokemon.isFainted ? backgroundFaint : backgroundDefault;
+    protected virtual Sprite GetCurrentBackgroundSelected() => pokemon.isFainted ? backgroundFaintSelected : backgroundDefaultSelected;
 
-    private void OnEnable()
+    protected void DoOnEnable()
     {
         StartCoroutine(IconAnimation());
         Refresh();
@@ -35,23 +36,8 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
         item.SetActive(false);
         if (!(animation is null))
             StopCoroutine(animation);
-        if (pokemon.isFainted)
-            SetToFainted();
-        else
-            SetToDefault();
-    }
-
-    public void SetToDefault()
-    {
-        spriteBefore = backgroundDefault;
-        selectedSprite = backgroundDefaultSelected;
-        image.sprite = currentSprite;
-    }
-
-    public void SetToFainted()
-    {
-        spriteBefore = backgroundFaint;
-        selectedSprite = backgroundFaintSelected;
+        spriteBefore = GetCurrentBackgroundIdle();
+        selectedSprite = GetCurrentBackgroundSelected();
         image.sprite = currentSprite;
     }
 

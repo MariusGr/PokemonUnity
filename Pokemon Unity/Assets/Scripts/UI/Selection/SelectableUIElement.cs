@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CollectionExtensions;
 
-public abstract class SelectableUIElement : MonoBehaviour
+public abstract class SelectableUIElement : MonoBehaviour, ISelectableUIElement
 {
     [SerializeField] InspectorFriendlySerializableDictionary<Direction, SelectableUIElement> neighbours;
 
@@ -11,6 +11,7 @@ public abstract class SelectableUIElement : MonoBehaviour
     public int index { get; private set; }
     public bool assigned { get; private set; } = false;
 
+    public int GetIndex() => index;
     public virtual void Initialize(int index) => this.index = index;
     public virtual void Refresh() { }
     public SelectableUIElement GetNeighbour(Direction direction)

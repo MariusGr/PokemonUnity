@@ -30,5 +30,6 @@ public class InputData
 
     public Button submit = new Button();
     public Button chancel = new Button();
+    public Button start = new Button();
     public DigitalPad digitalPad = new DigitalPad();
 }

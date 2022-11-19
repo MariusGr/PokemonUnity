@@ -33,7 +33,7 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
     private BattleOption opponentBattleOption = BattleOption.None;
 
     public delegate void UserBattleOptionChooseEventHandler(BattleOption option);
-    public delegate void UserPokemonChooseEventHandler(int index, bool goBack);
+    public delegate void UserPokemonChooseEventHandler(int index);
     public event UserBattleOptionChooseEventHandler UserChooseBattleOptionEvent;
     public event UserPokemonChooseEventHandler UserChoosePokemonEvent;
 
@@ -351,6 +351,8 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
 
         while (true)
         {
+            //Services.Get<IBattleManager>().ChooseBattleMenuOption(((BattleMenuButton)selectedElement).option);
+
             int chosenOption = 0;
             if (opponentIsWild)
             {
@@ -401,17 +403,13 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
 
     private IEnumerator GetNextPokemonPlayer(Action<int, bool> callback, bool forceSelection = false)
     {
+        //ervices.Get<IBattleManager>().ChoosePlayerPokemon((selectedElement).index, false)
         playerBattleOption = BattleOption.None;
-        ui.OpenPokemonSwitchSelection(forceSelection);
+        ui.OpenPokemonSwitchSelection((ISelectableUIElement selection) => ChoosePlayerPokemon(selection.GetIndex()));
 
         int choosenPokemonIndex = -1;
         bool goBack = false;
-        UserPokemonChooseEventHandler action =
-            (int index, bool back) =>
-            {
-                choosenPokemonIndex = index;
-                goBack = back;
-            };
+        UserPokemonChooseEventHandler action = (int index) => { choosenPokemonIndex = index; };
         UserChoosePokemonEvent += action;
         print("wait for player to choose pkmn");
         while(true)
@@ -459,7 +457,7 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
     }
 
     public void ChooseBattleMenuOption(BattleOption option) => UserChooseBattleOptionEvent?.Invoke(option);
-    public void ChoosePlayerPokemon(int index, bool goBack) => UserChoosePokemonEvent?.Invoke(index, goBack);
+    public void ChoosePlayerPokemon(int index, bool goBack) => UserChoosePokemonEvent?.Invoke(index);
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
         => pokemon.Name == other.Name ? (

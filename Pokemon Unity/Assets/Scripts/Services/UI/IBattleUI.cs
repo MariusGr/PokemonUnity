@@ -19,7 +19,7 @@ public interface IBattleUI : IUIView
     public System.Func<bool> MakeOpponentAppear();
     public System.Func<bool> MakeOpponentDisappear();
     public void OpenBattleMenu();
-    public void OpenPokemonSwitchSelection(bool forceSelection = false);
+    public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement> callback, bool forceSelection = false);
     public void CloseBattleMenu();
     public void ClosePokemonSwitchSelection();
 }
