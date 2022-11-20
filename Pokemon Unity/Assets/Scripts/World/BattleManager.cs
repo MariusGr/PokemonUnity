@@ -32,11 +32,6 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
     private BattleOption playerBattleOption = BattleOption.None;
     private BattleOption opponentBattleOption = BattleOption.None;
 
-    public delegate void UserBattleOptionChooseEventHandler(BattleOption option);
-    public delegate void UserPokemonChooseEventHandler(int index);
-    public event UserBattleOptionChooseEventHandler UserChooseBattleOptionEvent;
-    public event UserPokemonChooseEventHandler UserChoosePokemonEvent;
-
     private CharacterData[] characterData;
 
     private Pokemon wildPokemon;
@@ -216,14 +211,11 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
 
     private IEnumerator GetBattleMenuOption(Action<BattleOption> callback)
     {
-        ui.OpenBattleMenu();
         BattleOption choosenOption = BattleOption.None;
-        UserBattleOptionChooseEventHandler action = (BattleOption option) => choosenOption = option;
-        UserChooseBattleOptionEvent += action;
+        ui.OpenBattleMenu((BattleOption selection, bool goBack) => choosenOption = selection);
         print("wait for play to choose option");
         yield return new WaitUntil(() => choosenOption != BattleOption.None);
         ui.CloseBattleMenu();
-        UserChooseBattleOptionEvent -= action;
         callback(choosenOption);
     }
 
@@ -312,20 +304,16 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
         }
 
         // Let player Choose move
-        moveSelectionUI.Open();
         Move choosenMove = null;
         bool goBack = false;
-        PokemonManager.UserMoveChooseEventHandler action =
-            (Move move, bool back) =>
-            {
-                choosenMove = move;
-                goBack = back;
-            };
-        pokemonManager.UserChooseMoveEvent += action;
+        moveSelectionUI.Open((ISelectableUIElement selection, bool back) =>
+        {
+            goBack = back;
+            choosenMove = selection is null ? null : playerPokemon.moves[selection.GetIndex()];
+        });
         print("wait for play to choose move");
         yield return new WaitUntil(() => choosenMove != null || goBack);
         moveSelectionUI.Close();
-        pokemonManager.UserChooseMoveEvent -= action;
 
         if (!(choosenMove is null) && choosenMove.pp < 1)
         {
@@ -351,8 +339,6 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
 
         while (true)
         {
-            //Services.Get<IBattleManager>().ChooseBattleMenuOption(((BattleMenuButton)selectedElement).option);
-
             int chosenOption = 0;
             if (opponentIsWild)
             {
@@ -403,14 +389,15 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
 
     private IEnumerator GetNextPokemonPlayer(Action<int, bool> callback, bool forceSelection = false)
     {
-        //ervices.Get<IBattleManager>().ChoosePlayerPokemon((selectedElement).index, false)
         playerBattleOption = BattleOption.None;
-        ui.OpenPokemonSwitchSelection((ISelectableUIElement selection) => ChoosePlayerPokemon(selection.GetIndex()));
-
-        int choosenPokemonIndex = -1;
         bool goBack = false;
-        UserPokemonChooseEventHandler action = (int index) => { choosenPokemonIndex = index; };
-        UserChoosePokemonEvent += action;
+        int choosenPokemonIndex = -1;
+        ui.OpenPokemonSwitchSelection((ISelectableUIElement selection, bool back) =>
+        {
+            choosenPokemonIndex = selection is null ? -1 : selection.GetIndex();
+            goBack = back;
+        }, forceSelection);
+
         print("wait for player to choose pkmn");
         while(true)
         {
@@ -439,7 +426,6 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
         dialogBox.Continue();
         dialogBox.Close();
         ui.ClosePokemonSwitchSelection();
-        UserChoosePokemonEvent -= action;
 
         callback(choosenPokemonIndex, goBack);
     }
@@ -455,9 +441,6 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
         ui.SwitchToPokemon(characterIndex, characterData[characterIndex].pokemons[pokemonIndex]);
         yield return null;
     }
-
-    public void ChooseBattleMenuOption(BattleOption option) => UserChooseBattleOptionEvent?.Invoke(option);
-    public void ChoosePlayerPokemon(int index, bool goBack) => UserChoosePokemonEvent?.Invoke(index);
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
         => pokemon.Name == other.Name ? (

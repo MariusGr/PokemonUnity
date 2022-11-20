@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class PokemonManager : ManagerWithMoveSelection, IPokemonManager
 {
-    public delegate void UserMoveChooseEventHandler(Move move, bool goBack);
-    public event UserMoveChooseEventHandler UserChooseMoveEvent;
-
     public PokemonManager() => Services.Register(this as IPokemonManager);
 
     private void Awake() => Initialize();
-
-    public void ChoosePlayerMove(Move move, bool goBack) => UserChooseMoveEvent?.Invoke(move, goBack);
 
     public IEnumerator GrowLevel(Pokemon pokemon, System.Action<bool> uiRefreshCallback)
     {
@@ -40,20 +35,17 @@ public class PokemonManager : ManagerWithMoveSelection, IPokemonManager
 
                     // Let player choose move
                     dialogBox.Close();
-                    moveSelectionUI.Open();
                     Move choosenMove = null;
                     bool goBack = false;
-                    UserMoveChooseEventHandler action =
-                        (Move move, bool back) =>
-                        {
-                            choosenMove = move;
-                            goBack = back;
-                        };
-                    UserChooseMoveEvent += action;
+                    moveSelectionUI.Open((ISelectableUIElement selection, bool back) =>
+                    {
+                        choosenMove = selection is null ? null : pokemon.moves[selection.GetIndex()];
+                        goBack = back;
+                    });
+
                     print("wait for play to choose move");
                     yield return new WaitUntil(() => choosenMove != null || goBack);
                     moveSelectionUI.Close();
-                    UserChooseMoveEvent -= action;
 
                     if (!goBack)
                     {

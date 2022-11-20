@@ -10,9 +10,9 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
 
     public override void Open()
     {
-        Open((SelectableUIElement selection, bool goBack) =>
+        Open((ISelectableUIElement selection, bool goBack) =>
         {
-            ChooseOption(selection.index);
+            ChooseOption(selection.GetIndex());
         });
     }
 

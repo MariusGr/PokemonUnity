@@ -18,8 +18,8 @@ public interface IBattleUI : IUIView
     public System.Func<bool> PlayFaintAnimation(int faintedOwner);
     public System.Func<bool> MakeOpponentAppear();
     public System.Func<bool> MakeOpponentDisappear();
-    public void OpenBattleMenu();
-    public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement> callback, bool forceSelection = false);
+    public void OpenBattleMenu(System.Action<BattleOption, bool> callback);
+    public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection = false);
     public void CloseBattleMenu();
     public void ClosePokemonSwitchSelection();
 }

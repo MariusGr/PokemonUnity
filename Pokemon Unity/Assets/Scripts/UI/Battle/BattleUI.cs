@@ -99,8 +99,10 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         return sprite.IsPlayingAnimation;
     }
 
-    public void OpenBattleMenu() => battleMenu.Open();
-    public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement> callback, bool forceSelection)
+    public void OpenBattleMenu(System.Action<BattleOption, bool> callback)
+        => battleMenu.Open((ISelectableUIElement selection, bool goBack)
+            => callback(((BattleMenuButton)selection).option, false));
+    public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection)
         => pokemonSwitchSelection.Open(callback, forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
 
     public void CloseBattleMenu() => battleMenu.Close();

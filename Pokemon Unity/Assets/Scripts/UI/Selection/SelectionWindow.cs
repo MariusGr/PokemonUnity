@@ -3,24 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class SelectionWindow : OpenedInputConsumer
+public abstract class SelectionWindow : OpenedInputConsumer, ISelectionWindow
 {
     [SerializeField] public SelectableUIElement[] elements;
 
     private int selectedIndex = 0;
     protected SelectableUIElement selectedElement => elements[selectedIndex];
     bool forceSelection = false;
+    Action<ISelectableUIElement, bool> callback;
 
-    public virtual void Open(Action<ISelectableUIElement> callback) => Open(callback, false, 0);
-    public virtual void Open(Action<ISelectableUIElement> callback, bool forceSelection) => Open(callback, forceSelection, 0);
-    public virtual void Open(Action<ISelectableUIElement> callback, int startSelection) => Open(callback, false, startSelection);
-    public virtual void Open(Action<ISelectableUIElement> callback, bool forceSelection, int startSelection)
+    public override void Open() => Open(null, false, 0);
+    public virtual void Open(Action<ISelectableUIElement, bool> callback) => Open(callback, false, 0);
+    public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, 0);
+    public virtual void Open(Action<ISelectableUIElement, bool> callback, int startSelection) => Open(callback, false, startSelection);
+    public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
+        this.callback = callback;
         this.forceSelection = forceSelection;
         for (int i = 0; i < elements.Length; i++)
             elements[i].Initialize(i);
         SelectElement(startSelection);
+        print(selectedElement.gameObject.name);
         base.Open();
+        print(this);
+        print(gameObject.name);
     }
 
     public override void Close() => base.Close();
@@ -49,7 +55,6 @@ public abstract class SelectionWindow : OpenedInputConsumer
     {
         for (int i = 0; i < elements.Length; i++)
         {
-            print(elements[i]);
             this.elements[i].AssignElement(elements[i]);
         }
 
@@ -57,7 +62,6 @@ public abstract class SelectionWindow : OpenedInputConsumer
             this.elements[i].AssignNone();
     }
 
-    private void ChooseSelectedElement() { /* TODO sound*/ }
     virtual protected void SelectElement(int index)
     {
         selectedElement.Deselect();
@@ -66,5 +70,6 @@ public abstract class SelectionWindow : OpenedInputConsumer
     }
 
     virtual protected void SelectElement(SelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.index);
-    virtual protected void GoBack() { }
+    private void ChooseSelectedElement() => callback?.Invoke(selectedElement, false);/* TODO sound*/ 
+    virtual protected void GoBack() => callback?.Invoke(null, true);
 }
