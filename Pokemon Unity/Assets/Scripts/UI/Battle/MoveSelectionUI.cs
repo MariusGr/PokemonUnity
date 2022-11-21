@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class MoveSelectionUI : SelectionGraphWindow, IMoveSelectionUI
 {
-    public MoveSelectionUI() => Services.Register(this as IMoveSelectionUI);
+    public void Open(bool consumeInput)
+    {
+        if (consumeInput)
+            Open();
+        else
+            gameObject.SetActive(true);
+    }
+
     public void Assign(Pokemon pokemon) => AssignElements(pokemon.moves.ToArray());
     public void RefreshMove(Move move) => RefreshElement(move.index);
 }

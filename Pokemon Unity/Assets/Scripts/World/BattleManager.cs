@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class BattleManager : ManagerWithMoveSelection, IBattleManager
+public class BattleManager : ManagerWithPokemonManager, IBattleManager
 {
     private enum BattleState
     {
@@ -306,14 +306,14 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
         // Let player Choose move
         Move choosenMove = null;
         bool goBack = false;
-        moveSelectionUI.Open((ISelectableUIElement selection, bool back) =>
+        ui.OpenMoveSelection((ISelectableUIElement selection, bool back) =>
         {
             goBack = back;
             choosenMove = selection is null ? null : playerPokemon.moves[selection.GetIndex()];
         });
         print("wait for play to choose move");
         yield return new WaitUntil(() => choosenMove != null || goBack);
-        moveSelectionUI.Close();
+        ui.CloseMoveSelection();
 
         if (!(choosenMove is null) && choosenMove.pp < 1)
         {
@@ -458,7 +458,7 @@ public class BattleManager : ManagerWithMoveSelection, IBattleManager
         Pokemon attackerPokemon = GeActivePokemon(attacker);
         Pokemon targetPokemon = GeActivePokemon(target);
         move.DecrementPP();
-        moveSelectionUI.RefreshMove(move);
+        ui.RefreshMove(move);
 
         // Play attack animation
         string attackingPokemonIdentifier = GetUniqueIdentifier(attackerPokemon, targetPokemon, attackerCharacter);

@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokemonManager : ManagerWithMoveSelection, IPokemonManager
+public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 {
+    [SerializeField] IMoveSelectionUI moveSelectionUI;
+
     public PokemonManager() => Services.Register(this as IPokemonManager);
 
     private void Awake() => Initialize();
@@ -67,6 +69,6 @@ public class PokemonManager : ManagerWithMoveSelection, IPokemonManager
         else
             pokemon.AddMove(move);
         yield return dialogBox.DrawText($"{pokemon.Name} hat {move.fullName} erlernt!", DialogBoxContinueMode.User);
-        Services.Get<IMoveSelectionUI>().Assign(pokemon);
+        moveSelectionUI.Assign(pokemon);
     }
 }

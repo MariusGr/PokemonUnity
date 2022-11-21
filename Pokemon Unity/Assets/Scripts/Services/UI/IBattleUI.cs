@@ -11,6 +11,7 @@ public interface IBattleUI : IUIView
     public void RefreshHP(int character);
     public void RefreshXP();
     public void ResetXP();
+    public void RefreshMove(Move move);
     public System.Func<bool> RefreshHPAnimated(int character);
     public System.Func<bool> RefreshXPAnimated();
     public System.Func<bool> PlayMoveAnimation(int attacker, Move move);
@@ -20,6 +21,8 @@ public interface IBattleUI : IUIView
     public System.Func<bool> MakeOpponentDisappear();
     public void OpenBattleMenu(System.Action<BattleOption, bool> callback);
     public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection = false);
+    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback);
     public void CloseBattleMenu();
     public void ClosePokemonSwitchSelection();
+    public void CloseMoveSelection();
 }

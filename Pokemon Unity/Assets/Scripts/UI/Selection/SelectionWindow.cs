@@ -21,7 +21,12 @@ public abstract class SelectionWindow : OpenedInputConsumer, ISelectionWindow
         this.callback = callback;
         this.forceSelection = forceSelection;
         for (int i = 0; i < elements.Length; i++)
+        {
             elements[i].Initialize(i);
+            if (i != startSelection)
+                elements[i].Deselect();
+        }
+
         SelectElement(startSelection);
         print(selectedElement.gameObject.name);
         base.Open();

@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class DialogBox : MonoBehaviour, IDialogBox
 {
+    static public DialogBox Instance;
+
     [SerializeField] Transform dialogBoxT;
     [SerializeField] Transform dialogBoxTrn;
 
@@ -47,7 +49,11 @@ public class DialogBox : MonoBehaviour, IDialogBox
         { Effectiveness.Normal, "" },
     };
 
-    public DialogBox() => Services.Register(this as IDialogBox);
+    public DialogBox()
+    {
+        Instance = this;
+        Services.Register(this as IDialogBox);
+    }
 
     void Awake()
     {
@@ -89,28 +95,28 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     public bool IsOpen() => gameObject.activeSelf;
 
-    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {
         Open();
-        currentCoroutine = StartCoroutine(DrawStringsCoroutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish));
+        currentCoroutine = StartCoroutine(DrawStringsCoroutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish, lines));
         return currentCoroutine;
     }
 
-    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
-        => DrawText(text.Split('|'), continueMode, closeAfterFinish);
-    public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
+        => DrawText(text.Split('|'), continueMode, closeAfterFinish, lines);
+    public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {
         Open();
-        currentCoroutine = StartCoroutine(DrawStringsCoroutine(text, continueMode, closeAfterFinish));
+        currentCoroutine = StartCoroutine(DrawStringsCoroutine(text, continueMode, closeAfterFinish, lines));
         return currentCoroutine;
     }
 
-    IEnumerator DrawStringsRoutine(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    IEnumerator DrawStringsRoutine(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
         => DrawStringsCoroutine(new string[] { text }, continueMode, closeAfterFinish);
 
-    IEnumerator DrawStringsCoroutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false)
+    IEnumerator DrawStringsCoroutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {
-        DrawDialogBox();
+        DrawDialogBox(lines);
 
         if (continueMode == DialogBoxContinueMode.User)
             InputManager.Instance.Register(this);
@@ -339,13 +345,13 @@ public class DialogBox : MonoBehaviour, IDialogBox
         }
     }
 
-    public IEnumerator DrawChoiceBox(string text, int chancelIndex = -1)
-        => DrawChoiceBox(text, new string[] { "Ja", "Nein" }, chancelIndex);
+    public IEnumerator DrawChoiceBox(string text, int chancelIndex = -1, int lines = 2)
+        => DrawChoiceBox(text, new string[] { "Ja", "Nein" }, chancelIndex, lines);
 
-    public IEnumerator DrawChoiceBox(string text, string[] choices, int chancelIndex = -1)
+    public IEnumerator DrawChoiceBox(string text, string[] choices, int chancelIndex = -1, int lines = 2)
     {
         Open();
-        currentCoroutine = StartCoroutine(DrawStringsRoutine(text, DialogBoxContinueMode.External, true));
+        currentCoroutine = StartCoroutine(DrawStringsRoutine(text, DialogBoxContinueMode.External, true, lines));
         return DrawChoiceBox(choices, null, -1, defaultChoiceY, defaultChoiceWidth, chancelIndex);
     }
 

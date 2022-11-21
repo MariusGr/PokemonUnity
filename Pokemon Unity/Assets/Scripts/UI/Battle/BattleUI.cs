@@ -12,6 +12,7 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
     [SerializeField] private TrainerSprite opponentSprite;
     [SerializeField] private PlayerPokemonStatsBattleUI playerStats;
     [SerializeField] private PokemonStatsUI opponentStats;
+    [SerializeField] private MoveSelectionUI moveSelectionUI;
     [SerializeField] private float hpRefreshSpeed = 1f;
     [SerializeField] private float xpRefreshSpeed = 1f;
 
@@ -53,7 +54,7 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
         stats[characterIndex].AssignPokemon(pokemon);
         pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
         if (characterIndex == Constants.PlayerIndex)
-            Services.Get<IMoveSelectionUI>().Assign(pokemon);
+            moveSelectionUI.Assign(pokemon);
     }
 
     public void Refresh(int character) => stats[character].Refresh();
@@ -63,6 +64,7 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
     public void ResetXP() => playerStats.ResetXP();
     public System.Func<bool> RefreshHPAnimated(int character) => stats[character].RefreshHPAnimated(hpRefreshSpeed);
     public System.Func<bool> RefreshXPAnimated() => playerStats.RefreshXPAnimated(xpRefreshSpeed);
+    public void RefreshMove(Move move) => moveSelectionUI.RefreshMove(move);
 
     public System.Func<bool> PlayMoveAnimation(int attacker, Move move)
     {
@@ -104,9 +106,12 @@ public class BattleUI : OpenedInputConsumer, IBattleUI
             => callback(((BattleMenuButton)selection).option, false));
     public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection)
         => pokemonSwitchSelection.Open(callback, forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
+    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback) =>
+        moveSelectionUI.Open(callback);
 
     public void CloseBattleMenu() => battleMenu.Close();
     public void ClosePokemonSwitchSelection() => pokemonSwitchSelection.Close();
+    public void CloseMoveSelection() => moveSelectionUI.Close();
 
     public override bool ProcessInput(InputData input) => false;
 }

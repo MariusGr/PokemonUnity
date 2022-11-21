@@ -62,7 +62,12 @@ public class Pokemon
 
     public PokemonData data;
     public CharacterData character { get; private set; }
+    public int id;
     public string nickname = null;
+
+    public DateTime metDate;
+    public string metMap = "Entonhausen";
+    public string metLevel;
 
     public int level;
     // TODO increase stats with level
