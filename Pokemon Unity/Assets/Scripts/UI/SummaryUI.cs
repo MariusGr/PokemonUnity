@@ -5,23 +5,22 @@ using UnityEngine.UI;
 
 public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
 {
-    [SerializeField] Text dexNoText;
-    [SerializeField] Text speciesText;
+    [SerializeField] ShadowedText dexNoText;
+    [SerializeField] ShadowedText speciesText;
     [SerializeField] Image Type1Image;
     [SerializeField] Image Type2Image;
-    [SerializeField] Text idText;
-    [SerializeField] Text xpText;
-    [SerializeField] Text xpNextLevelText;
-    [SerializeField] Text metDateText;
-    [SerializeField] Text metMapText;
-    [SerializeField] Text metLevelText;
-    [SerializeField] Text hpText;
-    [SerializeField] Text statsText;
+    [SerializeField] ShadowedText idText;
+    [SerializeField] ShadowedText xpText;
+    [SerializeField] ShadowedText xpNextLevelText;
+    [SerializeField] ShadowedText metDateText;
+    [SerializeField] ShadowedText metMapText;
+    [SerializeField] ShadowedText metLevelText;
+    [SerializeField] ShadowedText statsText;
     [SerializeField] MoveSelectionUI moveSelection;
     [SerializeField] Image moveCategoryImage;
-    [SerializeField] Text movePowerText;
-    [SerializeField] Text moveAccuracyText;
-    [SerializeField] Text moveDescriptionText;
+    [SerializeField] ShadowedText movePowerText;
+    [SerializeField] ShadowedText moveAccuracyText;
+    [SerializeField] ShadowedText moveDescriptionText;
 
     public void Open() => gameObject.SetActive(true);
     public void Close() => gameObject.SetActive(false);
@@ -43,7 +42,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
     public override void RefreshHP()
     {
         base.RefreshHP();
-        hpText.text = $"{pokemon.hp}/{pokemon.maxHp}";
+        hp.text = $"{pokemon.hp}/{pokemon.maxHp}";
     }
 
     public override void RefreshXP()

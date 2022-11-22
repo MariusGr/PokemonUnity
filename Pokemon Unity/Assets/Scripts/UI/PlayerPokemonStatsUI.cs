@@ -6,7 +6,7 @@ using CollectionExtensions;
 
 public class PlayerPokemonStatsUI : PokemonStatsUI
 {
-    [SerializeField] ShadowedText hp;
+    [SerializeField] protected ShadowedText hp;
     [SerializeField] ShadowedText maxHP;
 
     public override void Refresh()

@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class SelectionWindow : OpenedInputConsumer, ISelectionWindow
+public abstract class SelectionWindow : ClosableView, ISelectionWindow
 {
     [SerializeField] public SelectableUIElement[] elements;
 
-    private int selectedIndex = 0;
+    private bool forceSelection = false;
+    protected int selectedIndex = 0;
     protected SelectableUIElement selectedElement => elements[selectedIndex];
-    bool forceSelection = false;
-    Action<ISelectableUIElement, bool> callback;
 
     public override void Open() => Open(null, false, 0);
-    public virtual void Open(Action<ISelectableUIElement, bool> callback) => Open(callback, false, 0);
+    public override void Open(Action<ISelectableUIElement, bool> callback) => Open(callback, false, 0);
     public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, 0);
     public virtual void Open(Action<ISelectableUIElement, bool> callback, int startSelection) => Open(callback, false, startSelection);
     public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
-        this.callback = callback;
         this.forceSelection = forceSelection;
+
         for (int i = 0; i < elements.Length; i++)
         {
             elements[i].Initialize(i);
@@ -28,10 +27,7 @@ public abstract class SelectionWindow : OpenedInputConsumer, ISelectionWindow
         }
 
         SelectElement(startSelection);
-        print(selectedElement.gameObject.name);
-        base.Open();
-        print(this);
-        print(gameObject.name);
+        base.Open(callback);
     }
 
     public override void Close() => base.Close();
@@ -43,17 +39,18 @@ public abstract class SelectionWindow : OpenedInputConsumer, ISelectionWindow
 
     public override bool ProcessInput(InputData input)
     {
-        if (input.submit.pressed)
-        {
-            ChooseSelectedElement();
-            return true;
-        }
-        if (!forceSelection && input.chancel.pressed)
-        {
-            GoBack();
-            return true;
-        }
+        if (!base.ProcessInput(input))
+            if (input.submit.pressed)
+            {
+                ChooseSelectedElement();
+                return true;
+            }
         return false;
+    }
+
+    public bool ProcessInputChancel(InputData input)
+    {
+        return base.ProcessInput(input);
     }
 
     public void AssignElements(object[] elements)
@@ -75,6 +72,11 @@ public abstract class SelectionWindow : OpenedInputConsumer, ISelectionWindow
     }
 
     virtual protected void SelectElement(SelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.index);
-    private void ChooseSelectedElement() => callback?.Invoke(selectedElement, false);/* TODO sound*/ 
-    virtual protected void GoBack() => callback?.Invoke(null, true);
+    virtual protected void ChooseSelectedElement() => callback?.Invoke(selectedElement, false);/* TODO sound*/
+
+    protected override void GoBack()
+    {
+        if (!forceSelection)
+            base.GoBack();
+    }
 }

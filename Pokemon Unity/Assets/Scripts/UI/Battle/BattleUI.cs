@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleUI : OpenedInputConsumer, IBattleUI
+public class BattleUI : InputConsumer, IBattleUI
 {
     [SerializeField] private BattleMenu battleMenu;
     [SerializeField] private PokemonSwitchSelection pokemonSwitchSelection;

@@ -14,7 +14,8 @@ public abstract class SelectableImage : SelectableUIElement
 
     public override void Select()
     {
-        image.sprite = selectedSprite;
+        if (!(image is null))
+            image.sprite = selectedSprite;
         if (!(imageCursor is null))
             imageCursor.enabled = true;
         base.Select();
@@ -22,7 +23,8 @@ public abstract class SelectableImage : SelectableUIElement
 
     public override void Deselect()
     {
-        image.sprite = spriteBefore;
+        if (!(image is null))
+            image.sprite = spriteBefore;
         if (!(imageCursor is null))
             imageCursor.enabled = false;
         base.Deselect();
