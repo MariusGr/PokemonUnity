@@ -19,7 +19,8 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
         base.RefreshHP();
 
         hp.text = pokemon.hp.ToString();
-        maxHP.text = pokemon.maxHp.ToString();
+        if (!(maxHP is null))
+            maxHP.text = pokemon.maxHp.ToString();
     }
 
     override public System.Func<bool> RefreshHPAnimated(float speed)

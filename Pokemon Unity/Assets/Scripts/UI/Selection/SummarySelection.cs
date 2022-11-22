@@ -29,6 +29,8 @@ public class SummarySelection : ScalarSelection
     private void SetPokemon(int index)
     {
         this.pokemonIndex = index;
+        print(index);
+        print(PlayerData.Instance.pokemons.Length);
         ui.AssignElement(pokemon);
     }
 
@@ -43,7 +45,7 @@ public class SummarySelection : ScalarSelection
             }
             if (input.digitalPad.pressed == Direction.Down)
             {
-                SetPokemon((pokemonIndex - 1) % PlayerData.Instance.pokemons.Length);
+                SetPokemon(pokemonIndex < 1 ? PlayerData.Instance.pokemons.Length - 1 : pokemonIndex - 1);
                 return true;
             }
         }

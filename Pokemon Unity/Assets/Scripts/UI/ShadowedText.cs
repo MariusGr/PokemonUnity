@@ -11,6 +11,7 @@ public class ShadowedText : MonoBehaviour
     [SerializeField] string _text = "Enter text here";
     [SerializeField] TextAnchor _alignment = TextAnchor.UpperCenter;
     [SerializeField] Font _font;
+    [SerializeField] float _lineSpacing;
     [SerializeField] bool useDifferentFontForShadow;
     [SerializeField] Font shadowFont;
 
@@ -46,12 +47,24 @@ public class ShadowedText : MonoBehaviour
         }
     }
 
+    public float linespacing
+    {
+        get => _lineSpacing;
+        set
+        {
+            _lineSpacing = value;
+            textDefault.lineSpacing = _lineSpacing;
+            textShadow.lineSpacing = _lineSpacing;
+        }
+    }
+
 #if (UNITY_EDITOR)
     private void Update()
     {
         text = _text;
         alignment = _alignment;
         font = _font;
+        linespacing = _lineSpacing;
         textShadow.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textDefault.rectTransform.sizeDelta.x);
         textShadow.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textDefault.rectTransform.sizeDelta.y);
     }

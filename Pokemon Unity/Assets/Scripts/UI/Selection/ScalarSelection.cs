@@ -10,12 +10,12 @@ public class ScalarSelection : SelectionWindow
         {
             if (input.digitalPad.pressed == Direction.Right)
             {
-                selectedIndex = (selectedIndex + 1) % elements.Length;
+                SelectElement((selectedIndex + 1) % elements.Length);
                 return true;
             }
             if (input.digitalPad.pressed == Direction.Left)
             {
-                selectedIndex = (selectedIndex - 1) % elements.Length;
+                SelectElement((selectedIndex - 1) % elements.Length);
                 return true;
             }
         }
