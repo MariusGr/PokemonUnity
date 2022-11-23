@@ -30,7 +30,11 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         base.Open(callback);
     }
 
-    public override void Close() => base.Close();
+    public override void Close()
+    {
+        selectedElement.Deselect();
+        base.Close();
+    }
 
     virtual public void RefreshElement(int index)
     {

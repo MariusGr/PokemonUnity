@@ -15,7 +15,7 @@ public class ScalarSelection : SelectionWindow
             }
             if (input.digitalPad.pressed == Direction.Left)
             {
-                SelectElement((selectedIndex - 1) % elements.Length);
+                SelectElement(selectedIndex < 1 ? elements.Length - 1 : selectedIndex - 1);
                 return true;
             }
         }

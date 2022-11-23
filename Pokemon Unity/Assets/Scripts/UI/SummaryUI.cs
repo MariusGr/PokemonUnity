@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
 {
+    [SerializeField] Image pokemonImage;
     [SerializeField] ShadowedText dexNoText;
     [SerializeField] ShadowedText speciesText;
     [SerializeField] Image Type1Image;
@@ -16,7 +17,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
     [SerializeField] ShadowedText metMapText;
     [SerializeField] ShadowedText metLevelText;
     [SerializeField] ShadowedText statsText;
-    [SerializeField] MoveSelectionUI moveSelection;
+    [SerializeField] MoveSelectionSummaryUI moveSelection;
     [SerializeField] Image moveCategoryImage;
     [SerializeField] ShadowedText movePowerText;
     [SerializeField] ShadowedText moveAccuracyText;
@@ -29,6 +30,16 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
     {
         base.Refresh();
         RefreshXP();
+        pokemonImage.sprite = pokemon.data.frontSprite;
+
+        Type1Image.sprite = pokemon.data.pokemonTypes[0].titleSprite;
+        Sprite type2Sprite = pokemon.data.GetType2Sprite();
+        Type2Image.sprite = type2Sprite;
+        if (type2Sprite is null)
+            Type2Image.gameObject.SetActive(false);
+        else
+            Type2Image.gameObject.SetActive(true);
+
         dexNoText.text = pokemon.data.dex.ToString();
         speciesText.text = pokemon.data.fullName.ToString().ToUpper();
         idText.text = pokemon.id.ToString();
@@ -37,6 +48,13 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
         metLevelText.text = pokemon.metLevel.ToString();
         statsText.text = $"{pokemon.attack}\n{pokemon.defense}\n{pokemon.specialAttack}\n{pokemon.specialDefense}\n{pokemon.speed}";
         moveSelection.Assign(pokemon);
+    }
+
+    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback) => moveSelection.Open(callback);
+    public void CloseMoveSelection()
+    {
+        moveSelection.Close();
+        moveSelection.Show();
     }
 
     public override void RefreshHP()

@@ -518,7 +518,6 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         else
         {
             // Aftermath e.g. Status effects etc.
-            //dialogBox.Close();
             bool attackerFainted = false;
             if (move.data.recoil > 0 && damage > 0)
             {

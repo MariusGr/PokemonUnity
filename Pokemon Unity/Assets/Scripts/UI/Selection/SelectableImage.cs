@@ -17,7 +17,10 @@ public abstract class SelectableImage : SelectableUIElement
         if (!(image is null))
             image.sprite = selectedSprite;
         if (!(imageCursor is null))
-            imageCursor.enabled = true;
+        {
+            imageCursor.gameObject.SetActive(true);
+            imageCursor.transform.localPosition = transform.localPosition;
+        }
         base.Select();
     }
 
@@ -26,7 +29,7 @@ public abstract class SelectableImage : SelectableUIElement
         if (!(image is null))
             image.sprite = spriteBefore;
         if (!(imageCursor is null))
-            imageCursor.enabled = false;
+            imageCursor.gameObject.SetActive(false);
         base.Deselect();
     }
 }

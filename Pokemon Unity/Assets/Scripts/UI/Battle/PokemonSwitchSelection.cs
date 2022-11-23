@@ -24,7 +24,8 @@ public class PokemonSwitchSelection : SelectionGraphWindow
         if (DialogBox.Instance.chosenIndex == 0)
         {
             // Summary
-            SummarySelection.Instance.Open();
+            DialogBox.Instance.Close();
+            SummarySelection.Instance.Open(selectedIndex);
             yield break;
         }
         if (DialogBox.Instance.chosenIndex == 1)

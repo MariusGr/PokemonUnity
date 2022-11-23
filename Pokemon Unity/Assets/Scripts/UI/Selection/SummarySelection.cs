@@ -9,10 +9,17 @@ public class SummarySelection : ScalarSelection
 
     [SerializeField] private SummaryUI ui;
 
+    private const int MovesView = 3;
     private int pokemonIndex;
     private Pokemon pokemon => PlayerData.Instance.pokemons[pokemonIndex];
 
     public SummarySelection() => Instance = this;
+
+    public void Open(int pokemonIndex)
+    {
+        SetPokemon(pokemonIndex);
+        Open();
+    }
 
     public override void Open(Action<ISelectableUIElement, bool> callback, int pokemonIndex)
     {
@@ -26,12 +33,32 @@ public class SummarySelection : ScalarSelection
         base.Open(callback);
     }
 
+    public override void Close()
+    {
+        ui.Close();
+        base.Close();
+    }
+
     private void SetPokemon(int index)
     {
         this.pokemonIndex = index;
         print(index);
         print(PlayerData.Instance.pokemons.Length);
         ui.AssignElement(pokemon);
+    }
+
+    protected override void ChooseSelectedElement()
+    {
+        if (selectedIndex == MovesView)
+            ui.OpenMoveSelection(CloseMoveSelection);
+        else if (selectedIndex == 5)
+            Close();
+    }
+
+    private void CloseMoveSelection(ISelectableUIElement selection, bool goBack)
+    {
+        if(goBack)
+            ui.CloseMoveSelection();
     }
 
     public override bool ProcessInput(InputData input)
