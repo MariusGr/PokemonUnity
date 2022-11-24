@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BattleUI : InputConsumer, IBattleUI
 {
     [SerializeField] private BattleMenu battleMenu;
-    [SerializeField] private PartySelection pokemonSwitchSelection;
+    [SerializeField] private PartySelection partySelection;
     [SerializeField] private PokemonSprite playerPokemonSprite;
     [SerializeField] private PokemonSprite opponentPokemonSprite;
     [SerializeField] private TrainerSprite opponentSprite;
@@ -38,7 +38,7 @@ public class BattleUI : InputConsumer, IBattleUI
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
-        pokemonSwitchSelection.AssignElements(playerData.pokemons);
+        partySelection.AssignElements(playerData.pokemons);
     }
 
     //TODO needed?
@@ -105,7 +105,7 @@ public class BattleUI : InputConsumer, IBattleUI
         => battleMenu.Open((ISelectableUIElement selection, bool goBack)
             => callback(((BattleMenuButton)selection).option, false));
     public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection)
-        => pokemonSwitchSelection.Open(callback, forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
+        => partySelection.Open(callback, forceSelection: forceSelection, startSelection: PlayerData.Instance.GetFirstAlivePokemonIndex(), battle: true);
     public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback, Pokemon pokemon)
     {
         moveSelectionUI.AssignElements(pokemon.moves.ToArray());
@@ -113,7 +113,7 @@ public class BattleUI : InputConsumer, IBattleUI
     }
 
     public void CloseBattleMenu() => battleMenu.Close();
-    public void ClosePokemonSwitchSelection() => pokemonSwitchSelection.Close();
+    public void ClosePokemonSwitchSelection() => partySelection.Close();
     public void CloseMoveSelection() => moveSelectionUI.Close();
 
     public override bool ProcessInput(InputData input) => false;

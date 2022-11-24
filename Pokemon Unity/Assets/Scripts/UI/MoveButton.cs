@@ -10,7 +10,7 @@ public class MoveButton : SelectableImage
     [SerializeField] private Image imageType;
     [SerializeField] protected Image imageBackground;
 
-    public Move move { get; private set; }
+    public Move move { get; protected set; }
 
     public override void Refresh()
     {

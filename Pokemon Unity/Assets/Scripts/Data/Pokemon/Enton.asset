@@ -33,10 +33,9 @@ MonoBehaviour:
   speed: 55
   baseXPGain: 400
   levelToMoveDataMap:
-    keys: 0000000001000000020000000300000033000000
+    keys: 00000000010000000200000003000000
     values:
     - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
     - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
     - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
-    - {fileID: 11400000, guid: acc82a1970c50d64aaf0f346966dbd22, type: 2}
     - {fileID: 11400000, guid: acc82a1970c50d64aaf0f346966dbd22, type: 2}

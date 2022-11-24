@@ -9,6 +9,7 @@ public class MoveButtonBattle : MoveButton
 
     override public void AssignElement(object element)
     {
+        move = (Move)element;
         imageCover.enabled = true;
         imageCover.color = move.data.pokeType.color;
         imageBackground.color = Color.white;

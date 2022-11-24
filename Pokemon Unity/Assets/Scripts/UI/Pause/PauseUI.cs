@@ -34,7 +34,7 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
     private  void ChooseOption(int index)
     {
         if (index == 0)
-            partyView.Open(ClosePartyView);
+            partyView.Open(callback: ClosePartyView, battle: false, forceSelection: false);
     }
 
     private void ClosePartyView(ISelectableUIElement selection, bool goBack)
