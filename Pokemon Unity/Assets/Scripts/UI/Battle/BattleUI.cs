@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BattleUI : InputConsumer, IBattleUI
 {
     [SerializeField] private BattleMenu battleMenu;
-    [SerializeField] private PokemonSwitchSelection pokemonSwitchSelection;
+    [SerializeField] private PartySelection pokemonSwitchSelection;
     [SerializeField] private PokemonSprite playerPokemonSprite;
     [SerializeField] private PokemonSprite opponentPokemonSprite;
     [SerializeField] private TrainerSprite opponentSprite;

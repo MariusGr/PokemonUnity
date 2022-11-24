@@ -16,18 +16,6 @@ public class SummarySelection : ScalarSelection
 
     public SummarySelection() => Instance = this;
 
-    public void Open(int pokemonIndex)
-    {
-        SetPokemon(pokemonIndex);
-        Open();
-    }
-
-    protected override void GoBack()
-    {
-        base.GoBack();
-        Close();
-    }
-
     public override void Open(Action<ISelectableUIElement, bool> callback, int pokemonIndex)
     {
         SetPokemon(pokemonIndex);
@@ -59,7 +47,7 @@ public class SummarySelection : ScalarSelection
         if (selectedIndex == MovesView)
             ui.OpenMoveSelection(ChooseMove);
         else if (selectedIndex == 5)
-            Close();
+            GoBack();
     }
 
     private void ChooseMove(ISelectableUIElement selection, bool goBack)

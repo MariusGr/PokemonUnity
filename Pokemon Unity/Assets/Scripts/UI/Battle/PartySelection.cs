@@ -3,12 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokemonSwitchSelection : SelectionGraphWindow
+public class PartySelection : SelectionGraphWindow
 {
+    private void DrawIntroText() => DialogBox.Instance.DrawText("Wähle ein Pokemon.", DialogBoxContinueMode.External, lines: 1);
+
     public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         base.Open(callback, forceSelection, startSelection);
-        DialogBox.Instance.DrawText("Wähle ein Pokemon.", DialogBoxContinueMode.External, lines: 1);
+        DrawIntroText();
+    }
+
+    public override void Close()
+    {
+        DialogBox.Instance.Close();
+        base.Close();
     }
 
     protected override void ChooseSelectedElement()
@@ -16,31 +24,37 @@ public class PokemonSwitchSelection : SelectionGraphWindow
         StartCoroutine(SelectActionCoroutine());
     }
 
+    private void CloseSummary(ISelectableUIElement selection, bool goBack)
+    {
+        if (goBack)
+            SummarySelection.Instance.Close();
+        DrawIntroText();
+    }
+
     private IEnumerator SelectActionCoroutine()
     {
         Pokemon pokemon = PlayerData.Instance.pokemons[selectedIndex];
-        yield return DialogBox.Instance.DrawChoiceBox($"Was tun mit {pokemon.Name}?", new string[] { "Bericht", "Tausch", "Abbrechen" });
+        yield return DialogBox.Instance.DrawChoiceBox($"Was tun mit {pokemon.Name}?", new string[] { "Bericht", "Tausch", "Abbrechen" }, chancelIndex: 2);
 
         if (DialogBox.Instance.chosenIndex == 0)
         {
             // Summary
-            SummarySelection.Instance.Open(selectedIndex);
+            DialogBox.Instance.Close();
+            SummarySelection.Instance.Open(CloseSummary, selectedIndex);
             yield break;
         }
         if (DialogBox.Instance.chosenIndex == 1)
         {
             // Swap
-
             yield break;
         }
         if (DialogBox.Instance.chosenIndex == 2)
         {
             // Chancel
-            Close();
+            DrawIntroText();
             yield break;
         }
 
-        DialogBox.Instance.Close();
         base.ChooseSelectedElement();
     }
 }

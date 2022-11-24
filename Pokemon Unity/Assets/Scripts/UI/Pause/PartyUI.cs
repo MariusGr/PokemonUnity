@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PartyUI : UIView
 {
-    PokemonSwitchSelection pokemonSelection;
+    PartySelection pokemonSelection;
 
     
 }

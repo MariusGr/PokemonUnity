@@ -21,7 +21,7 @@ public class SelectableTransform : SelectableUIElement
 
     public override void Select()
     {
-        transform.position = position;
+        transform.localPosition = position;
         transform.rotation = Quaternion.Euler(rotation);
         transform.localScale = scale;
         base.Select();
@@ -29,7 +29,7 @@ public class SelectableTransform : SelectableUIElement
 
     public override void Deselect()
     {
-        transform.position = positionStart;
+        transform.localPosition = positionStart;
         transform.rotation = rotationStart;
         transform.localScale = scaleStart;
         base.Deselect();
