@@ -12,7 +12,7 @@ public class PokemonStatsUI : SelectableImage
     [SerializeField] protected Image status;
     [SerializeField] protected StatBar hpBar;
 
-    protected Pokemon pokemon;
+    public Pokemon pokemon { get; private set; }
 
     private bool isPlayingAnimation;
 

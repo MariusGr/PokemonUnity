@@ -427,7 +427,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
             else if (input.chancel.pressed && chancelIndex > -1)
             {
                 chosenIndex = chancelIndex;
-                UpdateChosenIndex(0, choices.Length, flavourText);
+                UpdateChosenIndex(chancelIndex, choices.Length, flavourText);
                 selected = true;
             }
             else if (input.digitalPad.pressed == Direction.Up)

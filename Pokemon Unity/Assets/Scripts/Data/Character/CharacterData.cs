@@ -17,6 +17,16 @@ public abstract class CharacterData
             p.Heal();
     }
 
+    public void SwapPokemons(Pokemon pokemon1, Pokemon pokemon2)
+    {
+        if (pokemon1 == pokemon2)
+            return;
+        int newIndex1 = Array.IndexOf(pokemons, pokemon2);
+        int newIndex2 = Array.IndexOf(pokemons, pokemon1);
+        pokemons[newIndex1] = pokemon1;
+        pokemons[newIndex2] = pokemon2;
+    }
+
     public bool IsDefeated()
     {
         foreach (Pokemon p in pokemons)
