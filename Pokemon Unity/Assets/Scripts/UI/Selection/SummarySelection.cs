@@ -22,6 +22,12 @@ public class SummarySelection : ScalarSelection
         Open();
     }
 
+    protected override void GoBack()
+    {
+        base.GoBack();
+        Close();
+    }
+
     public override void Open(Action<ISelectableUIElement, bool> callback, int pokemonIndex)
     {
         SetPokemon(pokemonIndex);
