@@ -7,9 +7,11 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
 {
     [SerializeField] public SelectableUIElement[] elements;
 
-    private bool forceSelection = false;
+    public SelectableUIElement selectedElement => elements[selectedIndex];
+
     protected int selectedIndex = 0;
-    protected SelectableUIElement selectedElement => elements[selectedIndex];
+
+    private bool forceSelection = false;
 
     public override void Open() => Open(null, false, 0);
     public override void Open(Action<ISelectableUIElement, bool> callback) => Open(callback, false, 0);
