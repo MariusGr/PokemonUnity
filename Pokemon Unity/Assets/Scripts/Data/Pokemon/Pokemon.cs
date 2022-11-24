@@ -145,6 +145,18 @@ public class Pokemon
     public void AddMove(MoveData moveData) => moves.Add(new Move(moveData, moves.Count, this));
     public void ReplaceMove(Move move, MoveData newMove) => moves[move.index] = new Move(newMove, move.index, this);
 
+    public void SwapMoves(Move move1, Move move2)
+    {
+        if (move1 == move2)
+            return;
+        int newIndex1 = move2.index;
+        int newIndex2 = move1.index;
+        moves[newIndex1] = move1;
+        moves[newIndex2] = move2;
+        move1.index = newIndex1;
+        move2.index = newIndex2;
+    }
+
     public bool HasUsableMoves()
     {
         foreach (Move move in moves)

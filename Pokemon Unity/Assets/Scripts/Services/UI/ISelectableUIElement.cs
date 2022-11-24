@@ -5,4 +5,5 @@ using UnityEngine;
 public interface ISelectableUIElement
 {
     public int GetIndex();
+    public object GetPayload();
 }

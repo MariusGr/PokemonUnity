@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: Tackle
   m_EditorClassIdentifier: 
   fullName: Tackle
+  description: Haut dem anderen Pokemon voll auf die Fresse!
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
   maxPP: 30
-  power: 100
+  power: 50
   accuracy: 95
-  isSpecial: 0
+  category: {fileID: 11400000, guid: 72a8a7b706eae414f865696998d0a328, type: 2}
   animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
   animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
     type: 2}

@@ -310,7 +310,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         {
             goBack = back;
             choosenMove = selection is null ? null : playerPokemon.moves[selection.GetIndex()];
-        });
+        }, playerPokemon);
         print("wait for play to choose move");
         yield return new WaitUntil(() => choosenMove != null || goBack);
         ui.CloseMoveSelection();

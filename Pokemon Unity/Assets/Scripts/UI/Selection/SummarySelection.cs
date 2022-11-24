@@ -12,6 +12,7 @@ public class SummarySelection : ScalarSelection
     private const int MovesView = 3;
     private int pokemonIndex;
     private Pokemon pokemon => PlayerData.Instance.pokemons[pokemonIndex];
+    private MoveButtonSummary swapMoveButton;
 
     public SummarySelection() => Instance = this;
 
@@ -50,15 +51,33 @@ public class SummarySelection : ScalarSelection
     protected override void ChooseSelectedElement()
     {
         if (selectedIndex == MovesView)
-            ui.OpenMoveSelection(CloseMoveSelection);
+            ui.OpenMoveSelection(ChooseMove);
         else if (selectedIndex == 5)
             Close();
     }
 
-    private void CloseMoveSelection(ISelectableUIElement selection, bool goBack)
+    private void ChooseMove(ISelectableUIElement selection, bool goBack)
     {
         if(goBack)
+        {
             ui.CloseMoveSelection();
+            return;
+        }
+
+        MoveButtonSummary button = (MoveButtonSummary)selection;
+
+        if (swapMoveButton is null)
+        {
+            button.SelectForSwap();
+            swapMoveButton = button;
+        }
+        else
+        {
+            pokemon.SwapMoves(swapMoveButton.move, button.move);
+            ui.RefreshMoves(pokemon);
+            swapMoveButton.DeselectForSwap();
+            swapMoveButton = null;
+        }
     }
 
     public override bool ProcessInput(InputData input)

@@ -6,11 +6,12 @@ using UnityEngine;
 public class MoveData : ScriptableObject
 {
     public string fullName;
+    public string description;
     public PokemonTypeData pokeType;
     public int maxPP;
     public int power;
     public int accuracy;
-    public bool isSpecial;
+    public MoveCategory category;
 
     public AnimationClip animationClipPlayer;
     public AnimationClip animationClipOpponent;

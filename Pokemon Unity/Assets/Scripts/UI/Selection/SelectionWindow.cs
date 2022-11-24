@@ -57,15 +57,19 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         return base.ProcessInput(input);
     }
 
-    public void AssignElements(object[] elements)
+    public virtual void AssignElements(object[] elements)
     {
         for (int i = 0; i < elements.Length; i++)
-        {
             this.elements[i].AssignElement(elements[i]);
-        }
 
         for (int i = elements.Length; i < this.elements.Length; i++)
             this.elements[i].AssignNone();
+    }
+
+    public void AssignOnSelectCallback(Action<object> callback)
+    {
+        foreach (SelectableUIElement element in elements)
+            element.AssignOnSelectCallback(callback);
     }
 
     virtual protected void SelectElement(int index)

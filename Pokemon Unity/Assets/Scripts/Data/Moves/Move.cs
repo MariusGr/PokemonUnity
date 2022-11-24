@@ -56,8 +56,8 @@ public class Move
         else
             effectiveness = Effectiveness.Normal;
 
-        int targetDefense = data.isSpecial ? target.specialDefense : target.defense;
-        int attackerAttack = data.isSpecial ? attacker.specialAttack : attacker.attack;
+        int targetDefense = data.category.isSpecial ? target.specialDefense : target.defense;
+        int attackerAttack = data.category.isSpecial ? attacker.specialAttack : attacker.attack;
 
         int damage = (int)Mathf.Max(
             0, Mathf.Floor(

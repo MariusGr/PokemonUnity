@@ -106,8 +106,11 @@ public class BattleUI : InputConsumer, IBattleUI
             => callback(((BattleMenuButton)selection).option, false));
     public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection)
         => pokemonSwitchSelection.Open(callback, forceSelection, PlayerData.Instance.GetFirstAlivePokemonIndex());
-    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback) =>
+    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback, Pokemon pokemon)
+    {
+        moveSelectionUI.AssignElements(pokemon.moves.ToArray());
         moveSelectionUI.Open(callback);
+    }
 
     public void CloseBattleMenu() => battleMenu.Close();
     public void ClosePokemonSwitchSelection() => pokemonSwitchSelection.Close();

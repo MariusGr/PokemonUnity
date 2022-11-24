@@ -180,6 +180,7 @@ MonoBehaviour:
   textPP: {fileID: 4416237288685145455}
   imageType: {fileID: 6649568542571364762}
   imageBackground: {fileID: 6649568543051959678}
+  swapSelectionImage: {fileID: 6649568543051959678}
 --- !u!1001 &109644930619712644
 PrefabInstance:
   m_ObjectHideFlags: 0

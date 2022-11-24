@@ -48,13 +48,34 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
         metLevelText.text = pokemon.metLevel.ToString();
         statsText.text = $"{pokemon.attack}\n{pokemon.defense}\n{pokemon.specialAttack}\n{pokemon.specialDefense}\n{pokemon.speed}";
         moveSelection.Assign(pokemon);
+        moveSelection.AssignOnSelectCallback(RefreshMoveSelection);
+        CloseMoveSelection();
     }
 
+    public void RefreshMoves(Pokemon pokemon) => moveSelection.Assign(pokemon);
     public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback) => moveSelection.Open(callback);
+
     public void CloseMoveSelection()
     {
         moveSelection.Close();
         moveSelection.Show();
+        moveDescriptionText.gameObject.SetActive(false);
+        moveAccuracyText.gameObject.SetActive(false);
+        movePowerText.gameObject.SetActive(false);
+        moveCategoryImage.gameObject.SetActive(false);
+    }
+
+    public void RefreshMoveSelection(object selection)
+    {
+        Move move = (Move)selection;
+        moveDescriptionText.gameObject.SetActive(true);
+        moveAccuracyText.gameObject.SetActive(true);
+        movePowerText.gameObject.SetActive(true);
+        moveCategoryImage.gameObject.SetActive(true);
+        moveDescriptionText.text = move.data.description;
+        moveAccuracyText.text = move.data.accuracy.ToString();
+        movePowerText.text = move.data.power.ToString();
+        moveCategoryImage.sprite = move.data.category.icon;
     }
 
     public override void RefreshHP()
