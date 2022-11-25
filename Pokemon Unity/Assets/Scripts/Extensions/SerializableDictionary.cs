@@ -21,10 +21,10 @@ namespace CollectionExtensions
         // load dictionary from lists
         virtual public void OnAfterDeserialize()
         {
-            this.Clear();
+            Clear();
 
             for (int i = 0; i < keys.Count; i++)
-                this.Add(keys[i], values[i]);
+                Add(keys[i], values[i]);
         }
     }
 }

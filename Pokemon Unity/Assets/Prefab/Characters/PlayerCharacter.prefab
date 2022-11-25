@@ -300,4 +300,8 @@ MonoBehaviour:
     pokemons: []
     gameobject: {fileID: 7239874394638884248}
     money: 0
+    items:
+      keys: 
+      values:
+      - data: {fileID: 0}
     lastPokeCenterEntrance: {fileID: 0}

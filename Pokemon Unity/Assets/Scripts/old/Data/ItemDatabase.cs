@@ -89,7 +89,7 @@ public static class ItemDatabase
         return false;
     }
 
-    public static ItemData getItem(Items name)
+    public static PokemonUnity.Inventory.ItemData getItem(Items name)
     {
         return PokemonUnity.Game.ItemData[name];
     }
