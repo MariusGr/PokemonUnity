@@ -47,7 +47,6 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         ui = Services.Get<IBattleUI>();
         evolutionManager = Services.Get<IEvolutionManager>();
-        ui.Close();
         Initialize();
     }
 
@@ -490,14 +489,14 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             // Attack hit successfully
 
             // Animation
-            yield return new WaitWhile(ui.PlayMoveAnimation(attacker, move));
+            yield return ui.PlayMoveAnimation(attacker, move);
             yield return new WaitForSeconds(1f);
-            yield return new WaitWhile(ui.PlayBlinkAnimation(target));
+            yield return ui.PlayBlinkAnimation(target);
 
             // Deal damage
             damage = move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
             targetFainted = targetPokemon.InflictDamage(damage);
-            yield return new WaitWhile(ui.RefreshHPAnimated(target));
+            yield return ui.RefreshHPAnimated(target);
             if (effectiveness != Effectiveness.Normal)
                 yield return dialogBox.DrawText(effectiveness, DialogBoxContinueMode.User);
             if (critical)
@@ -523,10 +522,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             {
                 yield return dialogBox.DrawText($"{attackingPokemonIdentifier} wird durch Rückstoß getroffen!", DialogBoxContinueMode.Automatic);
                 yield return new WaitForSeconds(1f);
-                yield return new WaitWhile(ui.PlayBlinkAnimation(attacker));
+                yield return ui.PlayBlinkAnimation(attacker);
                 int recoilDamage = (int)(damage * move.data.recoil);
                 attackerFainted = attackerPokemon.InflictDamage(recoilDamage);
-                yield return new WaitWhile(ui.RefreshHPAnimated(attacker));
+                yield return ui.RefreshHPAnimated(attacker);
             }
 
             // TODO wann aftermath für Opponent anwenden, wann Opponent faint
@@ -548,7 +547,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator Faint(int characterIndex, string pokemonIdentifier)
     {
         yield return dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
-        yield return new WaitWhile(ui.PlayFaintAnimation(characterIndex));
+        yield return ui.PlayFaintAnimation(characterIndex);
 
         if (characterIndex == Constants.PlayerIndex)
             foreach (HashSet<Pokemon> set in unfaintedPlayerPokemons.Values)
@@ -577,7 +576,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         pokemon.GainXP(xp);
         while(true)
         {
-            yield return new WaitWhile(ui.RefreshXPAnimated());
+            yield return ui.RefreshXPAnimated();
             if (!pokemon.WillGrowLevel())
                 break;
             yield return pokemonManager.GrowLevel(pokemon, ui.RefreshPlayerStats);

@@ -23,11 +23,10 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
             maxHP.text = pokemon.maxHp.ToString();
     }
 
-    override public System.Func<bool> RefreshHPAnimated(float speed)
+    override public IEnumerator RefreshHPAnimated(float speed)
     {
         hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
-        StartCoroutine(AnimateHPTextCoroutine());
-        return hpBar.IsPlayingAnimation;
+        yield return AnimateHPTextCoroutine();
     }
 
     IEnumerator AnimateHPTextCoroutine()

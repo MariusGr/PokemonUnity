@@ -62,43 +62,24 @@ public class BattleUI : InputConsumer, IBattleUI
     public void RefreshHP(int character) => stats[character].RefreshHP();
     public void RefreshXP() => playerStats.RefreshXP();
     public void ResetXP() => playerStats.ResetXP();
-    public System.Func<bool> RefreshHPAnimated(int character) => stats[character].RefreshHPAnimated(hpRefreshSpeed);
-    public System.Func<bool> RefreshXPAnimated() => playerStats.RefreshXPAnimated(xpRefreshSpeed);
     public void RefreshMove(Move move) => moveSelectionUI.RefreshMove(move);
 
-    public System.Func<bool> PlayMoveAnimation(int attacker, Move move)
-    {
-        PokemonSprite sprite = pokemonSprites[attacker];
-        sprite.PlayAnimation(move);
-        return sprite.IsPlayingAnimation;
-    }
+    public IEnumerator RefreshHPAnimated(int character) => stats[character].RefreshHPAnimated(hpRefreshSpeed);
+    public IEnumerator RefreshXPAnimated() => playerStats.RefreshXPAnimated(xpRefreshSpeed);
+    public IEnumerator PlayMoveAnimation(int attacker, Move move) => pokemonSprites[attacker].PlayAnimation(move);
+    public IEnumerator PlayBlinkAnimation(int blinkingPokemon) => pokemonSprites[blinkingPokemon].PlayBlinkAnimation();
+    public IEnumerator PlayFaintAnimation(int faintedOwner) => pokemonSprites[faintedOwner].PlayFaintAnimation();
 
-    public System.Func<bool> PlayBlinkAnimation(int blinkingPokemon)
-    {
-        PokemonSprite sprite = pokemonSprites[blinkingPokemon];
-        sprite.PlayBlinkAnimation();
-        return sprite.IsPlayingAnimation;
-    }
-
-    public System.Func<bool> MakeOpponentAppear()
+    public IEnumerator MakeOpponentAppear()
     {
         opponentSprite.SetVisiblity(true);
-        opponentSprite.PlayAppearAnimation();
-        return opponentSprite.IsPlayingAnimation;
+        yield return opponentSprite.PlayAppearAnimation();
     }
 
-    public System.Func<bool> MakeOpponentDisappear()
+    public IEnumerator MakeOpponentDisappear()
     {
         opponentSprite.SetVisiblity(true);
-        opponentSprite.PlayDisappearAnimation();
-        return opponentSprite.IsPlayingAnimation;
-    }
-
-    public System.Func<bool> PlayFaintAnimation(int faintedOwner)
-    {
-        PokemonSprite sprite = pokemonSprites[faintedOwner];
-        sprite.PlayFaintAnimation();
-        return sprite.IsPlayingAnimation;
+        yield return opponentSprite.PlayDisappearAnimation();
     }
 
     public void OpenBattleMenu(System.Action<BattleOption, bool> callback)

@@ -17,12 +17,11 @@ public class PlayerPokemonStatsBattleUI : PlayerPokemonStatsUI
     virtual public void RefreshXP() => xpBar.Value = pokemon.xpNormalized;
     virtual public void ResetXP() => xpBar.Value = 0;
 
-    virtual public System.Func<bool> RefreshXPAnimated(float speed)
+    virtual public IEnumerator RefreshXPAnimated(float speed)
     {
         if (pokemon.xpNormalized < xpBar.Value)
             xpBar.Value = 0;
 
-        xpBar.SetValueAnimated(pokemon.xpNormalized, speed);
-        return xpBar.IsPlayingAnimation;
+        return xpBar.SetValueAnimated(pokemon.xpNormalized, speed);
     }
 }

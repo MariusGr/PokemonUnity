@@ -9,17 +9,17 @@ public class TrainerSprite : AnimatedSprite
 
     bool disableAtEnd = false;
 
-    public void PlayAppearAnimation()
+    public IEnumerator PlayAppearAnimation()
     {
         disableAtEnd = false;
         SetVisiblity(true);
-        PlayAnimation(appearAnimation);
+        yield return PlayAnimation(appearAnimation);
     }
 
-    public void PlayDisappearAnimation()
+    public IEnumerator PlayDisappearAnimation()
     {
         disableAtEnd = true;
-        PlayAnimation(disappearAnimation);
+        yield return PlayAnimation(disappearAnimation);
     }
 
     protected override IEnumerator WaitForAnimationFinish()

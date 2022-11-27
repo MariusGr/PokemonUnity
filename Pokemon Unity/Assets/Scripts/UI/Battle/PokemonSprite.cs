@@ -7,6 +7,6 @@ public class PokemonSprite : AnimatedSprite
     [SerializeField] int owner;
     [SerializeField] AnimationClip[] faintAnimation;
 
-    public void PlayFaintAnimation() => PlayAnimation(faintAnimation[owner]);
-    public void PlayAnimation(Move move) => PlayAnimation(move.data.GetAnimationClip(owner));
+    public IEnumerator PlayFaintAnimation() => PlayAnimation(faintAnimation[owner]);
+    public IEnumerator PlayAnimation(Move move) => PlayAnimation(move.data.GetAnimationClip(owner));
 }

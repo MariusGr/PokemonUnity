@@ -33,8 +33,5 @@ public class Item
             return base.GetHashCode();
     }
 
-    public override string ToString()
-    {
-        return $"{base.ToString()}: {data} x{count}";
-    }
+    public override string ToString() => $"{base.ToString()}: {data} x{count}";
 }

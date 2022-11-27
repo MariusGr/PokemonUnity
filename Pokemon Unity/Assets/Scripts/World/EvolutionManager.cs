@@ -15,7 +15,7 @@ public class EvolutionManager : MonoBehaviour, IEvolutionManager
         Pokemon evolved = pokemon.GetEvolvedVersion();
         ui.Open();
         yield return ui.AnimateEvolution(pokemon, evolved);
-        pokemon.character.SwapPokemon(pokemon, evolved);
+        pokemon.character.ExchangePokemon(pokemon, evolved);
         // TODO Learn all moves of new evolution
         ui.Close();
     }

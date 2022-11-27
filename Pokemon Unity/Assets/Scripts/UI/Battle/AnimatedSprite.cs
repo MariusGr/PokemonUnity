@@ -16,14 +16,14 @@ public abstract class AnimatedSprite : MonoBehaviour
         spriteImage.sprite = sprite;
     }
 
-    public void PlayAnimation(AnimationClip clip)
+    public IEnumerator PlayAnimation(AnimationClip clip)
     {
         if (animation.GetClip(clip.name) == null)
             animation.AddClip(clip, clip.name);
         isPlayingAnimation = true;
         animation.clip = clip;
         animation.Play();
-        StartCoroutine(WaitForAnimationFinish());
+        yield return WaitForAnimationFinish();
     }
 
     virtual protected IEnumerator WaitForAnimationFinish()
@@ -42,9 +42,7 @@ public abstract class AnimatedSprite : MonoBehaviour
         print("Play Idle");
     }
 
-    public void PlayBlinkAnimation(float duration = 1f, int times = 3) => StartCoroutine(BlinkRoutine(duration, times));
-
-    IEnumerator BlinkRoutine(float duration, int times)
+    public IEnumerator PlayBlinkAnimation(float duration = 1f, int times = 3)
     {
         isPlayingAnimation = true;
         float interval = duration / ((float)times * 2f);

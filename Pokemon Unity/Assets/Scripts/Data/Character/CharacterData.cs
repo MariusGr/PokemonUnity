@@ -14,7 +14,7 @@ public abstract class CharacterData
     public void HealAllPokemons()
     {
         foreach (Pokemon p in pokemons)
-            p.Heal();
+            p.HealFully();
     }
 
     public void SwapPokemons(Pokemon pokemon1, Pokemon pokemon2)
@@ -49,7 +49,7 @@ public abstract class CharacterData
         return -1;
     }
 
-    public void SwapPokemon(Pokemon before, Pokemon after)
+    public void ExchangePokemon(Pokemon before, Pokemon after)
     {
         int index = Array.IndexOf(pokemons, before);
         pokemons[index] = after;

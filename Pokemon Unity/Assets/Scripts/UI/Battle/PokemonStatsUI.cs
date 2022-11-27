@@ -12,6 +12,8 @@ public class PokemonStatsUI : SelectableImage
     [SerializeField] protected Image status;
     [SerializeField] protected StatBar hpBar;
 
+    private const float barAnimationSpeed = 0.02f;
+
     public Pokemon pokemon { get; private set; }
 
     private bool isPlayingAnimation;
@@ -54,11 +56,8 @@ public class PokemonStatsUI : SelectableImage
 
     virtual public void RefreshHP() => hpBar.Value = pokemon.hpNormalized;
 
-    virtual public System.Func<bool> RefreshHPAnimated(float speed)
-    {
-        hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
-        return hpBar.IsPlayingAnimation;
-    }
+    public IEnumerator RefreshHPAnimated() => RefreshHPAnimated(barAnimationSpeed);
+    virtual public IEnumerator RefreshHPAnimated(float speed) => hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
 
     public bool IsPlayingAnimation() => isPlayingAnimation;
 }

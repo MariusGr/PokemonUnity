@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 {
+    public static PokemonManager Instance;
+
     [SerializeField] IMoveSelectionUI moveSelectionUI;
 
-    public PokemonManager() => Services.Register(this as IPokemonManager);
+    public PokemonManager()
+    {
+        Instance = this;
+        Services.Register(this as IPokemonManager);
+    }
 
     private void Awake() => Initialize();
 
@@ -70,5 +76,32 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             pokemon.AddMove(move);
         yield return dialogBox.DrawText($"{pokemon.Name} hat {move.fullName} erlernt!", DialogBoxContinueMode.User);
         moveSelectionUI.Assign(pokemon);
+    }
+
+    public Coroutine TryUseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation)
+        => StartCoroutine(TryUseItemOnPokemonCoroutine(item, pokemon, animation));
+
+    IEnumerator TryUseItemOnPokemonCoroutine(Item item, Pokemon pokemon, IEnumerator animation)
+    {
+        if (item.data.canBeUsedOnOwnPokemon)
+        {
+            yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
+            if (dialogBox.GetChosenIndex() == 0)
+                yield return UseItemOnPokemon(item, pokemon, animation);
+        }
+        else
+        {
+            yield return dialogBox.DrawText($"{item.data.fullName} kann nicht auf deine Pokemon angewendet werden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+        }
+    }
+
+    IEnumerator UseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation)
+    {
+        if (item.data.hpHealed > 0)
+        {
+            pokemon.HealHP(item.data.hpHealed);
+            yield return animation;
+            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgefüllt!", DialogBoxContinueMode.User, closeAfterFinish: true);
+        }
     }
 }

@@ -12,6 +12,7 @@ public class BagUI : ScalarSelection
     [SerializeField] InspectorFriendlySerializableDictionary<ItemCategory, ScrollSelection> itemSelections;
     [SerializeField] SelectableGameObject[] itemSelectables;
 
+    private PlayerData playerData;
     private ScalarSelection[] selections;
     private ScalarSelection activeSelection => selections[selectedIndex];
     private ItemListEntryUI choosenItemEntry;
@@ -21,15 +22,42 @@ public class BagUI : ScalarSelection
     {
         partySelection.Open(null, -1, ProcessInput);
         base.Open(callback, forceSelection, 1);
-        itemSelections[ItemCategory.Items].Open();
+        itemSelections[ItemCategory.Items].Open(ChooseItem);
+    }
+
+    public override void Close()
+    {
+        if (!(choosenItemEntry is null))
+        {
+            selections[choosenItemViewIndex].DeselectSelection();
+            selections[choosenItemViewIndex].Close();
+        }
+        else
+        {
+            activeSelection.DeselectSelection();
+            activeSelection.Close();
+        }
+
+        if (!(choosenItemEntry is null))
+        {
+            choosenItemEntry.SetPlaceMode(false);
+            choosenItemEntry = null;
+        }
+
+        partySelection.DeselectSelection();
+        partySelection.Close();
+        base.Close();
     }
 
     protected override void SelectElement(int index)
     {
-        if (activeSelection != partySelection)
+        if (activeSelection != partySelection && choosenItemEntry is null)
             activeSelection.Close();
-        base.SelectElement(index);
-        activeSelection.Open(null, 0, ProcessInput);
+        base.SelectElement(index, false);
+        if (activeSelection == partySelection)
+            activeSelection.Open(ChoosePokemon, 0, ProcessInput);
+        else
+            activeSelection.Open(ChooseItem, 0, ProcessInput);
     }
 
     protected override bool TrySelectPositive()
@@ -37,7 +65,10 @@ public class BagUI : ScalarSelection
         if (choosenItemEntry is null)
             return base.TrySelectPositive();
         if (selectedElement == partySelectableElement)
+        {
+            partySelection.DeselectSelection();
             SelectElement(choosenItemViewIndex);
+        }
         return false;
     }
 
@@ -52,6 +83,7 @@ public class BagUI : ScalarSelection
 
     public void AssignElements(PlayerData playerData)
     {
+        this.playerData = playerData;
         List<ScalarSelection> selections = new List<ScalarSelection>() { partySelection };
         selections.AddRange(itemSelections.Values);
         this.selections = selections.ToArray();
@@ -69,9 +101,36 @@ public class BagUI : ScalarSelection
     private void ChooseItem(ISelectableUIElement selection, bool goBack)
     {
         if (goBack)
+        {
             Close();
+            return;
+        }
 
-        choosenItemEntry = (ItemListEntryUI)selection;
-        choosenItemViewIndex = selectedIndex;
+        ItemListEntryUI entry = (ItemListEntryUI)selection;
+        if (choosenItemEntry is null)
+        {
+            choosenItemEntry = entry;
+            choosenItemViewIndex = selectedIndex;
+            choosenItemEntry.SetPlaceMode(true);
+        }
+        else
+        {
+            playerData.SwapItems(choosenItemEntry.item, entry.item);
+            ((ScrollSelection)activeSelection).AssignItems(playerData.items[itemSelections.keys[choosenItemViewIndex - 1]]);
+            choosenItemEntry.SetPlaceMode(false);
+            choosenItemEntry = null;
+        }
+    }
+
+    private void ChoosePokemon(ISelectableUIElement selection, bool goBack)
+    {
+        if (goBack)
+        {
+            Close();
+            return;
+        }
+
+        PlayerPokemonStatsUI statsUI = (PlayerPokemonStatsUI)selection;
+        PokemonManager.Instance.TryUseItemOnPokemon(choosenItemEntry.item, statsUI.pokemon, statsUI.RefreshHPAnimated());
     }
 }

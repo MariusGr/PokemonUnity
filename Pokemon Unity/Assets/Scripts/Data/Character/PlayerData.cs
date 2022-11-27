@@ -69,4 +69,15 @@ public class PlayerData : CharacterData
         list.Remove(presentItem);
         return true;
     }
+
+    public void SwapItems(Item item1, Item item2)
+    {
+        if (item1 == item2 || item1.data.category != item2.data.category)
+            return;
+        List<Item> bin = items[item1.data.category];
+        int newIndex1 = items[item1.data.category].IndexOf(item2);
+        int newIndex2 = items[item1.data.category].IndexOf(item1);
+        bin[newIndex1] = item1;
+        bin[newIndex2] = item2;
+    }
 }

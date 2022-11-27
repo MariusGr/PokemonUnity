@@ -75,15 +75,18 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
             element.AssignOnSelectCallback(callback);
     }
 
-    virtual protected void SelectElement(int index)
+    virtual protected void SelectElement(int index) => SelectElement(index, true);
+    virtual protected void SelectElement(int index, bool deselectPreviouslySelected)
     {
-        selectedElement.Deselect();
+        if (deselectPreviouslySelected)
+            selectedElement.Deselect();
         selectedIndex = index;
         selectedElement.Select();
     }
 
     virtual protected void SelectElement(SelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.index);
     virtual protected void ChooseSelectedElement() => callback?.Invoke(selectedElement, false);/* TODO sound*/
+    public void DeselectSelection() => selectedElement.Deselect();
 
     protected override void GoBack()
     {

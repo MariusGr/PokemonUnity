@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ItemListEntryUI : SelectableImage
 {
+    [SerializeField] protected Sprite backgroundDefault;
+    [SerializeField] protected Sprite backgroundDefaultSelected;
     [SerializeField] private Sprite backgroundPlace;
     [SerializeField] private Sprite backgroundPlaceSelected;
     [SerializeField] private Image icon;
@@ -16,8 +18,8 @@ public class ItemListEntryUI : SelectableImage
 
     private bool place = false;
 
-    protected Sprite GetCurrentBackgroundIdle() => place ? backgroundPlace : spriteBefore;
-    protected Sprite GetCurrentBackgroundSelected() => place ? backgroundPlaceSelected : selectedSprite;
+    protected Sprite GetCurrentBackgroundIdle() => place ? backgroundPlace : backgroundDefault;
+    protected Sprite GetCurrentBackgroundSelected() => place ? backgroundPlaceSelected : backgroundDefaultSelected;
 
     public override void AssignElement(object payload)
     {

@@ -14,6 +14,8 @@ public class ItemData : ScriptableObject
     public bool stacks;
     public int hpHealed;
 
+    public bool canBeUsedOnOwnPokemon => hpHealed > 0;
+
     public override string ToString()
     {
         return fullName;

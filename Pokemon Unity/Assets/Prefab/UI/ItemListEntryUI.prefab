@@ -174,6 +174,9 @@ MonoBehaviour:
   spriteBefore: {fileID: 21300000, guid: 0dfedd3095227ca4c9ece9499f7baa02, type: 3}
   selectedSprite: {fileID: 21300000, guid: 3edc7c69211193f44be6ed5a024804bb, type: 3}
   imageCursor: {fileID: 0}
+  backgroundDefault: {fileID: 21300000, guid: 0dfedd3095227ca4c9ece9499f7baa02, type: 3}
+  backgroundDefaultSelected: {fileID: 21300000, guid: 3edc7c69211193f44be6ed5a024804bb,
+    type: 3}
   backgroundPlace: {fileID: 21300000, guid: 473ddfbf06a0afa43ac95db95dac7957, type: 3}
   backgroundPlaceSelected: {fileID: 21300000, guid: 62cab49d5e81efb4f83ca36a1a7f1f14,
     type: 3}

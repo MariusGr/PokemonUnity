@@ -57,6 +57,7 @@ public class InputManager : MonoBehaviour
         if (inputConsumers.Contains(consumer))
             inputConsumers.Remove(consumer);
         consumer.ProcessInput(inputZero);
+        print("Input unregistered, now active: " + currentConsumer);
     }
 
     private void GetInputForButton(InputData.Button button, string inputName)

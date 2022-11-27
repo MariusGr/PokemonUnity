@@ -345,7 +345,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
         }
     }
 
-    public IEnumerator DrawChoiceBox(string text, int chancelIndex = -1, int lines = 2)
+    public IEnumerator DrawChoiceBox(string text, int chancelIndex = 1, int lines = 2)
         => DrawChoiceBox(text, new string[] { "Ja", "Nein" }, chancelIndex, lines);
 
     public IEnumerator DrawChoiceBox(string text, string[] choices, int chancelIndex = -1, int lines = 2)
