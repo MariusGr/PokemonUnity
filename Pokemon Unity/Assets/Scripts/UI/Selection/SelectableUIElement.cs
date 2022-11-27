@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using CollectionExtensions;
 
-public abstract class SelectableUIElement : MonoBehaviour, ISelectableUIElement
+public class SelectableUIElement : MonoBehaviour, ISelectableUIElement
 {
     [SerializeField] InspectorFriendlySerializableDictionary<Direction, SelectableUIElement> neighbours;
 
@@ -22,6 +22,7 @@ public abstract class SelectableUIElement : MonoBehaviour, ISelectableUIElement
     public virtual void Refresh() { }
     public SelectableUIElement GetNeighbour(Direction direction)
         => neighbours.ContainsKey(direction) && neighbours[direction].assigned ? neighbours[direction] : null;
+
     public virtual void AssignNone() => assigned = false;
 
     public virtual void AssignElement(object payload)

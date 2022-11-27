@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
+  m_Name: Pokeball
+  m_EditorClassIdentifier: 
+  fullName: "Pok\xE9ball"
+  category: 0
+  icon: {fileID: 21300000, guid: 1e1f63a9b8124294d815c3b815ad5ed9, type: 3}
+  details: 
+  description: "Damit f\xE4ngst du wilde POK\xE9MON."
+  moveLearned: {fileID: 0}
+  stacks: 1
+  hpHealed: 0

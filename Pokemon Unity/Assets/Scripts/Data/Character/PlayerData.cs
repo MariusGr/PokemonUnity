@@ -14,25 +14,23 @@ public class PlayerData : CharacterData
     public PlayerData() => Instance = this;
 
     public float money = 0;
-    public Dictionary<ItemCategory, List<Item>> items;
+    public Dictionary<ItemCategory, List<Item>> items = new Dictionary<ItemCategory, List<Item>>
+    {
+        { ItemCategory.Food, new List<Item>() },
+        { ItemCategory.Items, new List<Item>() },
+        { ItemCategory.KeyItems, new List<Item>() },
+        { ItemCategory.Medicine, new List<Item>() },
+        { ItemCategory.TMs, new List<Item>() },
+    };
     public Transform lastPokeCenterEntrance;
 
 #if (UNITY_EDITOR)
-    [SerializeField] private List<ItemCategory> itemsKeys = new List<ItemCategory>()
-    {
-        ItemCategory.Food,
-        ItemCategory.Items,
-        ItemCategory.KeyItems,
-        ItemCategory.Medicine,
-        ItemCategory.TMs,
-    };
     [SerializeField] private List<Item> itemsValues;
 
     public void FillItemsDict()
     {
-
-        foreach(Item item in itemsValues)
-
+        foreach (Item item in itemsValues)
+            GiveItem(item);
     }
 #endif
 

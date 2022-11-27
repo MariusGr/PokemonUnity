@@ -10,6 +10,10 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     InputData input = new InputData();
     private IPauseUI pauseUI;
 
+#if (UNITY_EDITOR)
+    private void Awake() => characterData.FillItemsDict();
+#endif
+
     private void Start()
     {
         InputManager.Instance.Register(this);

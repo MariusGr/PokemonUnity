@@ -5,8 +5,14 @@ using UnityEngine;
 public class PauseUI : SelectionGraphWindow, IPauseUI
 {
     [SerializeField] PartySelection partyView;
+    [SerializeField] BagUI bagView;
 
     public PauseUI() => Services.Register(this as IPauseUI);
+
+    private void Awake()
+    {
+        AssignElements(new object[] { null, null });
+    }
 
     public override void Open()
     {
@@ -35,6 +41,14 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
     {
         if (index == 0)
             partyView.Open(callback: ClosePartyView, battle: false, forceSelection: false);
+        else if (index == 1)
+            bagView.Open(callback: CloseBagView);
+    }
+
+    private void CloseBagView(ISelectableUIElement selection, bool goBack)
+    {
+        if (goBack)
+            bagView.Close();
     }
 
     private void ClosePartyView(ISelectableUIElement selection, bool goBack)

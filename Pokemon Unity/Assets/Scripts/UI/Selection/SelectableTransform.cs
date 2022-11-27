@@ -12,8 +12,9 @@ public class SelectableTransform : SelectableUIElement
     private Quaternion rotationStart;
     private Vector3 scaleStart;
 
-    private void Awake()
+    public override void Initialize(int index)
     {
+        base.Initialize(index);
         positionStart = transform.localPosition;
         rotationStart = transform.localRotation;
         scaleStart = transform.localScale;
@@ -21,9 +22,9 @@ public class SelectableTransform : SelectableUIElement
 
     public override void Select()
     {
-        transform.localPosition = position;
-        transform.rotation = Quaternion.Euler(rotation);
-        transform.localScale = scale;
+        transform.localPosition = positionStart + position;
+        transform.rotation = Quaternion.Euler(rotationStart.eulerAngles + rotation);
+        transform.localScale = scaleStart + scale;
         base.Select();
     }
 

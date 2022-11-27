@@ -7,9 +7,6 @@ namespace CollectionExtensions
     [Serializable]
     public class InspectorFriendlySerializableDictionary<TKey, TValue> : SerializableDictionary<TKey, TValue>
     {
-        [SerializeField]
-        public List<TValue> values = new List<TValue>();
-
         override public void OnBeforeSerialize() { }
 
         // load dictionary from lists

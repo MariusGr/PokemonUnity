@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace DebugExtensions
 {
@@ -59,6 +60,31 @@ namespace DebugExtensions
                 catch
                 {
                     Debug.Log($"\t{item}");
+                }
+            }
+        }
+
+        public static void Log(IDictionary message)
+        {
+            try
+            {
+                Debug.Log($"{message} with length: {message.Keys.Count}");
+            }
+            catch
+            {
+                Debug.Log(message);
+                if (message.GetType() == typeof(string))
+                    return;
+            }
+            foreach (object key in message.Keys)
+            {
+                try
+                {
+                    Debug.Log($"\t{key}: {message[key]}");
+                }
+                catch
+                {
+                    Debug.Log($"\t{key}: <No Item>");
                 }
             }
         }
