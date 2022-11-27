@@ -12,38 +12,29 @@ public class ItemListEntryUI : SelectableImage
     [SerializeField] private ShadowedText xText;
     [SerializeField] private ShadowedText detailsText;
 
-    public ItemData item { get; private set; }
+    public Item item { get; private set; }
 
     private bool place = false;
 
     protected Sprite GetCurrentBackgroundIdle() => place ? backgroundPlace : spriteBefore;
     protected Sprite GetCurrentBackgroundSelected() => place ? backgroundPlaceSelected : selectedSprite;
 
-    public void AssignItem(ItemData item)
-    {
-        this.item = item;
-        AssignElement(item);
-    }
-
-    public void AssignElement(ItemData item, int count)
-    {
-        xText.gameObject.SetActive(false);
-        detailsText.text = count.ToString(); ;
-        AssignItem(item);
-    }
-
     public override void AssignElement(object payload)
     {
         gameObject.SetActive(true);
-        base.AssignElement(payload);
-        icon.sprite = item.icon;
-        nameText.text = item.fullName;
 
-        if (!item.stacks)
-        {
+        base.AssignElement(payload);
+
+        item = (Item)payload;
+        xText.gameObject.SetActive(false);
+        detailsText.text = item.count.ToString(); ;
+        icon.sprite = item.data.icon;
+        nameText.text = item.data.fullName;
+
+        if (item.data.stacks)
             xText.gameObject.SetActive(true);
-            detailsText.text = item.details;
-        }
+        else
+            detailsText.text = item.data.details;
     }
 
     public override void Refresh()

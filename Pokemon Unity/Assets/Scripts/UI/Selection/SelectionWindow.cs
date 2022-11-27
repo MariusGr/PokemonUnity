@@ -28,7 +28,8 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
                 elements[i].Deselect();
         }
 
-        SelectElement(startSelection);
+        if (startSelection > -1)
+            SelectElement(startSelection);
         base.Open(callback);
     }
 

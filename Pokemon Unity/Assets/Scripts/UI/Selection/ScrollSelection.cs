@@ -10,6 +10,7 @@ public class ScrollSelection : ScalarSelection
 
     public void AssignItems(List<Item> items)
     {
+        DebugExtensions.DebugExtension.Log(items);
         this.items = items;
         AssignElements(this.items.Take(slots).ToArray());
     }

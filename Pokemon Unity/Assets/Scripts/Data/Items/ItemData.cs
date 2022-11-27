@@ -13,4 +13,9 @@ public class ItemData : ScriptableObject
     public MoveData moveLearned;
     public bool stacks;
     public int hpHealed;
+
+    public override string ToString()
+    {
+        return fullName;
+    }
 }

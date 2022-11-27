@@ -7,7 +7,7 @@ using System;
 public class Item
 {
     public ItemData data;
-    public int count { get; private set; }
+    public int count { get; private set; } = 1;
     public string Description => data.moveLearned is null ? data.description : data.moveLearned.description;
 
     public void Increase(int amount = 1) => count += amount;
@@ -31,5 +31,10 @@ public class Item
             return data.GetHashCode();
         else
             return base.GetHashCode();
+    }
+
+    public override string ToString()
+    {
+        return $"{base.ToString()}: {data} x{count}";
     }
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
+  m_Name: GreatBall
+  m_EditorClassIdentifier: 
+  fullName: Superball
+  category: 0
+  icon: {fileID: 21300000, guid: 2b3eb03d3fa5e024fa84bad86d95cee4, type: 3}
+  details: 
+  description: "BALL mit guter Erfolgsquote. Besser als ein POK\xE9BALL."
+  moveLearned: {fileID: 0}
+  stacks: 1
+  hpHealed: 0
