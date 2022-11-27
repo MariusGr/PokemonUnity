@@ -188,14 +188,18 @@ public class Pokemon
 
     public void HealFully()
     {
-        hp = maxHp;
+        HealHPFully();
 
         foreach (Move move in moves)
             move.ReplenishPP();
+
+        HealStatus();
         // TODO: HEal status effects
     }
 
     public void HealHP(int hp) => this.hp = Math.Min(maxHp, this.hp + hp);
+    public void HealHPFully() => hp = maxHp;
+    public void HealStatus() => status = Status.None;
 
     // https://bulbapedia.bulbagarden.net/wiki/Experience
     public int GetXPGainedFromFaint(bool opponentIsWild)

@@ -14,8 +14,9 @@ public class ScrollSelection : ScalarSelection
 
     protected override void SelectElement(int index)
     {
-        description.text = selectedItem.Description;
         base.SelectElement(index);
+        if (!(selectedItem is null))
+            description.text = selectedItem.Description;
     }
 
     public void AssignItems(List<Item> items)

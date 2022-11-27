@@ -12,9 +12,11 @@ public class ItemData : ScriptableObject
     public string description;
     public MoveData moveLearned;
     public bool stacks;
+    public bool healsHPFully;
     public int hpHealed;
+    public Status statusHealed;
 
-    public bool canBeUsedOnOwnPokemon => hpHealed > 0;
+    public bool canBeUsedOnOwnPokemon => category == ItemCategory.Medicine;
 
     public override string ToString()
     {

@@ -97,7 +97,13 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 
     IEnumerator UseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation)
     {
-        if (item.data.hpHealed > 0)
+        if (item.data.healsHPFully)
+        {
+            pokemon.HealHPFully();
+            yield return animation;
+            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde vollständig aufgefüllt!", DialogBoxContinueMode.User, closeAfterFinish: true);
+        }
+        else if(item.data.hpHealed > 0)
         {
             pokemon.HealHP(item.data.hpHealed);
             yield return animation;

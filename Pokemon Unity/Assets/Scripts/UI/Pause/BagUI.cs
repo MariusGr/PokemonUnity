@@ -6,6 +6,7 @@ using System;
 
 public class BagUI : ScalarSelection
 {
+    [SerializeField] ShadowedText categoryText;
     [SerializeField] ScalarSelection partySelection;
     [SerializeField] SelectableUIElement partySelectableElement;
     // elements contains SelectableGameobjects while itemSelections contains the corresponding ScrollSelections.
@@ -57,7 +58,10 @@ public class BagUI : ScalarSelection
         if (activeSelection == partySelection)
             activeSelection.Open(ChoosePokemon, 0, ProcessInput);
         else
+        {
             activeSelection.Open(ChooseItem, 0, ProcessInput);
+            categoryText.text = ItemTexts.itemCategoryToTitle[itemSelections.keys[selectedIndex - 1]];
+        }
     }
 
     protected override bool TrySelectPositive()
