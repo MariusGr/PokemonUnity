@@ -57,5 +57,6 @@ public class ItemListEntryUI : SelectableImage
     {
         base.AssignNone();
         gameObject.SetActive(false);
+        item = null;
     }
 }

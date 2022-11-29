@@ -16,6 +16,7 @@ public class SelectableUIElement : MonoBehaviour, ISelectableUIElement
     public int index { get; private set; }
     public bool assigned { get; private set; } = false;
 
+    public bool IsAssigned() => assigned;
     public int GetIndex() => index;
     public object GetPayload() => payload;
     public virtual void Initialize(int index) => this.index = index;

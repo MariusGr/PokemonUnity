@@ -128,11 +128,13 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             GetDecisionOpponent(out opponentBattleOption, out opponentMove);
             playerBattleOption = BattleOption.None;
             Move playerMove = null;
+            Item playerItem = null;
             int playerPokemonIndex = -1;
-            yield return GetDecisionPlayer((battleOption, move, index) =>
+            yield return GetDecisionPlayer((battleOption, move, item, index) =>
             {
                 playerBattleOption = battleOption;
                 playerMove = move;
+                playerItem = item;
                 playerPokemonIndex = index;
             });
 
@@ -167,7 +169,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 else if (playerBattleOption == BattleOption.PokemonSwitch)
                     yield return ChoosePokemon(Constants.PlayerIndex, playerPokemonIndex);
                 else if (playerBattleOption == BattleOption.Bag)
-                // TODO
+                    yield return PlayerUseItem(playerItem);
                 else if (playerBattleOption == BattleOption.Run)
                     break;
 
@@ -185,6 +187,15 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         }
 
         yield return EndBattle(npcBattleEndReactionCallback);
+    }
+
+    private IEnumerator PlayerUseItem(Item item)
+    {
+        yield return dialogBox.DrawText($"{playerData.name} setzt {item.data.fullName} ein!", DialogBoxContinueMode.External);
+        if (item.data.catchesPokemon)
+        {
+            // TODO
+        }
     }
 
     private IEnumerator RunPlayer()
@@ -225,11 +236,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         opponentMove = GetMoveOpponent();
     }
 
-    private IEnumerator GetDecisionPlayer(Action<BattleOption, Move, int> callback)
+    private IEnumerator GetDecisionPlayer(Action<BattleOption, Move, Item, int> callback)
     {
         bool goBack = false;
         BattleOption battleOption;
-        Move playerMove = null;
+        Move chosenMove = null;
+        Item chosenItem = null;
         int choosenPokemon = -1;
 
         // Battle can only continue if the user chose a move or runs from battle
@@ -253,7 +265,14 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             }
             else if (battleOption == BattleOption.Bag)
             {
-                //TODO
+                goBack = false;
+                yield return GetItemPlayer(
+                    (item, back) =>
+                    {
+                        chosenItem = item;
+                        goBack = back;
+                    });
+                if (!goBack) break;
             }
             else if (battleOption == BattleOption.PokemonSwitch)
             {
@@ -270,12 +289,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             {
                 // Fight!
                 // Get player move and perform moves from both sides
-                playerMove = null;
+                chosenMove = null;
                 goBack = false;
-                while (playerMove is null && !goBack)
+                while (chosenMove is null && !goBack)
                     yield return GetMovePlayer((choosenMove, back) =>
                     {
-                        playerMove = choosenMove;
+                        chosenMove = choosenMove;
                         goBack = back;
                     });
 
@@ -284,7 +303,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             }
         }
 
-        callback(battleOption, playerMove, choosenPokemon);
+        callback(battleOption, chosenMove, chosenItem, choosenPokemon);
     }
 
     private Move GetMoveOpponent()
@@ -429,6 +448,26 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         callback(choosenPokemonIndex, goBack);
     }
 
+    private IEnumerator GetItemPlayer(Action<Item, bool> callback)
+    {
+        playerBattleOption = BattleOption.None;
+        bool goBack = false;
+        Item chosenItem = null;
+        ui.OpenBagSelection((ISelectableUIElement selection, bool back) =>
+        {
+            print("callback");
+            print(back);
+            chosenItem = selection is null ? null : (Item)selection.GetPayload();
+            goBack = back;
+        });
+
+        print("wait for player to choose item");
+        yield return new WaitUntil(() => !(chosenItem is null) || goBack);
+        ui.CloseBagSelection();
+
+        callback(chosenItem, goBack);
+    }
+
     private IEnumerator ChoosePokemon(int characterIndex, int pokemonIndex)
     {
         // TODO Animate pokemon retreat
@@ -437,14 +476,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
         // TODO Animate pokemon deployment
-        //TODO handle opponent pokemon switch
         ui.SwitchToPokemon(characterIndex, characterData[characterIndex].pokemons[pokemonIndex]);
-        yield return null;
-    }
-
-    private IEnumerator ChooseItem(Item item)
-    {
-
         yield return null;
     }
 

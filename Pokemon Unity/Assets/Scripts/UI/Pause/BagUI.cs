@@ -26,6 +26,7 @@ public class BagUI : ScalarSelection
         base.Open(callback, forceSelection, 1);
         itemSelections[ItemCategory.Items].Open(ChooseItem);
         inBattle = false;
+        choosenItemViewIndex = -1;
     }
 
     public void OpenBatlle(Action<ISelectableUIElement, bool> callback)
@@ -55,8 +56,12 @@ public class BagUI : ScalarSelection
 
     protected override void SelectElement(int index)
     {
+        activeSelection.DeselectSelection();
         if (activeSelection != partySelection && !activeItemSelection.itemHasBeenChoosen)
+        {
+            activeItemSelection.ResetItemSelection();
             activeSelection.Close();
+        }
         base.SelectElement(index, false);
         if (activeSelection == partySelection)
             activeSelection.Open(ChoosePokemon, 0, ProcessInput);
@@ -114,13 +119,29 @@ public class BagUI : ScalarSelection
     {
         if (goBack)
         {
-            Close();
+            if (inBattle)
+                GoBack();
+            else
+                Close();
             return;
         }
+        else if (!selection.IsAssigned())
+            return;
 
+        StartCoroutine(ChooseItemCoroutine(selection));
+    }
+
+    private IEnumerator ChooseItemCoroutine(ISelectableUIElement selection)
+    {
         ItemListEntryUI entry = (ItemListEntryUI)selection;
         if (inBattle && entry.item.data.usableOnBattleOpponent)
+        {
+            yield return DialogBox.Instance.DrawChoiceBox($"Möchtest du {entry.item.data.fullName} verwenden?");
+            if (DialogBox.Instance.chosenIndex == 1)
+                yield break;
+
             callback?.Invoke(entry, false);
+        }
         else if (activeItemSelection.ChooseItemEntry(entry))
             choosenItemViewIndex = selectedIndex;
         else
@@ -137,7 +158,10 @@ public class BagUI : ScalarSelection
 
         if (goBack)
         {
-            Close();
+            if (inBattle)
+                GoBack();
+            else
+                Close();
             return;
         }
 
@@ -150,5 +174,8 @@ public class BagUI : ScalarSelection
         RefreshItemSelection();
         activeItemSelection.ResetItemSelection();
         ReturnToItemSelection();
+        choosenItemViewIndex = -1;
+        if (inBattle)
+            GoBack();
     }
 }

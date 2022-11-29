@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseUI : SelectionGraphWindow, IPauseUI
@@ -37,7 +35,7 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
         return false;
     }
 
-    private  void ChooseOption(int index)
+    private void ChooseOption(int index)
     {
         if (index == 0)
             partyView.Open(callback: ClosePartyView, battle: false, forceSelection: false);
