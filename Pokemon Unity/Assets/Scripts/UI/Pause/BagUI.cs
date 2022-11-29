@@ -18,12 +18,20 @@ public class BagUI : ScalarSelection
     private BagItemScrollSelection activeItemSelection
         => choosenItemViewIndex > 0 ? itemSelections.values[choosenItemViewIndex - 1] : itemSelections.values[selectedIndex - 1];
     private int choosenItemViewIndex = -1;
+    private bool inBattle = false;
 
     public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         partySelection.Open(null, -1, ProcessInput);
         base.Open(callback, forceSelection, 1);
         itemSelections[ItemCategory.Items].Open(ChooseItem);
+        inBattle = false;
+    }
+
+    public void OpenBatlle(Action<ISelectableUIElement, bool> callback)
+    {
+        Open(callback);
+        inBattle = true;
     }
 
     public override void Close()
@@ -111,7 +119,9 @@ public class BagUI : ScalarSelection
         }
 
         ItemListEntryUI entry = (ItemListEntryUI)selection;
-        if (activeItemSelection.ChooseItemEntry(entry))
+        if (inBattle && entry.item.data.usableOnBattleOpponent)
+            callback?.Invoke(entry, false);
+        else if (activeItemSelection.ChooseItemEntry(entry))
             choosenItemViewIndex = selectedIndex;
         else
         {

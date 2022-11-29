@@ -13,6 +13,7 @@ public class ItemData : ScriptableObject
     public MoveData moveLearned;
     public bool stacks;
     public bool consumable;
+    public bool usableOnBattleOpponent;
     public bool healsHPFully;
     public int hpHealed;
     public Status statusHealed;

@@ -166,7 +166,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                     yield return MoveCoroutine(Constants.PlayerIndex, Constants.OpponentIndex, playerMove);
                 else if (playerBattleOption == BattleOption.PokemonSwitch)
                     yield return ChoosePokemon(Constants.PlayerIndex, playerPokemonIndex);
-                //else if (playerBattleOption == BattleOption.Bag)
+                else if (playerBattleOption == BattleOption.Bag)
                 // TODO
                 else if (playerBattleOption == BattleOption.Run)
                     break;
@@ -177,7 +177,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 else if (opponentBattleOption == BattleOption.PokemonSwitch)
                     yield return ChoosePokemon(Constants.OpponentIndex, opponentPokemonIndex);
                 //else if (playerBattleOption == BattleOption.Bag)
-                // TODO
+                    //TODO
             }
 
             if (BattleHasEnded())
@@ -437,7 +437,14 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
         // TODO Animate pokemon deployment
+        //TODO handle opponent pokemon switch
         ui.SwitchToPokemon(characterIndex, characterData[characterIndex].pokemons[pokemonIndex]);
+        yield return null;
+    }
+
+    private IEnumerator ChooseItem(Item item)
+    {
+
         yield return null;
     }
 
