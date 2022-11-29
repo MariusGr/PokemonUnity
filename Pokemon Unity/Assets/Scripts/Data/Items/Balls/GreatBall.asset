@@ -19,4 +19,7 @@ MonoBehaviour:
   description: "BALL mit guter Erfolgsquote. Besser als ein POK\xE9BALL."
   moveLearned: {fileID: 0}
   stacks: 1
+  consumable: 1
+  healsHPFully: 0
   hpHealed: 0
+  statusHealed: 0

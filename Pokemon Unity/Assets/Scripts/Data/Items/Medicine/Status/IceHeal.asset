@@ -19,6 +19,7 @@ MonoBehaviour:
   description: "Taut Pok\xE9mon wieder auf. "
   moveLearned: {fileID: 0}
   stacks: 1
+  consumable: 1
   healsHPFully: 0
   hpHealed: 0
   statusHealed: 2

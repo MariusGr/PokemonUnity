@@ -19,6 +19,7 @@ MonoBehaviour:
   description: "F\xFCllt KP vollst\xE4ndig auf. "
   moveLearned: {fileID: 0}
   stacks: 1
+  consumable: 1
   healsHPFully: 1
   hpHealed: 0
   statusHealed: 0

@@ -13,9 +13,9 @@ public class BagUI : ScalarSelection
     [SerializeField] InspectorFriendlySerializableDictionary<ItemCategory, ScrollSelection> itemSelections;
     [SerializeField] SelectableGameObject[] itemSelectables;
 
-    private PlayerData playerData;
     private ScalarSelection[] selections;
     private ScalarSelection activeSelection => selections[selectedIndex];
+    private ScrollSelection activeItemSelection => itemSelections.values[choosenItemViewIndex - 1];
     private ItemListEntryUI choosenItemEntry;
     private int choosenItemViewIndex;
 
@@ -39,12 +39,7 @@ public class BagUI : ScalarSelection
             activeSelection.Close();
         }
 
-        if (!(choosenItemEntry is null))
-        {
-            choosenItemEntry.SetPlaceMode(false);
-            choosenItemEntry = null;
-        }
-
+        ResetItemSelection();
         partySelection.DeselectSelection();
         partySelection.Close();
         base.Close();
@@ -69,11 +64,14 @@ public class BagUI : ScalarSelection
         if (choosenItemEntry is null)
             return base.TrySelectPositive();
         if (selectedElement == partySelectableElement)
-        {
-            partySelection.DeselectSelection();
-            SelectElement(choosenItemViewIndex);
-        }
+            ReturnToItemSelection();
         return false;
+    }
+
+    private void ReturnToItemSelection()
+    {
+        partySelection.DeselectSelection();
+        SelectElement(choosenItemViewIndex);
     }
 
     protected override bool TrySelectNegative()
@@ -85,9 +83,8 @@ public class BagUI : ScalarSelection
         return false;
     }
 
-    public void AssignElements(PlayerData playerData)
+    public void AssignElements()
     {
-        this.playerData = playerData;
         List<ScalarSelection> selections = new List<ScalarSelection>() { partySelection };
         selections.AddRange(itemSelections.Values);
         this.selections = selections.ToArray();
@@ -97,9 +94,21 @@ public class BagUI : ScalarSelection
         elements = elementsList.ToArray();
         AssignElements(elements);
 
-        partySelection.AssignElements(playerData.pokemons);
+        partySelection.AssignElements(PlayerData.Instance.pokemons);
         foreach (KeyValuePair<ItemCategory, ScrollSelection> entry in itemSelections)
-            entry.Value.AssignItems(playerData.items[entry.Key]);
+            entry.Value.AssignItems(PlayerData.Instance.items[entry.Key]);
+    }
+
+    private void RefreshItemSelection()=>
+        activeItemSelection.AssignItems(PlayerData.Instance.items[itemSelections.keys[choosenItemViewIndex - 1]]);
+
+    private void ResetItemSelection()
+    {
+        if (!(choosenItemEntry is null))
+        {
+            choosenItemEntry.SetPlaceMode(false);
+            choosenItemEntry = null;
+        }
     }
 
     private void ChooseItem(ISelectableUIElement selection, bool goBack)
@@ -119,22 +128,31 @@ public class BagUI : ScalarSelection
         }
         else
         {
-            playerData.SwapItems(choosenItemEntry.item, entry.item);
-            ((ScrollSelection)activeSelection).AssignItems(playerData.items[itemSelections.keys[choosenItemViewIndex - 1]]);
-            choosenItemEntry.SetPlaceMode(false);
-            choosenItemEntry = null;
+            PlayerData.Instance.SwapItems(choosenItemEntry.item, entry.item);
+            RefreshItemSelection();
+            ResetItemSelection();
         }
     }
 
     private void ChoosePokemon(ISelectableUIElement selection, bool goBack)
     {
+        if (choosenItemEntry is null)
+            return;
+
         if (goBack)
         {
             Close();
             return;
         }
 
-        PlayerPokemonStatsUI statsUI = (PlayerPokemonStatsUI)selection;
-        PokemonManager.Instance.TryUseItemOnPokemon(choosenItemEntry.item, statsUI.pokemon, statsUI.RefreshHPAnimated());
+        StartCoroutine(UseItem((PlayerPokemonStatsUI)selection));
+    }
+
+    IEnumerator UseItem(PlayerPokemonStatsUI statsUI)
+    {
+        yield return PokemonManager.Instance.TryUseItemOnPokemon(choosenItemEntry.item, statsUI.pokemon, statsUI.RefreshHPAnimated());
+        RefreshItemSelection();
+        ResetItemSelection();
+        ReturnToItemSelection();
     }
 }

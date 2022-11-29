@@ -19,6 +19,7 @@ MonoBehaviour:
   description: "F\xFCllt die KP um 200 auf."
   moveLearned: {fileID: 0}
   stacks: 1
+  consumable: 1
   healsHPFully: 1
   hpHealed: 0
   statusHealed: -1

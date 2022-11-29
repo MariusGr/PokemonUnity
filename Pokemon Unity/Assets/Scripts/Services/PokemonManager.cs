@@ -109,5 +109,11 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             yield return animation;
             yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgefüllt!", DialogBoxContinueMode.User, closeAfterFinish: true);
         }
+
+        // Note for future changes: Only consume if item has actually been used!
+        if (item.data.consumable)
+            PlayerData.Instance.TryTakeItem(item);
+
+        yield return null;
     }
 }

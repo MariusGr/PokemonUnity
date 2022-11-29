@@ -12,6 +12,7 @@ public class ItemData : ScriptableObject
     public string description;
     public MoveData moveLearned;
     public bool stacks;
+    public bool consumable;
     public bool healsHPFully;
     public int hpHealed;
     public Status statusHealed;
