@@ -7,6 +7,7 @@ public class BattleUI : InputConsumer, IBattleUI
 {
     [SerializeField] private BattleMenu battleMenu;
     [SerializeField] private PartySelection partySelection;
+    [SerializeField] private BagUI bagSelection;
     [SerializeField] private PokemonSprite playerPokemonSprite;
     [SerializeField] private PokemonSprite opponentPokemonSprite;
     [SerializeField] private TrainerSprite opponentSprite;
@@ -87,6 +88,8 @@ public class BattleUI : InputConsumer, IBattleUI
             => callback(((BattleMenuButton)selection).option, false));
     public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection)
         => partySelection.Open(callback, forceSelection: forceSelection, startSelection: PlayerData.Instance.GetFirstAlivePokemonIndex(), battle: true);
+    public void OpenBagSelection(System.Action<ISelectableUIElement, bool> callback)
+        => bagSelection.Open(callback);
     public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback, Pokemon pokemon)
     {
         moveSelectionUI.AssignElements(pokemon.moves.ToArray());
@@ -96,6 +99,7 @@ public class BattleUI : InputConsumer, IBattleUI
     public void CloseBattleMenu() => battleMenu.Close();
     public void ClosePokemonSwitchSelection() => partySelection.Close();
     public void CloseMoveSelection() => moveSelectionUI.Close();
+    public void CloseBagSelection() => bagSelection.Close();
 
     public override bool ProcessInput(InputData input) => false;
 }

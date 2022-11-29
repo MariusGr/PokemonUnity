@@ -131,10 +131,10 @@ public class BagUI : ScalarSelection
             return;
         }
 
-        StartCoroutine(UseItem((PlayerPokemonStatsUI)selection));
+        StartCoroutine(UseItemOnPokemon((PlayerPokemonStatsUI)selection));
     }
 
-    IEnumerator UseItem(PlayerPokemonStatsUI statsUI)
+    IEnumerator UseItemOnPokemon(PlayerPokemonStatsUI statsUI)
     {
         yield return PokemonManager.Instance.TryUseItemOnPokemon(activeItemSelection.choosenItem, statsUI.pokemon, statsUI.RefreshHPAnimated());
         RefreshItemSelection();

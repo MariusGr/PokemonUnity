@@ -40,7 +40,7 @@ public class BagItemScrollSelection : ScrollSelection
         if (!itemHasBeenChoosen)
         {
             choosenItemEntry = entry;
-            choosenItem = entry.item;
+            choosenItem = choosenItemEntry.item;
             choosenItemEntry.SetPlaceMode(true);
             return true;
         }
