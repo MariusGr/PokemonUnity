@@ -52,7 +52,7 @@ GameObject:
   - component: {fileID: 3864004808847386150}
   - component: {fileID: 3864004808847386144}
   - component: {fileID: 3864004808847386151}
-  - component: {fileID: 3864004808847386145}
+  - component: {fileID: 876637595823044658}
   - component: {fileID: 3864004808847386146}
   m_Layer: 0
   m_Name: ItemScrollViewUI
@@ -121,7 +121,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3864004808847386145
+--- !u!114 &876637595823044658
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3864004808847386149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a23be4626f98fb4449b1152fe198ff89, type: 3}
+  m_Script: {fileID: 11500000, guid: 861c002e9406ea144b3f8ad9b7433e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   elements:
@@ -948,6 +948,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Description
       objectReference: {fileID: 0}
+    - target: {fileID: 6759210487594579930, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_Text
+      value: "Das ist ein wirklich tolles Item. Es ist so toll, dass ich kotzen k\xF6nnte.
+        GEIL!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759210487594579930, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759210487594579930, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_LineSpacing
+      value: 1.95
+      objectReference: {fileID: 0}
     - target: {fileID: 6759210487594579931, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1062,6 +1078,22 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 28.4396
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759210487639851885, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_Text
+      value: "Das ist ein wirklich tolles Item. Es ist so toll, dass ich kotzen k\xF6nnte.
+        GEIL!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759210487639851885, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759210487639851885, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_LineSpacing
+      value: 1.95
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abc0df8ef2ee3224981b3acd3a77ad28, type: 3}
