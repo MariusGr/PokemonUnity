@@ -57,7 +57,10 @@ public class PokemonStatsUI : SelectableImage
     virtual public void RefreshHP() => hpBar.Value = pokemon.hpNormalized;
 
     public IEnumerator RefreshHPAnimated() => RefreshHPAnimated(barAnimationSpeed);
-    virtual public IEnumerator RefreshHPAnimated(float speed) => hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
+    public virtual IEnumerator RefreshHPAnimated(float speed)
+    {
+        yield return hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
+    }
 
     public bool IsPlayingAnimation() => isPlayingAnimation;
 }

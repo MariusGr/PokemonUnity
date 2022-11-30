@@ -65,7 +65,10 @@ public class BattleUI : InputConsumer, IBattleUI
     public void ResetXP() => playerStats.ResetXP();
     public void RefreshMove(Move move) => moveSelectionUI.RefreshMove(move);
 
-    public IEnumerator RefreshHPAnimated(int character) => stats[character].RefreshHPAnimated(hpRefreshSpeed);
+    public IEnumerator RefreshHPAnimated(int character)
+    {
+        yield return stats[character].RefreshHPAnimated(hpRefreshSpeed);
+    }
     public IEnumerator RefreshXPAnimated() => playerStats.RefreshXPAnimated(xpRefreshSpeed);
     public IEnumerator PlayMoveAnimation(int attacker, Move move) => pokemonSprites[attacker].PlayAnimation(move);
     public IEnumerator PlayBlinkAnimation(int blinkingPokemon) => pokemonSprites[blinkingPokemon].PlayBlinkAnimation();

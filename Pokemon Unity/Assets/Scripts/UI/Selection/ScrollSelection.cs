@@ -59,7 +59,6 @@ public class ScrollSelection : ScalarSelection
             viewFrameStart = Math.Max(0, viewFrameStart - (this.items.Count - items.Count));
 
         this.items = items;
-        DebugExtensions.DebugExtension.Log(items);
         scrollDownStart = slots / 2 + 1;
         scrollUpStart = slots / 2 - 1;
         RefreshViewFrame();

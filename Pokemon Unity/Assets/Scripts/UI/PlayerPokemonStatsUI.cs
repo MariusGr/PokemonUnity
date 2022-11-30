@@ -25,8 +25,9 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
 
     override public IEnumerator RefreshHPAnimated(float speed)
     {
-        hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
-        yield return AnimateHPTextCoroutine();
+        StartCoroutine(hpBar.SetValueAnimated(pokemon.hpNormalized, speed));
+        StartCoroutine(AnimateHPTextCoroutine());
+        yield return new WaitWhile(() => hpBar.IsPlayingAnimation());
     }
 
     IEnumerator AnimateHPTextCoroutine()
