@@ -191,6 +191,9 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator PlayerUseItem(Item item)
     {
+        // TODO: This is a workaround. It actually only needs to be called in case item has been used on player's active pokemon
+        ui.RefreshHP(Constants.PlayerIndex);
+
         if (!item.data.usableOnBattleOpponent)
             // TODO: do not break if item can be used on own pokemon and usage shall be animated
             yield break;
@@ -459,8 +462,6 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         Item chosenItem = null;
         ui.OpenBagSelection((ISelectableUIElement selection, bool back) =>
         {
-            print("callback");
-            print(back);
             chosenItem = selection is null ? null : (Item)selection.GetPayload();
             goBack = back;
         });
