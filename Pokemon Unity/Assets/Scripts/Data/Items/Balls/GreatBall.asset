@@ -20,6 +20,9 @@ MonoBehaviour:
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 1
+  catchesPokemon: 1
+  revives: 0
   healsHPFully: 0
   hpHealed: 0
   statusHealed: 0

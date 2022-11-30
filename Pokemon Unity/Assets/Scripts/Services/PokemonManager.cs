@@ -85,13 +85,18 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
     {
         if (item.data.canBeUsedOnOwnPokemon)
         {
-            yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
-            if (dialogBox.GetChosenIndex() == 0)
+            if (pokemon.isFainted && !item.data.revives)
+                yield return dialogBox.DrawText($"Du kannst {item.data.fullName} nicht auf besiegte Pokémon anwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            else
             {
-                yield return UseItemOnPokemon(item, pokemon, animation);
-                dialogBox.Close();
-                success?.Invoke(true);
-                yield break;
+                yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
+                if (dialogBox.GetChosenIndex() == 0)
+                {
+                    yield return UseItemOnPokemon(item, pokemon, animation);
+                    dialogBox.Close();
+                    success?.Invoke(true);
+                    yield break;
+                }
             }
         }
         else
