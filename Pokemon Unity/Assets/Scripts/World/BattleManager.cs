@@ -361,7 +361,6 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator GetNextPokemonPlayer()
     {
-
         while (true)
         {
             int chosenOption = 0;
@@ -404,8 +403,37 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         opponentBattleOption = BattleOption.None;
         for (int i = 0; i < opponentData.pokemons.Length; i++)
         {
-            if (!opponentData.pokemons[i].isFainted)
+            Pokemon pokemon = opponentData.pokemons[i];
+            if (!pokemon.isFainted)
             {
+                yield return dialogBox.DrawText($"{opponentData.name} wird als nächstes {pokemon.SpeciesName} einsetzen.", DialogBoxContinueMode.User);
+                while(true)
+                {
+                    yield return dialogBox.DrawChoiceBox("Möchtest du dein Pokémon wechseln?");
+                    if (dialogBox.GetChosenIndex() == 0)
+                    {
+                        // Player wants to switch pokemon
+                        bool goBack = false;
+                        int playerPokemon = -1;
+                        yield return GetNextPokemonPlayer(
+                            (index, back) =>
+                            {
+                                playerPokemon = index;
+                                goBack = back;
+                            });
+                        if (!goBack)
+                        {
+                            yield return ChoosePokemon(Constants.PlayerIndex, playerPokemon);
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        // Player wants to continue with current pokemon
+                        dialogBox.Close();
+                        break;
+                    }
+                }
                 yield return ChoosePokemon(Constants.OpponentIndex, i);
                 break;
             }

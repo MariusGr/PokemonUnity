@@ -105,7 +105,8 @@ public class Pokemon
         }
     }
 
-    public string Name => nickname is null || nickname.Length < 1 ? data.fullName.ToUpper() : nickname;
+    public string Name => nickname is null || nickname.Length < 1 ? SpeciesName : nickname;
+    public string SpeciesName => data.fullName.ToUpper();
     public Gender gender;
 
     private int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
