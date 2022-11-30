@@ -115,17 +115,28 @@ public class BagUI : ScalarSelection
     private void RefreshItemSelection()=>
         activeItemSelection.AssignItems(PlayerData.Instance.items[itemSelections.keys[choosenItemViewIndex - 1]]);
 
-    private void ChooseItem(ISelectableUIElement selection, bool goBack)
+    private bool HandleGoBack(bool goBack)
     {
         if (goBack)
         {
-            if (inBattle)
+            if (choosenItemViewIndex > -1)
+            {
+                // Item is chosen and needs to be unchosen
+                activeItemSelection.ResetItemSelection();
+                choosenItemViewIndex = -1;
+                return true;
+            } else if (inBattle)
                 GoBack();
             else
                 Close();
-            return;
+            return true;
         }
-        else if (!selection.IsAssigned())
+        return false;
+    }
+
+    private void ChooseItem(ISelectableUIElement selection, bool goBack)
+    {
+        if (HandleGoBack(goBack) || !selection.IsAssigned())
             return;
 
         StartCoroutine(ChooseItemCoroutine(selection));
@@ -153,29 +164,26 @@ public class BagUI : ScalarSelection
 
     private void ChoosePokemon(ISelectableUIElement selection, bool goBack)
     {
-        if (!activeItemSelection.itemHasBeenChoosen)
+        if (!activeItemSelection.itemHasBeenChoosen || HandleGoBack(goBack))
             return;
-
-        if (goBack)
-        {
-            if (inBattle)
-                GoBack();
-            else
-                Close();
-            return;
-        }
 
         StartCoroutine(UseItemOnPokemon((PlayerPokemonStatsUI)selection));
     }
 
     IEnumerator UseItemOnPokemon(PlayerPokemonStatsUI statsUI)
     {
-        yield return PokemonManager.Instance.TryUseItemOnPokemon(activeItemSelection.choosenItem, statsUI.pokemon, statsUI.RefreshHPAnimated());
+        bool itemUsed = false;
+        yield return PokemonManager.Instance.TryUseItemOnPokemon(
+            activeItemSelection.choosenItem, statsUI.pokemon, statsUI.RefreshHPAnimated(), (bool success) => itemUsed = success);
+
+        if (!itemUsed)
+            yield break;
+
         RefreshItemSelection();
+        if (inBattle)
+            callback?.Invoke(activeItemSelection.choosenItemEntry, false);
         activeItemSelection.ResetItemSelection();
         ReturnToItemSelection();
         choosenItemViewIndex = -1;
-        if (inBattle)
-            GoBack();
     }
 }

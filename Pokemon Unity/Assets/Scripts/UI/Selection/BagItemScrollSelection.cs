@@ -5,7 +5,7 @@ using UnityEngine;
 public class BagItemScrollSelection : ScrollSelection
 {
     public Item choosenItem { get; private set; }
-    private ItemListEntryUI choosenItemEntry;
+    public ItemListEntryUI choosenItemEntry { get; private set; }
     public bool itemHasBeenChoosen => !(choosenItemEntry is null);
 
     protected override void MoveViewFrame(int shift)

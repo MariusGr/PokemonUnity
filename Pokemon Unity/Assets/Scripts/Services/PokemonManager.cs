@@ -78,21 +78,27 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
         moveSelectionUI.Assign(pokemon);
     }
 
-    public Coroutine TryUseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation)
-        => StartCoroutine(TryUseItemOnPokemonCoroutine(item, pokemon, animation));
+    public Coroutine TryUseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation, System.Action<bool> success)
+        => StartCoroutine(TryUseItemOnPokemonCoroutine(item, pokemon, animation, success));
 
-    IEnumerator TryUseItemOnPokemonCoroutine(Item item, Pokemon pokemon, IEnumerator animation)
+    IEnumerator TryUseItemOnPokemonCoroutine(Item item, Pokemon pokemon, IEnumerator animation, System.Action<bool> success)
     {
         if (item.data.canBeUsedOnOwnPokemon)
         {
             yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
             if (dialogBox.GetChosenIndex() == 0)
+            {
                 yield return UseItemOnPokemon(item, pokemon, animation);
+                dialogBox.Close();
+                success?.Invoke(true);
+                yield break;
+            }
         }
         else
         {
             yield return dialogBox.DrawText($"{item.data.fullName} kann nicht auf deine Pokemon angewendet werden!", DialogBoxContinueMode.User, closeAfterFinish: true);
         }
+        success?.Invoke(false);
     }
 
     IEnumerator UseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation)

@@ -191,6 +191,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator PlayerUseItem(Item item)
     {
+        if (!item.data.usableOnBattleOpponent)
+            // TODO: do not break if item can be used on own pokemon and usage shall be animated
+            yield break;
+
         yield return dialogBox.DrawText($"{playerData.name} setzt {item.data.fullName} ein!", DialogBoxContinueMode.External);
         if (item.data.catchesPokemon)
         {
