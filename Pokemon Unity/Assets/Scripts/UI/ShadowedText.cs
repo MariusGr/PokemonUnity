@@ -11,6 +11,7 @@ public class ShadowedText : MonoBehaviour
     [SerializeField] Text textShadowDefault;
     [SerializeField] Text textSmall;
     [SerializeField] Text textShadowSmall;
+    [SerializeField] float shadowOffset = .5f;
     [SerializeField] string _text = "Enter text here";
     [SerializeField] TextAnchor _alignment = TextAnchor.UpperCenter;
     [SerializeField] Font _font;
@@ -140,8 +141,8 @@ public class ShadowedText : MonoBehaviour
         text = _text;
         Refresh();
 
-        textShadowDefault.rectTransform.position = textDefault.rectTransform.position + new Vector3(.5f, -.5f, 0);
-        textShadowSmall.rectTransform.position = textSmall.rectTransform.position + new Vector3(.5f, -.5f, 0);
+        textShadowDefault.rectTransform.position = textDefault.rectTransform.position + new Vector3(1f, -1f, 0) * shadowOffset;
+        textShadowSmall.rectTransform.position = textSmall.rectTransform.position + new Vector3(1f, -1f, 0) * shadowOffset;
 
         //textShadowDefault.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textField.rectTransform.sizeDelta.x);
         //textShadowDefault.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textField.rectTransform.sizeDelta.y);
