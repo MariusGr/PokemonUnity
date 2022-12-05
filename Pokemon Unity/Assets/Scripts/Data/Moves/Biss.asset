@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Biss
   m_EditorClassIdentifier: 
   fullName: Biss
-  description: "Bei\xDFt dem Anderen voll an ne fiese Stelle. Autsch!"
+  description: 
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
   maxPP: 25
   power: 100

@@ -9,6 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1445160076394025854, guid: 05640bd0d4ce5439f9a86a6478988f67,
         type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1124141896946340066}
+    - target: {fileID: 1445160076394025854, guid: 05640bd0d4ce5439f9a86a6478988f67,
+        type: 3}
       propertyPath: backgroundSwap
       value: 
       objectReference: {fileID: 21300000, guid: c8e34e84d47e74a43b019673f47ad4d1,
@@ -166,3 +171,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05640bd0d4ce5439f9a86a6478988f67, type: 3}
+--- !u!114 &1124141896946340066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 123382445193976317, guid: 05640bd0d4ce5439f9a86a6478988f67,
+    type: 3}
+  m_PrefabInstance: {fileID: 1022201354465085727}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b43620740e5936449abb1b0ee26ed58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -6,14 +6,27 @@ using UnityEngine.UI;
 [ExecuteInEditMode]
 public class ShadowedText : MonoBehaviour
 {
+    [SerializeField] RectTransform parentRect;
     [SerializeField] Text textDefault;
-    [SerializeField] Text textShadow;
+    [SerializeField] Text textShadowDefault;
+    [SerializeField] Text textSmall;
+    [SerializeField] Text textShadowSmall;
     [SerializeField] string _text = "Enter text here";
     [SerializeField] TextAnchor _alignment = TextAnchor.UpperCenter;
     [SerializeField] Font _font;
+    [SerializeField] int _fontSize = 13;
     [SerializeField] float _lineSpacing;
     [SerializeField] bool useDifferentFontForShadow;
     [SerializeField] Font shadowFont;
+    [SerializeField] HorizontalWrapMode _horizontalWrapMode;
+
+    Text textField => smallText ? textSmall : textDefault;
+    Text textFieldShadow => smallText ? textShadowSmall : textShadowDefault;
+
+    private float textWidth => LayoutUtility.GetPreferredWidth(textDefault.rectTransform); //This is the width the text would LIKE to be
+    private float parentWidth => parentRect.rect.width; //This is the actual width of the text's parent container
+
+    bool smallText = false;
 
     public string text
     {
@@ -21,7 +34,23 @@ public class ShadowedText : MonoBehaviour
         set {
             _text = value;
             textDefault.text = _text;
-            textShadow.text = _text;
+            textShadowDefault.text = _text;
+            if(!smallText && TextIsTooWide())
+            {
+                smallText = true;
+                Refresh();
+            }
+            else if (smallText)
+            {
+                textSmall.text = _text;
+                textShadowSmall.text = _text;
+
+                if (TextIsTooNarrow())
+                {
+                    smallText = false;
+                    Refresh();
+                }
+            }
         }
     }
 
@@ -31,8 +60,8 @@ public class ShadowedText : MonoBehaviour
         set
         {
             _alignment = value;
-            textDefault.alignment = _alignment;
-            textShadow.alignment = _alignment;
+            textField.alignment = _alignment;
+            textFieldShadow.alignment = _alignment;
         }
     }
 
@@ -42,8 +71,19 @@ public class ShadowedText : MonoBehaviour
         set
         {
             _font = value;
-            textDefault.font = _font;
-            textShadow.font = useDifferentFontForShadow ? shadowFont : _font;
+            textField.font = _font;
+            textFieldShadow.font = useDifferentFontForShadow ? shadowFont : _font;
+        }
+    }
+
+    public int fontSize
+    {
+        get => _fontSize;
+        set
+        {
+            _fontSize = value;
+            textDefault.fontSize = _fontSize;
+            textShadowDefault.fontSize = _fontSize;
         }
     }
 
@@ -53,20 +93,58 @@ public class ShadowedText : MonoBehaviour
         set
         {
             _lineSpacing = value;
-            textDefault.lineSpacing = _lineSpacing;
-            textShadow.lineSpacing = _lineSpacing;
+            textField.lineSpacing = _lineSpacing;
+            textFieldShadow.lineSpacing = _lineSpacing;
         }
+    }
+
+    public HorizontalWrapMode horizontalWrapMode
+    {
+        get => _horizontalWrapMode;
+        set
+        {
+            _horizontalWrapMode = horizontalWrapMode;
+            textDefault.horizontalOverflow = _horizontalWrapMode;
+            textShadowDefault.horizontalOverflow = _horizontalWrapMode;
+        }
+    }
+
+    protected bool TextIsTooWide() => horizontalWrapMode != HorizontalWrapMode.Wrap && textWidth > parentWidth;
+    protected bool TextIsTooNarrow() => horizontalWrapMode == HorizontalWrapMode.Wrap || textWidth <= parentWidth;
+
+    private void SetTextVisible(Text text, bool visible)
+    {
+        text.color = new Color(text.color.r, text.color.g, text.color.b,
+            visible ? 1f : 0);
+    }
+
+    private void Refresh()
+    {
+        SetTextVisible(textDefault, !smallText);
+        SetTextVisible(textShadowDefault, !smallText);
+        SetTextVisible(textSmall, smallText);
+        SetTextVisible(textShadowSmall, smallText);
+
+        alignment = _alignment;
+        font = _font;
+        fontSize = _fontSize;
+        linespacing = _lineSpacing;
+        horizontalWrapMode = _horizontalWrapMode;
+
+
     }
 
 #if (UNITY_EDITOR)
     private void Update()
     {
         text = _text;
-        alignment = _alignment;
-        font = _font;
-        linespacing = _lineSpacing;
-        textShadow.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textDefault.rectTransform.sizeDelta.x);
-        textShadow.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textDefault.rectTransform.sizeDelta.y);
+        Refresh();
+
+        textShadowDefault.rectTransform.position = textDefault.rectTransform.position + new Vector3(.5f, -.5f, 0);
+        textShadowSmall.rectTransform.position = textSmall.rectTransform.position + new Vector3(.5f, -.5f, 0);
+
+        //textShadowDefault.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textField.rectTransform.sizeDelta.x);
+        //textShadowDefault.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textField.rectTransform.sizeDelta.y);
     }
 #endif
 }

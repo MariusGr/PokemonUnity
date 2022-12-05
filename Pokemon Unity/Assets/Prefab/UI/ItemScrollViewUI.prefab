@@ -352,6 +352,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemListEntryUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60, type: 3}
 --- !u!224 &2132819514631880388 stripped
@@ -379,6 +384,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3864004808353666171}
     m_Modifications:
+    - target: {fileID: 1840414790177642421, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.49999237
+      objectReference: {fileID: 0}
     - target: {fileID: 4335926203186897909, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Pivot.x
@@ -484,10 +494,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4352690743011067402, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.49999237
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769315857563683009, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.49999237
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251773923464476731, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.49999237
+      objectReference: {fileID: 0}
     - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Name
       value: ItemListEntryUI (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299969091633015172, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.49999237
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501969950703556990, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.49999237
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60, type: 3}
@@ -516,6 +556,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3864004808353666171}
     m_Modifications:
+    - target: {fileID: 1840414790177642421, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
     - target: {fileID: 4335926203186897909, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Pivot.x
@@ -621,10 +666,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4352690743011067402, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769315857563683009, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251773923464476731, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
     - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Name
       value: ItemListEntryUI (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299969091633015172, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501969950703556990, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60, type: 3}
@@ -653,6 +728,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3864004808353666171}
     m_Modifications:
+    - target: {fileID: 1840414790177642421, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000038
+      objectReference: {fileID: 0}
     - target: {fileID: 4335926203186897909, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Pivot.x
@@ -758,10 +838,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4352690743011067402, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000038
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769315857563683009, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000038
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251773923464476731, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000038
+      objectReference: {fileID: 0}
     - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Name
       value: ItemListEntryUI (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299969091633015172, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000038
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501969950703556990, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000038
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60, type: 3}
@@ -790,6 +900,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3864004808353666171}
     m_Modifications:
+    - target: {fileID: 1840414790177642421, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000076
+      objectReference: {fileID: 0}
     - target: {fileID: 4335926203186897909, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Pivot.x
@@ -895,10 +1010,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4352690743011067402, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000076
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769315857563683009, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000076
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251773923464476731, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000076
+      objectReference: {fileID: 0}
     - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Name
       value: ItemListEntryUI (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299969091633015172, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000076
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501969950703556990, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5000076
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60, type: 3}
@@ -927,11 +1072,27 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3864004808847386150}
     m_Modifications:
+    - target: {fileID: 2396190180977275225, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_Text
+      value: "Was f\xFCr ein absolut geiles Item! Man ist das ein affengeiles verkacktes
+        Drecksitem manomanmon!!!!!!!!!!!!!!!!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2396190180977275225, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2396190180977275225, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_LineSpacing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4380921693584697835, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: _text
-      value: "Das ist ein wirklich tolles Item. Es ist so toll, dass ich kotzen k\xF6nnte.
-        GEIL!"
+      value: "Man ist das ein hammergeiles Item. So ein schei\xDFgeiles Item Junge,
+        Junge!"
       objectReference: {fileID: 0}
     - target: {fileID: 4380921693584697835, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
@@ -943,26 +1104,92 @@ PrefabInstance:
       propertyPath: _lineSpacing
       value: 1.95
       objectReference: {fileID: 0}
-    - target: {fileID: 6759210487594579928, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+    - target: {fileID: 4380921693584697835, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
-      propertyPath: m_Name
-      value: Description
+      propertyPath: _horizontalWrapMode
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6759210487594579930, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+    - target: {fileID: 4573219240115566775, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573219240115566775, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573219240115566775, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573219240115566775, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573219240115566775, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4573219240115566775, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5137863091661787641, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: m_Text
-      value: "Das ist ein wirklich tolles Item. Es ist so toll, dass ich kotzen k\xF6nnte.
-        GEIL!"
+      value: "Was f\xFCr ein absolut geiles Item! Man ist das ein affengeiles verkacktes
+        Drecksitem manomanmon!!!!!!!!!!!!!!!!"
       objectReference: {fileID: 0}
-    - target: {fileID: 6759210487594579930, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+    - target: {fileID: 5137863091661787641, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: m_FontData.m_Alignment
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6759210487594579930, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+    - target: {fileID: 5137863091661787641, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_LineSpacing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6505889384640433601, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6505889384640433601, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551723916053498238, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_Text
+      value: "Man ist das ein hammergeiles Item. So ein schei\xDFgeiles Item Junge,
+        Junge!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551723916053498238, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551723916053498238, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: m_FontData.m_LineSpacing
       value: 1.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 6551723916053498238, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759210487594579928, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_Name
+      value: Description
       objectReference: {fileID: 0}
     - target: {fileID: 6759210487594579931, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
@@ -1069,21 +1296,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6759210487639851874, guid: abc0df8ef2ee3224981b3acd3a77ad28,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 207.5567
-      objectReference: {fileID: 0}
-    - target: {fileID: 6759210487639851874, guid: abc0df8ef2ee3224981b3acd3a77ad28,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 28.4396
-      objectReference: {fileID: 0}
     - target: {fileID: 6759210487639851885, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: m_Text
-      value: "Das ist ein wirklich tolles Item. Es ist so toll, dass ich kotzen k\xF6nnte.
-        GEIL!"
+      value: "Man ist das ein hammergeiles Item. So ein schei\xDFgeiles Item Junge,
+        Junge!"
       objectReference: {fileID: 0}
     - target: {fileID: 6759210487639851885, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
@@ -1094,6 +1311,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FontData.m_LineSpacing
       value: 1.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 6759210487639851885, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_FontData.m_HorizontalOverflow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9197517328200096894, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9197517328200096894, guid: abc0df8ef2ee3224981b3acd3a77ad28,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abc0df8ef2ee3224981b3acd3a77ad28, type: 3}
@@ -1122,6 +1354,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3864004808353666171}
     m_Modifications:
+    - target: {fileID: 1840414790177642421, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
     - target: {fileID: 4335926203186897909, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1227,10 +1464,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4352690743011067402, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.49999857
+      objectReference: {fileID: 0}
+    - target: {fileID: 5769315857563683009, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251773923464476731, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
     - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
         type: 3}
       propertyPath: m_Name
       value: ItemListEntryUI (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7385935552429722197, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299969091633015172, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501969950703556990, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4999981
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45b9446d7409bdd4e9df7cbdf7d3cf60, type: 3}
