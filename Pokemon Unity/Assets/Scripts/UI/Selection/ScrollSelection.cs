@@ -42,8 +42,7 @@ public class ScrollSelection : ScalarSelection
         }
 
         base.SelectElement(index);
-        if (!(selectedItem is null))
-            description.text = selectedItem.Description;
+        description.text = selectedItem is null ? "" : selectedItem.Description;
     }
 
     protected virtual void MoveViewFrame(int shift)
