@@ -359,7 +359,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
     {
         yield return
             StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, startIndex, defaultChoiceY,
-                defaultChoiceWidth));
+                defaultChoiceWidth, chancelIndex: 1));
     }
 
     public IEnumerator DrawChoiceBox(string[] choices, int startIndex)
@@ -381,14 +381,14 @@ public class DialogBox : MonoBehaviour, IDialogBox
     public IEnumerator DrawChoiceBox(string[] choices, int yPosition, int width)
     {
         yield return
-            StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, -1, defaultChoiceY, defaultChoiceWidth));
+            StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, -1, defaultChoiceY, defaultChoiceWidth, chancelIndex: 1));
     }
 
     public IEnumerator DrawChoiceBox(string[] choices, int startIndex, int yPosition, int width)
     {
         yield return
             StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, startIndex, defaultChoiceY,
-                defaultChoiceWidth));
+                defaultChoiceWidth, chancelIndex: 1));
     }
 
     public IEnumerator DrawChoiceBox(string[] choices, string[] flavourText, int startIndex, int yPosition, int width, int chancelIndex = -1)

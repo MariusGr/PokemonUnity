@@ -147,7 +147,7 @@ public class BagUI : ScalarSelection
         ItemListEntryUI entry = (ItemListEntryUI)selection;
         if (inBattle && entry.item.data.usableOnBattleOpponent)
         {
-            yield return DialogBox.Instance.DrawChoiceBox($"Möchtest du {entry.item.data.fullName} verwenden?");
+            yield return DialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.fullName} verwenden?");
             if (DialogBox.Instance.chosenIndex == 1)
                 yield break;
 

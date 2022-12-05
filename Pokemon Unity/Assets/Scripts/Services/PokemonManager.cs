@@ -86,7 +86,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
         if (item.data.canBeUsedOnOwnPokemon)
         {
             if (pokemon.isFainted && !item.data.revives)
-                yield return dialogBox.DrawText($"Du kannst {item.data.fullName} nicht auf besiegte Pokémon anwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+                yield return dialogBox.DrawText($"Du kannst {item.data.fullName} nicht auf besiegte Pok?mon anwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
             else
             {
                 yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
@@ -97,6 +97,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                     success?.Invoke(true);
                     yield break;
                 }
+                dialogBox.Close();
             }
         }
         else
@@ -112,13 +113,13 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
         {
             pokemon.HealHPFully();
             yield return animation;
-            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde vollständig aufgefüllt!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde vollst?ndig aufgef?llt!", DialogBoxContinueMode.User, closeAfterFinish: true);
         }
         else if(item.data.hpHealed > 0)
         {
             pokemon.HealHP(item.data.hpHealed);
             yield return animation;
-            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgefüllt!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgef?llt!", DialogBoxContinueMode.User, closeAfterFinish: true);
         }
 
         // Note for future changes: Only consume if item has actually been used!
