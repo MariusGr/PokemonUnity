@@ -19,6 +19,7 @@ public class SummarySelection : ScalarSelection
     public override void Open(Action<ISelectableUIElement, bool> callback, int pokemonIndex)
     {
         SetPokemon(pokemonIndex);
+        AssignElements();
         Open(callback);
     }
 
@@ -36,9 +37,7 @@ public class SummarySelection : ScalarSelection
 
     private void SetPokemon(int index)
     {
-        this.pokemonIndex = index;
-        print(index);
-        print(PlayerData.Instance.pokemons.Length);
+        pokemonIndex = index;
         ui.AssignElement(pokemon);
     }
 

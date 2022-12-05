@@ -60,6 +60,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         return base.ProcessInput(input);
     }
 
+    public virtual void AssignElements() => AssignElements(new object[elements.Length]);
     public virtual void AssignElements(object[] elements)
     {
         for (int i = 0; i < elements.Length; i++)
