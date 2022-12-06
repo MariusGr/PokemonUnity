@@ -21,8 +21,6 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
     public bool willChallengePlayer => wantsToBattle && !npcData.IsDefeated();
     override public CharacterData CharacterData => npcData;
 
-    private bool isInBattle = false;
-
     override public void Initialize()
     {
         if (willChallengePlayer)
@@ -59,8 +57,6 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     private IEnumerator ChallengeCoroutine(Character player)
     {
-        isInBattle = true;
-
         GridVector direction = GridVector.GetLookAt(character.position, player.position);
         character.Movement.LookInDirection(direction);
 
@@ -75,7 +71,6 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     public bool BattleEndReaction(bool npcDefeated)
     {
-        isInBattle = false;
         battlingNPCs.Remove(this);
 
         if (npcDefeated)
