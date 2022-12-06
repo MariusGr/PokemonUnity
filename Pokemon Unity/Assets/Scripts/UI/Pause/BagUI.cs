@@ -4,17 +4,15 @@ using UnityEngine;
 using CollectionExtensions;
 using System;
 
-public class BagUI : ScalarSelection
+public class BagUI : ItemSelection
 {
-    [SerializeField] ShadowedText categoryText;
     [SerializeField] ScalarSelection partySelection;
     [SerializeField] SelectableUIElement partySelectableElement;
     // elements contains SelectableGameobjects while itemSelections contains the corresponding ScrollSelections.
     [SerializeField] InspectorFriendlySerializableDictionary<ItemCategory, BagItemScrollSelection> itemSelections;
     [SerializeField] SelectableGameObject[] itemSelectables;
 
-    private ScalarSelection[] selections;
-    private ScalarSelection activeSelection => selections[selectedIndex];
+    
     private BagItemScrollSelection activeItemSelection
         => choosenItemViewIndex > 0 ? itemSelections.values[choosenItemViewIndex - 1] : itemSelections.values[selectedIndex - 1];
     private int choosenItemViewIndex = -1;
@@ -96,7 +94,7 @@ public class BagUI : ScalarSelection
         return false;
     }
 
-    public void AssignElements()
+    public override void AssignElements()
     {
         List<ScalarSelection> selections = new List<ScalarSelection>() { partySelection };
         selections.AddRange(itemSelections.Values);
