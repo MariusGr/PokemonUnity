@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BagItemScrollSelection : ScrollSelection
+public class BagItemScrollSelection : ItemScrollSelection
 {
     public Item choosenItem { get; private set; }
-    public ItemListEntryUI choosenItemEntry { get; private set; }
+    public ItemBagListEntryUI choosenItemEntry { get; private set; }
     public bool itemHasBeenChoosen => !(choosenItemEntry is null);
 
     protected override void MoveViewFrame(int shift)
@@ -20,7 +20,7 @@ public class BagItemScrollSelection : ScrollSelection
 
         if (newPlaceIndex >= 0 && newPlaceIndex < slots)
         {
-            choosenItemEntry = (ItemListEntryUI)elements[newPlaceIndex];
+            choosenItemEntry = (ItemBagListEntryUI)elements[newPlaceIndex];
             choosenItemEntry.SetPlaceMode(true);
         }
     }
@@ -35,7 +35,7 @@ public class BagItemScrollSelection : ScrollSelection
         }
     }
 
-    public bool ChooseItemEntry(ItemListEntryUI entry)
+    public bool ChooseItemEntry(ItemBagListEntryUI entry)
     {
         if (!itemHasBeenChoosen)
         {

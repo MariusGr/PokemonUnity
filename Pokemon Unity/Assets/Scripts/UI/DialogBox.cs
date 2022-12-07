@@ -11,6 +11,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
 {
     static public DialogBox Instance;
 
+    [SerializeField] bool isGlobal;
     [SerializeField] Transform dialogBoxT;
     [SerializeField] Transform dialogBoxTrn;
 
@@ -51,6 +52,8 @@ public class DialogBox : MonoBehaviour, IDialogBox
 
     public DialogBox()
     {
+        if (!isGlobal)
+            return;
         Instance = this;
         Services.Register(this as IDialogBox);
     }
@@ -103,7 +106,7 @@ public class DialogBox : MonoBehaviour, IDialogBox
     }
 
     public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
-        => DrawText(text.Split('|'), continueMode, closeAfterFinish, lines);
+        => DrawText(text.Split(Constants.NewLineCharacter), continueMode, closeAfterFinish, lines);
     public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {
         Open();
@@ -289,7 +292,6 @@ public class DialogBox : MonoBehaviour, IDialogBox
             }
         }
     }
-
 
     public void DrawDialogBox()
     {

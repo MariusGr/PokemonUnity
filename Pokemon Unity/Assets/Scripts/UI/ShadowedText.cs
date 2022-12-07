@@ -34,8 +34,9 @@ public class ShadowedText : MonoBehaviour
         get => _text;
         set {
             _text = value;
-            textDefault.text = _text;
-            textShadowDefault.text = _text;
+            string textMultiLine = _text.Replace(Constants.NewLineCharacter, '\n');
+            textDefault.text = textMultiLine;
+            textShadowDefault.text = textMultiLine;
             if(!smallText && TextIsTooWide())
             {
                 smallText = true;
@@ -43,8 +44,8 @@ public class ShadowedText : MonoBehaviour
             }
             else if (smallText)
             {
-                textSmall.text = _text;
-                textShadowSmall.text = _text;
+                textSmall.text = textMultiLine;
+                textShadowSmall.text = textMultiLine;
 
                 if (TextIsTooNarrow())
                 {
@@ -131,8 +132,6 @@ public class ShadowedText : MonoBehaviour
         fontSize = _fontSize;
         linespacing = _lineSpacing;
         horizontalWrapMode = _horizontalWrapMode;
-
-
     }
 
 #if (UNITY_EDITOR)

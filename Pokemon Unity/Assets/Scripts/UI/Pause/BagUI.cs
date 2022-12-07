@@ -142,10 +142,10 @@ public class BagUI : ItemSelection
 
     private IEnumerator ChooseItemCoroutine(ISelectableUIElement selection)
     {
-        ItemListEntryUI entry = (ItemListEntryUI)selection;
+        ItemBagListEntryUI entry = (ItemBagListEntryUI)selection;
         if (inBattle && entry.item.data.usableOnBattleOpponent)
         {
-            yield return DialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.fullName} verwenden?");
+            yield return DialogBox.Instance.DrawChoiceBox($"Möchtest du {entry.item.data.fullName} verwenden?");
             if (DialogBox.Instance.chosenIndex == 1)
                 yield break;
 
