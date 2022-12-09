@@ -5,9 +5,10 @@ using System;
 
 public abstract class SelectionWindow : ClosableView, ISelectionWindow
 {
-    [SerializeField] public SelectableUIElement[] elements;
+    [SerializeField] protected SelectableUIElement[] elements;
+    protected ISelectableUIElement[] _elements;
 
-    public SelectableUIElement selectedElement => elements[selectedIndex];
+    public ISelectableUIElement selectedElement => _elements[selectedIndex];
 
     protected int selectedIndex = 0;
 
@@ -21,11 +22,11 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
     {
         this.forceSelection = forceSelection;
 
-        for (int i = 0; i < elements.Length; i++)
+        for (int i = 0; i < _elements.Length; i++)
         {
-            elements[i].Initialize(i);
+            _elements[i].Initialize(i);
             if (i != startSelection)
-                elements[i].Deselect();
+                _elements[i].Deselect();
         }
 
         if (startSelection > -1)
@@ -41,7 +42,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
 
     virtual public void RefreshElement(int index)
     {
-        if (index > -1) elements[index].Refresh();
+        if (index > -1) _elements[index].Refresh();
     }
 
     public override bool ProcessInput(InputData input)
@@ -60,19 +61,27 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         return base.ProcessInput(input);
     }
 
-    public virtual void AssignElements() => AssignElements(new object[elements.Length]);
-    public virtual void AssignElements(object[] elements)
+    public virtual void AssignElements() => AssignElements(new object[_elements.Length]);
+    public virtual void AssignElements(object[] payloads)
     {
-        for (int i = 0; i < elements.Length; i++)
-            this.elements[i].AssignElement(elements[i]);
+        _elements = new ISelectableUIElement[elements.Length];
 
-        for (int i = elements.Length; i < this.elements.Length; i++)
-            this.elements[i].AssignNone();
+        for (int i = 0; i < payloads.Length; i++)
+        {
+            _elements[i] = elements[i];
+            _elements[i].AssignElement(payloads[i]);
+        }
+
+        for (int i = payloads.Length; i < _elements.Length; i++)
+        {
+            _elements[i] = elements[i];
+            _elements[i].AssignNone();
+        }
     }
 
     public void AssignOnSelectCallback(Action<object> callback)
     {
-        foreach (SelectableUIElement element in elements)
+        foreach (SelectableUIElement element in _elements)
             element.AssignOnSelectCallback(callback);
     }
 
@@ -85,7 +94,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         selectedElement.Select();
     }
 
-    virtual protected void SelectElement(SelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.index);
+    virtual protected void SelectElement(ISelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.GetIndex());
     virtual protected void ChooseSelectedElement() => callback?.Invoke(selectedElement, false);/* TODO sound*/
     public void DeselectSelection() => selectedElement.Deselect();
 

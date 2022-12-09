@@ -10,6 +10,12 @@ public class Item
     public int count { get; private set; } = 1;
     public string Description => data.moveLearned is null ? data.description : data.moveLearned.description;
 
+    public Item(ItemData data, int count)
+    {
+        this.data = data;
+        this.count = count;
+    }
+
     public void Increase(int amount = 1) => count += amount;
     public bool Decrease(int amount = 1)
     {

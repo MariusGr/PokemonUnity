@@ -15,13 +15,15 @@ public class Character : MonoBehaviour
     public CharacterAnimator Animator => animator;
     public GridVector position => new GridVector(transform.position);
     public CharacterData characterData => controller.CharacterData;
-    public Pokemon[] pokemons => controller.CharacterData.pokemons;
+    public Pokemon[] pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.pokemons;
     public Vector3 startPosition { get; private set; }
 
     public void Awake()
     {
         if (controller.GetType() == typeof(CharacterControllerPlayer))
             PlayerCharacter = this;
+        print(gameObject.name);
+        print(pokemons);
         foreach (Pokemon pokemon in pokemons)
             pokemon.Initialize(characterData);
         startPosition = transform.position;

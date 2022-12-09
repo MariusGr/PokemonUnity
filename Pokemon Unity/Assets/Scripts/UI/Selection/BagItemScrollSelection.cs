@@ -20,7 +20,7 @@ public class BagItemScrollSelection : ItemScrollSelection
 
         if (newPlaceIndex >= 0 && newPlaceIndex < slots)
         {
-            choosenItemEntry = (ItemBagListEntryUI)elements[newPlaceIndex];
+            choosenItemEntry = (ItemBagListEntryUI)_elements[newPlaceIndex];
             choosenItemEntry.SetPlaceMode(true);
         }
     }

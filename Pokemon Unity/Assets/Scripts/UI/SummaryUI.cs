@@ -55,7 +55,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
     public void RefreshMoves(Pokemon pokemon)
     {
         moveSelection.Assign(pokemon);
-        RefreshMoveSelection(moveSelection.selectedElement.payload);
+        RefreshMoveSelection(moveSelection.selectedElement.GetPayload());
     }
 
     public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback) => moveSelection.Open(callback);

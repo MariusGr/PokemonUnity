@@ -7,21 +7,25 @@ public class TextCycleSelection : ScalarSelection
 {
     [SerializeField] private ShadowedText text;
 
-    private float price;
+    private SelectableItemQuantity selectedQuantity => (SelectableItemQuantity)selectedElement;
 
     public void Open(Action<ISelectableUIElement, bool> callback, float price)
     {
         base.Open(callback);
-        this.price = price;
+        AssignElements(price);
     }
 
-    public override void AssignElements() => AssignElements(new object[10]);
-    public override void AssignElements(object[] elements) => base.AssignElements(new object[10]);
+    public void AssignElements(float price) {
+        SelectableItemQuantity[] items = new SelectableItemQuantity[10];
+        for (int i = 0; i < 10; i++)
+            items[i] = new SelectableItemQuantity();
+        AssignElements(items);
+    }
 
     protected override void SelectElement(int index)
     {
         base.SelectElement(index);
         int count = selectedIndex + 1;
-        text.text = $"{count.ToString("00")}\n{Money.FormatMoneyToString(count * price)}";
+        text.text = $"{count.ToString("00")}\n{selectedQuantity.GetTotalPriceString()}";
     }
 }

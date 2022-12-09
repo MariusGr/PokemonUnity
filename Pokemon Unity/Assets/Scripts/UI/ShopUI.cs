@@ -11,9 +11,12 @@ public class ShopUI : ItemSelection, IShopUI
 
     public ShopUI() => Services.Register(this as IShopUI);
 
-    public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
+    private ItemData chosenItem;
+
+    public void Open(Action<ISelectableUIElement, bool> callback, ItemData[] items)
     {
-        base.Open(callback, forceSelection, startSelection);
+        Open(callback);
+        itemSelection.AssignElements(items);
         itemSelection.Open(ChooseItem);
     }
 
@@ -25,15 +28,34 @@ public class ShopUI : ItemSelection, IShopUI
             return;
         }
 
-        StartCoroutine(ChooseItemCoroutine(selection));
+        chosenItem = ((ItemShopListEntryUI)selection).item;
+        dialogBox.DrawText($"{chosenItem.fullName}?Aber gerne.\nWie viele sollen's sein?", DialogBoxContinueMode.External);
+        cycleSelection.Open(ChooseQuantity);
     }
 
-    private IEnumerator ChooseItemCoroutine(ISelectableUIElement selection)
+    private void ChooseQuantity(ISelectableUIElement selection, bool goBack)
     {
-        ItemData item = ((ItemShopListEntryUI)selection).item;
+        if (goBack)
+        {
+            cycleSelection.Close();
+            dialogBox.Close();
+            return;
+        }
 
-        yield return dialogBox.DrawText($"{item.fullName}?Aber gerne.\nWie viele sollen's sein?", DialogBoxContinueMode.External);
-        // TODO: Item Datas assignen, welche Items hat der Shop?
-        cycleSelection.Open(???);
+        StartCoroutine(ChooseQuantityCoroutine((SelectableItemQuantity)selection));
+    }
+
+    private IEnumerator ChooseQuantityCoroutine(SelectableItemQuantity quantity)
+    {
+        if (PlayerData.Instance.TryTakeMoney(quantity.GetTotalPrice()))
+            yield return dialogBox.DrawText(
+                $"Du hast nicht genug Geld!\nDu brauchst noch {Money.FormatMoneyToString(quantity.GetTotalPrice() - PlayerData.Instance.money)}",
+                DialogBoxContinueMode.User);
+        else
+        {
+            PlayerData.Instance.GiveItem(new Item(chosenItem, quantity.count));
+            cycleSelection.Close();
+            //TODO sound
+        }
     }
 }

@@ -6,6 +6,7 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
 {
     [SerializeField] string greetingText = "Willkommen!\nKann ich helfen?";
     [SerializeField] string byeText = "Beehre uns bald wieder!";
+    [SerializeField] ItemData[] itemsobject;
 
     public override CharacterData CharacterData { get => null; }
 

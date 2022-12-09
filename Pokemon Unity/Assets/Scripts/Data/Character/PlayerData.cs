@@ -44,6 +44,15 @@ public class PlayerData : CharacterData
         return taken;
     }
 
+    public bool TryTakeMoney(float amount)
+    {
+        if (amount > money)
+            return false;
+
+        TakeMoney(amount);
+        return true;
+    }
+
     public void GiveItem(Item item)
     {
         List<Item> list = items[item.data.category];

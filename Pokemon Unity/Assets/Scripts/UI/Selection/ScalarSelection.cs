@@ -42,12 +42,12 @@ public class ScalarSelection : SelectionWindow
         int nextIndex = -1;
 
         if (looping)
-            nextIndex = (selectedIndex + 1) % elements.Length;
-        else if (selectedIndex < elements.Length - 1)
+            nextIndex = (selectedIndex + 1) % _elements.Length;
+        else if (selectedIndex < _elements.Length - 1)
             nextIndex = selectedIndex + 1;
         else
             return false;
-        if (elements[nextIndex].assigned)
+        if (_elements[nextIndex].IsAssigned())
         {
             SelectElement(nextIndex);
             return true;
@@ -60,12 +60,12 @@ public class ScalarSelection : SelectionWindow
         int nextIndex = -1;
 
         if (looping)
-            nextIndex = selectedIndex < 1 ? elements.Length - 1 : selectedIndex - 1;
+            nextIndex = selectedIndex < 1 ? _elements.Length - 1 : selectedIndex - 1;
         else if (selectedIndex > 0)
             nextIndex = selectedIndex - 1;
         else
             return false;
-        if (elements[nextIndex].assigned)
+        if (_elements[nextIndex].IsAssigned())
         {
             SelectElement(nextIndex);
             return true;
