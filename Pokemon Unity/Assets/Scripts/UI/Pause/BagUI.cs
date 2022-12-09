@@ -183,11 +183,8 @@ public class BagUI : ItemSelection
         yield return PokemonManager.Instance.TryUseItemOnPokemon(
             activeItemSelection.choosenItem, statsUI.pokemon, statsUI.RefreshHPAnimated(), (bool success) => itemUsed = success);
 
-        if (!itemUsed)
-            yield break;
-
         RefreshItemSelection();
-        if (inBattle)
+        if (inBattle && itemUsed)
             callback?.Invoke(activeItemSelection.choosenItemEntry, false);
         activeItemSelection.ResetItemSelection();
         ReturnToItemSelection();
