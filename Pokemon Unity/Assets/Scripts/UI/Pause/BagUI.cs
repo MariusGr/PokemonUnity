@@ -102,8 +102,9 @@ public class BagUI : ItemSelection
 
         List<SelectableUIElement> elementsList = new List<SelectableUIElement>() { partySelectableElement };
         elementsList.AddRange(itemSelectables);
-        _elements = elementsList.ToArray();
-        AssignElements(_elements);
+        ISelectableUIElement[] elementsArray = elementsList.ToArray();
+        _elements = elementsArray;
+        AssignElements();
 
         partySelection.AssignElements(PlayerData.Instance.pokemons);
         foreach (KeyValuePair<ItemCategory, BagItemScrollSelection> entry in itemSelections)
