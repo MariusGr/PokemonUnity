@@ -58,7 +58,7 @@ public class PlayerData : CharacterData
         List<Item> list = items[item.data.category];
         Item presentItem = list.Find(x => x.Equals(item));
         if (item.data.stacks && !(presentItem is null))
-            presentItem.Increase(item.count);
+            presentItem.Increase(item.Count);
         else
             list.Add(item);
     }

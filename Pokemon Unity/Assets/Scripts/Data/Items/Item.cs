@@ -7,7 +7,8 @@ using System;
 public class Item
 {
     public ItemData data;
-    public int count { get; private set; } = 1;
+    [SerializeField] private int count = 1;
+    public int Count => count;
     public string Description => data.moveLearned is null ? data.description : data.moveLearned.description;
 
     public Item(ItemData data, int count)

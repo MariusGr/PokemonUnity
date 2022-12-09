@@ -19,7 +19,7 @@ public class ItemBagListEntryUI : ItemListEntryUI
 
         item = (Item)payload;
         speratorText.gameObject.SetActive(false);
-        detailsText.text = item.count.ToString(); ;
+        detailsText.text = item.Count.ToString(); ;
         icon.sprite = item.data.icon;
         nameText.text = item.data.fullName;
 
