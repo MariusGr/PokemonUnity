@@ -19,6 +19,7 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
 
     private IEnumerator ShopCoroutine()
     {
+        print(Services.Get<IDialogBox>());
         yield return Services.Get<IDialogBox>().DrawText(greetingText, DialogBoxContinueMode.User, true);
         EventManager.Unpause();
         yield return Services.Get<IDialogBox>().DrawText(byeText, DialogBoxContinueMode.User, true);

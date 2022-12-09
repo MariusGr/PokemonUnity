@@ -12,9 +12,18 @@ public class BagUI : ItemSelection
     [SerializeField] InspectorFriendlySerializableDictionary<ItemCategory, BagItemScrollSelection> itemSelections;
     [SerializeField] SelectableGameObject[] itemSelectables;
 
-    
+
     private BagItemScrollSelection activeItemSelection
-        => choosenItemViewIndex > 0 ? itemSelections.values[choosenItemViewIndex - 1] : itemSelections.values[selectedIndex - 1];
+    {
+        get
+        {
+            print("choosenItemViewIndex " + choosenItemViewIndex);
+            print("selectedIndex " + selectedIndex);
+            print("itemSelections " + itemSelections.values.Count);
+            return choosenItemViewIndex > 0 ? itemSelections.values[choosenItemViewIndex - 1] : itemSelections.values[selectedIndex - 1];
+        }
+    }
+
     private int choosenItemViewIndex = -1;
     private bool inBattle = false;
 
@@ -102,9 +111,8 @@ public class BagUI : ItemSelection
 
         List<SelectableUIElement> elementsList = new List<SelectableUIElement>() { partySelectableElement };
         elementsList.AddRange(itemSelectables);
-        ISelectableUIElement[] elementsArray = elementsList.ToArray();
-        _elements = elementsArray;
-        AssignElements();
+        elements = elementsList.ToArray();
+        base.AssignElements();
 
         partySelection.AssignElements(PlayerData.Instance.pokemons);
         foreach (KeyValuePair<ItemCategory, BagItemScrollSelection> entry in itemSelections)
@@ -146,8 +154,8 @@ public class BagUI : ItemSelection
         ItemBagListEntryUI entry = (ItemBagListEntryUI)selection;
         if (inBattle && entry.item.data.usableOnBattleOpponent)
         {
-            yield return DialogBox.Instance.DrawChoiceBox($"Möchtest du {entry.item.data.fullName} verwenden?");
-            if (DialogBox.Instance.chosenIndex == 1)
+            yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.fullName} verwenden?");
+            if (GlobalDialogBox.Instance.chosenIndex == 1)
                 yield break;
 
             callback?.Invoke(entry, false);

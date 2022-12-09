@@ -9,7 +9,7 @@ public class PartySelection : SelectionGraphWindow
     private bool battle = false;
     private PokemonPartyViewSwappableStatsUI swapButton;
 
-    private void DrawIntroText() => DialogBox.Instance.DrawText("Wähle ein Pokemon.", DialogBoxContinueMode.External, lines: 1);
+    private void DrawIntroText() => GlobalDialogBox.Instance.DrawText("W?hle ein Pokemon.", DialogBoxContinueMode.External, lines: 1);
 
     public virtual void Open(bool battle, bool forceSelection) => Open(null, forceSelection, 0, battle);
     public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, bool battle) => Open(callback, forceSelection, 0, battle);
@@ -29,7 +29,7 @@ public class PartySelection : SelectionGraphWindow
 
     public override void Close()
     {
-        DialogBox.Instance.Close();
+        GlobalDialogBox.Instance.Close();
         base.Close();
     }
 
@@ -71,7 +71,7 @@ public class PartySelection : SelectionGraphWindow
             {
                 swapButton = (PokemonPartyViewSwappableStatsUI)selectedElement;
                 swapButton.Refresh(true);
-                DialogBox.Instance.DrawText($"Mit wem soll {pokemon.Name} getauscht werden?", DialogBoxContinueMode.External);
+                GlobalDialogBox.Instance.DrawText($"Mit wem soll {pokemon.Name} getauscht werden?", DialogBoxContinueMode.External);
             }
             else
             {
@@ -84,33 +84,33 @@ public class PartySelection : SelectionGraphWindow
         {
             if (battle)
             {
-                yield return DialogBox.Instance.DrawChoiceBox($"Was tun mit {pokemon.Name}?", new string[] { "Wechsel", "Bericht", "Abbrechen" }, chancelIndex: 2);
+                yield return GlobalDialogBox.Instance.DrawChoiceBox($"Was tun mit {pokemon.Name}?", new string[] { "Wechsel", "Bericht", "Abbrechen" }, chancelIndex: 2);
                 
-                if (DialogBox.Instance.chosenIndex == 0)
+                if (GlobalDialogBox.Instance.chosenIndex == 0)
                 {
                     // Switch
                     callback.Invoke(selectedElement, false);
                 }
-                if (DialogBox.Instance.chosenIndex == 1)
+                if (GlobalDialogBox.Instance.chosenIndex == 1)
                 {
                     // Summary
-                    DialogBox.Instance.Close();
+                    GlobalDialogBox.Instance.Close();
                     SummarySelection.Instance.Open(CloseSummary, selectedIndex);
                     yield break;
                 }
             }
             else
             {
-                yield return DialogBox.Instance.DrawChoiceBox($"Was tun mit {pokemon.Name}?", new string[] { "Bericht", "Tausch", "Abbrechen" }, chancelIndex: 2);
+                yield return GlobalDialogBox.Instance.DrawChoiceBox($"Was tun mit {pokemon.Name}?", new string[] { "Bericht", "Tausch", "Abbrechen" }, chancelIndex: 2);
 
-                if (DialogBox.Instance.chosenIndex == 0)
+                if (GlobalDialogBox.Instance.chosenIndex == 0)
                 {
                     // Summary
-                    DialogBox.Instance.Close();
+                    GlobalDialogBox.Instance.Close();
                     SummarySelection.Instance.Open(CloseSummary, selectedIndex);
                     yield break;
                 }
-                if (DialogBox.Instance.chosenIndex == 1)
+                if (GlobalDialogBox.Instance.chosenIndex == 1)
                 {
                     // Swap
                     swapping = true;
@@ -119,7 +119,7 @@ public class PartySelection : SelectionGraphWindow
                 }
             }
 
-            if (DialogBox.Instance.chosenIndex == 2)
+            if (GlobalDialogBox.Instance.chosenIndex == 2)
             {
                 // Chancel
                 DrawIntroText();

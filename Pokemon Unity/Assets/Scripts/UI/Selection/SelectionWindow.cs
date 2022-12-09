@@ -22,6 +22,11 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
     {
         this.forceSelection = forceSelection;
 
+        print(_elements is null);
+        if (_elements is null)
+            AssignElements();
+        print(_elements.Length);
+
         for (int i = 0; i < _elements.Length; i++)
         {
             _elements[i].Initialize(i);
@@ -61,7 +66,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         return base.ProcessInput(input);
     }
 
-    public virtual void AssignElements() => AssignElements(new object[_elements.Length]);
+    public virtual void AssignElements() => AssignElements(new object[elements.Length]);
     public virtual void AssignElements(object[] payloads)
     {
         _elements = new ISelectableUIElement[elements.Length];

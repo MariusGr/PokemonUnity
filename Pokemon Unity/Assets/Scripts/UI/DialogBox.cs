@@ -7,11 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class DialogBox : MonoBehaviour, IDialogBox
+public class DialogBox : MonoBehaviour, IInputConsumer
 {
-    static public DialogBox Instance;
-
-    [SerializeField] bool isGlobal;
     [SerializeField] Transform dialogBoxT;
     [SerializeField] Transform dialogBoxTrn;
 
@@ -49,14 +46,6 @@ public class DialogBox : MonoBehaviour, IDialogBox
         { Effectiveness.Weak, "Es ist nicht sehr effektiv..." },
         { Effectiveness.Normal, "" },
     };
-
-    public DialogBox()
-    {
-        if (!isGlobal)
-            return;
-        Instance = this;
-        Services.Register(this as IDialogBox);
-    }
 
     void Awake()
     {
