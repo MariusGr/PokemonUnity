@@ -19,7 +19,7 @@ public class ShopUI : ItemSelection, IShopUI
     private ItemData chosenItem;
 
     private void RefreshMoney() => moneyText.text = Money.FormatMoneyToString(PlayerData.Instance.money);
-    private void RefreshInBagCount() => inBagCountText.text = $"x  {count}";
+    private void RefreshInBagCount() => inBagCountText.text = $"x  {PlayerData.Instance}";
 
     public void Open(Action<ISelectableUIElement, bool> callback, ItemData[] items)
     {
