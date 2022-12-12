@@ -21,7 +21,7 @@ public class SelectableUIElement : MonoBehaviour, ISelectableUIElement
     public object GetPayload() => payload;
     public virtual void Initialize(int index) => this.index = index;
     public virtual void Refresh() { }
-    public ISelectableUIElement GetNeighbour(Direction direction)
+    public virtual ISelectableUIElement GetNeighbour(Direction direction)
         => neighbours.ContainsKey(direction) && neighbours[direction].assigned ? neighbours[direction] : null;
 
     public virtual void AssignNone() => assigned = false;

@@ -116,11 +116,11 @@ public class BagUI : ItemSelection
 
         partySelection.AssignElements(PlayerData.Instance.pokemons);
         foreach (KeyValuePair<ItemCategory, BagItemScrollSelection> entry in itemSelections)
-            entry.Value.AssignItems(PlayerData.Instance.items[entry.Key]);
+            entry.Value.AssignItems(PlayerData.Instance.items[entry.Key].ToArray());
     }
 
     private void RefreshItemSelection()=>
-        activeItemSelection.AssignItems(PlayerData.Instance.items[itemSelections.keys[choosenItemViewIndex - 1]]);
+        activeItemSelection.AssignItems(PlayerData.Instance.items[itemSelections.keys[choosenItemViewIndex - 1]].ToArray());
 
     private bool HandleGoBack(bool goBack)
     {

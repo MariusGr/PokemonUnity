@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemShopListEntryUI : ItemListEntryUI
 {
-    public ItemData item;
+    [HideInInspector] public ItemData item;
 
     public override void AssignElement(object payload)
     {

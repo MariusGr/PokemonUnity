@@ -11,21 +11,28 @@ public class TextCycleSelection : ScalarSelection
 
     public void Open(Action<ISelectableUIElement, bool> callback, float price)
     {
-        base.Open(callback);
         AssignElements(price);
+        base.Open(callback);
     }
 
     public void AssignElements(float price) {
-        SelectableItemQuantity[] items = new SelectableItemQuantity[10];
+        elements = new SelectableItemQuantity[10];
+        object[] pricePayloads = new object[10];
+
         for (int i = 0; i < 10; i++)
-            items[i] = new SelectableItemQuantity();
-        AssignElements(items);
+        {
+            elements[i] = new SelectableItemQuantity();
+            pricePayloads[i] = price;
+        }
+
+        DebugExtensions.DebugExtension.Log(pricePayloads);
+        base.AssignElements(pricePayloads);
     }
 
     protected override void SelectElement(int index)
     {
         base.SelectElement(index);
         int count = selectedIndex + 1;
-        text.text = $"{count.ToString("00")}\n{selectedQuantity.GetTotalPriceString()}";
+        text.text = $"x  {count.ToString("00")}\n{selectedQuantity.GetTotalPriceString()}";
     }
 }

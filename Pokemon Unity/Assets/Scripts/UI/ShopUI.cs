@@ -6,17 +6,25 @@ using UnityEngine;
 public class ShopUI : ItemSelection, IShopUI
 {
     [SerializeField] private DialogBox dialogBox;
-    [SerializeField] private BagItemScrollSelection itemSelection;
+    [SerializeField] private ShopItemScrollSelection itemSelection;
     [SerializeField] private TextCycleSelection cycleSelection;
+    [SerializeField] private ShadowedText moneyText;
+    [SerializeField] private ShadowedText inBagCountText;
 
-    public ShopUI() => Services.Register(this as IShopUI);
+    public ShopUI()
+    {
+        Services.Register(this as IShopUI);
+    }
 
     private ItemData chosenItem;
+
+    private void RefreshMoney() => moneyText.text = Money.FormatMoneyToString(PlayerData.Instance.money);
+    private void RefreshInBagCount() => inBagCountText.text = $"x  {count}";
 
     public void Open(Action<ISelectableUIElement, bool> callback, ItemData[] items)
     {
         Open(callback);
-        itemSelection.AssignElements(items);
+        itemSelection.AssignItems(items);
         itemSelection.Open(ChooseItem);
     }
 
@@ -30,7 +38,7 @@ public class ShopUI : ItemSelection, IShopUI
 
         chosenItem = ((ItemShopListEntryUI)selection).item;
         dialogBox.DrawText($"{chosenItem.fullName}?Aber gerne.\nWie viele sollen's sein?", DialogBoxContinueMode.External);
-        cycleSelection.Open(ChooseQuantity);
+        cycleSelection.Open(ChooseQuantity, chosenItem.price);
     }
 
     private void ChooseQuantity(ISelectableUIElement selection, bool goBack)
@@ -54,6 +62,8 @@ public class ShopUI : ItemSelection, IShopUI
         else
         {
             PlayerData.Instance.GiveItem(new Item(chosenItem, quantity.count));
+            RefreshInBagCount();
+            RefreshMoney();
             cycleSelection.Close();
             //TODO sound
         }

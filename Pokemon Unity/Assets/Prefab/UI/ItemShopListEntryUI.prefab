@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4335926203186897909}
   - component: {fileID: 6903740606161483790}
   - component: {fileID: 3255162025358277126}
-  - component: {fileID: 8292992594820442933}
+  - component: {fileID: 4814210295782740362}
   m_Layer: 0
   m_Name: ItemShopListEntryUI
   m_TagString: Untagged
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8292992594820442933
+--- !u!114 &4814210295782740362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7385935552429722197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 973bc769cd9117b4981f7102e90e6a8f, type: 3}
+  m_Script: {fileID: 11500000, guid: bf3e6336726ede4429a04f8168f1be77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   neighbours:
@@ -184,6 +184,7 @@ MonoBehaviour:
   nameText: {fileID: 1561287908463250862}
   speratorText: {fileID: 3933081502657408235}
   detailsText: {fileID: 6548932967536730656}
+  item: {fileID: 0}
 --- !u!1001 &745686417155736832
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 6505889384640433601, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.4999714
+      value: 0.5000019
       objectReference: {fileID: 0}
     - target: {fileID: 6505889384640433601, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
@@ -339,7 +340,7 @@ PrefabInstance:
     - target: {fileID: 9197517328200096894, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.4999714
+      value: 0.5000019
       objectReference: {fileID: 0}
     - target: {fileID: 9197517328200096894, guid: abc0df8ef2ee3224981b3acd3a77ad28,
         type: 3}

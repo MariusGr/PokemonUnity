@@ -7,11 +7,9 @@ using System;
 public class ScrollSelection : ScalarSelection
 {
     [SerializeField] protected int slots = 6;
-    [SerializeField] private ShadowedText description;
+    [SerializeField] protected ShadowedText description;
 
-    public Item selectedItem => (Item)selectedElement.GetPayload();
-
-    private List<Item> items;
+    private object[] items;
     private int viewFrameStart = 0;
     private int shownItemsEnd => viewFrameStart + slots;
     private int scrollDownStart;
@@ -25,10 +23,10 @@ public class ScrollSelection : ScalarSelection
 
     protected override void SelectElement(int index)
     {
-        if (items.Count > slots)
+        if (items.Length > slots)
         {
             // scrolling is necessary since not all items fit into the view
-            if (index > scrollDownStart && shownItemsEnd < items.Count)
+            if (index > scrollDownStart && shownItemsEnd < items.Length)
             {
                 // shown frame can be moved further down and selection will be far enough down
                 MoveViewFrame(1);
@@ -42,7 +40,6 @@ public class ScrollSelection : ScalarSelection
         }
 
         base.SelectElement(index);
-        description.text = selectedItem is null ? "" : selectedItem.Description;
     }
 
     protected virtual void MoveViewFrame(int shift)
@@ -52,10 +49,10 @@ public class ScrollSelection : ScalarSelection
     }
     protected void RefreshViewFrame() => AssignElements(items.Skip(viewFrameStart).Take(slots).ToArray());
 
-    public void AssignItems(List<Item> items)
+    public void AssignItems(object[] items)
     {
-        if (!(this.items is null) && this.items.Count > items.Count)
-            viewFrameStart = Math.Max(0, viewFrameStart - (this.items.Count - items.Count));
+        if (!(this.items is null) && this.items.Length > items.Length)
+            viewFrameStart = Math.Max(0, viewFrameStart - (this.items.Length - items.Length));
 
         this.items = items;
         scrollDownStart = slots / 2 + 1;

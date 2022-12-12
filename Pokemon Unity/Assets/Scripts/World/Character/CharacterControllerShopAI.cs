@@ -6,9 +6,13 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
 {
     [SerializeField] string greetingText = "Willkommen!\nKann ich helfen?";
     [SerializeField] string byeText = "Beehre uns bald wieder!";
-    [SerializeField] ItemData[] itemsobject;
+    [SerializeField] ItemData[] items;
 
     public override CharacterData CharacterData { get => null; }
+
+    private IShopUI shopUI;
+
+    private void Awake() => shopUI = Services.Get<IShopUI>();
 
     public void Interact(Character player)
     {
@@ -21,7 +25,12 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
     {
         print(Services.Get<IDialogBox>());
         yield return Services.Get<IDialogBox>().DrawText(greetingText, DialogBoxContinueMode.User, true);
+        shopUI.Open(CloseShop, items);
+    }
+
+    private void CloseShop(ISelectableUIElement selection, bool goBack)
+    {
         EventManager.Unpause();
-        yield return Services.Get<IDialogBox>().DrawText(byeText, DialogBoxContinueMode.User, true);
+        Services.Get<IDialogBox>().DrawText(byeText, DialogBoxContinueMode.User, true);
     }
 }

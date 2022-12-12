@@ -7,6 +7,13 @@ public class BagItemScrollSelection : ItemScrollSelection
     public Item choosenItem { get; private set; }
     public ItemBagListEntryUI choosenItemEntry { get; private set; }
     public bool itemHasBeenChoosen => !(choosenItemEntry is null);
+    public Item selectedItem => (Item)selectedElement.GetPayload();
+
+    protected override void SelectElement(int index)
+    {
+        base.SelectElement(index);
+        description.text = selectedItem is null ? "" : selectedItem.data.Description;
+    }
 
     protected override void MoveViewFrame(int shift)
     {

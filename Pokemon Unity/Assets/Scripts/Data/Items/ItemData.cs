@@ -22,6 +22,7 @@ public class ItemData : ScriptableObject
     public Status statusHealed;
 
     public bool canBeUsedOnOwnPokemon => category == ItemCategory.Medicine;
+    public string Description => moveLearned is null ? description : moveLearned.description;
 
     public override string ToString()
     {

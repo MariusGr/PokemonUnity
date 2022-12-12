@@ -70,6 +70,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
     public virtual void AssignElements(object[] payloads)
     {
         _elements = new ISelectableUIElement[elements.Length];
+        DebugExtensions.DebugExtension.Log(payloads);
 
         for (int i = 0; i < payloads.Length; i++)
         {
