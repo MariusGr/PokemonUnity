@@ -15,6 +15,7 @@ public class PokemonData : ScriptableObject
     public int evolutionLevel;
     public PokemonData evolution;
     public EncounterRarity encounterRarity;
+    public int catchRate;
 
     public int maxHp;
     public int attack;

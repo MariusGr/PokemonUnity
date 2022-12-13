@@ -39,6 +39,17 @@ public class Pokemon
         266f / 100f,
         300f / 100f,
     };
+    private static Dictionary<Status, float> status2CatchRateBonus = new Dictionary<Status, float>()
+    {
+        { Status.None, 1f },
+        { Status.Burned, 1.5f },
+        { Status.Confused, 1f },
+        { Status.Fainted, 1f },
+        { Status.Frozen, 2f },
+        { Status.Paralyzed, 1.5f },
+        { Status.Piosened, 1.5f },
+        { Status.Sleeping, 2f },
+    };
 
     public class StageMultiplier
     {
@@ -84,6 +95,7 @@ public class Pokemon
     public int xp;
     public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
     public Status status = Status.None;
+    public float catchRateStatusBonus => status2CatchRateBonus[status];
     public bool isFainted => hp < 1;
     public StageMultiplier stageAttack;
     public StageMultiplier stageSpecialAttack;
@@ -234,4 +246,8 @@ public class Pokemon
             evolved.moves.Add(m);
         return evolved;
     }
+
+    // https://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
+    public float GetModifiedCatchRate(float bonus)
+        => (3f * maxHp - 2f * hp) * data.catchRate * bonus * catchRateStatusBonus / 3f * maxHp;
 }
