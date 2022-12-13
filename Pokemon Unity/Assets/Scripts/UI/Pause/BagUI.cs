@@ -29,6 +29,7 @@ public class BagUI : ItemSelection
 
     public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
+        AssignElements();
         partySelection.Open(null, -1, ProcessInput);
         base.Open(callback, forceSelection, 1);
         itemSelections[ItemCategory.Items].Open(ChooseItem);
@@ -36,7 +37,7 @@ public class BagUI : ItemSelection
         choosenItemViewIndex = -1;
     }
 
-    public void OpenBatlle(Action<ISelectableUIElement, bool> callback)
+    public void OpenBattle(Action<ISelectableUIElement, bool> callback)
     {
         Open(callback);
         inBattle = true;

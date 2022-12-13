@@ -12,12 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: JBL
   m_EditorClassIdentifier: 
-  fullName: JBL
+  fullName: JBL Flip 4
   category: 4
+  price: 39.99
   icon: {fileID: 21300000, guid: f11e0b49505fb5e4296d3f8b81b19a86, type: 3}
   details: Krass
   description: "Eine Bluetoothbox, mit der man Musik h\xF6ren kann, zum Beispiel
     Schranz oder DnB!"
   moveLearned: {fileID: 0}
   stacks: 0
+  consumable: 0
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
+  healsHPFully: 0
   hpHealed: 0
+  statusHealed: 0

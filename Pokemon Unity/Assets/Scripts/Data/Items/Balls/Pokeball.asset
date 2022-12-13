@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: "Pok\xE9ball"
   category: 0
+  price: 1.49
   icon: {fileID: 21300000, guid: 1e1f63a9b8124294d815c3b815ad5ed9, type: 3}
   details: 
   description: "Damit f\xE4ngst du wilde POK\xE9MON."

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Superball
   category: 0
+  price: 2.19
   icon: {fileID: 21300000, guid: 2b3eb03d3fa5e024fa84bad86d95cee4, type: 3}
   details: 
   description: "BALL mit guter Erfolgsquote. Besser als ein POK\xE9BALL."

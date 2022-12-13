@@ -61,11 +61,5 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
         Close();
     }
 
-    public void Assign(PlayerData playerData)
-    {
-        partyView.AssignElements(playerData.pokemons);
-        bagView.AssignElements();
-    }
-
     public void RefreshMove(Move move) => RefreshElement(move.index);
 }

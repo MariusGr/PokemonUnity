@@ -57,10 +57,14 @@ public class PlayerData : CharacterData
     {
         List<Item> list = items[item.data.category];
         Item presentItem = list.Find(x => x.Equals(item));
-        if (item.data.stacks && !(presentItem is null))
-            presentItem.Increase(item.Count);
+        if (item.data.stacks)
+            if (presentItem is null)
+                list.Add(item);
+            else
+                presentItem.Increase(item.Count);
         else
-            list.Add(item);
+            for (int i = 0; i < item.Count; i++)
+                list.Add(item);
     }
 
     public bool TryTakeItem(Item item)
@@ -77,6 +81,19 @@ public class PlayerData : CharacterData
 
         list.Remove(presentItem);
         return true;
+    }
+
+    public int GetItemCount(ItemData itemData)
+    {
+        List<Item> list = items[itemData.category];
+
+        if (itemData.stacks)
+        {
+            Item presentItem = list.Find(x => x.data == itemData);
+            return presentItem is null ? 0 : presentItem.Count;
+        }
+
+        return list.FindAll(x => x.data == itemData).Count;
     }
 
     public void SwapItems(Item item1, Item item2)

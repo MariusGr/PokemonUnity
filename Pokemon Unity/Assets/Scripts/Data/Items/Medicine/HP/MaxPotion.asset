@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Top-Trank
   category: 1
+  price: 17.99
   icon: {fileID: 21300000, guid: be56ebfd43984964eaee1acd60363520, type: 3}
   details: 
   description: "F\xFCllt KP vollst\xE4ndig auf. "
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 1
   hpHealed: 0
   statusHealed: 0

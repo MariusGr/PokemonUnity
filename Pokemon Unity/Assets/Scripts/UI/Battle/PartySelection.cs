@@ -23,6 +23,7 @@ public class PartySelection : SelectionGraphWindow
 
     public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
+        AssignElements(PlayerData.Instance.pokemons);
         base.Open(callback, forceSelection, startSelection);
         DrawIntroText();
     }

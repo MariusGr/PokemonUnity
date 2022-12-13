@@ -92,7 +92,7 @@ public class BattleUI : InputConsumer, IBattleUI
     public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection)
         => partySelection.Open(callback, forceSelection: forceSelection, startSelection: PlayerData.Instance.GetFirstAlivePokemonIndex(), battle: true);
     public void OpenBagSelection(System.Action<ISelectableUIElement, bool> callback)
-        => bagSelection.OpenBatlle(callback);
+        => bagSelection.OpenBattle(callback);
     public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback, Pokemon pokemon)
     {
         moveSelectionUI.AssignElements(pokemon.moves.ToArray());

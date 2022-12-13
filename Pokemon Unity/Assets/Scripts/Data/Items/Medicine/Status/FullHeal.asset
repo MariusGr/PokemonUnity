@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Hyperheiler
   category: 1
+  price: 2.99
   icon: {fileID: 21300000, guid: b65551a252efe7344a387d48a6bdf171, type: 3}
   details: 
   description: Beseitigt alle Statusprobleme.
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 0
   hpHealed: 0
   statusHealed: -1

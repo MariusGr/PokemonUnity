@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Para-Heiler
   category: 1
+  price: 1.49
   icon: {fileID: 21300000, guid: 4de617d4ac3538a4ba0a16f353b31580, type: 3}
   details: 
   description: Heilt Paralyse.
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 0
   hpHealed: 0
   statusHealed: 8

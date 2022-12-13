@@ -4,5 +4,4 @@ using UnityEngine;
 
 public interface IPauseUI : IUIView
 {
-    public void Assign(PlayerData player);
 }

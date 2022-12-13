@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Feuerheiler
   category: 1
+  price: 1.49
   icon: {fileID: 21300000, guid: 2bcd0461ab182b3429d1937c1ef10615, type: 3}
   details: 
   description: Heilt Verbrennungen.
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 0
   hpHealed: 0
   statusHealed: 16

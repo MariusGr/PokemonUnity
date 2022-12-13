@@ -23,13 +23,13 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
 
     private IEnumerator ShopCoroutine()
     {
-        print(Services.Get<IDialogBox>());
         yield return Services.Get<IDialogBox>().DrawText(greetingText, DialogBoxContinueMode.User, true);
         shopUI.Open(CloseShop, items);
     }
 
     private void CloseShop(ISelectableUIElement selection, bool goBack)
     {
+        shopUI.Close();
         EventManager.Unpause();
         Services.Get<IDialogBox>().DrawText(byeText, DialogBoxContinueMode.User, true);
     }

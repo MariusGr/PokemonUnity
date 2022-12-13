@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Top-Genesung
   category: 1
+  price: 21.99
   icon: {fileID: 21300000, guid: 9a583bee5535da746886b6c4f23be04f, type: 3}
   details: 
   description: Stellt KP und Status wieder her.
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 1
   hpHealed: 0
   statusHealed: -1

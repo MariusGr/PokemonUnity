@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Eisheiler
   category: 1
+  price: 1.49
   icon: {fileID: 21300000, guid: 4cdcc2cb87d18f64ea7f52fefea8d451, type: 3}
   details: 
   description: "Taut Pok\xE9mon wieder auf. "
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 0
   hpHealed: 0
   statusHealed: 2

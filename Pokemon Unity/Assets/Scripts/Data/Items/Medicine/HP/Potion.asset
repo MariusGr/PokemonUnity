@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Trank
   category: 1
+  price: 2.29
   icon: {fileID: 21300000, guid: 57b627ba3a2702b44a58635f06b3f6bf, type: 3}
   details: 
   description: "F\xFCllt die KP um 20 auf."
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 0
   hpHealed: 20
   statusHealed: 0

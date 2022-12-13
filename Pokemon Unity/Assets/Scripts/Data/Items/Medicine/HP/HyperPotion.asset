@@ -14,12 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Hypertrank
   category: 1
+  price: 9.99
   icon: {fileID: 21300000, guid: 08a1cbd7af00de74a9497f04440b88d1, type: 3}
   details: 
   description: "F\xFCllt die KP um 200 auf."
   moveLearned: {fileID: 0}
   stacks: 1
   consumable: 1
+  usableOnBattleOpponent: 0
+  catchesPokemon: 0
+  revives: 0
   healsHPFully: 1
   hpHealed: 0
   statusHealed: -1

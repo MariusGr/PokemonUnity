@@ -11,23 +11,29 @@ public class ShopUI : ItemSelection, IShopUI
     [SerializeField] private ShadowedText moneyText;
     [SerializeField] private ShadowedText inBagCountText;
 
-    public ShopUI()
-    {
-        Services.Register(this as IShopUI);
-    }
+    public ShopUI() => Services.Register(this as IShopUI);
 
     private ItemData chosenItem;
 
-    private void RefreshMoney() => moneyText.text = Money.FormatMoneyToString(PlayerData.Instance.money);
-    private void RefreshInBagCount() => inBagCountText.text = $"x  {PlayerData.Instance}";
+    private void RefreshMoney() => moneyText.text = $"\n{Money.FormatMoneyToString(PlayerData.Instance.money)}";
+    private void RefreshInBagCount(ItemData item) => inBagCountText.text = $"\nx  {PlayerData.Instance.GetItemCount(item)}";
 
     public void Open(Action<ISelectableUIElement, bool> callback, ItemData[] items)
     {
         Open(callback);
+        RefreshMoney();
         itemSelection.AssignItems(items);
-        itemSelection.Open(ChooseItem);
+        itemSelection.Open(ChooseItem, SelectItem);
     }
 
+    public override void Close()
+    {
+        cycleSelection.Close();
+        itemSelection.Close();
+        base.Close();
+    }
+
+    private void SelectItem(ItemData item) => RefreshInBagCount(item);
     private void ChooseItem(ISelectableUIElement selection, bool goBack)
     {
         if (goBack)
@@ -55,16 +61,20 @@ public class ShopUI : ItemSelection, IShopUI
 
     private IEnumerator ChooseQuantityCoroutine(SelectableItemQuantity quantity)
     {
-        if (PlayerData.Instance.TryTakeMoney(quantity.GetTotalPrice()))
+        cycleSelection.Close();
+
+        if (!PlayerData.Instance.TryTakeMoney(quantity.GetTotalPrice()))
+        {
             yield return dialogBox.DrawText(
                 $"Du hast nicht genug Geld!\nDu brauchst noch {Money.FormatMoneyToString(quantity.GetTotalPrice() - PlayerData.Instance.money)}",
-                DialogBoxContinueMode.User);
+                DialogBoxContinueMode.User, closeAfterFinish: true);
+        }
+        
         else
         {
             PlayerData.Instance.GiveItem(new Item(chosenItem, quantity.count));
-            RefreshInBagCount();
+            RefreshInBagCount(chosenItem);
             RefreshMoney();
-            cycleSelection.Close();
             //TODO sound
         }
     }

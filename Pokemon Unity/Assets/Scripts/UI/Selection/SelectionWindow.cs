@@ -8,7 +8,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
     [SerializeField] protected SelectableUIElement[] elements;
     protected ISelectableUIElement[] _elements;
 
-    public ISelectableUIElement selectedElement => _elements[selectedIndex];
+    public ISelectableUIElement selectedElement => _elements is null ? null : _elements[selectedIndex];
 
     protected int selectedIndex = 0;
 
@@ -41,7 +41,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
 
     public override void Close()
     {
-        selectedElement.Deselect();
+        selectedElement?.Deselect();
         base.Close();
     }
 

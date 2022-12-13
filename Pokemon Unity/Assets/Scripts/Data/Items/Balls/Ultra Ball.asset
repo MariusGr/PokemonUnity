@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullName: Hyperball
   category: 0
+  price: 3.69
   icon: {fileID: 21300000, guid: f51a55ad26f7c3d4381470b5be85dd48, type: 3}
   details: 
   description: BALL mit hoher Erfolgsquote. Besser als ein SUPERBALL.

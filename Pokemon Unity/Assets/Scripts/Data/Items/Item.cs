@@ -16,7 +16,12 @@ public class Item
         this.count = count;
     }
 
-    public void Increase(int amount = 1) => count += amount;
+    public void Increase(int amount = 1)
+    {
+        count += amount;
+        Debug.Log("Item Count  " + count);
+    }
+
     public bool Decrease(int amount = 1)
     {
         count = Math.Max(0, count - amount);
