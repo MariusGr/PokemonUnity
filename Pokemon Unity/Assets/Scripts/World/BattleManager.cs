@@ -191,12 +191,13 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator PlayerUseItem(Item item)
     {
-        // TODO: This is a workaround. It actually only needs to be called in case item has been used on player's active pokemon
-        ui.RefreshHP(Constants.PlayerIndex);
-
         if (!item.data.usableOnBattleOpponent)
+        {
+            // TODO: This is a workaround. It actually only needs to be called in case item has been used on player's active pokemon
+            ui.RefreshHP(Constants.PlayerIndex);
             // TODO: do not break if item can be used on own pokemon and usage shall be animated
             yield break;
+        }
 
         yield return dialogBox.DrawText($"{playerData.name} setzt {item.data.fullName} ein!", DialogBoxContinueMode.External);
         if (item.data.catchesPokemon)
