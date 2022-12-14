@@ -34,8 +34,16 @@ public class PlayerData : CharacterData
     }
 #endif
 
-    public override float GetPriceMoney() => Mathf.Clamp(0.05f * money, 0, 50000f);
+    public override void GivePokemon(Pokemon pokemon)
+    {
+        base.GivePokemon(pokemon);
+        pokemon.metDate = DateTime.Now;
+        pokemon.metLevel = pokemon.level.ToString();
+        // TODO: Enter actual map
+        pokemon.metMap = "Dortmund";
+    }
 
+    public override float GetPriceMoney() => Mathf.Clamp(0.05f * money, 0, 50000f);
     public void GiveMoney(float amount) => money += amount;
     public float TakeMoney(float amount)
     {

@@ -115,7 +115,7 @@ public class BagUI : ItemSelection
         elements = elementsList.ToArray();
         base.AssignElements();
 
-        partySelection.AssignElements(PlayerData.Instance.pokemons);
+        partySelection.AssignElements(PlayerData.Instance.pokemons.ToArray());
         foreach (KeyValuePair<ItemCategory, BagItemScrollSelection> entry in itemSelections)
             entry.Value.AssignItems(PlayerData.Instance.items[entry.Key].ToArray());
     }
@@ -155,11 +155,22 @@ public class BagUI : ItemSelection
         ItemBagListEntryUI entry = (ItemBagListEntryUI)selection;
         if (inBattle && entry.item.data.usableOnBattleOpponent)
         {
-            yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.fullName} verwenden?");
-            if (GlobalDialogBox.Instance.chosenIndex == 1)
-                yield break;
+            if (entry.item.data.catchesPokemon)
+            {
+                if (!Services.Get<IBattleManager>().OpponentIsWild())
+                {
+                    yield return GlobalDialogBox.Instance.DrawText(
+                        "Du kannst keine Bälle in einem Trainer-Kampf verwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+                    yield break;
+                }
 
-            callback?.Invoke(entry, false);
+                yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.fullName} verwenden?");
+                if (GlobalDialogBox.Instance.chosenIndex == 1)
+                    yield break;
+
+                callback?.Invoke(entry, false);
+            }
+            
         }
         else if (activeItemSelection.ChooseItemEntry(entry))
             choosenItemViewIndex = selectedIndex;

@@ -78,12 +78,12 @@ public class SummarySelection : ScalarSelection
         {
             if (input.digitalPad.pressed == Direction.Up)
             {
-                SetPokemon((pokemonIndex + 1) % PlayerData.Instance.pokemons.Length);
+                SetPokemon((pokemonIndex + 1) % PlayerData.Instance.pokemons.Count);
                 return true;
             }
             if (input.digitalPad.pressed == Direction.Down)
             {
-                SetPokemon(pokemonIndex < 1 ? PlayerData.Instance.pokemons.Length - 1 : pokemonIndex - 1);
+                SetPokemon(pokemonIndex < 1 ? PlayerData.Instance.pokemons.Count - 1 : pokemonIndex - 1);
                 return true;
             }
         }

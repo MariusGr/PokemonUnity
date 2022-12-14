@@ -16,5 +16,5 @@ public class NPCData : CharacterData
     public float priceMoneyBase = 0;
     public bool hasBeenDefeated = false;
 
-    override public float GetPriceMoney() => pokemons[pokemons.Length - 1].level * priceMoneyBase;
+    override public float GetPriceMoney() => pokemons[pokemons.Count - 1].level * priceMoneyBase;
 }

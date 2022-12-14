@@ -23,7 +23,7 @@ public class PartySelection : SelectionGraphWindow
 
     public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
-        AssignElements(PlayerData.Instance.pokemons);
+        AssignElements(PlayerData.Instance.pokemons.ToArray());
         base.Open(callback, forceSelection, startSelection);
         DrawIntroText();
     }
@@ -77,7 +77,7 @@ public class PartySelection : SelectionGraphWindow
             else
             {
                 PlayerData.Instance.SwapPokemons(swapButton.pokemon, ((PokemonPartyViewSwappableStatsUI)selectedElement).pokemon);
-                AssignElements(PlayerData.Instance.pokemons);
+                AssignElements(PlayerData.Instance.pokemons.ToArray());
                 StopSwapping();
             }
         }

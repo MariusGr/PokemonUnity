@@ -29,10 +29,5 @@ public class PokemonData : ScriptableObject
 
     public Sprite GetBattleSprite(int characterIndex) => characterIndex == Constants.PlayerIndex ? backSprite : frontSprite;
     public Sprite GetType2Sprite() => pokemonTypes.Length > 1 ? pokemonTypes[1].titleSprite : null;
-
-    public int GetXPForLevel(int level)
-    {
-        return level * 100;
-        //return (int)Mathf.Pow(level, 3);
-    }
+    public int GetXPForLevel(int level) => (int)Mathf.Pow(level, 3);
 }

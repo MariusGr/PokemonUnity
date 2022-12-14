@@ -8,7 +8,7 @@ public abstract class CharacterData
 {
     public string name;
     public string nameGenitive => name.Length > 0 && name[name.Length - 1] == 's' ? $"{name}'" : $"{name}s";
-    public Pokemon[] pokemons;
+    public List<Pokemon> pokemons;
     public GameObject gameobject;
 
     public void HealAllPokemons()
@@ -17,12 +17,27 @@ public abstract class CharacterData
             p.HealFully();
     }
 
+    public virtual void GivePokemon(Pokemon pokemon)
+    {
+        if (pokemons.Count > 5)
+        {
+            if (this == PlayerData.Instance)
+            {
+                Debug.LogWarning($"Tried to give {this} on Gameoject {gameobject} pokemon {pokemon.data.name}, but party is full and Character is a NPC.");
+                return;
+            }
+            // TODO put pokemon into box instead
+            return;
+        }
+        pokemons.Add(pokemon);
+    }
+
     public void SwapPokemons(Pokemon pokemon1, Pokemon pokemon2)
     {
         if (pokemon1 == pokemon2)
             return;
-        int newIndex1 = Array.IndexOf(pokemons, pokemon2);
-        int newIndex2 = Array.IndexOf(pokemons, pokemon1);
+        int newIndex1 = pokemons.IndexOf(pokemon2);
+        int newIndex2 = pokemons.IndexOf(pokemon1);
         pokemons[newIndex1] = pokemon1;
         pokemons[newIndex2] = pokemon2;
     }
@@ -40,7 +55,7 @@ public abstract class CharacterData
 
     public int GetFirstAlivePokemonIndex()
     {
-        for (int i = 0; i < pokemons.Length; i++)
+        for (int i = 0; i < pokemons.Count; i++)
         {
             if (!pokemons[i].isFainted)
                 return i;
@@ -51,7 +66,7 @@ public abstract class CharacterData
 
     public void ExchangePokemon(Pokemon before, Pokemon after)
     {
-        int index = Array.IndexOf(pokemons, before);
+        int index = pokemons.IndexOf(before);
         pokemons[index] = after;
     }
 }

@@ -13,6 +13,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         BattleMenu,
         Ran,
         OpponentDefeated,
+        OpponentCaught,
         PlayerDefeated,
     }
 
@@ -42,6 +43,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEvolutionManager evolutionManager;
 
     public BattleManager() => Services.Register(this as IBattleManager);
+    public bool OpponentIsWild() => opponentIsWild;
 
     void Awake()
     {
@@ -104,7 +106,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 !(characterData is null) && characterData.IsDefeated() || characterData is null
         ) || index == Constants.PlayerIndex && characterData.IsDefeated();
 
-    private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) || state.Equals(BattleState.PlayerDefeated) || state.Equals(BattleState.Ran);
+    private bool BattleHasEnded() => state.Equals(BattleState.OpponentDefeated) ||
+        state.Equals(BattleState.PlayerDefeated) ||
+        state.Equals(BattleState.Ran) ||
+        state.Equals(BattleState.OpponentCaught);
 
     private IEnumerator EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
     {
@@ -169,7 +174,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 else if (playerBattleOption == BattleOption.PokemonSwitch)
                     yield return ChoosePokemon(Constants.PlayerIndex, playerPokemonIndex);
                 else if (playerBattleOption == BattleOption.Bag)
+                {
                     yield return PlayerUseItem(playerItem);
+                    // Battle has possibly been ended by catching opponent pokemon
+                    if (BattleHasEnded())
+                        break;
+                }
                 else if (playerBattleOption == BattleOption.Run)
                     break;
 
@@ -199,11 +209,47 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield break;
         }
 
-        yield return dialogBox.DrawText($"{playerData.name} setzt {item.data.fullName} ein!", DialogBoxContinueMode.External);
         if (item.data.catchesPokemon)
+            yield return PlayerThrowBall(item);
+    }
+
+    private IEnumerator PlayerThrowBall(Item ball)
+    {
+        if (!PlayerData.Instance.TryTakeItem(ball))
         {
-            // TODO
+            Debug.LogError($"Tried to take ball {ball.data.fullName} from player, but player does not own this item!");
+            yield break;
         }
+        dialogBox.DrawText($"{playerData.name} wirft {ball.data.fullName}!", DialogBoxContinueMode.External);
+        float rate = opponentPokemon.GetModifiedCatchRate(ball.data.catchRateBonus);
+        int shakeProbability = Mathf.RoundToInt(1048560f / Mathf.Sqrt(Mathf.Sqrt(16711680f / rate)));
+        print(rate);
+
+        //TODO Throw animation
+
+        for (int i = 0; i < 4; i++)
+        {
+            int randomValue = UnityEngine.Random.Range(0, 65536);
+            if (randomValue > shakeProbability)
+            {
+                // fail
+                print($"Shake #{i}: Catch failed, {randomValue} > {shakeProbability}");
+                yield return dialogBox.DrawText($"{opponentPokemon.Name} hat sich wieder befreit!", DialogBoxContinueMode.User);
+                yield break;
+            }
+
+            // success
+            print($"Shake #{i}: Success");
+            yield return new WaitForSeconds(1f);
+        }
+
+        // caught
+        print($"Caught!");
+        yield return dialogBox.DrawText($"{opponentPokemon.Name} wurde gefangen!", DialogBoxContinueMode.User);
+        PlayerData.Instance.GivePokemon(opponentPokemon);
+        // TODO Nickname geben
+        state = BattleState.OpponentCaught;
+        yield break;
     }
 
     private IEnumerator RunPlayer()
@@ -402,7 +448,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator GetNextPokemonOpponent()
     {
         opponentBattleOption = BattleOption.None;
-        for (int i = 0; i < opponentData.pokemons.Length; i++)
+        for (int i = 0; i < opponentData.pokemons.Count; i++)
         {
             Pokemon pokemon = opponentData.pokemons[i];
             if (!pokemon.isFainted)

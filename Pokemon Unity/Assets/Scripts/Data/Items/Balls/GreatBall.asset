@@ -23,6 +23,7 @@ MonoBehaviour:
   consumable: 1
   usableOnBattleOpponent: 1
   catchesPokemon: 1
+  catchRateBonus: 1.5
   revives: 0
   healsHPFully: 0
   hpHealed: 0

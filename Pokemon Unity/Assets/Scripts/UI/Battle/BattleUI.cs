@@ -39,7 +39,7 @@ public class BattleUI : InputConsumer, IBattleUI
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
-        partySelection.AssignElements(playerData.pokemons);
+        partySelection.AssignElements(playerData.pokemons.ToArray());
     }
 
     //TODO needed?

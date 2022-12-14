@@ -16,6 +16,7 @@ public class ItemData : ScriptableObject
     public bool consumable;
     public bool usableOnBattleOpponent;
     public bool catchesPokemon;
+    public float catchRateBonus;
     public bool revives;
     public bool healsHPFully;
     public int hpHealed;

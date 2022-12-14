@@ -19,7 +19,10 @@ MonoBehaviour:
   backSprite: {fileID: 0}
   icons: []
   pokemonTypes: []
+  evolutionLevel: 0
+  evolution: {fileID: 0}
   encounterRarity: 0
+  catchRate: 190
   maxHp: 0
   attack: 0
   specialAttack: 0
