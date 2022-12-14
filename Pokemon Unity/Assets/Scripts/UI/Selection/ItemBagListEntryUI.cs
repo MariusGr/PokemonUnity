@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ItemBagListEntryUI : ItemListEntryUI
 {
+    [SerializeField] protected Sprite backgroundDefault;
+    [SerializeField] protected Sprite backgroundDefaultSelected;
+    [SerializeField] protected Sprite backgroundPlace;
+    [SerializeField] protected Sprite backgroundPlaceSelected;
+
     public Item item { get; private set; }
 
     private bool place = false;
