@@ -23,6 +23,7 @@ public class LayerManager : MonoBehaviour
     [SerializeField] LayerMask movementBlockingLayerMask;
     [SerializeField] LayerMask interactableLayerMask;
     [SerializeField] LayerMask playerLayerMask;
+    [SerializeField] LayerMask visionBlockingForAILayerMask;
     [SerializeField] LayerMask grassLayerMask;
 
     public LayerMask DefaultLayerMask => defaultLayerMask;
@@ -30,6 +31,7 @@ public class LayerManager : MonoBehaviour
     public LayerMask MovementBlockingLayerMask => movementBlockingLayerMask;
     public LayerMask InteractableLayerMask => interactableLayerMask;
     public LayerMask PlayerLayerMask => playerLayerMask;
+    public LayerMask VisionBlockingForAILayerMask => visionBlockingForAILayerMask;
     public LayerMask GrassLayerMask => grassLayerMask;
 
     public static int ToLayer(int bitmask)

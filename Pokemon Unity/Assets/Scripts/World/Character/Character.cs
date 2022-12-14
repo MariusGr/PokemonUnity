@@ -17,6 +17,7 @@ public class Character : MonoBehaviour
     public CharacterData characterData => controller.CharacterData;
     public Pokemon[] pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.pokemons.ToArray();
     public Vector3 startPosition { get; private set; }
+    public bool IsPlayer => characterData == PlayerData.Instance;
 
     public void Awake()
     {

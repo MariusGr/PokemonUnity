@@ -84,9 +84,18 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
     public bool CheckChallengeVision()
     {
         RaycastHit hitInfo;
-        if (character.RaycastForward(character.Movement.CurrentDirectionVector, LayerManager.Instance.PlayerLayerMask, out hitInfo, maxDistance: challengeVisionDistance - .2f))
+        if (character.RaycastForward(
+            character.Movement.CurrentDirectionVector,
+            LayerManager.Instance.VisionBlockingForAILayerMask,
+            out hitInfo,
+            maxDistance: challengeVisionDistance - .2f)
+        )
         {
-            Challenge(hitInfo.collider.gameObject.GetComponent<Character>());
+            Character otherCharacter = hitInfo.collider.gameObject.GetComponent<Character>();
+            if (otherCharacter is null || !otherCharacter.IsPlayer)
+                return false;
+
+            Challenge(otherCharacter);
             return true;
         }
 
