@@ -15,21 +15,26 @@ MonoBehaviour:
   dex: 2
   fullName: Flegmon
   description: :3
-  frontSprite: {fileID: 0}
-  backSprite: {fileID: 0}
-  icons: []
-  pokemonTypes: []
+  frontSprite: {fileID: 21300000, guid: 8481df8722f35bb428388a615ba4f6f5, type: 3}
+  backSprite: {fileID: 21300000, guid: 3d201975d608d9442a8fc41b60db9bc1, type: 3}
+  icons:
+  - {fileID: 0}
+  - {fileID: 0}
+  pokemonTypes:
+  - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
+  - {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
   evolutionLevel: 0
   evolution: {fileID: 0}
-  encounterRarity: 0
+  encounterRarity: 87
   catchRate: 190
-  maxHp: 0
-  attack: 0
-  specialAttack: 0
-  defense: 0
-  specialDefense: 0
-  speed: 0
-  baseXPGain: 63
+  maxHp: 90
+  attack: 65
+  specialAttack: 40
+  defense: 65
+  specialDefense: 40
+  speed: 15
+  baseXPGain: 99
   levelToMoveDataMap:
-    keys: 
-    values: []
+    keys: 00000000
+    values:
+    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}

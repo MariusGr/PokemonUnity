@@ -10,7 +10,7 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
 
     private void Awake()
     {
-        AssignElements(new object[] { null, null });
+        AssignElements(new object[] { null, null, null });
     }
 
     public override void Open()
