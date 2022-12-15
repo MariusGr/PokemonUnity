@@ -2,10 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ItemSelection : ScalarSelection
+public abstract class ItemSelection : NestedGallerySelection
 {
-    [SerializeField] protected ShadowedText categoryText;
-
-    protected ScalarSelection[] selections;
-    protected ScalarSelection activeSelection => selections[selectedIndex];
 }

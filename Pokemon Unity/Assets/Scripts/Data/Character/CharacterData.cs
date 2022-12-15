@@ -42,6 +42,8 @@ public abstract class CharacterData
         pokemons[newIndex2] = pokemon2;
     }
 
+    public bool PartyIsFull() => pokemons.Count > 5;
+
     public bool IsDefeated()
     {
         foreach (Pokemon p in pokemons)

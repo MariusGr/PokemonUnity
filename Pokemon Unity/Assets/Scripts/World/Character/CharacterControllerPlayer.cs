@@ -17,6 +17,8 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 #endif
         foreach (Pokemon p in characterData.pokemons)
             characterData.AddCaughtPokemon(p.data);
+        foreach (Pokemon p in characterData.pokemonsInBox)
+            characterData.AddCaughtPokemon(p.data);
     }
 
     private void Start()

@@ -36,6 +36,29 @@ public class PlayerData : CharacterData
 
     public HashSet<PokemonData> seenPokemon = new HashSet<PokemonData>();
     public HashSet<PokemonData> caughtPokemon = new HashSet<PokemonData>();
+    public List<Pokemon> pokemonsInBox = new List<Pokemon>();
+
+    public void PutPokemonToBox(Pokemon pokemon) => pokemonsInBox.Add(pokemon);
+
+    public void MovePokemonFromPartyToBox(Pokemon pokemon)
+    {
+        pokemonsInBox.Add(pokemon);
+        pokemons.Remove(pokemon);
+    }
+
+    public void MovePokemonFromBoxToParty(Pokemon pokemon)
+    {
+        pokemons.Add(pokemon);
+        pokemonsInBox.Remove(pokemon);
+    }
+
+    public void SwapPartyToBox(int partyIndex, int boxIndex)
+    {
+        Pokemon partyPokemon = pokemons[boxIndex];
+        Pokemon boxPokemon = pokemonsInBox[boxIndex];
+        pokemons[boxIndex] = boxPokemon;
+        pokemonsInBox[partyIndex] = partyPokemon;
+    }
 
     public void AddCaughtPokemon(PokemonData pokemon)
     {
@@ -47,9 +70,9 @@ public class PlayerData : CharacterData
     public bool HasCaughtPokemon(PokemonData pokemon) => caughtPokemon.Contains(pokemon);
     public bool HasSeenPokemon(PokemonData pokemon) => seenPokemon.Contains(pokemon);
 
-    public override void GivePokemon(Pokemon pokemon)
+    public void CatchPokemon(Pokemon pokemon)
     {
-        base.GivePokemon(pokemon);
+        GivePokemon(pokemon);
         pokemon.metDate = DateTime.Now;
         pokemon.metLevel = pokemon.level.ToString();
         // TODO: Enter actual map

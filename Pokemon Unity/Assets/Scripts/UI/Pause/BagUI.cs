@@ -14,15 +14,7 @@ public class BagUI : ItemSelection
 
 
     private BagItemScrollSelection activeItemSelection
-    {
-        get
-        {
-            print("choosenItemViewIndex " + choosenItemViewIndex);
-            print("selectedIndex " + selectedIndex);
-            print("itemSelections " + itemSelections.values.Count);
-            return choosenItemViewIndex > 0 ? itemSelections.values[choosenItemViewIndex - 1] : itemSelections.values[selectedIndex - 1];
-        }
-    }
+        => choosenItemViewIndex > 0 ? itemSelections.values[choosenItemViewIndex - 1] : itemSelections.values[selectedIndex - 1];
 
     private int choosenItemViewIndex = -1;
     private bool inBattle = false;
@@ -76,7 +68,7 @@ public class BagUI : ItemSelection
         else
         {
             activeSelection.Open(ChooseItem, 0, ProcessInput);
-            categoryText.text = ItemTexts.itemCategoryToTitle[itemSelections.keys[selectedIndex - 1]];
+            pageTitleText.text = ItemTexts.itemCategoryToTitle[itemSelections.keys[selectedIndex - 1]];
         }
     }
 

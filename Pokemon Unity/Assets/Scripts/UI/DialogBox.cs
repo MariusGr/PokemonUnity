@@ -87,14 +87,14 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     public bool IsOpen() => gameObject.activeSelf;
 
-    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
+    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
     {
         Open();
         currentCoroutine = StartCoroutine(DrawStringsCoroutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish, lines));
         return currentCoroutine;
     }
 
-    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
+    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
         => DrawText(text.Split(Constants.NewLineCharacter), continueMode, closeAfterFinish, lines);
     public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {

@@ -4,25 +4,15 @@ using UnityEngine;
 
 public class PokemonListEntryUI : ListEntryUI
 {
-    [SerializeField] protected ShadowedText dexText;
-
-    [HideInInspector] public DexEntryData dexEntryData;
+    [HideInInspector] public Pokemon pokemon;
 
     public override void AssignElement(object payload)
     {
         gameObject.SetActive(true);
-
         base.AssignElement(payload);
 
-        dexEntryData = (DexEntryData)payload;
-
-        dexText.text = dexEntryData.dex.ToString("000");
-
-        if (dexEntryData.pokemon is null)
-            nameText.text = "-----";
-        else
-            nameText.text = dexEntryData.pokemon.fullName;
-
-        icon.enabled = dexEntryData.caught;
+        pokemon = (Pokemon)payload;
+        nameText.text = pokemon.Name;
+        icon.enabled = pokemon.data.icon;
     }
 }

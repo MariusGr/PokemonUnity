@@ -13,6 +13,7 @@ public class PokemonData : ScriptableObject
     public Sprite frontSprite;
     public Sprite backSprite;
     public Sprite[] icons;
+    public Sprite icon => icons[0];
     public PokemonTypeData[] pokemonTypes;
     public int evolutionLevel;
     public PokemonData evolution;

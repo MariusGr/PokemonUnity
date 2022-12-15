@@ -44,7 +44,7 @@ public class PokedexSelection : ScrollSelection
     {
         base.SelectElement(index);
 
-        DexEntryData data = ((PokemonListEntryUI)selectedElement).dexEntryData;
+        DexEntryData data = ((PokedexListEntryUI)selectedElement).dexEntryData;
         selectedName.text = data.pokemon is null ? "???" : data.pokemon.fullName;
 
         description.gameObject.SetActive(data.caught);
