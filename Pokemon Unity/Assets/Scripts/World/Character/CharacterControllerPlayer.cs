@@ -10,9 +10,14 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     InputData input = new InputData();
     private IPauseUI pauseUI;
 
+    private void Awake()
+    {
 #if (UNITY_EDITOR)
-    private void Awake() => characterData.FillItemsDict();
+        characterData.FillItemsDict();
 #endif
+        foreach (Pokemon p in characterData.pokemons)
+            characterData.AddCaughtPokemon(p.data);
+    }
 
     private void Start()
     {

@@ -34,6 +34,19 @@ public class PlayerData : CharacterData
     }
 #endif
 
+    public HashSet<PokemonData> seenPokemon = new HashSet<PokemonData>();
+    public HashSet<PokemonData> caughtPokemon = new HashSet<PokemonData>();
+
+    public void AddCaughtPokemon(PokemonData pokemon)
+    {
+        caughtPokemon.Add(pokemon);
+        AddSeenPokemon(pokemon);
+    }
+
+    public void AddSeenPokemon(PokemonData pokemon) => seenPokemon.Add(pokemon);
+    public bool HasCaughtPokemon(PokemonData pokemon) => caughtPokemon.Contains(pokemon);
+    public bool HasSeenPokemon(PokemonData pokemon) => seenPokemon.Contains(pokemon);
+
     public override void GivePokemon(Pokemon pokemon)
     {
         base.GivePokemon(pokemon);
@@ -41,6 +54,7 @@ public class PlayerData : CharacterData
         pokemon.metLevel = pokemon.level.ToString();
         // TODO: Enter actual map
         pokemon.metMap = "Dortmund";
+        AddCaughtPokemon(pokemon.data);
     }
 
     public override float GetPriceMoney() => Mathf.Clamp(0.05f * money, 0, 50000f);

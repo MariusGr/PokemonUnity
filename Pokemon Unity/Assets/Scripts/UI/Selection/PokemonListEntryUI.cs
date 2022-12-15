@@ -6,7 +6,7 @@ public class PokemonListEntryUI : ListEntryUI
 {
     [SerializeField] protected ShadowedText dexText;
 
-    [HideInInspector] public PokemonData pokemon;
+    [HideInInspector] public DexEntryData dexEntryData;
 
     public override void AssignElement(object payload)
     {
@@ -14,9 +14,15 @@ public class PokemonListEntryUI : ListEntryUI
 
         base.AssignElement(payload);
 
-        pokemon = (PokemonData)payload;
-        dexText.text = $"#{pokemon.dex}";
-        icon.sprite = pokemon.icons[0];
-        nameText.text = pokemon.fullName;
+        dexEntryData = (DexEntryData)payload;
+
+        dexText.text = dexEntryData.dex.ToString("000");
+
+        if (dexEntryData.pokemon is null)
+            nameText.text = "-----";
+        else
+            nameText.text = dexEntryData.pokemon.fullName;
+
+        icon.enabled = dexEntryData.caught;
     }
 }

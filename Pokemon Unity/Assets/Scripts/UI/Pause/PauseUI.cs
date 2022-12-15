@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PauseUI : SelectionGraphWindow, IPauseUI
 {
+    [SerializeField] PokedexSelection dexView;
     [SerializeField] PartySelection partyView;
     [SerializeField] BagUI bagView;
 
@@ -38,9 +39,17 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
     private void ChooseOption(int index)
     {
         if (index == 0)
-            partyView.Open(callback: ClosePartyView, battle: false, forceSelection: false);
+            dexView.Open(callback: CloseDexView);
         else if (index == 1)
+            partyView.Open(callback: ClosePartyView, battle: false, forceSelection: false);
+        else if (index == 2)
             bagView.Open(callback: CloseBagView);
+    }
+
+    private void CloseDexView(ISelectableUIElement selection, bool goBack)
+    {
+        if (goBack)
+            dexView.Close();
     }
 
     private void CloseBagView(ISelectableUIElement selection, bool goBack)

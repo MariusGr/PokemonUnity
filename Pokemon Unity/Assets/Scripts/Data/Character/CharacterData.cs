@@ -23,7 +23,7 @@ public abstract class CharacterData
         {
             if (this == PlayerData.Instance)
             {
-                Debug.LogWarning($"Tried to give {this} on Gameoject {gameobject} pokemon {pokemon.data.name}, but party is full and Character is a NPC.");
+                Debug.LogWarning($"Tried to give {this} on Gameobject {gameobject} pokemon {pokemon.data.name}, but party is full and Character is a NPC.");
                 return;
             }
             // TODO put pokemon into box instead

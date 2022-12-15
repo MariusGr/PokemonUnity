@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PokemonData", menuName = "Pokemon/Pokemon Data")]
 public class PokemonData : ScriptableObject
 {
+    public static int Count { get; private set; } = 0;
+
     public int dex;
     public string fullName;
     public string description;
@@ -30,4 +32,6 @@ public class PokemonData : ScriptableObject
     public Sprite GetBattleSprite(int characterIndex) => characterIndex == Constants.PlayerIndex ? backSprite : frontSprite;
     public Sprite GetType2Sprite() => pokemonTypes.Length > 1 ? pokemonTypes[1].titleSprite : null;
     public int GetXPForLevel(int level) => (int)Mathf.Pow(level, 3);
+
+    public PokemonData() => Count++;
 }

@@ -72,6 +72,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         print("StartNewEncounter");
         this.wildPokemon = wildPokemon;
+        PlayerData.Instance.AddSeenPokemon(wildPokemon.data);
         opponentIsWild = true;
         this.playerData = playerData;
         opponentData = null;
@@ -91,6 +92,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         this.opponentData = opponentData;
         characterData = new CharacterData[] { this.playerData, this.opponentData };
         pokemonIndex[Constants.OpponentIndex] = opponentData.GetFirstAlivePokemonIndex();
+        PlayerData.Instance.AddSeenPokemon(opponentPokemon.data);
 
         Reset();
 
@@ -554,6 +556,9 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         this.pokemonIndex[characterIndex] = pokemonIndex;
 
         unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
+
+        if (characterIndex == Constants.OpponentIndex)
+            PlayerData.Instance.AddSeenPokemon(opponentPokemon.data);
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, characterData[characterIndex].pokemons[pokemonIndex]);
