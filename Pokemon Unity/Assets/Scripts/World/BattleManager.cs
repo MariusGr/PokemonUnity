@@ -312,6 +312,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
             if (battleOption == BattleOption.Run)
             {
+                if (!opponentIsWild)
+                {
+                    yield return dialogBox.DrawText("Du kannst nicht aus einem Trainerkampf fliehen!", closeAfterFinish: true);
+                    continue;
+                }
+
                 bool successfullyRan = false;
                 yield return TryRunPlayer((success) => successfullyRan = success);
 
