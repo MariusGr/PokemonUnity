@@ -249,7 +249,8 @@ public class Pokemon
 
     // https://bulbapedia.bulbagarden.net/wiki/Catch_rate#Capture_method_.28Generation_I.29
     public float GetModifiedCatchRate(float bonus)
-        => Mathf.Max(
-            (3f * maxHp - 2f * hp) * data.catchRate * bonus * catchRateStatusBonus / 3f * maxHp,
+    {
+        return Mathf.Max(
+            (3f * maxHp - 2f * hp) * data.catchRate * bonus * catchRateStatusBonus / (3f * maxHp),
             data.catchRate / 3f);
 }

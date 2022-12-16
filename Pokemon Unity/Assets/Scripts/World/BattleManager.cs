@@ -225,28 +225,27 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         dialogBox.DrawText($"{playerData.name} wirft {ball.data.fullName}!", DialogBoxContinueMode.External);
         float rate = opponentPokemon.GetModifiedCatchRate(ball.data.catchRateBonus);
         int shakeProbability = Mathf.RoundToInt(1048560f / Mathf.Sqrt(Mathf.Sqrt(16711680f / rate)));
-        print(rate);
 
         //TODO Throw animation
 
         for (int i = 0; i < 4; i++)
         {
             int randomValue = UnityEngine.Random.Range(0, 65536);
-            if (randomValue > shakeProbability)
+            if (randomValue >= shakeProbability)
             {
                 // fail
-                print($"Shake #{i}: Catch failed, {randomValue} > {shakeProbability}");
+                print($"Shake #{i}: Catch failed, {randomValue} >= {shakeProbability}");
                 yield return dialogBox.DrawText($"{opponentPokemon.Name} hat sich wieder befreit!", DialogBoxContinueMode.User);
                 yield break;
             }
 
             // success
-            print($"Shake #{i}: Success");
+            print($"Shake #{i}: Catch success, {randomValue} < {shakeProbability}");
             yield return new WaitForSeconds(1f);
         }
 
         // caught
-        print($"Caught!");
+        print("Caught!");
         yield return dialogBox.DrawText($"{opponentPokemon.Name} wurde gefangen!", DialogBoxContinueMode.User);
         PlayerData.Instance.CatchPokemon(opponentPokemon);
         // TODO Nickname geben
