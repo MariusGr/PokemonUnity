@@ -6,6 +6,13 @@ using System;
 [System.Serializable]
 public class Move
 {
+    public enum FailReason
+    {
+        None,
+        Miss,
+        NoEffect,
+    }
+
     public MoveData data;
     public int index;
     public int pp;
@@ -26,15 +33,28 @@ public class Move
     public void SetPokemon(Pokemon pokemon) => this.pokemon = pokemon;
 
     // https://bulbapedia.bulbagarden.net/wiki/Accuracy
-    public bool TryHit(Pokemon attacker, Pokemon target)
+    public bool TryHit(Pokemon attacker, Pokemon target, out FailReason failReason)
     {
+        failReason = FailReason.None;
+
+        if (data.power < 1 && target.statusEffect == data.statusInflictedTarget)
+        {
+            failReason = FailReason.NoEffect;
+            return false;
+        }
+
         if (data.accuracy < 0)
             return true;
 
         float adjustedStages = attacker.stageAccuracy.GetMultiplier(substractStage: target.stageEvasion.stage);
         int accuracyModified = (int)(data.accuracy * adjustedStages);
         Debug.Log($"accuracy: {data.accuracy}, adjustedStages: {adjustedStages}, accuracyModified: {accuracyModified}");
-        return UnityEngine.Random.Range(0, 100) < accuracyModified;
+
+        if (UnityEngine.Random.Range(0, 100) < accuracyModified)
+            return true;
+
+        failReason = FailReason.Miss;
+        return false;
     }
 
     public int GetDamageAgainst(Pokemon attacker, Pokemon target, out bool critcal, out Effectiveness effectiveness)
@@ -78,6 +98,7 @@ public class Move
 
     public bool IsFaster(Move other)
     {
+        Debug.Log($"Faster? {pokemon}: {pokemon.speed} vs. {other.pokemon}: {other.pokemon.speed}");
         if (pokemon.speed != other.pokemon.speed)
             return pokemon.speed > other.pokemon.speed;
         return UnityEngine.Random.value > .5f;

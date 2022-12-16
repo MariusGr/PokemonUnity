@@ -146,11 +146,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 playerPokemonIndex = index;
             });
 
+            IEnumerator opponentCoroutine = MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
+
             // Both trainers will fight -> priority decided by attack speed
             if (playerBattleOption == BattleOption.Fight && opponentBattleOption == BattleOption.Fight)
             {
                 IEnumerator playerCoroutine = MoveCoroutine(Constants.PlayerIndex, Constants.OpponentIndex, playerMove);
-                IEnumerator opponentCoroutine = MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
 
                 if (playerMove.IsFaster(opponentMove))
                 {
@@ -187,8 +188,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                     break;
 
                 // Secondly, perform opponent actions
+
                 if (opponentBattleOption == BattleOption.Fight)
-                    yield return MoveCoroutine(Constants.OpponentIndex, Constants.PlayerIndex, opponentMove);
+                {
+                        yield return opponentCoroutine;
+                }
                 else if (opponentBattleOption == BattleOption.PokemonSwitch)
                     yield return ChoosePokemon(Constants.OpponentIndex, opponentPokemonIndex);
                 //else if (playerBattleOption == BattleOption.Bag)
@@ -581,6 +585,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
+        bool canFight = true;
+        yield return StatusEffectRoundTick(attacker, true, () => canFight = false);
+        if (!canFight)
+            yield break;
+
         CharacterData attackerCharacter = null;
         CharacterData targetCharacter = null;
         if (target == Constants.PlayerIndex || !opponentIsWild)
@@ -613,11 +622,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         yield return new WaitForSeconds(1f);
 
         bool critical = false;
-        bool targetFainted = false;
         int damage = 0;
         Effectiveness effectiveness = Effectiveness.Normal;
 
-        if (move.TryHit(attackerPokemon, targetPokemon))
+        Move.FailReason failReason = Move.FailReason.None;
+        if (move.TryHit(attackerPokemon, targetPokemon, out failReason))
         {
             // Attack hit successfully
 
@@ -627,22 +636,32 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield return ui.PlayBlinkAnimation(target);
 
             // Deal damage
-            damage = move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
-            targetFainted = targetPokemon.InflictDamage(damage);
-            yield return ui.RefreshHPAnimated(target);
-            if (effectiveness != Effectiveness.Normal)
-                yield return dialogBox.DrawText(effectiveness, DialogBoxContinueMode.User);
-            if (critical)
-                yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
+            damage = move.data.power < 1 ? 0 : move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
+            if (damage > 0)
+            {
+                yield return InflictDamage(target, damage);
+                if (effectiveness != Effectiveness.Normal)
+                    yield return dialogBox.DrawText(effectiveness, DialogBoxContinueMode.User);
+                if (critical)
+                    yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
+            }
 
-            // TODO: special branch for attacks with no damage infliction
+            yield return InflictStatusEffect(target, move.data.statusInflictedTarget);
+            yield return InflictStatusEffect(attacker, move.data.statusInflictedSelf);
         }
         else
+        {
             // Attack failed
-            yield return dialogBox.DrawText($"Attacke von {attackingPokemonIdentifier} geht daneben!", DialogBoxContinueMode.User);
+            if (failReason == Move.FailReason.NoEffect)
+                yield return dialogBox.DrawText($"Es hat keinen Effekt!", DialogBoxContinueMode.User);
+            else
+                yield return dialogBox.DrawText($"Attacke von {attackingPokemonIdentifier} geht daneben!", DialogBoxContinueMode.User);
+        }
+
+        yield return StatusEffectRoundTick(target, false);
 
         // Aftermath: Faint, Poison, etc.
-        if (targetFainted)
+        if (targetPokemon.isFainted)
         {
             // target pokemon fainted
             yield return Faint(target, targetPokemonIdentifier);
@@ -661,7 +680,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 yield return ui.RefreshHPAnimated(attacker);
             }
 
-            // TODO wann aftermath für Opponent anwenden, wann Opponent faint
+            yield return StatusEffectRoundTick(attacker, false);
+
             if (attackerFainted)
             {
                 yield return Faint(attacker, attackingPokemonIdentifier);
@@ -675,6 +695,68 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield return Defeat(Constants.OpponentIndex, playerData, opponentData);
         else
             dialogBox.Close();
+    }
+
+    private IEnumerator InflictDamage(int target, int damage)
+    {
+        GeActivePokemon(target).InflictDamage(damage);
+        yield return ui.RefreshHPAnimated(target);
+    }
+
+    private IEnumerator InflictStatusEffect(int target, StatusEffectNonVolatile statusEffect)
+    {
+        Pokemon targetPokemon = GeActivePokemon(target);
+        if (statusEffect is null || !(targetPokemon.statusEffect is null))
+            yield break;
+
+        yield return dialogBox.DrawText(
+            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), DialogBoxContinueMode.User);
+        targetPokemon.InflictStatusEffect(statusEffect);
+        ui.Refresh(target);
+    }
+
+    private IEnumerator StatusEffectRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
+    {
+        Pokemon targetPokemon = GeActivePokemon(target);
+        StatusEffectNonVolatile statusEffect = targetPokemon.statusEffect;
+        int damage = statusEffect is null ? 0 : statusEffect.damagePerRoundAbsolute + statusEffect.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp;
+
+        print("StatusEffectRoundTick?...");
+
+        if (statusEffect is null ||
+            beforeMove && !targetPokemon.statusEffect.takesEffectBeforeMoves ||
+            !beforeMove && targetPokemon.statusEffect.takesEffectBeforeMoves ||
+            damage < 1 && !targetPokemon.statusEffect.preventsMove
+        )
+            yield break;
+
+        print("StatusEffectRoundTick!");
+
+        bool lifeTimeEnds = !targetPokemon.statusEffect.livesForever && targetPokemon.statusEffectLifeTime < 1;
+        if (lifeTimeEnds)
+            yield return HealStatus(target);
+
+        if (!lifeTimeEnds || statusEffect.takesEffectOnceWhenLifeTimeEnded || UnityEngine.Random.value > targetPokemon.statusEffect.chance)
+        {
+            if(!lifeTimeEnds)
+                yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
+                    TextKeyManager.TextKeyPokemon, statusEffect.effectPerRoundText, targetPokemon.Name), DialogBoxContinueMode.User);
+            if (damage > 0)
+                yield return InflictDamage(target, damage);
+            if (statusEffect.preventsMove)
+                preventMoveCallback?.Invoke();
+
+            targetPokemon.statusEffectLifeTime--;
+        }
+    }
+
+    private IEnumerator HealStatus(int target)
+    {
+        Pokemon targetPokemon = GeActivePokemon(target);
+        yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
+                    TextKeyManager.TextKeyPokemon, targetPokemon.statusEffect.endOfLifeText, targetPokemon.Name), DialogBoxContinueMode.User);
+        targetPokemon.HealStatus();
+        ui.Refresh(target);
     }
 
     private IEnumerator Faint(int characterIndex, string pokemonIdentifier)

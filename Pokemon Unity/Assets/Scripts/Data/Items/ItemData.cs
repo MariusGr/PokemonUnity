@@ -20,7 +20,7 @@ public class ItemData : ScriptableObject
     public bool revives;
     public bool healsHPFully;
     public int hpHealed;
-    public Status statusHealed;
+    public StatusEffectNonVolatile statusHealed;
 
     public bool canBeUsedOnOwnPokemon => category == ItemCategory.Medicine;
     public string Description => moveLearned is null ? description : moveLearned.description;

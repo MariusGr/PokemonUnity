@@ -9,8 +9,6 @@ public class Globals : MonoBehaviour
 
     public Gender[] genders;
 
-    public InspectorFriendlySerializableDictionary<Status, Sprite> statusToSpriteMap;
-
     Globals()
     {
         Instance = this;

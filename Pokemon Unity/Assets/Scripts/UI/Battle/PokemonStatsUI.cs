@@ -42,11 +42,11 @@ public class PokemonStatsUI : SelectableImage
         level.text = pokemon.level.ToString();
         gender.text = pokemon.gender.symbol;
 
-        if (pokemon.status == Status.None)
+        if (pokemon.statusEffect is null)
             status.enabled = false;
         else
         {
-            status.sprite = Globals.Instance.statusToSpriteMap[pokemon.status];
+            status.sprite = pokemon.statusEffect.icon;
             status.enabled = true;
         }
 

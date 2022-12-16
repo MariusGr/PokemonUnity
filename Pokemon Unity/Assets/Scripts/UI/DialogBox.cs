@@ -95,7 +95,8 @@ public class DialogBox : MonoBehaviour, IInputConsumer
     }
 
     public Coroutine DrawText(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
-        => DrawText(text.Split(Constants.NewLineCharacter), continueMode, closeAfterFinish, lines);
+        => DrawText(TextKeyManager.PlaceNewLineChars(text).Split('\n'), continueMode, closeAfterFinish, lines);
+
     public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {
         Open();

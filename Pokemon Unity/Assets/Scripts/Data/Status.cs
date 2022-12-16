@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Flags]
-public enum Status
+public enum Statusxx
 {
     None = 0,
     Sleeping = 1,

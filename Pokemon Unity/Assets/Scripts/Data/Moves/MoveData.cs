@@ -11,6 +11,8 @@ public class MoveData : ScriptableObject
     public int maxPP;
     public int power;
     public int accuracy;
+    public StatusEffectNonVolatile statusInflictedTarget;
+    public StatusEffectNonVolatile statusInflictedSelf;
     public MoveCategory category;
 
     public AnimationClip animationClipPlayer;

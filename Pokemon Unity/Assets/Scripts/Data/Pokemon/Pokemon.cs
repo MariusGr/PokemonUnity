@@ -39,17 +39,17 @@ public class Pokemon
         266f / 100f,
         300f / 100f,
     };
-    private static Dictionary<Status, float> status2CatchRateBonus = new Dictionary<Status, float>()
-    {
-        { Status.None, 1f },
-        { Status.Burned, 1.5f },
-        { Status.Confused, 1f },
-        { Status.Fainted, 1f },
-        { Status.Frozen, 2f },
-        { Status.Paralyzed, 1.5f },
-        { Status.Piosened, 1.5f },
-        { Status.Sleeping, 2f },
-    };
+    //private static Dictionary<Status, float> status2CatchRateBonus = new Dictionary<Status, float>()
+    //{
+    //    { Status.None, 1f },
+    //    { Status.Burned, 1.5f },
+    //    { Status.Confused, 1f },
+    //    { Status.Fainted, 1f },
+    //    { Status.Frozen, 2f },
+    //    { Status.Paralyzed, 1.5f },
+    //    { Status.Piosened, 1.5f },
+    //    { Status.Sleeping, 2f },
+    //};
 
     public class StageMultiplier
     {
@@ -86,7 +86,7 @@ public class Pokemon
     public int specialAttack => (int)(BasteStatToStat(data.specialAttack) * stageSpecialAttack.multiplier);
     public int defense => (int)(BasteStatToStat(data.defense) * stageDefense.multiplier);
     public int specialDefense => (int)(BasteStatToStat(data.specialDefense) * stageSpecialDefense.multiplier);
-    public int speed => (int)(speedUnmodified * stageSpeed.multiplier);
+    public int speed => (int)(speedUnmodified * stageSpeed.multiplier * (statusEffect is null ? 1f : statusEffect.statModifierSpeedRelative));
     public int speedUnmodified => BasteStatToStat(data.speed);
     public int maxHp => BasteStatToStat(data.maxHp);
 
@@ -94,8 +94,9 @@ public class Pokemon
     public int hp;
     public int xp;
     public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
-    public Status status = Status.None;
-    public float catchRateStatusBonus => status2CatchRateBonus[status];
+    public StatusEffectNonVolatile statusEffect { get; private set; } = null;
+    public int statusEffectLifeTime = 0;
+    public float catchRateStatusBonus => statusEffect is null ? 1f : statusEffect.catchRateBonus;
     public bool isFainted => hp < 1;
     public StageMultiplier stageAttack;
     public StageMultiplier stageSpecialAttack;
@@ -193,11 +194,25 @@ public class Pokemon
         hp -= damage;
         if (hp < 1)
         {
-            hp = 0;
+            Faint();
             return true;
         }
         return false;
     }
+
+    public void Faint()
+    {
+        hp = 0;
+        HealStatusEffect();
+    }
+
+    public void InflictStatusEffect(StatusEffectNonVolatile statusEffect)
+    {
+        this.statusEffect = statusEffect;
+        statusEffectLifeTime = UnityEngine.Random.Range(statusEffect.lifetimeRoundsMinimum, statusEffect.lifetimeRoundsMaximum);
+    }
+
+    public void HealStatusEffect() => statusEffect = null;
 
     public void HealFully()
     {
@@ -212,7 +227,7 @@ public class Pokemon
 
     public void HealHP(int hp) => this.hp = Math.Min(maxHp, this.hp + hp);
     public void HealHPFully() => hp = maxHp;
-    public void HealStatus() => status = Status.None;
+    public void HealStatus() => statusEffect = null;
 
     // https://bulbapedia.bulbagarden.net/wiki/Experience
     public int GetXPGainedFromFaint(bool opponentIsWild)
