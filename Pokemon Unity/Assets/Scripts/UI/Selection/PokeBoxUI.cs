@@ -26,6 +26,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
     public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         AssignElements();
+        partySelection.Open();
         base.Open(callback, forceSelection, BoxIsEmpty() ? 0 : 1);
         SelectOptimalView();
     }
