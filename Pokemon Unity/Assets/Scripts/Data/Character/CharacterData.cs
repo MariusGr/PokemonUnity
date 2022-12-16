@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 [Serializable]
 public abstract class CharacterData
@@ -19,14 +20,14 @@ public abstract class CharacterData
 
     public virtual void GivePokemon(Pokemon pokemon)
     {
+        if (pokemons.Contains(pokemon))
+        {
+            Debug.LogWarning($"Tried to give {this} on Gameobject {gameobject} pokemon {pokemon.data.name} but pokemon ist already in party.");
+            return;
+        }
         if (pokemons.Count > 5)
         {
-            if (this == PlayerData.Instance)
-            {
-                Debug.LogWarning($"Tried to give {this} on Gameobject {gameobject} pokemon {pokemon.data.name}, but party is full and Character is a NPC.");
-                return;
-            }
-            // TODO put pokemon into box instead
+            Debug.LogWarning($"Tried to give {this} on Gameobject {gameobject} pokemon {pokemon.data.name} but party is full.");
             return;
         }
         pokemons.Add(pokemon);
@@ -43,6 +44,7 @@ public abstract class CharacterData
     }
 
     public bool PartyIsFull() => pokemons.Count > 5;
+    public bool WouldBeDeafeatetWithoutPokemon(Pokemon pokemon) => pokemons.Count(p => !p.isFainted && p != pokemon) < 1;
 
     public bool IsDefeated()
     {

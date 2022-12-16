@@ -10,7 +10,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
 
     public ISelectableUIElement selectedElement => _elements is null ? null : _elements[selectedIndex];
 
-    protected int selectedIndex = 0;
+    public int selectedIndex { get; protected set; } = 0;
 
     private bool forceSelection = false;
 
@@ -22,10 +22,8 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
     {
         this.forceSelection = forceSelection;
 
-        print(_elements is null);
         if (_elements is null)
             AssignElements();
-        print(_elements.Length);
 
         for (int i = 0; i < _elements.Length; i++)
         {
@@ -34,7 +32,9 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
                 _elements[i].Deselect();
         }
 
-        if (startSelection > -1)
+        if (startSelection > _elements.Length - 1)
+            SelectElement(_elements.Length - 1);
+        else if (startSelection > -1)
             SelectElement(startSelection);
         base.Open(callback);
     }

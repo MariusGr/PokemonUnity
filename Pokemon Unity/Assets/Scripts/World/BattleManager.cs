@@ -247,6 +247,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         // caught
         print("Caught!");
         yield return dialogBox.DrawText($"{opponentPokemon.Name} wurde gefangen!", DialogBoxContinueMode.User);
+        if (PlayerData.Instance.PartyIsFull())
+            yield return dialogBox.DrawText($"{opponentPokemon.Name} wurde in der Box deponiert!", DialogBoxContinueMode.User);
         PlayerData.Instance.CatchPokemon(opponentPokemon);
         // TODO Nickname geben
         state = BattleState.OpponentCaught;

@@ -253,4 +253,7 @@ public class Pokemon
         return Mathf.Max(
             (3f * maxHp - 2f * hp) * data.catchRate * bonus * catchRateStatusBonus / (3f * maxHp),
             data.catchRate / 3f);
+    }
+
+    public override string ToString() => $"{base.ToString()} {Name} {SpeciesName}";
 }

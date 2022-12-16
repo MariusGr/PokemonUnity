@@ -52,12 +52,12 @@ public class PlayerData : CharacterData
         pokemonsInBox.Remove(pokemon);
     }
 
-    public void SwapPartyToBox(int partyIndex, int boxIndex)
+    public void SwapPartyToBox(Pokemon partyPokemon, Pokemon boxPokemon)
     {
-        Pokemon partyPokemon = pokemons[boxIndex];
-        Pokemon boxPokemon = pokemonsInBox[boxIndex];
-        pokemons[boxIndex] = boxPokemon;
-        pokemonsInBox[partyIndex] = partyPokemon;
+        int partyIndex = pokemons.IndexOf(partyPokemon);
+        int boxIndex = pokemonsInBox.IndexOf(boxPokemon);
+        pokemons[partyIndex] = boxPokemon;
+        pokemonsInBox[boxIndex] = partyPokemon;
     }
 
     public void AddCaughtPokemon(PokemonData pokemon)
@@ -78,6 +78,14 @@ public class PlayerData : CharacterData
         // TODO: Enter actual map
         pokemon.metMap = "Dortmund";
         AddCaughtPokemon(pokemon.data);
+    }
+
+    public override void GivePokemon(Pokemon pokemon)
+    {
+        if (PartyIsFull())
+            pokemonsInBox.Add(pokemon);
+        else
+            base.GivePokemon(pokemon);
     }
 
     public override float GetPriceMoney() => Mathf.Clamp(0.05f * money, 0, 50000f);

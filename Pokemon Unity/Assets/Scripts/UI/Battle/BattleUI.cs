@@ -46,13 +46,13 @@ public class BattleUI : InputConsumer, IBattleUI
     private void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
         opponentSprite.SetSprite(opponentData.sprite);
-        opponentStats.AssignPokemon(opponentPokemon);
+        opponentStats.AssignElement(opponentPokemon);
         Initialize(playerData, playerPokemon, opponentPokemon);
     }
 
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
     {
-        stats[characterIndex].AssignPokemon(pokemon);
+        stats[characterIndex].AssignElement(pokemon);
         pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
         if (characterIndex == Constants.PlayerIndex)
             moveSelectionUI.Assign(pokemon);

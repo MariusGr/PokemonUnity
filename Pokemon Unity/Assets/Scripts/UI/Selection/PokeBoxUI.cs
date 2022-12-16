@@ -12,6 +12,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
 
     private Pokemon chosenPartyPokemon;
     private Pokemon chosenBoxPokemon;
+    private string notEnoughAlivePokemonsErrorMessage = "Du musst mindestens ein unbesiegtes Pokémon im Team behalten!";
 
     public PokeBoxUI() => Services.Register(this as IPokeBoxUI);
 
@@ -25,9 +26,16 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
     public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         AssignElements();
-        partySelection.Open(null, -1, ProcessInput);
-        boxSelection.Open(null, -1, ProcessInput);
         base.Open(callback, forceSelection, BoxIsEmpty() ? 0 : 1);
+        SelectOptimalView();
+    }
+
+    private void SelectOptimalView()
+    {
+        if (!(chosenBoxPokemon is null) || BoxIsEmpty())
+            SelectElement(0);
+        else
+            SelectElement(1);
     }
 
     private void ResetChoosing()
@@ -36,11 +44,16 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
         chosenBoxPokemon = null;
     }
 
+    private void ResetSelection()
+    {
+        partySelection.DeselectSelection();
+        boxSelection.DeselectSelection();
+    }
+
     public override void Close()
     {
         ResetChoosing();
-        partySelection.DeselectSelection();
-        boxSelection.DeselectSelection();
+        ResetSelection();
         partySelection.Close();
         boxSelection.Close();
         base.Close();
@@ -48,28 +61,59 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
 
     protected override void SelectElement(int index)
     {
-        print("SelectElement  " + index);
         activeSelection.DeselectSelection();
         base.SelectElement(index, false);
         if (activeSelection == partySelection)
-            activeSelection.Open(ChoosePartyPokemon, 0, ProcessInput);
+            activeSelection.Open(ChoosePartyPokemon, activeSelection.selectedIndex, ProcessInput);
         else
-        {
-            activeSelection.Open(ChooseBoxPokemon, 0, ProcessInput);
-        }
+            activeSelection.Open(ChooseBoxPokemon, activeSelection.selectedIndex, ProcessInput);
     }
 
     private void ChooseBoxPokemon(ISelectableUIElement selection, bool goBack)
     {
         if (!(selection is null))
-            chosenBoxPokemon = ((PokemonListEntryUI)selection).pokemon;
+        {
+            Pokemon pokemon = ((PokemonListEntryUI)selection).pokemon;
+            if (chosenPartyPokemon is null)
+                chosenBoxPokemon = pokemon;
+            else if (pokemon.isFainted && PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(chosenPartyPokemon))
+            {
+                GlobalDialogBox.Instance.DrawText(notEnoughAlivePokemonsErrorMessage, closeAfterFinish: true);
+                return;
+            }
+            else
+            {
+                PlayerData.Instance.SwapPartyToBox(chosenPartyPokemon, pokemon);
+                ResetSelection();
+                ResetChoosing();
+                RefreshViews();
+                return;
+            }
+        }
         ChoosePokemon(chosenBoxPokemon, goBack);
     }
 
     private void ChoosePartyPokemon(ISelectableUIElement selection, bool goBack)
     {
         if (!(selection is null))
-            chosenPartyPokemon = ((PokemonPartyViewStatsUI)selection).pokemon;
+        {
+            Pokemon pokemon = ((PlayerPokemonStatsUI)selection).pokemon;
+            if (chosenBoxPokemon is null)
+                chosenPartyPokemon = pokemon;
+            else if (chosenBoxPokemon.isFainted && PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(pokemon))
+            {
+                GlobalDialogBox.Instance.DrawText(notEnoughAlivePokemonsErrorMessage, closeAfterFinish: true);
+                return;
+            }
+            else
+            {
+                PlayerData.Instance.SwapPartyToBox(pokemon, chosenBoxPokemon);
+                ResetSelection();
+                ResetChoosing();
+                RefreshViews();
+                return;
+            }
+        }
         ChoosePokemon(chosenPartyPokemon, goBack);
     }
 
@@ -82,6 +126,14 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
         }
 
         StartCoroutine(ChoosePokemonCoroutine(pokemon));
+    }
+
+    protected override void GoBack()
+    {
+        if (!(chosenBoxPokemon is null) || !(chosenPartyPokemon is null))
+            ResetChoosing();
+        else
+            base.GoBack();
     }
 
     private void SelectOtherView() => SelectElement(selectedIndex == 0 ? 1 : 0);
@@ -98,13 +150,29 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
 
             if (GlobalDialogBox.Instance.chosenIndex == 0)
             {
+                if (BoxIsEmpty())
+                {
+                    yield return GlobalDialogBox.Instance.DrawText("Die Box ist noch leer!");
+                    continue;
+                }
                 SelectOtherView();
             }
             else if (GlobalDialogBox.Instance.chosenIndex == 1)
             {
                 if (currentSelectionIsParty)
                 {
-                    ResetChoosing();
+                    if (PlayerData.Instance.pokemons.Count < 2)
+                    {
+                        yield return GlobalDialogBox.Instance.DrawText("Du musst mindestens ein Pokémon im Team behalten!");
+                        continue;
+                    }
+                    else if (PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(pokemon))
+                    {
+                        yield return GlobalDialogBox.Instance.DrawText(notEnoughAlivePokemonsErrorMessage);
+                        continue;
+                    }
+                    else
+                        ResetChoosing();
                     PlayerData.Instance.MovePokemonFromPartyToBox(pokemon);
                 }
                 else
@@ -112,11 +180,6 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
                     if (PlayerData.Instance.PartyIsFull())
                     {
                         yield return GlobalDialogBox.Instance.DrawText("Dein Team ist schon voll!");
-                        continue;
-                    }
-                    else if (PlayerData.Instance.pokemons.Count < 2)
-                    {
-                        yield return GlobalDialogBox.Instance.DrawText("Du musst mindestens ein Pokémon im Team behalten!");
                         continue;
                     }
                     ResetChoosing();
@@ -128,18 +191,23 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
                 ResetChoosing();
 
             GlobalDialogBox.Instance.Close();
+            SelectOptimalView();
             yield break;
         }
     }
 
     protected override bool TrySelectPositive()
     {
-        return base.TrySelectPositive();
+        if (chosenBoxPokemon is null && !BoxIsEmpty())
+            return base.TrySelectPositive();
+        return false;
     }
 
     protected override bool TrySelectNegative()
     {
-        return base.TrySelectNegative();
+        if (chosenPartyPokemon is null)
+            return base.TrySelectNegative();
+        return false;
     }
 
     private void RefreshViews()

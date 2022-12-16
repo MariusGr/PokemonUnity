@@ -18,11 +18,10 @@ public class PokemonStatsUI : SelectableImage
 
     private bool isPlayingAnimation;
 
-    public void AssignPokemon(Pokemon pokemon)
+    private void AssignPokemon(Pokemon pokemon)
     {
-        gameObject.SetActive(true);
         this.pokemon = pokemon;
-        Refresh();
+        gameObject.SetActive(true);
     }
 
     public override void AssignElement(object element)

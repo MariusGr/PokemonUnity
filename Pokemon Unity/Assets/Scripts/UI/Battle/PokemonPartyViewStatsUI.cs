@@ -10,6 +10,7 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
     [SerializeField] protected Sprite backgroundFaint;
     [SerializeField] protected Sprite backgroundFaintSelected;
     [SerializeField] private Image icon;
+    [SerializeField] private bool animteIcon;
     [SerializeField] private GameObject item;
     private Vector3 iconOffset;
     
@@ -24,7 +25,8 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
 
     protected void DoOnEnable()
     {
-        StartCoroutine(IconAnimation());
+        if (animteIcon)
+            StartCoroutine(IconAnimation());
         Refresh();
     }
 

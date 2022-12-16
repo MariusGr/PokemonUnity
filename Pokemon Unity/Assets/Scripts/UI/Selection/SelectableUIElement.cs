@@ -30,6 +30,7 @@ public class SelectableUIElement : MonoBehaviour, ISelectableUIElement
     {
         assigned = true;
         this.payload = payload;
+        Refresh();
     }
 
     public virtual void AssignOnSelectCallback(Action<object> onSelect) => this.onSelect = onSelect;
