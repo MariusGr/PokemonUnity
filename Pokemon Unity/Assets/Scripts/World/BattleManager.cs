@@ -28,7 +28,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private int runTryCount = 0;
     private Dictionary<Pokemon, HashSet<Pokemon>> unfaintedPlayerPokemons;
     private HashSet<Pokemon> evolvingPokemons;
-    private int playerRunSuccessChance => (playerPokemon.speedUnmodified * 128 / Math.Min(1, opponentPokemon.speedUnmodified) + 30 * runTryCount) % 256;
+    private int playerRunSuccessChance => playerPokemon.speedUnmodified >= opponentPokemon.speedUnmodified ? 256 :
+        (playerPokemon.speedUnmodified * 128 / Math.Min(1, opponentPokemon.speedUnmodified) + 30 * runTryCount) % 256;
 
     private BattleOption playerBattleOption = BattleOption.None;
     private BattleOption opponentBattleOption = BattleOption.None;
@@ -264,7 +265,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         ui.CloseBattleMenu();
         runTryCount++;
-        bool success = forceSuccess || opponentIsWild && UnityEngine.Random.Range(0, 255) <= playerRunSuccessChance;
+        print(playerRunSuccessChance);
+        bool success = forceSuccess || opponentIsWild && UnityEngine.Random.Range(0, 256) < playerRunSuccessChance;
 
         if (success)
             yield return dialogBox.DrawText($"Du bist entkommen!", DialogBoxContinueMode.User);
