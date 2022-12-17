@@ -20,13 +20,14 @@ public class ItemData : ScriptableObject
     public bool revives;
     public bool healsHPFully;
     public int hpHealed;
+    public bool healsAllStati;
     public StatusEffectNonVolatile statusHealed;
 
     public bool canBeUsedOnOwnPokemon => category == ItemCategory.Medicine;
     public string Description => moveLearned is null ? description : moveLearned.description;
-
-    public override string ToString()
-    {
-        return fullName;
-    }
+    public bool healsHP => healsHPFully || hpHealed > 0;
+    public bool healsStatusEffects => (healsAllStati || !(statusHealed is null));
+    public bool healsOnlyStatusEffects => healsStatusEffects && !healsHP;
+    public bool healsStatusEffect(StatusEffectNonVolatile statusEffect) => !(statusEffect is null) && (healsAllStati || statusHealed == statusEffect);
+    public override string ToString() => fullName;
 }

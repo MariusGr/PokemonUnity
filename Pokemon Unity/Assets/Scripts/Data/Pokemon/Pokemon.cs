@@ -94,7 +94,8 @@ public class Pokemon
     public int hp;
     public int xp;
     public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
-    public StatusEffectNonVolatile statusEffect { get; private set; } = null;
+    [SerializeField] private StatusEffectNonVolatile _statusEffect = null;
+    public StatusEffectNonVolatile statusEffect { get => _statusEffect; private set { _statusEffect = value; } }
     public int statusEffectLifeTime = 0;
     public float catchRateStatusBonus => statusEffect is null ? 1f : statusEffect.catchRateBonus;
     public bool isFainted => hp < 1;

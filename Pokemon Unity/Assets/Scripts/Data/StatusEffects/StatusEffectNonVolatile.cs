@@ -6,9 +6,11 @@ using UnityEngine;
 public class StatusEffectNonVolatile : ScriptableObject
 {
     public Sprite icon;
+    public string nameSubject = "";
     public string inflictionText = "";
     public string effectPerRoundText = "";
     public string endOfLifeText = "";
+    public string healText = "";
     public bool livesForever = true;
     public int lifetimeRoundsMinimum = 0;
     public int lifetimeRoundsMaximum = 0;

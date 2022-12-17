@@ -107,13 +107,15 @@ public class BagUI : ItemSelection
         elements = elementsList.ToArray();
         base.AssignElements();
 
-        partySelection.AssignElements(PlayerData.Instance.pokemons.ToArray());
+        RefreshPartySelection();
         foreach (KeyValuePair<ItemCategory, BagItemScrollSelection> entry in itemSelections)
             entry.Value.AssignItems(PlayerData.Instance.items[entry.Key].ToArray());
     }
 
     private void RefreshItemSelection()=>
         activeItemSelection.AssignItems(PlayerData.Instance.items[itemSelections.keys[choosenItemViewIndex - 1]].ToArray());
+    private void RefreshPartySelection() =>
+        partySelection.AssignElements(PlayerData.Instance.pokemons.ToArray());
 
     private bool HandleGoBack(bool goBack)
     {
@@ -187,6 +189,7 @@ public class BagUI : ItemSelection
         yield return PokemonManager.Instance.TryUseItemOnPokemon(
             activeItemSelection.choosenItem, statsUI.pokemon, statsUI.RefreshHPAnimated(), (bool success) => itemUsed = success);
 
+        RefreshPartySelection();
         RefreshItemSelection();
         if (inBattle && itemUsed)
             callback?.Invoke(activeItemSelection.choosenItemEntry, false);

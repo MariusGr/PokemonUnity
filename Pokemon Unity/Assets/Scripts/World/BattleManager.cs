@@ -710,7 +710,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield break;
 
         yield return dialogBox.DrawText(
-            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), DialogBoxContinueMode.User);
+            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
         targetPokemon.InflictStatusEffect(statusEffect);
         ui.Refresh(target);
     }
@@ -740,7 +740,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         {
             if(!lifeTimeEnds)
                 yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                    TextKeyManager.TextKeyPokemon, statusEffect.effectPerRoundText, targetPokemon.Name), DialogBoxContinueMode.User);
+                    TextKeyManager.TextKeyPokemon, statusEffect.effectPerRoundText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
             if (damage > 0)
                 yield return InflictDamage(target, damage);
             if (statusEffect.preventsMove)
@@ -754,7 +754,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         Pokemon targetPokemon = GeActivePokemon(target);
         yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                    TextKeyManager.TextKeyPokemon, targetPokemon.statusEffect.endOfLifeText, targetPokemon.Name), DialogBoxContinueMode.User);
+                    TextKeyManager.TextKeyPokemon, targetPokemon.statusEffect.endOfLifeText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
         targetPokemon.HealStatus();
         ui.Refresh(target);
     }

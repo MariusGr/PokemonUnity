@@ -87,6 +87,10 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
         {
             if (pokemon.isFainted && !item.data.revives)
                 yield return dialogBox.DrawText($"Du kannst {item.data.fullName} nicht auf besiegte Pok?mon anwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            else if (pokemon.statusEffect is null && item.data.healsOnlyStatusEffects)
+                yield return dialogBox.DrawText($"Das hätte keinen Effekt, denn {pokemon.Name} hat keine Statusprobleme.", DialogBoxContinueMode.User, closeAfterFinish: true);
+            else if (!item.data.healsStatusEffect(pokemon.statusEffect))
+                yield return dialogBox.DrawText($"Du kannst {pokemon.statusEffect.nameSubject} von {pokemon.Name} damit nicht heilen.", DialogBoxContinueMode.User, closeAfterFinish: true);
             else
             {
                 yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
@@ -101,14 +105,13 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             }
         }
         else
-        {
             yield return dialogBox.DrawText($"{item.data.fullName} kann nicht auf deine Pokemon angewendet werden!", DialogBoxContinueMode.User, closeAfterFinish: true);
-        }
         success?.Invoke(false);
     }
 
     IEnumerator UseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation)
     {
+        print($"Use item {item.data.fullName}");
         if (item.data.healsHPFully)
         {
             pokemon.HealHPFully();
@@ -120,6 +123,13 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             pokemon.HealHP(item.data.hpHealed);
             yield return animation;
             yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgef?llt!", DialogBoxContinueMode.User, closeAfterFinish: true);
+        }
+
+        if (item.data.healsStatusEffect(pokemon.statusEffect))
+        {
+            yield return dialogBox.DrawText(
+                TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, pokemon.statusEffect.healText, pokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
+            pokemon.HealStatusEffect();
         }
 
         // Note for future changes: Only consume if item has actually been used!

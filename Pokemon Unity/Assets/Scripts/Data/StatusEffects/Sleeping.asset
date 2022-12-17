@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Sleeping
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 97f4b3528ba54494e9d59c5088ea0ed0, type: 3}
+  nameSubject: Schlaf
   inflictionText: "<pkmn-name> macht ein Schl\xE4fchen \\|3"
   effectPerRoundText: "<pkmn-name> schl\xE4ft tief und fest \\|\\|33"
   endOfLifeText: <pkmn-name> ist aufgewacht!
+  healText: <pkmn-name> wurde aufgeweckt!
   livesForever: 0
   lifetimeRoundsMinimum: 1
   lifetimeRoundsMaximum: 4
