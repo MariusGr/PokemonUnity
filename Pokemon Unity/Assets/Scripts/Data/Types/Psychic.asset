@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
   m_Name: Psychic
   m_EditorClassIdentifier: 
-  fullName: Water
+  fullName: Psycho
   titleSprite: {fileID: 21300000, guid: 55af5073cdd443a41be2a13cdd1bd5e5, type: 3}
-  color: {r: 0.990566, g: 0.4438857, b: 0.80523473, a: 1}
+  color: {r: 0.8980392, g: 0.34901962, b: 0.4509804, a: 1}
   effectiveness:
     keys: []
     values: []

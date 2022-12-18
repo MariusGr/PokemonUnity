@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
-  m_Name: Water
+  m_Name: Ice
   m_EditorClassIdentifier: 
-  fullName: Wasser
-  titleSprite: {fileID: 21300000, guid: 225c557ca506401418086af314ec73b3, type: 3}
-  color: {r: 0.1764706, g: 0.54509807, b: 0.8, a: 1}
+  fullName: Eis
+  titleSprite: {fileID: 21300000, guid: 31d1168c3a6d30e418755aaa196c9609, type: 3}
+  color: {r: 0.40784314, g: 0.7294118, b: 0.6745098, a: 1}
   effectiveness:
     keys: []
     values: []
