@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
+  m_Name: Giftwolke
+  m_EditorClassIdentifier: 
+  fullName: Giftwolke
+  description: "H\xFCllt Gegner in giftiges Gas ein, kann vergiften."
+  pokeType: {fileID: 11400000, guid: f647a3d8033d74746ac3174598f7098b, type: 2}
+  maxPP: 40
+  power: 0
+  accuracy: 100
+  statusInflictedTarget: {fileID: 11400000, guid: a753b4252c1544f1d9e4c13f0a917601,
+    type: 2}
+  statusInflictedSelf: {fileID: 0}
+  category: {fileID: 11400000, guid: 59bda30bdc919b7439be3bff0274d97e, type: 2}
+  animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
+  animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
+    type: 2}
+  hasSpecialUsageText: 0
+  specialUsageText: 
+  recoil: 0

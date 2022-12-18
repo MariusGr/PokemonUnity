@@ -199,6 +199,9 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                     //TODO
             }
 
+            yield return StatusEffectRoundTick(Constants.OpponentIndex, false);
+            yield return StatusEffectRoundTick(Constants.PlayerIndex, false);
+
             if (BattleHasEnded())
                 break;
         }
@@ -658,34 +661,25 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 yield return dialogBox.DrawText($"Attacke von {attackingPokemonIdentifier} geht daneben!", DialogBoxContinueMode.User);
         }
 
-        yield return StatusEffectRoundTick(target, false);
-
         // Aftermath: Faint, Poison, etc.
         if (targetPokemon.isFainted)
-        {
             // target pokemon fainted
             yield return Faint(target, targetPokemonIdentifier);
-        }
         else
         {
             // Aftermath e.g. Status effects etc.
-            bool attackerFainted = false;
             if (move.data.recoil > 0 && damage > 0)
             {
                 yield return dialogBox.DrawText($"{attackingPokemonIdentifier} wird durch Rückstoß getroffen!", DialogBoxContinueMode.Automatic);
                 yield return new WaitForSeconds(1f);
-                yield return ui.PlayBlinkAnimation(attacker);
+                yield return ui.PlayBlinkAnimation(target);
                 int recoilDamage = (int)(damage * move.data.recoil);
-                attackerFainted = attackerPokemon.InflictDamage(recoilDamage);
+                yield return InflictDamage(attacker, recoilDamage);
                 yield return ui.RefreshHPAnimated(attacker);
             }
 
-            yield return StatusEffectRoundTick(attacker, false);
-
-            if (attackerFainted)
-            {
+            if (attackerPokemon.isFainted)
                 yield return Faint(attacker, attackingPokemonIdentifier);
-            }
         }
 
         // If one character has been defeated, detect which one (player always looses when out of pokemon)
@@ -719,7 +713,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         Pokemon targetPokemon = GeActivePokemon(target);
         StatusEffectNonVolatile statusEffect = targetPokemon.statusEffect;
-        int damage = statusEffect is null ? 0 : statusEffect.damagePerRoundAbsolute + statusEffect.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp;
+        int damage = statusEffect is null ? 0 : statusEffect.damagePerRoundAbsolute + Mathf.RoundToInt(statusEffect.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp);
 
         print("StatusEffectRoundTick?...");
 
@@ -731,6 +725,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield break;
 
         print("StatusEffectRoundTick!");
+        // TODO: Bug, man kann Statuseffekt einsetzen, wenn andere Statuseffekt drauf ist, sollte aber sofort fehlschlagen
+        // TODO: Statusansage für neuen Statuseffekt kommt auch bei eingwechselten Pokemon mit diesem Satus, nur nach Wechsel nach Faint
 
         bool lifeTimeEnds = !targetPokemon.statusEffect.livesForever && targetPokemon.statusEffectLifeTime < 1;
         if (lifeTimeEnds)
@@ -742,7 +738,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
                     TextKeyManager.TextKeyPokemon, statusEffect.effectPerRoundText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
             if (damage > 0)
+            {
                 yield return InflictDamage(target, damage);
+                if (targetPokemon.isFainted)
+                    yield return Faint(target, targetPokemon.Name);
+            }
+
             if (statusEffect.preventsMove)
                 preventMoveCallback?.Invoke();
 

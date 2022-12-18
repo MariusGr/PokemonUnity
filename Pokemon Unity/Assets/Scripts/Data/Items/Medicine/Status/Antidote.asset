@@ -23,7 +23,9 @@ MonoBehaviour:
   consumable: 1
   usableOnBattleOpponent: 0
   catchesPokemon: 0
+  catchRateBonus: 0
   revives: 0
   healsHPFully: 0
   hpHealed: 0
-  statusHealed: 4
+  healsAllStati: 0
+  statusHealed: {fileID: 11400000, guid: a753b4252c1544f1d9e4c13f0a917601, type: 2}
