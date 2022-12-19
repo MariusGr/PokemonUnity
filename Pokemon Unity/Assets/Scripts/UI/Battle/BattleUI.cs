@@ -42,14 +42,6 @@ public class BattleUI : InputConsumer, IBattleUI
         partySelection.AssignElements(playerData.pokemons.ToArray());
     }
 
-    //TODO needed?
-    private void Initialize(CharacterData playerData, NPCData opponentData, Pokemon playerPokemon, Pokemon opponentPokemon)
-    {
-        opponentSprite.SetSprite(opponentData.sprite);
-        opponentStats.AssignElement(opponentPokemon);
-        Initialize(playerData, playerPokemon, opponentPokemon);
-    }
-
     public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
     {
         stats[characterIndex].AssignElement(pokemon);

@@ -26,8 +26,9 @@ public class ItemData : ScriptableObject
     public bool canBeUsedOnOwnPokemon => category == ItemCategory.Medicine;
     public string Description => moveLearned is null ? description : moveLearned.description;
     public bool healsHP => healsHPFully || hpHealed > 0;
+    public bool healsHPOnly => !healsStatusEffects && healsHP;
     public bool healsStatusEffects => (healsAllStati || !(statusHealed is null));
-    public bool healsOnlyStatusEffects => healsStatusEffects && !healsHP;
+    public bool healsStatusEffectsOnly => healsStatusEffects && !healsHP;
     public bool healsStatusEffect(StatusEffectNonVolatile statusEffect) => !(statusEffect is null) && (healsAllStati || statusHealed == statusEffect);
     public override string ToString() => fullName;
 }

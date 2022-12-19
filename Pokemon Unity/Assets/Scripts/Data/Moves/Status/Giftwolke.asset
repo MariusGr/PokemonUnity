@@ -17,7 +17,7 @@ MonoBehaviour:
   pokeType: {fileID: 11400000, guid: f647a3d8033d74746ac3174598f7098b, type: 2}
   maxPP: 40
   power: 0
-  accuracy: 100
+  accuracy: 70
   statusInflictedTarget: {fileID: 11400000, guid: a753b4252c1544f1d9e4c13f0a917601,
     type: 2}
   statusInflictedSelf: {fileID: 0}

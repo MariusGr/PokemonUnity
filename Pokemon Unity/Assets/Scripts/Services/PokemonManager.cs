@@ -87,9 +87,11 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
         {
             if (pokemon.isFainted && !item.data.revives)
                 yield return dialogBox.DrawText($"Du kannst {item.data.fullName} nicht auf besiegte Pok?mon anwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
-            else if (pokemon.statusEffect is null && item.data.healsOnlyStatusEffects)
-                yield return dialogBox.DrawText($"Das hätte keinen Effekt, denn {pokemon.Name} hat keine Statusprobleme.", DialogBoxContinueMode.User, closeAfterFinish: true);
-            else if (!item.data.healsStatusEffect(pokemon.statusEffect))
+            else if (item.data.healsHPOnly && pokemon.isAtFullHP)
+                yield return dialogBox.DrawText($"KP von {pokemon.Name} ist breits voll!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            else if (pokemon.statusEffect is null && item.data.healsStatusEffectsOnly)
+                yield return dialogBox.DrawText($"Das h?tte keinen Effekt, denn {pokemon.Name} hat keine Statusprobleme.", DialogBoxContinueMode.User, closeAfterFinish: true);
+            else if (!item.data.healsStatusEffect(pokemon.statusEffect) && item.data.healsStatusEffectsOnly)
                 yield return dialogBox.DrawText($"Du kannst {pokemon.statusEffect.nameSubject} von {pokemon.Name} damit nicht heilen.", DialogBoxContinueMode.User, closeAfterFinish: true);
             else
             {
@@ -132,7 +134,6 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             pokemon.HealStatusEffect();
         }
 
-        // Note for future changes: Only consume if item has actually been used!
         if (item.data.consumable)
             PlayerData.Instance.TryTakeItem(item);
 

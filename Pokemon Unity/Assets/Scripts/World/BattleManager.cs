@@ -214,7 +214,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (!item.data.usableOnBattleOpponent)
         {
             // TODO: This is a workaround. It actually only needs to be called in case item has been used on player's active pokemon
-            ui.RefreshHP(Constants.PlayerIndex);
+            ui.Refresh(Constants.PlayerIndex);
             // TODO: do not break if item can be used on own pokemon and usage shall be animated
             yield break;
         }
@@ -419,9 +419,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (characterIndex == Constants.OpponentIndex)
             yield return GetNextPokemonOpponent();
         else
-        {
             yield return GetNextPokemonPlayer();
-        }
     }
 
     private IEnumerator GetNextPokemonPlayer()
@@ -682,13 +680,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 yield return Faint(attacker, attackingPokemonIdentifier);
         }
 
-        // If one character has been defeated, detect which one (player always looses when out of pokemon)
-        if (isDefeated[Constants.PlayerIndex])
-            yield return Defeat(Constants.PlayerIndex, opponentData, playerData);
-        else if (isDefeated[Constants.OpponentIndex])
-            yield return Defeat(Constants.OpponentIndex, playerData, opponentData);
-        else
-            dialogBox.Close();
+        dialogBox.Close();
     }
 
     private IEnumerator InflictDamage(int target, int damage)
@@ -725,8 +717,6 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield break;
 
         print("StatusEffectRoundTick!");
-        // TODO: Bug, man kann Statuseffekt einsetzen, wenn andere Statuseffekt drauf ist, sollte aber sofort fehlschlagen
-        // TODO: Statusansage für neuen Statuseffekt kommt auch bei eingwechselten Pokemon mit diesem Satus, nur nach Wechsel nach Faint
 
         bool lifeTimeEnds = !targetPokemon.statusEffect.livesForever && targetPokemon.statusEffectLifeTime < 1;
         if (lifeTimeEnds)
@@ -775,6 +765,9 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         isDefeated[characterIndex] = characterHasBeenDefeated;
         if (!characterHasBeenDefeated)
             yield return ChooseNextPokemon(characterIndex);
+        else
+            yield return Defeat(characterIndex);
+
     }
 
     private IEnumerator DistributePlayerXP()
@@ -803,8 +796,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         }
     }
 
-    private IEnumerator Defeat(int loserIndex, CharacterData winner, CharacterData loser)
+    private IEnumerator Defeat(int loserIndex)
     {
+        int winnerIndex = loserIndex > 0 ? 0 : 1;
+        CharacterData winner = characterData[winnerIndex];
+        CharacterData loser = characterData[loserIndex];
         bool winnerIsTrainer = !(winner is null);
         bool loserIsTrainer = !(loser is null);
 

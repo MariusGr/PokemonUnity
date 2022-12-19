@@ -99,6 +99,7 @@ public class Pokemon
     public int statusEffectLifeTime = 0;
     public float catchRateStatusBonus => statusEffect is null ? 1f : statusEffect.catchRateBonus;
     public bool isFainted => hp < 1;
+    public bool isAtFullHP => hp >= maxHp;
     public StageMultiplier stageAttack;
     public StageMultiplier stageSpecialAttack;
     public StageMultiplier stageDefense;
