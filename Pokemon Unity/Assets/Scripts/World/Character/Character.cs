@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public static Character PlayerCharacter { get; private set; }
 
     [SerializeField] CharacterControllerBase controller;
     [SerializeField] CharacterMovement movement;
@@ -17,12 +16,11 @@ public class Character : MonoBehaviour
     public CharacterData characterData => controller.CharacterData;
     public Pokemon[] pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.pokemons.ToArray();
     public Vector3 startPosition { get; private set; }
-    public bool IsPlayer => characterData == PlayerData.Instance;
+    public virtual bool IsPlayer => false;
 
-    public void Awake()
+    private void Awake() => Initialize();
+    protected void Initialize()
     {
-        if (controller.GetType() == typeof(CharacterControllerPlayer))
-            PlayerCharacter = this;
         foreach (Pokemon pokemon in pokemons)
             pokemon.Initialize(characterData);
         startPosition = transform.position;

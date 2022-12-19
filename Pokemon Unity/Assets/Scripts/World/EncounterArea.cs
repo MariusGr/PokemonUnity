@@ -92,7 +92,7 @@ public class EncounterArea : MonoBehaviour
         Pokemon pokemon = new Pokemon(chosenPokemon);
 
         // Start wild encounter
-        Services.Get<IBattleManager>().StartNewEncounter(Character.PlayerCharacter.characterData, pokemon, EncounterEndReaction);
+        Services.Get<IBattleManager>().StartNewEncounter(PlayerData.Instance, pokemon, EncounterEndReaction);
     }
 
     public bool EncounterEndReaction(bool wildPokemonDefeated)

@@ -842,11 +842,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 winner.HealAllPokemons();
             }
 
-            yield return dialogBox.DrawText($"Tja... ab ins Poke-Center. Scheiße gelaufen...", DialogBoxContinueMode.User);
-
-            loser.HealAllPokemons();
-            Character.PlayerCharacter.transform.position = playerData.lastPokeCenterEntrance.position;
             state = BattleState.PlayerDefeated;
+            yield return PlayerCharacter.Instance.Defeat();
         }
     }
 }

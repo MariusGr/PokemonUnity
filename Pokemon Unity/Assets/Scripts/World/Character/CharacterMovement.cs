@@ -117,7 +117,7 @@ public class CharacterMovement : Pausable
             character.Animator.Tick(AnimationType.None, currentDirection);
     }
 
-    public void LookInPlayerDirection() => LookInDirection(GridVector.GetLookAt(character.position, Character.PlayerCharacter.position));
+    public void LookInPlayerDirection() => LookInDirection(GridVector.GetLookAt(character.position, PlayerCharacter.Instance.position));
     public void LookInDirection(GridVector direction)
     {
         CurrentDirectionVector = direction;
@@ -145,7 +145,11 @@ public class CharacterMovement : Pausable
 
         if (checkPositionEvents)
         {
-            PokemonManager.Instance.HandleWalkDamage();
+            bool playerHasBeenDefeated = false;
+            yield return PokemonManager.Instance.HandleWalkDamage(() => playerHasBeenDefeated = true);
+            if (playerHasBeenDefeated)
+                yield break;
+
             EncounterArea.CheckPositionRelatedEvents();
         }
     }

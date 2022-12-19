@@ -140,19 +140,23 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
         yield return null;
     }
 
-    public bool HandleWalkDamage()
+    public IEnumerator HandleWalkDamage(System.Action playerHasBeenDefeatedCallback)
     {
         foreach (Pokemon pokemon in PlayerData.Instance.pokemons)
         {
+            if (pokemon.statusEffect is null)
+                continue;
             StatusEffectNonVolatile statusEffect = pokemon.statusEffect;
             pokemon.InflictDamageOverTime();
             if (pokemon.isFainted)
             {
-                dialogBox.DrawTextPausing($"{pokemon.Name} wurde durch {statusEffect.nameSubject} besiegt.");
-                if (Play)
+                yield return dialogBox.DrawText($"{pokemon.Name} wurde durch {statusEffect.nameSubject} besiegt.", closeAfterFinish: true);
+                if (PlayerData.Instance.IsDefeated())
+                {
+                    playerHasBeenDefeatedCallback?.Invoke();
+                    Services.Get<IPlayerCharacter>().Defeat();
+                }
             }
         }
-
-        return false;
     }
 }

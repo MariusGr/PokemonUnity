@@ -196,6 +196,11 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 4300662377274357611, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: character
+      value: 
+      objectReference: {fileID: 7764445228982364533}
     - target: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
         type: 3}
       propertyPath: m_Name
@@ -256,7 +261,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1036652836103217860, guid: 809c9f42216ed7e4283cfa0fe969633a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 809c9f42216ed7e4283cfa0fe969633a, type: 3}
 --- !u!1 &7239874394638884248 stripped
 GameObject:
@@ -270,16 +276,28 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6506203680318212757}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6064171139765217361 stripped
+--- !u!114 &7054229538022620670 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1036652836103217860, guid: 809c9f42216ed7e4283cfa0fe969633a,
+  m_CorrespondingSourceObject: {fileID: 4300662377274357611, guid: 809c9f42216ed7e4283cfa0fe969633a,
     type: 3}
   m_PrefabInstance: {fileID: 6506203680318212757}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7239874394638884248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f2b599edbca8fe449c3d2991a9fafb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 142454593e6c9044f8e208b4778c9221, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7239874394638884250 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4482100472371566351, guid: 809c9f42216ed7e4283cfa0fe969633a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6506203680318212757}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239874394638884248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aba279305a48624c8fb1bd30f8cef0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4499516146788302776
@@ -294,14 +312,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d93b0350cd65c141a3610fc06a30a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 6064171139765217361}
+  character: {fileID: 7764445228982364533}
   characterData:
     name: 
     pokemons: []
     gameobject: {fileID: 7239874394638884248}
     money: 0
-    items:
-      keys: 
-      values:
-      - data: {fileID: 0}
     lastPokeCenterEntrance: {fileID: 0}
+    itemsValues: []
+    pokemonsInBox: []
+--- !u!114 &7764445228982364533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239874394638884248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4587be6329ce60d42be471ab20dd58c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 4499516146788302776}
+  movement: {fileID: 7054229538022620670}
+  animator: {fileID: 7239874394638884250}
