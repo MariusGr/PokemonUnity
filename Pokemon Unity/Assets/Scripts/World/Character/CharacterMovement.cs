@@ -144,7 +144,10 @@ public class CharacterMovement : Pausable
         moving = false;
 
         if (checkPositionEvents)
+        {
+            PokemonManager.Instance.HandleWalkDamage();
             EncounterArea.CheckPositionRelatedEvents();
+        }
     }
 
     bool IsMovable(Vector3 direction)

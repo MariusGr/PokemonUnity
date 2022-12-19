@@ -4,6 +4,7 @@ using System.Collections;
 public interface IDialogBox : IUIView, IInputConsumer
 {
     public int GetChosenIndex();
+    public void DrawTextPausing(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2);
     public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2);
     public Coroutine DrawText(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2);
     public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2);

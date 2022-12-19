@@ -96,6 +96,7 @@ public class Pokemon
     public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
     [SerializeField] private StatusEffectNonVolatile _statusEffect = null;
     public StatusEffectNonVolatile statusEffect { get => _statusEffect; private set { _statusEffect = value; } }
+    public int statusEffectStepCount = 0;
     public int statusEffectLifeTime = 0;
     public float catchRateStatusBonus => statusEffect is null ? 1f : statusEffect.catchRateBonus;
     public bool isFainted => hp < 1;
@@ -212,6 +213,20 @@ public class Pokemon
     {
         this.statusEffect = statusEffect;
         statusEffectLifeTime = UnityEngine.Random.Range(statusEffect.lifetimeRoundsMinimum, statusEffect.lifetimeRoundsMaximum);
+        statusEffectStepCount = 0;
+    }
+
+    public void InflictDamageOverTime()
+    {
+        if (statusEffect is null || statusEffect.damageOverTime < 1)
+            return;
+
+        statusEffectStepCount += 1;
+        if (statusEffectStepCount >= 4)
+        {
+            statusEffectStepCount = 0;
+            InflictDamage(statusEffect.damageOverTime);
+        }
     }
 
     public void HealStatusEffect() => statusEffect = null;

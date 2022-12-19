@@ -18,7 +18,7 @@ public class StatusEffectNonVolatile : ScriptableObject
     public bool takesEffectBeforeMoves = false;
     public int damagePerRoundAbsolute = 0;
     public float damagePerRoundRelativeToMaxHp = 0;
-    public int damageByMovement = 0;
+    public int damageOverTime = 0;
     public bool preventsMove = true;
     public float chance = 1f;
     public float statModifierSpeedRelative = 1f;

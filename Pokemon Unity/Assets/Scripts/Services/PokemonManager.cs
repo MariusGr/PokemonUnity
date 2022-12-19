@@ -139,4 +139,20 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 
         yield return null;
     }
+
+    public bool HandleWalkDamage()
+    {
+        foreach (Pokemon pokemon in PlayerData.Instance.pokemons)
+        {
+            StatusEffectNonVolatile statusEffect = pokemon.statusEffect;
+            pokemon.InflictDamageOverTime();
+            if (pokemon.isFainted)
+            {
+                dialogBox.DrawTextPausing($"{pokemon.Name} wurde durch {statusEffect.nameSubject} besiegt.");
+                if (Play)
+            }
+        }
+
+        return false;
+    }
 }

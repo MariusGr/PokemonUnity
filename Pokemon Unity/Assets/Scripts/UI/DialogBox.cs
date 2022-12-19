@@ -87,6 +87,19 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     public bool IsOpen() => gameObject.activeSelf;
 
+    public void DrawTextPausing(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
+    {
+        Open();
+        EventManager.Pause();
+        StartCoroutine(DrawTextUnpausing(text, continueMode, closeAfterFinish, lines));
+    }
+
+    private IEnumerator DrawTextUnpausing(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
+    {
+        yield return DrawText(text, continueMode, closeAfterFinish, lines);
+        EventManager.Unpause();
+    }
+
     public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
     {
         Open();
