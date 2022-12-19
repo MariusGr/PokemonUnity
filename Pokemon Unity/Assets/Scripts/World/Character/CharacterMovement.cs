@@ -33,6 +33,7 @@ public class CharacterMovement : Pausable
             currentDirection = currentDirectionVector.ToDirection();
         }
     }
+    private Coroutine moveCoroutine;
 
     void Start()
     {
@@ -43,6 +44,12 @@ public class CharacterMovement : Pausable
         SignUpForPause();
     }
 
+    protected override void Pause()
+    {
+        base.Pause();
+        character.Animator.Tick(AnimationType.None, currentDirection);
+    }
+
     public void ProcessMovement(Direction direction, bool sprinting = false, bool checkPositionEvents = true, bool ignorePaused = false)
         => ProcessMovement(new GridVector(direction), sprinting, checkPositionEvents, ignorePaused);
 
@@ -51,6 +58,8 @@ public class CharacterMovement : Pausable
 
     public void ProcessMovement(float horizontal, float vertical, bool sprinting, bool checkPositionEvents = true, bool ignorePaused = false)
     {
+        print("ProcessMovement");
+        print(paused);
         if (!ignorePaused && paused)
             return;
 
@@ -110,7 +119,8 @@ public class CharacterMovement : Pausable
 
         if (IsMovable(direction))
         {
-            StartCoroutine(MoveTo(new GridVector(transform.position + direction), checkPositionEvents));
+            if (moveCoroutine is null)
+                moveCoroutine = StartCoroutine(MoveTo(new GridVector(transform.position + direction), checkPositionEvents));
             character.Animator.Tick(animation, currentDirection);
         }
         else
@@ -152,6 +162,8 @@ public class CharacterMovement : Pausable
 
             EncounterArea.CheckPositionRelatedEvents();
         }
+
+        moveCoroutine = null;
     }
 
     bool IsMovable(Vector3 direction)
