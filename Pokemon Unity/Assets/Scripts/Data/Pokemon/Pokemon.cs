@@ -81,7 +81,7 @@ public class Pokemon
     public string metLevel;
 
     public int level;
-    // TODO increase stats with level
+    // TODO show stats without status effect multipliers for displaying puposes
     public int attack => (int)(BasteStatToStat(data.attack) * stageAttack.multiplier);
     public int specialAttack => (int)(BasteStatToStat(data.specialAttack) * stageSpecialAttack.multiplier);
     public int defense => (int)(BasteStatToStat(data.defense) * stageDefense.multiplier);

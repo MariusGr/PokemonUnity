@@ -29,4 +29,5 @@ MonoBehaviour:
   preventsMove: 0
   chance: 1
   statModifierSpeedRelative: 1
+  damageModifierRelative: 1
   catchRateBonus: 1.5

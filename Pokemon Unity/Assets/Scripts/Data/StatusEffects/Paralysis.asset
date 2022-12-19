@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c12cccb5f034b47b45be359e7441ad, type: 3}
+  m_Name: Paralysis
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 3e62a8f068ecb534e8b2031747bd63eb, type: 3}
+  nameSubject: Paralyse
+  inflictionText: <pkmn-name> ist paralysiert! Es greift eventuell nicht an!
+  effectPerRoundText: <pkmn-name> ist paralysiert! Es kann sich nicht bewegen!
+  endOfLifeText: 
+  healText: Paralyse von <pkmn-name> wurde geheilt!
+  livesForever: 1
+  lifetimeRoundsMinimum: 0
+  lifetimeRoundsMaximum: 0
+  takesEffectOnceWhenLifeTimeEnded: 0
+  takesEffectBeforeMoves: 1
+  damagePerRoundAbsolute: 0
+  damagePerRoundRelativeToMaxHp: 0
+  damageOverTime: 0
+  preventsMove: 1
+  chance: 0.25
+  statModifierSpeedRelative: 0.25
+  damageModifierRelative: 1
+  catchRateBonus: 1.5

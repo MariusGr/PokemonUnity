@@ -83,6 +83,7 @@ public class Move
             0, Mathf.Floor(
                 ((.4f * attacker.level + 2) *
                 data.power *
+                (attacker.statusEffect is null ? 1f : attacker.statusEffect.damageModifierRelative) *
                 attackerAttack /
                 targetDefense / 50f + 2f) *
             criticalFactor * stab * effectivenessFactor)

@@ -25,8 +25,9 @@ MonoBehaviour:
   takesEffectBeforeMoves: 1
   damagePerRoundAbsolute: 0
   damagePerRoundRelativeToMaxHp: 0
-  damageByMovement: 0
+  damageOverTime: 0
   preventsMove: 1
   chance: 1
   statModifierSpeedRelative: 1
+  damageModifierRelative: 1
   catchRateBonus: 2

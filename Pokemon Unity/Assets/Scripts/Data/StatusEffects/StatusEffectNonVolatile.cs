@@ -22,5 +22,6 @@ public class StatusEffectNonVolatile : ScriptableObject
     public bool preventsMove = true;
     public float chance = 1f;
     public float statModifierSpeedRelative = 1f;
+    public float damageModifierRelative = 1f;
     public float catchRateBonus = 1f;
 }

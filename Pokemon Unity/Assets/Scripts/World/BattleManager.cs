@@ -707,22 +707,18 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         StatusEffectNonVolatile statusEffect = targetPokemon.statusEffect;
         int damage = statusEffect is null ? 0 : statusEffect.damagePerRoundAbsolute + Mathf.RoundToInt(statusEffect.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp);
 
-        print("StatusEffectRoundTick?...");
-
         if (statusEffect is null ||
-            beforeMove && !targetPokemon.statusEffect.takesEffectBeforeMoves ||
-            !beforeMove && targetPokemon.statusEffect.takesEffectBeforeMoves ||
-            damage < 1 && !targetPokemon.statusEffect.preventsMove
+            beforeMove && !statusEffect.takesEffectBeforeMoves ||
+            !beforeMove && statusEffect.takesEffectBeforeMoves ||
+            damage < 1 && !statusEffect.preventsMove
         )
             yield break;
 
-        print("StatusEffectRoundTick!");
-
-        bool lifeTimeEnds = !targetPokemon.statusEffect.livesForever && targetPokemon.statusEffectLifeTime < 1;
+        bool lifeTimeEnds = !statusEffect.livesForever && targetPokemon.statusEffectLifeTime < 1;
         if (lifeTimeEnds)
             yield return HealStatus(target);
 
-        if (!lifeTimeEnds || statusEffect.takesEffectOnceWhenLifeTimeEnded || UnityEngine.Random.value > targetPokemon.statusEffect.chance)
+        if ((!lifeTimeEnds || statusEffect.takesEffectOnceWhenLifeTimeEnded) && UnityEngine.Random.value <= statusEffect.chance)
         {
             if(!lifeTimeEnds)
                 yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(

@@ -58,8 +58,6 @@ public class CharacterMovement : Pausable
 
     public void ProcessMovement(float horizontal, float vertical, bool sprinting, bool checkPositionEvents = true, bool ignorePaused = false)
     {
-        print("ProcessMovement");
-        print(paused);
         if (!ignorePaused && paused)
             return;
 
