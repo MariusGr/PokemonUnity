@@ -31,3 +31,6 @@ MonoBehaviour:
   statModifierSpeedRelative: 1
   damageModifierRelative: 1
   catchRateBonus: 1.5
+  immuneTypes:
+  - {fileID: 11400000, guid: f647a3d8033d74746ac3174598f7098b, type: 2}
+  - {fileID: 11400000, guid: 403e02a791b8b400987b0fff4c05b124, type: 2}

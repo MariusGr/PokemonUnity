@@ -209,6 +209,14 @@ public class Pokemon
         HealStatusEffect();
     }
 
+    public bool IsImmuneToStatusEffect(StatusEffectNonVolatile statusEffect)
+    {
+        foreach (PokemonTypeData type in data.pokemonTypes)
+            if (statusEffect.immuneTypes.Contains(type))
+                return true;
+        return false;
+    }
+
     public void InflictStatusEffect(StatusEffectNonVolatile statusEffect)
     {
         this.statusEffect = statusEffect;

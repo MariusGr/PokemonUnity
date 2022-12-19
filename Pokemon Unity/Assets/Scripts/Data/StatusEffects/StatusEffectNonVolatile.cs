@@ -24,4 +24,5 @@ public class StatusEffectNonVolatile : ScriptableObject
     public float statModifierSpeedRelative = 1f;
     public float damageModifierRelative = 1f;
     public float catchRateBonus = 1f;
+    public List<PokemonTypeData> immuneTypes;
 }

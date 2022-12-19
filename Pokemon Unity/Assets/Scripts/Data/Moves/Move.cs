@@ -37,7 +37,8 @@ public class Move
     {
         failReason = FailReason.None;
 
-        if (data.power < 1 && !(target.statusEffect is null))
+        if (data.power < 1 && (!(target.statusEffect is null) ||
+            (!(data.statusInflictedTarget is null)) && target.IsImmuneToStatusEffect(data.statusInflictedTarget)))
         {
             failReason = FailReason.NoEffect;
             return false;
