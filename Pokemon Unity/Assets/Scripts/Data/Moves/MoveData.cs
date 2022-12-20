@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CollectionExtensions;
 
 [CreateAssetMenu(fileName = "NewMove", menuName = "Pokemon/Move")]
 public class MoveData : ScriptableObject
@@ -8,11 +9,15 @@ public class MoveData : ScriptableObject
     public string fullName;
     public string description;
     public PokemonTypeData pokeType;
+
     public int maxPP;
     public int power;
     public int accuracy;
+
     public StatusEffectNonVolatile statusInflictedTarget;
     public StatusEffectNonVolatile statusInflictedSelf;
+    public InspectorFriendlySerializableDictionary<Stat, int> statModifiersSelf;
+    public InspectorFriendlySerializableDictionary<Stat, int> statModifiersTarget;
     public MoveCategory category;
 
     public AnimationClip animationClipPlayer;

@@ -119,6 +119,7 @@ public class Pokemon
     public StageMultiplier stageSpeed;
     public StageMultiplierOffensive stageAccuracy;
     public StageMultiplierDefensive stageEvasion;
+    private Dictionary<Stat, StageMultiplier> statToStage;
 
     public float hpNormalized => (float)hp / maxHp;
     public float xpNormalized
@@ -159,6 +160,17 @@ public class Pokemon
         stageSpeed = new StageMultiplier(statStageMultipliers);
         stageAccuracy = new StageMultiplierOffensive(accuracyStageMultipliers);
         stageEvasion = new StageMultiplierDefensive(accuracyStageMultipliers);
+
+        statToStage = new Dictionary<Stat, StageMultiplier>()
+        {
+            { Stat.Attack, stageAttack },
+            { Stat.SpecialAttack, stageSpecialAttack },
+            { Stat.Defense, stageDefense },
+            { Stat.SpecialDefense, stageSpecialDefense },
+            { Stat.Speed, stageSpeed },
+            { Stat.Accuracy, stageAccuracy },
+            { Stat.Evasion, stageEvasion },
+        };
 
         hp = maxHp;
         moves = new List<Move>();
@@ -212,6 +224,25 @@ public class Pokemon
             return true;
         }
         return false;
+    }
+
+    public int InflictStatModifier(Stat stat, int amount)
+    {
+        StageMultiplier stage = statToStage[stat];
+        int result = 0;
+        if (stage.stage + amount > 6)
+            result = 1;
+        if (stage.stage + amount < -6)
+            result = - 1;
+
+        stage.stage = Math.Min(6, Math.Max(-6, stage.stage + amount));
+        return result;
+    }
+
+    public void ResetStatModifiers()
+    {
+        foreach (StageMultiplier stage in statToStage.Values)
+            stage.stage = 0;
     }
 
     public void Faint()

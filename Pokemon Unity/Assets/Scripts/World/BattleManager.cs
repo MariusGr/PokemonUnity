@@ -37,8 +37,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private CharacterData[] characterData;
 
     private Pokemon wildPokemon;
-    private Pokemon playerPokemon => GeActivePokemon(Constants.PlayerIndex);
-    private Pokemon opponentPokemon => GeActivePokemon(Constants.OpponentIndex);
+    private Pokemon playerPokemon => GetActivePokemon(Constants.PlayerIndex);
+    private Pokemon opponentPokemon => GetActivePokemon(Constants.OpponentIndex);
 
     private IBattleUI ui;
     private IEvolutionManager evolutionManager;
@@ -53,7 +53,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         Initialize();
     }
 
-    private Pokemon GeActivePokemon(int character)
+    private Pokemon GetActivePokemon(int character)
         => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
 
     private void Reset()
@@ -574,8 +574,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (characterIndex == Constants.OpponentIndex)
             PlayerData.Instance.AddSeenPokemon(opponentPokemon.data);
 
+        Pokemon pokemon = GetActivePokemon(characterIndex);
+        pokemon.ResetStatModifiers();
+
         // TODO Animate pokemon deployment
-        ui.SwitchToPokemon(characterIndex, characterData[characterIndex].pokemons[pokemonIndex]);
+        ui.SwitchToPokemon(characterIndex, pokemon);
         yield return null;
     }
 
@@ -597,8 +600,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             targetCharacter = characterData[target];
         if (attacker == Constants.PlayerIndex || !opponentIsWild)
             attackerCharacter = characterData[attacker];
-        Pokemon attackerPokemon = GeActivePokemon(attacker);
-        Pokemon targetPokemon = GeActivePokemon(target);
+        Pokemon attackerPokemon = GetActivePokemon(attacker);
+        Pokemon targetPokemon = GetActivePokemon(target);
         move.DecrementPP();
         ui.RefreshMove(move);
 
@@ -647,8 +650,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                     yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
             }
 
+            yield return InflictStatModifiers(target, move.data.statModifiersTarget);
             yield return InflictStatusEffect(target, move.data.statusInflictedTarget);
             yield return InflictStatusEffect(attacker, move.data.statusInflictedSelf);
+            yield return InflictStatModifiers(attacker, move.data.statModifiersSelf);
         }
         else
         {
@@ -685,13 +690,40 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator InflictDamage(int target, int damage)
     {
-        GeActivePokemon(target).InflictDamage(damage);
+        GetActivePokemon(target).InflictDamage(damage);
         yield return ui.RefreshHPAnimated(target);
+    }
+
+    private IEnumerator InflictStatModifiers(int target, Dictionary<Stat, int> statModifiers)
+    {
+        foreach (KeyValuePair<Stat, int> entry in statModifiers)
+            yield return InflictStatModifier(target, entry.Key, entry.Value);
+    }
+
+    private IEnumerator InflictStatModifier(int target, Stat stat, int amount)
+    {
+        if (amount == 0)
+            yield break;
+
+        // TODO Animation
+        Pokemon targetPokemon = GetActivePokemon(target);
+        int result = targetPokemon.InflictStatModifier(stat, amount);
+        string statString = TextKeyManager.statToString[stat];
+        if (result == 0)
+            yield return dialogBox.DrawText(
+                $"{statString} von {targetPokemon.Name} {TextKeyManager.GetStatModificationDescription(amount)}!", closeAfterFinish: true);
+        else if (result < 0)
+            yield return dialogBox.DrawText(
+                $"{statString} von {targetPokemon.Name} kann nicht weiter fallen!", closeAfterFinish: true);
+        else
+            yield return dialogBox.DrawText(
+                $"{statString} von {targetPokemon.Name} kann nicht weiter steigen!", closeAfterFinish: true);
     }
 
     private IEnumerator InflictStatusEffect(int target, StatusEffectNonVolatile statusEffect)
     {
-        Pokemon targetPokemon = GeActivePokemon(target);
+        // TODO Animation
+        Pokemon targetPokemon = GetActivePokemon(target);
         if (statusEffect is null || !(targetPokemon.statusEffect is null))
             yield break;
 
@@ -703,7 +735,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator StatusEffectRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
     {
-        Pokemon targetPokemon = GeActivePokemon(target);
+        Pokemon targetPokemon = GetActivePokemon(target);
         StatusEffectNonVolatile statusEffect = targetPokemon.statusEffect;
         int damage = statusEffect is null ? 0 : statusEffect.damagePerRoundAbsolute + Mathf.RoundToInt(statusEffect.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp);
 
@@ -739,7 +771,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator HealStatus(int target)
     {
-        Pokemon targetPokemon = GeActivePokemon(target);
+        Pokemon targetPokemon = GetActivePokemon(target);
         yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
                     TextKeyManager.TextKeyPokemon, targetPokemon.statusEffect.endOfLifeText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
         targetPokemon.HealStatus();
