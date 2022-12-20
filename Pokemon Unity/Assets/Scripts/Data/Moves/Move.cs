@@ -47,9 +47,8 @@ public class Move
         if (data.accuracy < 0)
             return true;
 
-        float adjustedStages = attacker.stageAccuracy.GetMultiplier(substractStage: target.stageEvasion.stage);
-        int accuracyModified = (int)(data.accuracy * adjustedStages);
-        Debug.Log($"accuracy: {data.accuracy}, adjustedStages: {adjustedStages}, accuracyModified: {accuracyModified}");
+        int accuracyModified = (int)(data.accuracy * attacker.stageAccuracy.GetMultiplier());
+        Debug.Log($"accuracy: {data.accuracy}, accuracyModified: {accuracyModified}");
 
         if (UnityEngine.Random.Range(0, 100) < accuracyModified)
             return true;
@@ -77,8 +76,8 @@ public class Move
         else
             effectiveness = Effectiveness.Normal;
 
-        int targetDefense = data.category.isSpecial ? target.specialDefense : target.defense;
-        int attackerAttack = data.category.isSpecial ? attacker.specialAttack : attacker.attack;
+        int targetDefense = data.category.isSpecial ? target.GetSpecialDefense(critcal) : target.GetDefense(critcal);
+        int attackerAttack = data.category.isSpecial ? attacker.GetSpecialAttack(critcal) : attacker.GetAttack(critcal);
 
         int damage = (int)Mathf.Max(
             0, Mathf.Floor(

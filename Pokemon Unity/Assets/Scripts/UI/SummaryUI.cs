@@ -46,7 +46,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
         metDateText.text = pokemon.metDate.ToString();
         metMapText.text = pokemon.metMap.ToString();
         metLevelText.text = pokemon.metLevel.ToString();
-        statsText.text = $"{pokemon.attack}\n{pokemon.defense}\n{pokemon.specialAttack}\n{pokemon.specialDefense}\n{pokemon.speed}";
+        statsText.text = $"{pokemon.attackUnmodified}\n{pokemon.defenseUnmodified}\n{pokemon.specialAttackUnmodified}\n{pokemon.specialDefenseUnmodified}\n{pokemon.speedUnmodified}";
         moveSelection.Assign(pokemon);
         moveSelection.AssignOnSelectCallback(RefreshMoveSelection);
         CloseMoveSelection();

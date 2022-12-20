@@ -39,36 +39,42 @@ public class Pokemon
         266f / 100f,
         300f / 100f,
     };
-    //private static Dictionary<Status, float> status2CatchRateBonus = new Dictionary<Status, float>()
-    //{
-    //    { Status.None, 1f },
-    //    { Status.Burned, 1.5f },
-    //    { Status.Confused, 1f },
-    //    { Status.Fainted, 1f },
-    //    { Status.Frozen, 2f },
-    //    { Status.Paralyzed, 1.5f },
-    //    { Status.Piosened, 1.5f },
-    //    { Status.Sleeping, 2f },
-    //};
-
+    
     public class StageMultiplier
     {
         private float[] multipliers;
-        private int _stage;
+        protected int index;
         public int stage
         {
-            get => _stage - 6;
-            set => _stage = Math.Max(0, Math.Min(multipliers.Length, value + 6));
+            get => IndexToStage(index);
+            set => index = StageToIndex(value);
         }
-        public float multiplier => multipliers[_stage];
+        protected float multiplier => multipliers[index];
 
         public StageMultiplier(float[] multipliers)
         {
-            _stage = 6;
+            index = 6;
             this.multipliers = multipliers;
         }
 
-        public float GetMultiplier(int substractStage = 0) => multipliers[Math.Max(0, Math.Min(multipliers.Length, stage - substractStage + 6))];
+        public float GetMultiplier() => multiplier;
+        public virtual float GetMultiplier(bool criticalHit) => multiplier;
+        private int StageToIndex(int stage) => Math.Max(0, Math.Min(multipliers.Length, stage + 6));
+        private int IndexToStage(int index) => index - 6;
+        protected float GetMultiplier(int stage) => multipliers[StageToIndex(stage)];
+        //public float GetMultiplier(int substractStage = 0) => multipliers[Math.Max(0, Math.Min(multipliers.Length, stage + substractStage + 6))];
+    }
+
+    public class StageMultiplierOffensive : StageMultiplier
+    {
+        public StageMultiplierOffensive(float[] multipliers) : base(multipliers) { }
+        public override float GetMultiplier(bool criticalHit) => criticalHit ? GetMultiplier(Math.Max(0, stage)) : multiplier;
+    }
+
+    public class StageMultiplierDefensive : StageMultiplier
+    {
+        public StageMultiplierDefensive(float[] multipliers) : base(multipliers) { }
+        public override float GetMultiplier(bool criticalHit) => criticalHit ? GetMultiplier(Math.Min(0, stage)) : multiplier;
     }
 
     public PokemonData data;
@@ -82,11 +88,16 @@ public class Pokemon
 
     public int level;
     // TODO show stats without status effect multipliers for displaying puposes
-    public int attack => (int)(BasteStatToStat(data.attack) * stageAttack.multiplier);
-    public int specialAttack => (int)(BasteStatToStat(data.specialAttack) * stageSpecialAttack.multiplier);
-    public int defense => (int)(BasteStatToStat(data.defense) * stageDefense.multiplier);
-    public int specialDefense => (int)(BasteStatToStat(data.specialDefense) * stageSpecialDefense.multiplier);
-    public int speed => (int)(speedUnmodified * stageSpeed.multiplier * (statusEffect is null ? 1f : statusEffect.statModifierSpeedRelative));
+    public int GetAttack(bool criticalHit) => (int)(attackUnmodified * stageAttack.GetMultiplier(criticalHit));
+    public int GetSpecialAttack(bool criticalHit) => (int)(specialAttackUnmodified * stageSpecialAttack.GetMultiplier(criticalHit));
+    public int GetDefense(bool criticalHit) => (int)(defenseUnmodified * stageDefense.GetMultiplier(criticalHit));
+    public int GetSpecialDefense(bool criticalHit) => (int)(specialDefenseUnmodified * stageSpecialDefense.GetMultiplier(criticalHit));
+    public int speed => (int)(speedUnmodified * stageSpeed.GetMultiplier() * (statusEffect is null ? 1f : statusEffect.statModifierSpeedRelative));
+
+    public int attackUnmodified => BasteStatToStat(data.attack);
+    public int specialAttackUnmodified => BasteStatToStat(data.specialAttack);
+    public int defenseUnmodified => BasteStatToStat(data.defense);
+    public int specialDefenseUnmodified => BasteStatToStat(data.specialDefense);
     public int speedUnmodified => BasteStatToStat(data.speed);
     public int maxHp => BasteStatToStat(data.maxHp);
 
@@ -101,13 +112,13 @@ public class Pokemon
     public float catchRateStatusBonus => statusEffect is null ? 1f : statusEffect.catchRateBonus;
     public bool isFainted => hp < 1;
     public bool isAtFullHP => hp >= maxHp;
-    public StageMultiplier stageAttack;
-    public StageMultiplier stageSpecialAttack;
-    public StageMultiplier stageDefense;
-    public StageMultiplier stageSpecialDefense;
+    public StageMultiplierOffensive stageAttack;
+    public StageMultiplierOffensive stageSpecialAttack;
+    public StageMultiplierDefensive stageDefense;
+    public StageMultiplierDefensive stageSpecialDefense;
     public StageMultiplier stageSpeed;
-    public StageMultiplier stageAccuracy;
-    public StageMultiplier stageEvasion;
+    public StageMultiplierOffensive stageAccuracy;
+    public StageMultiplierDefensive stageEvasion;
 
     public float hpNormalized => (float)hp / maxHp;
     public float xpNormalized
@@ -141,13 +152,13 @@ public class Pokemon
     public void Initialize(CharacterData character)
     {
         this.character = character;
-        stageAttack = new StageMultiplier(statStageMultipliers);
-        stageSpecialAttack = new StageMultiplier(statStageMultipliers);
-        stageDefense = new StageMultiplier(statStageMultipliers);
-        stageSpecialDefense = new StageMultiplier(statStageMultipliers);
+        stageAttack = new StageMultiplierOffensive(statStageMultipliers);
+        stageSpecialAttack = new StageMultiplierOffensive(statStageMultipliers);
+        stageDefense = new StageMultiplierDefensive(statStageMultipliers);
+        stageSpecialDefense = new StageMultiplierDefensive(statStageMultipliers);
         stageSpeed = new StageMultiplier(statStageMultipliers);
-        stageAccuracy = new StageMultiplier(accuracyStageMultipliers);
-        stageEvasion = new StageMultiplier(accuracyStageMultipliers);
+        stageAccuracy = new StageMultiplierOffensive(accuracyStageMultipliers);
+        stageEvasion = new StageMultiplierDefensive(accuracyStageMultipliers);
 
         hp = maxHp;
         moves = new List<Move>();
