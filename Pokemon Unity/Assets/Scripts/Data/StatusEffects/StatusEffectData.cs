@@ -25,4 +25,16 @@ public abstract class StatusEffectData : ScriptableObject
     public float damageModifierRelative = 1f;
     public float catchRateBonus = 1f;
     public List<PokemonTypeData> immuneTypes;
+
+    public bool isVolatile => GetType() == typeof(StatusEffectVolatileData);
+    public bool isNonVolatile => GetType() == typeof(StatusEffectNonVolatileData);
+
+    public int GetDamageAgainstSelf(Pokemon pokemon)
+        => (int)Mathf.Max(0, Mathf.Floor(
+                    ((.4f * pokemon.level + 2) *
+                    40f *
+                    (pokemon.statusEffectNonVolatile is null ? 1f : pokemon.statusEffectNonVolatile.data.damageModifierRelative) *
+                    pokemon.GetAttack(false) /
+                    pokemon.GetDefense(false) / 50f + 2f))
+                );
 }

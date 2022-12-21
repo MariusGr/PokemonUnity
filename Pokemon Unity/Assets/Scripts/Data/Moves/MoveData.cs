@@ -30,6 +30,40 @@ public class MoveData : ScriptableObject
 
     public float recoil = 0;
 
+    public bool doesNotInflictDamage => power < 1;
+    public bool doesNotInflictRecoil => recoil < 1;
+
+    public bool doesNotModifyStats
+        => statModifiersTarget.Count < 1 &&
+        statModifiersSelf.Count < 1;
+
+    public bool onlyInflictsNonVolatileStatusEffectOnTarget
+        => doesNotInflictDamage &&
+        !(statusNonVolatileInflictedTarget is null) &&
+        statusVolatileInflictedTarget is null &&
+        statusNonVolatileInflictedSelf is null &&
+        statusVolatileInflictedSelf is null &&
+        doesNotInflictRecoil &&
+        doesNotModifyStats;
+
+    public bool onlyInflictsVolatileStatusOnTarget
+        => doesNotInflictDamage &&
+        !(statusVolatileInflictedTarget is null) &&
+        statusNonVolatileInflictedTarget is null &&
+        statusNonVolatileInflictedSelf is null &&
+        statusVolatileInflictedSelf is null &&
+        doesNotInflictRecoil &&
+        doesNotModifyStats;
+
+    public bool onlyInflictsBothStatusEffectsOnTarget
+        => doesNotInflictDamage &&
+        !(statusVolatileInflictedTarget is null) &&
+        !(statusNonVolatileInflictedTarget is null) &&
+        statusNonVolatileInflictedSelf is null &&
+        statusVolatileInflictedSelf is null &&
+        doesNotInflictRecoil &&
+        doesNotModifyStats;
+
     public AnimationClip GetAnimationClip(int character)
     {
         if (character == Constants.PlayerIndex)

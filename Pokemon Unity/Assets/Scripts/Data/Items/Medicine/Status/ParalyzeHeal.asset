@@ -27,5 +27,8 @@ MonoBehaviour:
   revives: 0
   healsHPFully: 0
   hpHealed: 0
-  healsAllStati: 0
-  statusHealed: {fileID: 11400000, guid: 1d5e9caf1cbb2f849a1a0977a02482f8, type: 2}
+  healsAllStatusEffectsNonVolatile: 0
+  healsAllStatusEffectsVolatile: 0
+  nonVolatileStatusHealed: {fileID: 11400000, guid: 1d5e9caf1cbb2f849a1a0977a02482f8,
+    type: 2}
+  volatileStatusHealed: {fileID: 0}

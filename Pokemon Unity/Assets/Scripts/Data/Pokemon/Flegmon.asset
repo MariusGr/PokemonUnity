@@ -37,4 +37,4 @@ MonoBehaviour:
   levelToMoveDataMap:
     keys: 00000000
     values:
-    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
+    - {fileID: 11400000, guid: c57e523610aa794419f8ba5b75317a7f, type: 2}

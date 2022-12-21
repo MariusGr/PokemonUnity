@@ -46,7 +46,7 @@ public class PokemonStatsUI : SelectableImage
             status.enabled = false;
         else
         {
-            status.sprite = pokemon.statusEffectNonVolatile.icon;
+            status.sprite = ((StatusEffectNonVolatileData)pokemon.statusEffectNonVolatile.data).icon;
             status.enabled = true;
         }
 

@@ -37,8 +37,13 @@ public class Move
     {
         failReason = FailReason.None;
 
-        if (data.power < 1 && (!(target.statusEffectNonVolatile is null) ||
-            (!(data.statusNonVolatileInflictedTarget is null)) && target.IsImmuneToStatusEffect(data.statusNonVolatileInflictedTarget)))
+        if (
+            data.onlyInflictsNonVolatileStatusEffectOnTarget && target.NonVolatileStatusWillNotHaveEffect(data.statusNonVolatileInflictedTarget) ||
+            data.onlyInflictsVolatileStatusOnTarget && target.VolatileStatusWillNotHaveEffect(data.statusVolatileInflictedTarget) ||
+            data.onlyInflictsBothStatusEffectsOnTarget &&
+            target.NonVolatileStatusWillNotHaveEffect(data.statusNonVolatileInflictedTarget) &&
+            target.VolatileStatusWillNotHaveEffect(data.statusVolatileInflictedTarget)
+        )
         {
             failReason = FailReason.NoEffect;
             return false;
@@ -83,10 +88,10 @@ public class Move
             0, Mathf.Floor(
                 ((.4f * attacker.level + 2) *
                 data.power *
-                (attacker.statusEffectNonVolatile is null ? 1f : attacker.statusEffectNonVolatile.damageModifierRelative) *
+                (attacker.statusEffectNonVolatile is null ? 1f : attacker.statusEffectNonVolatile.data.damageModifierRelative) *
                 attackerAttack /
                 targetDefense / 50f + 2f) *
-            criticalFactor * stab * effectivenessFactor)
+                criticalFactor * stab * effectivenessFactor)
         );
         Debug.Log($"level: {attacker.level}, power: {data.power}, attack: {attackerAttack}," +
             $"defense: {targetDefense}, critical: {criticalFactor}, stab: {stab}, effectiveness: {effectivenessFactor}, total: {damage}");

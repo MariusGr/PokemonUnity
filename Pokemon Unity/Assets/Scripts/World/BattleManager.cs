@@ -64,6 +64,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         pokemonIndex[Constants.PlayerIndex] = playerData.GetFirstAlivePokemonIndex();
         isDefeated = new bool[] { false, false };
 
+        playerPokemon.ResetStatModifiers();
+        opponentPokemon.ResetStatModifiers();
+        playerPokemon.HealAllVolatileStatusEffect();
+        opponentPokemon.HealAllVolatileStatusEffect();
+
         ui.Open(playerData, playerPokemon, opponentPokemon);
         unfaintedPlayerPokemons = new Dictionary<Pokemon, HashSet<Pokemon>>();
         evolvingPokemons = new HashSet<Pokemon>();
@@ -199,8 +204,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                     //TODO
             }
 
-            yield return StatusEffectRoundTick(Constants.OpponentIndex, false);
-            yield return StatusEffectRoundTick(Constants.PlayerIndex, false);
+            yield return StatusEffectVolatileRoundTick(Constants.OpponentIndex, false);
+            yield return StatusEffectNonVolatileRoundTick(Constants.OpponentIndex, false);
+            yield return StatusEffectVolatileRoundTick(Constants.PlayerIndex, false);
+            yield return StatusEffectNonVolatileRoundTick(Constants.PlayerIndex, false);
 
             if (BattleHasEnded())
                 break;
@@ -576,6 +583,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         Pokemon pokemon = GetActivePokemon(characterIndex);
         pokemon.ResetStatModifiers();
+        pokemon.HealAllVolatileStatusEffect();
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, pokemon);
@@ -590,7 +598,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
         bool canFight = true;
-        yield return StatusEffectRoundTick(attacker, true, () => canFight = false);
+        yield return StatusEffectVolatileRoundTick(attacker, true, () => canFight &= false);
+        yield return StatusEffectNonVolatileRoundTick(attacker, true, () => canFight &= false);
         if (!canFight)
             yield break;
 
@@ -651,7 +660,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             }
 
             yield return InflictStatModifiers(target, move.data.statModifiersTarget);
+            yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
             yield return InflictStatusEffect(target, move.data.statusNonVolatileInflictedTarget);
+
+            yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
             yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf);
             yield return InflictStatModifiers(attacker, move.data.statModifiersSelf);
         }
@@ -720,61 +732,83 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 $"{statString} von {targetPokemon.Name} kann nicht weiter steigen!", closeAfterFinish: true);
     }
 
-    private IEnumerator InflictStatusEffect(int target, StatusEffectNonVolatileData statusEffect)
+    private IEnumerator InflictStatusEffect(int target, StatusEffectData statusEffect)
     {
         // TODO Animation
         Pokemon targetPokemon = GetActivePokemon(target);
-        if (statusEffect is null || !(targetPokemon.statusEffectNonVolatile is null))
-            yield break;
-
-        yield return dialogBox.DrawText(
-            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
-        targetPokemon.InflictStatusNonVolatileEffect(statusEffect);
-        ui.Refresh(target);
-    }
-
-    private IEnumerator StatusEffectRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
-    {
-        Pokemon targetPokemon = GetActivePokemon(target);
-        StatusEffectNonVolatileData statusEffect = targetPokemon.statusEffectNonVolatile;
-        int damage = statusEffect is null ? 0 : statusEffect.damagePerRoundAbsolute + Mathf.RoundToInt(statusEffect.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp);
-
         if (statusEffect is null ||
-            beforeMove && !statusEffect.takesEffectBeforeMoves ||
-            !beforeMove && statusEffect.takesEffectBeforeMoves ||
-            damage < 1 && !statusEffect.preventsMove
+            statusEffect.isNonVolatile && !(targetPokemon.statusEffectNonVolatile is null) ||
+            statusEffect.isVolatile && targetPokemon.HasStatusEffectVolatile(statusEffect)
         )
             yield break;
 
-        bool lifeTimeEnds = !statusEffect.livesForever && targetPokemon.statusEffectLifeTime < 1;
-        if (lifeTimeEnds)
-            yield return HealStatus(target);
+        yield return dialogBox.DrawText(
+            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), closeAfterFinish: true);
+        targetPokemon.InflictStatusEffect(statusEffect);
+        ui.Refresh(target);
+    }
 
-        if ((!lifeTimeEnds || statusEffect.takesEffectOnceWhenLifeTimeEnded) && UnityEngine.Random.value <= statusEffect.chance)
+    private IEnumerator StatusEffectNonVolatileRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
+    {
+        Pokemon targetPokemon = GetActivePokemon(target);
+        yield return StatusEffectRoundTick(targetPokemon.statusEffectNonVolatile, target, targetPokemon, beforeMove, preventMoveCallback);
+    }
+
+    private IEnumerator StatusEffectVolatileRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
+    {
+        Pokemon targetPokemon = GetActivePokemon(target);
+        StatusEffect[] statusList = new StatusEffect[targetPokemon.statusEffectsVolatile.Count];
+        targetPokemon.statusEffectsVolatile.CopyTo(statusList);
+        foreach (StatusEffect s in statusList)
+            yield return StatusEffectRoundTick(s, target, targetPokemon, beforeMove, preventMoveCallback);
+    }
+
+    private IEnumerator StatusEffectRoundTick(StatusEffect statusEffect, int targetIndex, Pokemon targetPokemon, bool beforeMove, Action preventMoveCallback)
+    {
+        int damage = statusEffect is null ? 0 :
+            statusEffect.data.damagePerRoundAbsolute +
+            Mathf.RoundToInt(statusEffect.data.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp) +
+            statusEffect.data.GetDamageAgainstSelf(targetPokemon);
+
+        if (statusEffect is null ||
+            beforeMove && !statusEffect.data.takesEffectBeforeMoves ||
+            !beforeMove && statusEffect.data.takesEffectBeforeMoves ||
+            damage < 1 && !statusEffect.data.preventsMove
+        )
+            yield break;
+
+        bool lifeTimeEnds = !statusEffect.data.livesForever && statusEffect.lifeTime < 1;
+        if (lifeTimeEnds)
+            yield return HealStatus(targetIndex, statusEffect);
+        else if (statusEffect.data.notificationPerRoundText != "")
+            yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
+                TextKeyManager.TextKeyPokemon, statusEffect.data.notificationPerRoundText, targetPokemon.Name), closeAfterFinish: true);
+
+        if ((!lifeTimeEnds || statusEffect.data.takesEffectOnceWhenLifeTimeEnded) && UnityEngine.Random.value <= statusEffect.data.chance)
         {
-            if(!lifeTimeEnds)
+            if (!lifeTimeEnds)
                 yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                    TextKeyManager.TextKeyPokemon, statusEffect.effectPerRoundText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
+                    TextKeyManager.TextKeyPokemon, statusEffect.data.effectPerRoundText, targetPokemon.Name), closeAfterFinish: true);
             if (damage > 0)
             {
-                yield return InflictDamage(target, damage);
+                yield return InflictDamage(targetIndex, damage);
                 if (targetPokemon.isFainted)
-                    yield return Faint(target, targetPokemon.Name);
+                    yield return Faint(targetIndex, targetPokemon.Name);
             }
 
-            if (statusEffect.preventsMove)
+            if (statusEffect.data.preventsMove)
                 preventMoveCallback?.Invoke();
 
-            targetPokemon.statusEffectLifeTime--;
+            statusEffect.lifeTime--;
         }
     }
 
-    private IEnumerator HealStatus(int target)
+    private IEnumerator HealStatus(int target, StatusEffect statusEffect)
     {
         Pokemon targetPokemon = GetActivePokemon(target);
         yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                    TextKeyManager.TextKeyPokemon, targetPokemon.statusEffectNonVolatile.endOfLifeText, targetPokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
-        targetPokemon.HealStatus();
+                    TextKeyManager.TextKeyPokemon, statusEffect.data.endOfLifeText, targetPokemon.Name), closeAfterFinish: true);
+        targetPokemon.HealStatus(statusEffect);
         ui.Refresh(target);
     }
 

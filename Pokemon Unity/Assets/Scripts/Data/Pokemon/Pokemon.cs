@@ -87,12 +87,13 @@ public class Pokemon
     public string metLevel;
 
     public int level;
-    // TODO show stats without status effect multipliers for displaying puposes
     public int GetAttack(bool criticalHit) => (int)(attackUnmodified * stageAttack.GetMultiplier(criticalHit));
     public int GetSpecialAttack(bool criticalHit) => (int)(specialAttackUnmodified * stageSpecialAttack.GetMultiplier(criticalHit));
     public int GetDefense(bool criticalHit) => (int)(defenseUnmodified * stageDefense.GetMultiplier(criticalHit));
     public int GetSpecialDefense(bool criticalHit) => (int)(specialDefenseUnmodified * stageSpecialDefense.GetMultiplier(criticalHit));
-    public int speed => (int)(speedUnmodified * stageSpeed.GetMultiplier() * (statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.statModifierSpeedRelative));
+    // TODO same for volatile status
+    public int speed
+        => (int)(speedUnmodified * stageSpeed.GetMultiplier() * (statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.data.statModifierSpeedRelative));
 
     public int attackUnmodified => BasteStatToStat(data.attack);
     public int specialAttackUnmodified => BasteStatToStat(data.specialAttack);
@@ -105,12 +106,24 @@ public class Pokemon
     public int hp;
     public int xp;
     public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
-    [SerializeField] private StatusEffectNonVolatileData _statusEffect = null;
-    public StatusEffectNonVolatileData statusEffectNonVolatile { get => _statusEffect; private set { _statusEffect = value; } }
-    public List<StatusEffectVolatileData> statusEffectsVolatile = new List<StatusEffectVolatileData>();
-    public float catchRateStatusBonus => statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.catchRateBonus;
+    [SerializeField] private StatusEffect _statusEffectNonVolatile = null;
+    public StatusEffect statusEffectNonVolatile { get => _statusEffectNonVolatile; private set { _statusEffectNonVolatile = value; } }
+    public List<StatusEffect> statusEffectsVolatile = new List<StatusEffect>();
+    public float catchRateStatusBonus
+    {
+        get
+        {
+            float catchRateBonus = statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.data.catchRateBonus;
+            foreach (StatusEffect s in statusEffectsVolatile)
+                catchRateBonus *= s.data.catchRateBonus;
+            return catchRateBonus;
+        }
+    }
+
     public bool isFainted => hp < 1;
     public bool isAtFullHP => hp >= maxHp;
+    public bool hasNonVolatileStatusEffect => !(statusEffectNonVolatile is null);
+    public bool hasVolatileStatusEffects => statusEffectsVolatile.Count > 0;
     public StageMultiplierOffensive stageAttack;
     public StageMultiplierOffensive stageSpecialAttack;
     public StageMultiplierDefensive stageDefense;
@@ -170,6 +183,8 @@ public class Pokemon
             { Stat.Accuracy, stageAccuracy },
             { Stat.Evasion, stageEvasion },
         };
+
+        statusEffectsVolatile = new List<StatusEffect>();
 
         hp = maxHp;
         moves = new List<Move>();
@@ -247,10 +262,16 @@ public class Pokemon
     public void Faint()
     {
         hp = 0;
-        HealStatusEffect();
+        ResetStatModifiers();
+        HealStatusAllEffects();
     }
 
-    public bool IsImmuneToStatusEffect(StatusEffectNonVolatileData statusEffect)
+    public bool NonVolatileStatusWillNotHaveEffect(StatusEffectNonVolatileData statusEffect)
+        => hasNonVolatileStatusEffect || IsImmuneToStatusEffect(statusEffect);
+    public bool VolatileStatusWillNotHaveEffect(StatusEffectVolatileData statusEffect)
+        => HasStatusEffectVolatile(statusEffect) || IsImmuneToStatusEffect(statusEffect);
+
+    public bool IsImmuneToStatusEffect(StatusEffectData statusEffect)
     {
         foreach (PokemonTypeData type in data.pokemonTypes)
             if (statusEffect.immuneTypes.Contains(type))
@@ -258,32 +279,64 @@ public class Pokemon
         return false;
     }
 
-    public void InflictStatusNonVolatileEffect(StatusEffectNonVolatileData statusEffect)
+    private StatusEffect FindVolatileStatusEffect(StatusEffectData statusEffect)
     {
-        this.statusEffectNonVolatile = statusEffect;
+        foreach (StatusEffect s in statusEffectsVolatile)
+            if (s.data == statusEffect)
+                return s;
+        return null;
     }
 
-    public void InflictStatusVolatileEffect(StatusEffectVolatileData statusEffect)
+    public bool HasStatusEffectVolatile(StatusEffectData statusEffect)
     {
-        //this.statusEffectNonVolatile = statusEffect;
-        //statusEffectLifeTime = UnityEngine.Random.Range(statusEffect.lifetimeRoundsMinimum, statusEffect.lifetimeRoundsMaximum);
-        //statusEffectStepCount = 0;
+        if (FindVolatileStatusEffect(statusEffect) is null)
+            return false;
+        return true;
     }
+
+    public void InflictStatusEffect(StatusEffectData statusEffect)
+    {
+        if (statusEffect.isVolatile)
+            InflictStatusVolatileEffect((StatusEffectVolatileData)statusEffect);
+        else if (statusEffect.isNonVolatile)
+            InflictStatusNonVolatileEffect((StatusEffectNonVolatileData)statusEffect);
+    }
+
+    public void InflictStatusNonVolatileEffect(StatusEffectNonVolatileData statusEffect) => statusEffectNonVolatile = new StatusEffect(statusEffect);
+    public void InflictStatusVolatileEffect(StatusEffectVolatileData statusEffect) => statusEffectsVolatile.Add(new StatusEffect(statusEffect));
 
     public void InflictDamageOverTime()
     {
-        if (statusEffectNonVolatile is null || statusEffectNonVolatile.damageOverTime < 1)
+        if (statusEffectNonVolatile is null || statusEffectNonVolatile.data.damageOverTime < 1)
             return;
 
-        statusEffectStepCount += 1;
-        if (statusEffectStepCount >= 4)
-        {
-            statusEffectStepCount = 0;
-            InflictDamage(statusEffectNonVolatile.damageOverTime);
-        }
+        // TODO: volatile status effects
+        if (statusEffectNonVolatile.OverTimeDanageTick())
+            InflictDamage(statusEffectNonVolatile.data.damageOverTime);
     }
 
-    public void HealStatusEffect() => statusEffectNonVolatile = null;
+    public void HealStatusEffectNonVolatile(StatusEffectData statusEffect)
+        => statusEffectNonVolatile = statusEffectNonVolatile.data == statusEffect ? null : statusEffectNonVolatile;
+    public void HealAllVolatileStatusEffect() => statusEffectsVolatile = new List<StatusEffect>();
+
+    public List<string> HealStatusEffectVolatile(StatusEffectVolatileData statusEffect)
+    {
+        StatusEffect s = FindVolatileStatusEffect(statusEffect);
+        if (!(s is null))
+            HealStatusEffectVolatile(s);
+    }
+
+    public void HealStatusEffectVolatile(StatusEffect statusEffect)
+    {
+        if (statusEffectsVolatile.Contains(statusEffect))
+            statusEffectsVolatile.Remove(statusEffect);
+    }
+
+    public void HealStatusAllEffects()
+    {
+        statusEffectNonVolatile = null;
+        HealAllVolatileStatusEffect();
+    }
 
     public void HealFully()
     {
@@ -292,13 +345,19 @@ public class Pokemon
         foreach (Move move in moves)
             move.ReplenishPP();
 
-        HealStatus();
+        HealStatusAllEffects();
         // TODO: HEal status effects
     }
 
     public void HealHP(int hp) => this.hp = Math.Min(maxHp, this.hp + hp);
     public void HealHPFully() => hp = maxHp;
-    public void HealStatus() => statusEffectNonVolatile = null;
+    public void HealStatus(StatusEffect statusEffect)
+    {
+        if (statusEffect.data.isVolatile)
+            HealStatusEffectVolatile(statusEffect);
+        else if (statusEffect.data.isNonVolatile)
+            HealStatusEffectNonVolatile(statusEffect.data);
+    }
 
     // https://bulbapedia.bulbagarden.net/wiki/Experience
     public int GetXPGainedFromFaint(bool opponentIsWild)
