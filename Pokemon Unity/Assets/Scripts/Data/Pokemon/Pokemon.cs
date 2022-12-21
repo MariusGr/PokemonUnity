@@ -92,7 +92,7 @@ public class Pokemon
     public int GetSpecialAttack(bool criticalHit) => (int)(specialAttackUnmodified * stageSpecialAttack.GetMultiplier(criticalHit));
     public int GetDefense(bool criticalHit) => (int)(defenseUnmodified * stageDefense.GetMultiplier(criticalHit));
     public int GetSpecialDefense(bool criticalHit) => (int)(specialDefenseUnmodified * stageSpecialDefense.GetMultiplier(criticalHit));
-    public int speed => (int)(speedUnmodified * stageSpeed.GetMultiplier() * (statusEffect is null ? 1f : statusEffect.statModifierSpeedRelative));
+    public int speed => (int)(speedUnmodified * stageSpeed.GetMultiplier() * (statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.statModifierSpeedRelative));
 
     public int attackUnmodified => BasteStatToStat(data.attack);
     public int specialAttackUnmodified => BasteStatToStat(data.specialAttack);
@@ -105,11 +105,10 @@ public class Pokemon
     public int hp;
     public int xp;
     public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
-    [SerializeField] private StatusEffectNonVolatile _statusEffect = null;
-    public StatusEffectNonVolatile statusEffect { get => _statusEffect; private set { _statusEffect = value; } }
-    public int statusEffectStepCount = 0;
-    public int statusEffectLifeTime = 0;
-    public float catchRateStatusBonus => statusEffect is null ? 1f : statusEffect.catchRateBonus;
+    [SerializeField] private StatusEffectNonVolatileData _statusEffect = null;
+    public StatusEffectNonVolatileData statusEffectNonVolatile { get => _statusEffect; private set { _statusEffect = value; } }
+    public List<StatusEffectVolatileData> statusEffectsVolatile = new List<StatusEffectVolatileData>();
+    public float catchRateStatusBonus => statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.catchRateBonus;
     public bool isFainted => hp < 1;
     public bool isAtFullHP => hp >= maxHp;
     public StageMultiplierOffensive stageAttack;
@@ -251,7 +250,7 @@ public class Pokemon
         HealStatusEffect();
     }
 
-    public bool IsImmuneToStatusEffect(StatusEffectNonVolatile statusEffect)
+    public bool IsImmuneToStatusEffect(StatusEffectNonVolatileData statusEffect)
     {
         foreach (PokemonTypeData type in data.pokemonTypes)
             if (statusEffect.immuneTypes.Contains(type))
@@ -259,27 +258,32 @@ public class Pokemon
         return false;
     }
 
-    public void InflictStatusEffect(StatusEffectNonVolatile statusEffect)
+    public void InflictStatusNonVolatileEffect(StatusEffectNonVolatileData statusEffect)
     {
-        this.statusEffect = statusEffect;
-        statusEffectLifeTime = UnityEngine.Random.Range(statusEffect.lifetimeRoundsMinimum, statusEffect.lifetimeRoundsMaximum);
-        statusEffectStepCount = 0;
+        this.statusEffectNonVolatile = statusEffect;
+    }
+
+    public void InflictStatusVolatileEffect(StatusEffectVolatileData statusEffect)
+    {
+        //this.statusEffectNonVolatile = statusEffect;
+        //statusEffectLifeTime = UnityEngine.Random.Range(statusEffect.lifetimeRoundsMinimum, statusEffect.lifetimeRoundsMaximum);
+        //statusEffectStepCount = 0;
     }
 
     public void InflictDamageOverTime()
     {
-        if (statusEffect is null || statusEffect.damageOverTime < 1)
+        if (statusEffectNonVolatile is null || statusEffectNonVolatile.damageOverTime < 1)
             return;
 
         statusEffectStepCount += 1;
         if (statusEffectStepCount >= 4)
         {
             statusEffectStepCount = 0;
-            InflictDamage(statusEffect.damageOverTime);
+            InflictDamage(statusEffectNonVolatile.damageOverTime);
         }
     }
 
-    public void HealStatusEffect() => statusEffect = null;
+    public void HealStatusEffect() => statusEffectNonVolatile = null;
 
     public void HealFully()
     {
@@ -294,7 +298,7 @@ public class Pokemon
 
     public void HealHP(int hp) => this.hp = Math.Min(maxHp, this.hp + hp);
     public void HealHPFully() => hp = maxHp;
-    public void HealStatus() => statusEffect = null;
+    public void HealStatus() => statusEffectNonVolatile = null;
 
     // https://bulbapedia.bulbagarden.net/wiki/Experience
     public int GetXPGainedFromFaint(bool opponentIsWild)

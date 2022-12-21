@@ -89,10 +89,10 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                 yield return dialogBox.DrawText($"Du kannst {item.data.fullName} nicht auf besiegte Pok?mon anwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
             else if (item.data.healsHPOnly && pokemon.isAtFullHP)
                 yield return dialogBox.DrawText($"KP von {pokemon.Name} ist breits voll!", DialogBoxContinueMode.User, closeAfterFinish: true);
-            else if (pokemon.statusEffect is null && item.data.healsStatusEffectsOnly)
+            else if (pokemon.statusEffectNonVolatile is null && item.data.healsStatusEffectsOnly)
                 yield return dialogBox.DrawText($"Das h?tte keinen Effekt, denn {pokemon.Name} hat keine Statusprobleme.", DialogBoxContinueMode.User, closeAfterFinish: true);
-            else if (!item.data.healsStatusEffect(pokemon.statusEffect) && item.data.healsStatusEffectsOnly)
-                yield return dialogBox.DrawText($"Du kannst {pokemon.statusEffect.nameSubject} von {pokemon.Name} damit nicht heilen.", DialogBoxContinueMode.User, closeAfterFinish: true);
+            else if (!item.data.healsStatusEffect(pokemon.statusEffectNonVolatile) && item.data.healsStatusEffectsOnly)
+                yield return dialogBox.DrawText($"Du kannst {pokemon.statusEffectNonVolatile.nameSubject} von {pokemon.Name} damit nicht heilen.", DialogBoxContinueMode.User, closeAfterFinish: true);
             else
             {
                 yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
@@ -127,10 +127,10 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgef?llt!", DialogBoxContinueMode.User, closeAfterFinish: true);
         }
 
-        if (item.data.healsStatusEffect(pokemon.statusEffect))
+        if (item.data.healsStatusEffect(pokemon.statusEffectNonVolatile))
         {
             yield return dialogBox.DrawText(
-                TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, pokemon.statusEffect.healText, pokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
+                TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, pokemon.statusEffectNonVolatile.healText, pokemon.Name), DialogBoxContinueMode.User, closeAfterFinish: true);
             pokemon.HealStatusEffect();
         }
 
@@ -144,9 +144,9 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
     {
         foreach (Pokemon pokemon in PlayerData.Instance.pokemons)
         {
-            if (pokemon.statusEffect is null)
+            if (pokemon.statusEffectNonVolatile is null)
                 continue;
-            StatusEffectNonVolatile statusEffect = pokemon.statusEffect;
+            StatusEffectNonVolatileData statusEffect = pokemon.statusEffectNonVolatile;
             pokemon.InflictDamageOverTime();
             if (pokemon.isFainted)
             {

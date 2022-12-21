@@ -18,9 +18,17 @@ MonoBehaviour:
   maxPP: 40
   power: 0
   accuracy: 70
-  statusInflictedTarget: {fileID: 11400000, guid: a753b4252c1544f1d9e4c13f0a917601,
+  statusNonVolatileInflictedTarget: {fileID: 11400000, guid: a753b4252c1544f1d9e4c13f0a917601,
     type: 2}
-  statusInflictedSelf: {fileID: 0}
+  statusNonVolatileInflictedSelf: {fileID: 0}
+  statusVolatileInflictedTarget: {fileID: 0}
+  statusVolatileInflictedSelf: {fileID: 0}
+  statModifiersSelf:
+    keys: 
+    values: 
+  statModifiersTarget:
+    keys: 
+    values: 
   category: {fileID: 11400000, guid: 59bda30bdc919b7439be3bff0274d97e, type: 2}
   animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
   animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,

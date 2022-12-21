@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eeb215abfb46024fb6b592d81604295, type: 3}
+  m_Name: Confusion
+  m_EditorClassIdentifier: 
+  nameSubject: Verwirrung
+  inflictionText: <pkmn-name> ist verwirrt!
+  notificationPerRoundText: <pkmn-name> ist verwirrt!
+  effectPerRoundText: <pkmn-name> hat sich aus Verwirrung selbst verletzt!
+  endOfLifeText: <pkmn-name> ist nicht mehr verwirrt!
+  healText: <pkmn-name> ist nicht mehr verwirrt!
+  livesForever: 0
+  lifetimeRoundsMinimum: 2
+  lifetimeRoundsMaximum: 5
+  takesEffectOnceWhenLifeTimeEnded: 0
+  takesEffectBeforeMoves: 1
+  damagePerRoundAbsolute: 0
+  damagePerRoundRelativeToMaxHp: 0
+  damagePerRoundSelfInflicted: 40
+  damageOverTime: 0
+  preventsMove: 1
+  chance: 0.5
+  statModifierSpeedRelative: 1
+  damageModifierRelative: 1
+  catchRateBonus: 1
+  immuneTypes: []

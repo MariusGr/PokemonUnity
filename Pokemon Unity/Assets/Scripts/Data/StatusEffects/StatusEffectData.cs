@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewStatusEffect", menuName = "Pokemon/StatusEffect")]
-public class StatusEffectNonVolatile : ScriptableObject
+public abstract class StatusEffectData : ScriptableObject
 {
-    public Sprite icon;
     public string nameSubject = "";
     public string inflictionText = "";
+    public string notificationPerRoundText = "";
     public string effectPerRoundText = "";
     public string endOfLifeText = "";
     public string healText = "";
@@ -18,6 +17,7 @@ public class StatusEffectNonVolatile : ScriptableObject
     public bool takesEffectBeforeMoves = false;
     public int damagePerRoundAbsolute = 0;
     public float damagePerRoundRelativeToMaxHp = 0;
+    public float damagePerRoundSelfInflicted = 0;
     public int damageOverTime = 0;
     public bool preventsMove = true;
     public float chance = 1f;

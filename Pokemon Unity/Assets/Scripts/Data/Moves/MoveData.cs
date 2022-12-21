@@ -14,8 +14,10 @@ public class MoveData : ScriptableObject
     public int power;
     public int accuracy;
 
-    public StatusEffectNonVolatile statusInflictedTarget;
-    public StatusEffectNonVolatile statusInflictedSelf;
+    public StatusEffectNonVolatileData statusNonVolatileInflictedTarget;
+    public StatusEffectNonVolatileData statusNonVolatileInflictedSelf;
+    public StatusEffectVolatileData statusVolatileInflictedTarget;
+    public StatusEffectVolatileData statusVolatileInflictedSelf;
     public InspectorFriendlySerializableDictionary<Stat, int> statModifiersSelf;
     public InspectorFriendlySerializableDictionary<Stat, int> statModifiersTarget;
     public MoveCategory category;

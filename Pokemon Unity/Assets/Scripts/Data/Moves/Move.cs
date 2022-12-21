@@ -37,8 +37,8 @@ public class Move
     {
         failReason = FailReason.None;
 
-        if (data.power < 1 && (!(target.statusEffect is null) ||
-            (!(data.statusInflictedTarget is null)) && target.IsImmuneToStatusEffect(data.statusInflictedTarget)))
+        if (data.power < 1 && (!(target.statusEffectNonVolatile is null) ||
+            (!(data.statusNonVolatileInflictedTarget is null)) && target.IsImmuneToStatusEffect(data.statusNonVolatileInflictedTarget)))
         {
             failReason = FailReason.NoEffect;
             return false;
@@ -83,7 +83,7 @@ public class Move
             0, Mathf.Floor(
                 ((.4f * attacker.level + 2) *
                 data.power *
-                (attacker.statusEffect is null ? 1f : attacker.statusEffect.damageModifierRelative) *
+                (attacker.statusEffectNonVolatile is null ? 1f : attacker.statusEffectNonVolatile.damageModifierRelative) *
                 attackerAttack /
                 targetDefense / 50f + 2f) *
             criticalFactor * stab * effectivenessFactor)

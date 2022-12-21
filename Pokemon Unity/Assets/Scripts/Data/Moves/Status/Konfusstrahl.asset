@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
-  m_Name: Irrlicht
+  m_Name: Konfusstrahl
   m_EditorClassIdentifier: 
-  fullName: Irrlicht
-  description: "Angriff mit blau-wei\xDFer Flamme, die den Gegner verbrennt."
-  pokeType: {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
-  maxPP: 15
+  fullName: Konfusstrahl
+  description: Ein fieser Strahl, der den Gegner verwirrt. Fiees! x3
+  pokeType: {fileID: 11400000, guid: 03a6102f034554d5bb088aa2e6cd11b6, type: 2}
+  maxPP: 10
   power: 0
-  accuracy: 75
-  statusNonVolatileInflictedTarget: {fileID: 11400000, guid: 6cf0777e42bcd5648880bf965193dcf6,
-    type: 2}
+  accuracy: 100
+  statusNonVolatileInflictedTarget: {fileID: 0}
   statusNonVolatileInflictedSelf: {fileID: 0}
-  statusVolatileInflictedTarget: {fileID: 0}
+  statusVolatileInflictedTarget: {fileID: 11400000, guid: 6666f410ef21a0849a4f6ee4e4c856eb,
+    type: 2}
   statusVolatileInflictedSelf: {fileID: 0}
   statModifiersSelf:
     keys: 
