@@ -5,7 +5,7 @@ using System.Collections;
 
 public class BgmHandler : MonoBehaviour
 {
-    public static BgmHandler main;
+    public static BgmHandler Instance;
 
     private float baseVolume;
 
@@ -35,11 +35,11 @@ public class BgmHandler : MonoBehaviour
 
     void Awake()
     {
-        if (main == null)
+        if (Instance == null)
         {
-            main = this;
+            Instance = this;
         }
-        else if (main != this)
+        else if (Instance != this)
         {
             Destroy(gameObject);
         }
@@ -50,7 +50,7 @@ public class BgmHandler : MonoBehaviour
 
     void Update()
     {
-        baseVolume = PlayerPrefs.GetFloat("musicVolume");
+        baseVolume = 1f;//PlayerPrefs.GetFloat("musicVolume");
         if (fading == null)
         {
             source.volume = baseVolume;
@@ -145,7 +145,7 @@ public class BgmHandler : MonoBehaviour
         source.Stop();
     }
 
-    public void PlayMain(AudioClip bgm, int loopStartSamples)
+    public void PlayMain(AudioClip bgm, int loopStartSamples = 0)
     {
         loop = true;
         //if main is playing:   Fade out current main track (if any/not fading), THEN play new track

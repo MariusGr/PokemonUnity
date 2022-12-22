@@ -56,19 +56,19 @@ public class ReflectiveWaterHandler : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (!other.name.Contains("map"))
-        {
-            other.transform.parent.gameObject.SendMessage("reflect", true, SendMessageOptions.DontRequireReceiver);
-        }
-    }
+    //void OnTriggerEnter(Collider other)
+    //{
+    //    if (!other.name.Contains("map"))
+    //    {
+    //        other.transform.parent.gameObject.SendMessage("reflect", true, SendMessageOptions.DontRequireReceiver);
+    //    }
+    //}
 
-    void OnTriggerExit(Collider other)
-    {
-        if (!other.name.Contains("map"))
-        {
-            other.transform.parent.gameObject.SendMessage("reflect", false, SendMessageOptions.DontRequireReceiver);
-        }
-    }
+    //void OnTriggerExit(Collider other)
+    //{
+    //    if (!other.name.Contains("map"))
+    //    {
+    //        other.transform.parent.gameObject.SendMessage("reflect", false, SendMessageOptions.DontRequireReceiver);
+    //    }
+    //}
 }
