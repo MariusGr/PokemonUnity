@@ -17,6 +17,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
     [SerializeField] public NPCData npcData;
     [SerializeField] public bool wantsToBattle;
     [SerializeField] public float challengeVisionDistance = 5f;
+    [SerializeField] private AudioClip challengeMusicTrack;
 
     public bool willChallengePlayer => wantsToBattle && !npcData.IsDefeated();
     override public CharacterData CharacterData => npcData;
@@ -52,6 +53,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
     {
         print("Challenge");
         EventManager.Pause();
+        BgmHandler.Instance.PlayOverlay(challengeMusicTrack);
         StartCoroutine(ChallengeCoroutine(player));
     }
 

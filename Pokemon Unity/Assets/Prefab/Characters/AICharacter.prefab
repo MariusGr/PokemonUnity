@@ -140,3 +140,4 @@ MonoBehaviour:
     hasBeenDefeated: 0
   wantsToBattle: 0
   challengeVisionDistance: 5
+  challengeMusicTrack: {fileID: 8300000, guid: 5ee913ad1fe34df4899831ec57d6f59a, type: 3}

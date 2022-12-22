@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class CharacterControllerBase : Pausable, ICharacterController
 {
     [SerializeField] protected Character character;
+    protected new GameObject gameObject; // Only needed to override gameobject field of inherited Monobehaviour
 
     public abstract CharacterData CharacterData { get; }
 

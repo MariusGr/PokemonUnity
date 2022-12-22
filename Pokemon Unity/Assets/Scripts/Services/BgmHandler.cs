@@ -191,7 +191,7 @@ public class BgmHandler : MonoBehaviour
         mainTrack = mainTrackNext;
     }
 
-    public void PlayOverlay(AudioClip bgm, int loopStartSamples)
+    public void PlayOverlay(AudioClip bgm, int loopStartSamples = 0)
     {
         PlayOverlay(bgm, loopStartSamples, 0.1f);
     }

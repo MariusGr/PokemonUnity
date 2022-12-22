@@ -18,6 +18,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     }
 
     [SerializeField] Move struggleMove;
+    [SerializeField] AudioClip trainerBattleMusicTrack;
+    [SerializeField] AudioClip wildBattleMusicTrack;
+    [SerializeField] AudioClip wildVictoryMusicTrack;
+    [SerializeField] AudioClip trainerVictoryMusicTrack;
+    [SerializeField] AudioClip pokemonCaughtMusicTrack;
 
     private BattleState state;
     private CharacterData playerData;
@@ -54,7 +59,9 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     }
 
     private Pokemon GetActivePokemon(int character)
-        => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
+    {
+        return character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
+    }
 
     private void Reset()
     {
@@ -83,6 +90,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         this.playerData = playerData;
         opponentData = null;
         characterData = new CharacterData[] { this.playerData, null };
+        BgmHandler.Instance.PlayOverlay(wildBattleMusicTrack);
 
         Reset();
         unfaintedPlayerPokemons[wildPokemon] = new HashSet<Pokemon>() { playerPokemon };
@@ -99,6 +107,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         characterData = new CharacterData[] { this.playerData, this.opponentData };
         pokemonIndex[Constants.OpponentIndex] = opponentData.GetFirstAlivePokemonIndex();
         PlayerData.Instance.AddSeenPokemon(opponentPokemon.data);
+        BgmHandler.Instance.PlayOverlay(trainerBattleMusicTrack);
 
         Reset();
 
@@ -121,12 +130,15 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
     {
+        // TODO: ui close animation
+        yield return new WaitForSeconds(2f);
         ui.Close();
 
         // Evolve pokemon if any leveled up enough
         foreach (Pokemon p in evolvingPokemons)
             yield return evolutionManager.EvolutionCoroutine(p);
 
+        BgmHandler.Instance.ResumeMain();
         npcBattleEndReactionCallback?.Invoke(state.Equals(BattleState.OpponentDefeated));
     }
 
@@ -261,9 +273,15 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         // caught
         print("Caught!");
-        yield return dialogBox.DrawText($"{opponentPokemon.Name} wurde gefangen!", DialogBoxContinueMode.User);
+        BgmHandler.Instance.PlayMFX(pokemonCaughtMusicTrack);
+        dialogBox.DrawText($"{opponentPokemon.Name} wurde gefangen!", DialogBoxContinueMode.External);
+        yield return new WaitForSeconds(5f);
+        BgmHandler.Instance.PlayOverlay(wildVictoryMusicTrack);
+        if (!PlayerData.Instance.HasCaughtPokemon(opponentPokemon.data))
+            yield return dialogBox.DrawText($"Für {opponentPokemon.Name} wird einer neuer Eintrag im Pokedex angelegt.");
+
         if (PlayerData.Instance.PartyIsFull())
-            yield return dialogBox.DrawText($"{opponentPokemon.Name} wurde in der Box deponiert!", DialogBoxContinueMode.User);
+            yield return dialogBox.DrawText($"{opponentPokemon.Name} wurde in der Box deponiert!");
         PlayerData.Instance.CatchPokemon(opponentPokemon);
         // TODO Nickname geben
         state = BattleState.OpponentCaught;
@@ -817,6 +835,9 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         yield return dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
         yield return ui.PlayFaintAnimation(characterIndex);
 
+        if (opponentIsWild)
+            BgmHandler.Instance.PlayOverlay(wildVictoryMusicTrack);
+
         if (characterIndex == Constants.PlayerIndex)
             foreach (HashSet<Pokemon> set in unfaintedPlayerPokemons.Values)
                 set.Remove(playerPokemon);
@@ -869,7 +890,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (!opponentIsWild)
             ui.MakeOpponentAppear();
         if (loserIsTrainer)
+        {
+            BgmHandler.Instance.PlayOverlay(trainerVictoryMusicTrack);
             yield return dialogBox.DrawText($"{loser.name} wurde besiegt!", DialogBoxContinueMode.User);
+        }
+
         if (loserIndex == Constants.OpponentIndex)
         {
             // AI opponent has been defeated
