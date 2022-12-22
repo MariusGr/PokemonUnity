@@ -44,6 +44,7 @@ public class GridVector
         { Direction.Down, new GridVector(0, -1) },
     };
 
+    static public GridVector GetLookAt(Vector3 position, Vector3 target) => GetLookAt(new GridVector(position), new GridVector(target));
     static public GridVector GetLookAt(GridVector position, GridVector target) => (target - position).normalized;
 
     public GridVector(int x = 0, int y = 0)
@@ -52,10 +53,18 @@ public class GridVector
         this.y = y;
     }
 
+    private int RoundToInt(float f)
+    {
+        int result = Mathf.RoundToInt(f);
+        if (Mathf.Abs(result - f) - .5f < .01f)
+            return Mathf.CeilToInt(f);
+        return result;
+    }
+
     public GridVector(Vector3 vector)
     {
-        this.x = Mathf.RoundToInt(vector.x);
-        this.y = Mathf.RoundToInt(vector.z);
+        this.x = RoundToInt(vector.x);
+        this.y = RoundToInt(vector.z);
     }
 
     public GridVector(Vector3 vector, bool floorX, bool floorY)

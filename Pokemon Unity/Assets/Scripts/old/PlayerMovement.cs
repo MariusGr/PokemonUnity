@@ -188,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
                 //if audio is not already playing
                 accessedAudio = accessedMapSettings.getBGM();
                 accessedAudioLoopStartSamples = accessedMapSettings.getBGMLoopStartSamples();
-                BgmHandler.main.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
+                BgmHandler.Instance.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
             }
         }
 
@@ -764,7 +764,7 @@ public class PlayerMovement : MonoBehaviour
                             speed = walkSpeed;
                             surfing = false;
                             StartCoroutine("dismount");
-                            BgmHandler.main.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
+                            BgmHandler.Instance.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
                         }
 
                         if (destinationMap != currentMap)
@@ -777,7 +777,7 @@ public class PlayerMovement : MonoBehaviour
                                 //if audio is not already playing
                                 accessedAudio = accessedMapSettings.getBGM();
                                 accessedAudioLoopStartSamples = accessedMapSettings.getBGMLoopStartSamples();
-                                BgmHandler.main.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
+                                BgmHandler.Instance.PlayMain(accessedAudio, accessedAudioLoopStartSamples);
                             }
                             destinationMap.BroadcastMessage("repair", SendMessageOptions.DontRequireReceiver);
                             Debug.Log(destinationMap.name + "   " + accessedAudio.name);

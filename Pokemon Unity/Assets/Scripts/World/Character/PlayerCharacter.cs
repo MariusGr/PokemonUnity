@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class PlayerCharacter : Character, IPlayerCharacter
 {
-    private PlayerData playerData => (PlayerData)characterData;
+    public static PlayerCharacter Instance { get; private set; }
+    
     public override bool IsPlayer => true;
 
-    public static PlayerCharacter Instance { get; private set; }
+    private PlayerData playerData => (PlayerData)characterData;
+    private CharacterControllerPlayer playerController => (CharacterControllerPlayer)Controller;
+
     public PlayerCharacter()
     {
         Instance = this;
@@ -22,5 +25,22 @@ public class PlayerCharacter : Character, IPlayerCharacter
         yield return Services.Get<IDialogBox>().DrawText($"Tja... ab ins Poke-Center. Scheiﬂe gelaufen...", DialogBoxContinueMode.User, closeAfterFinish: true);
         PlayerData.Instance.HealAllPokemons();
         transform.position = playerData.lastPokeCenterEntrance.position;
+    }
+
+    public void EnterEntranceTrehshold(Door entrance)
+    {
+        playerController.EnterEntranceTrehshold(entrance);
+    }
+
+    public void LeaveEntranceTrehshold(Door entrance)
+    {
+        playerController.LeaveEntranceTrehshold(entrance);
+    }
+
+    public void TravelToEntrance(Door entrance)
+    {
+        transform.position = entrance.spawnPosition;
+        print(-new GridVector(entrance.directionTriggerToEntrance));
+        Movement.LookInDirection(-new GridVector(entrance.directionTriggerToEntrance));
     }
 }

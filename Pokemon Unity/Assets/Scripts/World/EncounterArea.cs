@@ -58,7 +58,6 @@ public class EncounterArea : MonoBehaviour
     public void CheckEncounter()
     {
         float f = UnityEngine.Random.value;
-        print(f);
         // Does an encounter happen at all?
         if (f > encounterChance)
             return;

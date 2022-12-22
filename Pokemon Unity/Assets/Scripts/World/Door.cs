@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class Door : MonoBehaviour, IInteractable
 {
-    [SerializeField] bool locked;
-    [SerializeField] BoxCollider interactionCollider;
-    [SerializeField] BoxCollider triggerCollider;
+    [SerializeField] private bool locked;
+    [SerializeField] private BoxCollider interactionCollider;
+    [SerializeField] private BoxCollider triggerCollider;
+    [SerializeField] private Transform spawn;
+    [SerializeField] private Door otherSide;
+
+    public Vector3 spawnPosition => spawn.position;
+    public Direction directionTriggerToEntrance { get; private set; }
 
     private void Start()
     {
+        Vector3 entrancePositon = transform.TransformPoint(interactionCollider.center + transform.localPosition);
+        Vector3 triggerPositon = transform.TransformPoint(triggerCollider.center + transform.localPosition);
+        directionTriggerToEntrance = GridVector.GetLookAt(triggerPositon, entrancePositon).ToDirection();
+        locked = locked || otherSide is null;
         interactionCollider.enabled = locked;
         triggerCollider.enabled = !locked;
         if (locked)
@@ -27,6 +36,22 @@ public class Door : MonoBehaviour, IInteractable
     private IEnumerator ShowMessage()
     {
         yield return Services.Get<IDialogBox>().DrawText("Abgeschlossen.", closeAfterFinish: true);
+        EventManager.Unpause();
+    }
+
+    void OnTriggerEnter(Collider other) => PlayerCharacter.Instance.EnterEntranceTrehshold(this);
+    void OnTriggerExit(Collider other) => PlayerCharacter.Instance.LeaveEntranceTrehshold(this);
+
+    public void Enter()
+    {
+        EventManager.Pause();
+        StartCoroutine(EnterCoroutine());
+    }
+
+    private IEnumerator EnterCoroutine()
+    {
+        PlayerCharacter.Instance.TravelToEntrance(otherSide);
+        yield return new WaitForSeconds(.2f);
         EventManager.Unpause();
     }
 }

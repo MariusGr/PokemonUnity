@@ -4,34 +4,38 @@ using UnityEngine;
 
 public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 {
-    public PlayerData characterData;
-    override public CharacterData CharacterData => characterData;
+    [SerializeField] public PlayerData playerData;
+    override public CharacterData CharacterData => playerData;
 
-    InputData input = new InputData();
+    private InputData input = new InputData();
     private IPauseUI pauseUI;
+    private Door currentEntrance = null;
 
     private void Awake()
     {
 #if (UNITY_EDITOR)
-        characterData.FillItemsDict();
+        playerData.FillItemsDict();
 #endif
-        foreach (Pokemon p in characterData.pokemons)
-            characterData.AddCaughtPokemon(p.data);
-        foreach (Pokemon p in characterData.pokemonsInBox)
-            characterData.AddCaughtPokemon(p.data);
+        foreach (Pokemon p in playerData.pokemons)
+            playerData.AddCaughtPokemon(p.data);
+        foreach (Pokemon p in playerData.pokemonsInBox)
+            playerData.AddCaughtPokemon(p.data);
     }
 
     private void Start()
     {
         InputManager.Instance.Register(this);
         pauseUI = Services.Get<IPauseUI>();
-        DebugExtensions.DebugExtension.Log(characterData.pokemons);
+        DebugExtensions.DebugExtension.Log(playerData.pokemons);
         SignUpForPause();
     }
 
     private void Update()
     {
-        character.Movement.ProcessMovement(input.digitalPad.heldDown, input.chancel.heldDown);
+        if (!paused && !(currentEntrance is null) && input.digitalPad.heldDown == currentEntrance.directionTriggerToEntrance)
+            currentEntrance.Enter();
+        else
+            character.Movement.ProcessMovement(input.digitalPad.heldDown, input.chancel.heldDown);
     }
 
     public bool ProcessInput(InputData input)
@@ -47,5 +51,16 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
             pauseUI.Open();
 
         return false;
+    }
+
+    public void EnterEntranceTrehshold(Door entrance)
+    {
+        currentEntrance = entrance;
+    }
+
+    public void LeaveEntranceTrehshold(Door entrance)
+    {
+        if (currentEntrance == entrance)
+            currentEntrance = null;
     }
 }
