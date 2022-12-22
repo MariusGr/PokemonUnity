@@ -66,8 +66,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         playerPokemon.ResetStatModifiers();
         opponentPokemon.ResetStatModifiers();
-        playerPokemon.HealAllVolatileStatusEffect();
-        opponentPokemon.HealAllVolatileStatusEffect();
+        playerPokemon.HealAllVolatileStatusEffects();
+        opponentPokemon.HealAllVolatileStatusEffects();
 
         ui.Open(playerData, playerPokemon, opponentPokemon);
         unfaintedPlayerPokemons = new Dictionary<Pokemon, HashSet<Pokemon>>();
@@ -583,7 +583,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         Pokemon pokemon = GetActivePokemon(characterIndex);
         pokemon.ResetStatModifiers();
-        pokemon.HealAllVolatileStatusEffect();
+        pokemon.HealAllVolatileStatusEffects();
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, pokemon);

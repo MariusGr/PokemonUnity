@@ -15,7 +15,7 @@ public class StatusEffect
         stepCount = 0;
     }
 
-    public bool OverTimeDanageTick()
+    public bool OverTimeDamageTick()
     {
         stepCount += 1;
         if (stepCount >= 4)

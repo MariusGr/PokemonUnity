@@ -17,7 +17,7 @@ public abstract class StatusEffectData : ScriptableObject
     public bool takesEffectBeforeMoves = false;
     public int damagePerRoundAbsolute = 0;
     public float damagePerRoundRelativeToMaxHp = 0;
-    public float damagePerRoundSelfInflicted = 0;
+    public int powerOfSelfInflictedDamagePerRound = 0;
     public int damageOverTime = 0;
     public bool preventsMove = true;
     public float chance = 1f;
@@ -32,7 +32,7 @@ public abstract class StatusEffectData : ScriptableObject
     public int GetDamageAgainstSelf(Pokemon pokemon)
         => (int)Mathf.Max(0, Mathf.Floor(
                     ((.4f * pokemon.level + 2) *
-                    40f *
+                    powerOfSelfInflictedDamagePerRound *
                     (pokemon.statusEffectNonVolatile is null ? 1f : pokemon.statusEffectNonVolatile.data.damageModifierRelative) *
                     pokemon.GetAttack(false) /
                     pokemon.GetDefense(false) / 50f + 2f))

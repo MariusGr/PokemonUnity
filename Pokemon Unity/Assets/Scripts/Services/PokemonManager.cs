@@ -96,8 +96,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                 yield return dialogBox.DrawText(
                     $"Das h?tte keinen Effekt, denn {pokemon.Name} hat keine Statusprobleme.", closeAfterFinish: true);
             else if (!pokemon.hasVolatileStatusEffects && item.data.healsStatusEffectsVolatileOnly)
-                yield return dialogBox.DrawText(
-                    $"Das h?tte keinen Effekt!", closeAfterFinish: true);
+                yield return dialogBox.DrawText($"Das h?tte keinen Effekt!", closeAfterFinish: true);
             else if (pokemon.hasNonVolatileStatusEffect &&
                 !item.data.HealsStatusEffectNonVolatile(pokemon.statusEffectNonVolatile) &&
                 item.data.healsStatusEffectsNonVolatileOnly)
@@ -106,8 +105,13 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             else if (pokemon.hasVolatileStatusEffects &&
                 !item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile) &&
                 item.data.healsStatusEffectsNonVolatileOnly)
-                yield return dialogBox.DrawText(
-                    $"Das h?tte keinen Effekt!", closeAfterFinish: true);
+            {
+                print(pokemon.hasVolatileStatusEffects);
+                print(!item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile));
+                print(item.data.healsStatusEffectsNonVolatileOnly);
+                yield return dialogBox.DrawText($"Das h?tte keinen Effekt!", closeAfterFinish: true);
+            }
+                
             else
             {
                 yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
@@ -142,19 +146,41 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgef?llt!", closeAfterFinish: true);
         }
 
+        print(item.data.HealsStatusEffectNonVolatile(pokemon.statusEffectNonVolatile));
         if (item.data.HealsStatusEffectNonVolatile(pokemon.statusEffectNonVolatile))
         {
-            string text = pokemon.statusEffectNonVolatile.data.healText;
-            pokemon.HealStatusEffectNonVolatile(item.data.nonVolatileStatusHealed);
-            yield return dialogBox.DrawText(
-                TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, text, pokemon.Name), closeAfterFinish: true);
+            print(pokemon.hasNonVolatileStatusEffect);
+            if (pokemon.hasNonVolatileStatusEffect)
+            {
+                string text = pokemon.statusEffectNonVolatile.data.healText;
+                if (item.data.healsAllStatusEffectsNonVolatile)
+                    pokemon.HealAllStatusEffectsNonVolatile();
+                else
+                    pokemon.HealStatusEffectNonVolatile(item.data.nonVolatileStatusHealed);
+                yield return dialogBox.DrawText(
+                    TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, text, pokemon.Name), closeAfterFinish: true);
+            }
         }
 
+        print(item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile));
         if (item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile))
         {
-            pokemon.HealStatusEffectVolatile(item.data.volatileStatusHealed);
-            yield return dialogBox.DrawText(
-                TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, item.data.volatileStatusHealed.healText, pokemon.Name), closeAfterFinish: true);
+            StatusEffect[] healedStatus;
+            if (item.data.healsAllStatusEffectsVolatile)
+            {
+                healedStatus = pokemon.statusEffectsVolatile.ToArray();
+                pokemon.HealAllVolatileStatusEffects();
+            }
+            else
+                healedStatus = new StatusEffect[] { pokemon.HealStatusEffectVolatile(item.data.volatileStatusHealed) };
+
+            foreach (StatusEffect s in healedStatus)
+            {
+                if (healedStatus is null)
+                    continue;
+                yield return dialogBox.DrawText(
+                    TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, s.data.healText, pokemon.Name), closeAfterFinish: true);
+            }
         }
 
         if (item.data.consumable)

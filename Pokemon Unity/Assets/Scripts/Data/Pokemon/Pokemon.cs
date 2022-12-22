@@ -311,19 +311,24 @@ public class Pokemon
             return;
 
         // TODO: volatile status effects
-        if (statusEffectNonVolatile.OverTimeDanageTick())
+        if (statusEffectNonVolatile.OverTimeDamageTick())
             InflictDamage(statusEffectNonVolatile.data.damageOverTime);
     }
 
     public void HealStatusEffectNonVolatile(StatusEffectData statusEffect)
         => statusEffectNonVolatile = statusEffectNonVolatile.data == statusEffect ? null : statusEffectNonVolatile;
-    public void HealAllVolatileStatusEffect() => statusEffectsVolatile = new List<StatusEffect>();
+    public void HealAllStatusEffectsNonVolatile()
+        => statusEffectNonVolatile = null;
+    public void HealAllVolatileStatusEffects() => statusEffectsVolatile = new List<StatusEffect>();
 
-    public List<string> HealStatusEffectVolatile(StatusEffectVolatileData statusEffect)
+    public StatusEffect HealStatusEffectVolatile(StatusEffectVolatileData statusEffect)
     {
         StatusEffect s = FindVolatileStatusEffect(statusEffect);
+        //TODO testen!!
+        Debug.Log(s);
         if (!(s is null))
             HealStatusEffectVolatile(s);
+        return s;
     }
 
     public void HealStatusEffectVolatile(StatusEffect statusEffect)
@@ -335,7 +340,7 @@ public class Pokemon
     public void HealStatusAllEffects()
     {
         statusEffectNonVolatile = null;
-        HealAllVolatileStatusEffect();
+        HealAllVolatileStatusEffects();
     }
 
     public void HealFully()

@@ -25,7 +25,7 @@ MonoBehaviour:
   takesEffectBeforeMoves: 1
   damagePerRoundAbsolute: 0
   damagePerRoundRelativeToMaxHp: 0
-  damagePerRoundSelfInflicted: 40
+  powerOfSelfInflictedDamagePerRound: 40
   damageOverTime: 0
   preventsMove: 1
   chance: 0.5
