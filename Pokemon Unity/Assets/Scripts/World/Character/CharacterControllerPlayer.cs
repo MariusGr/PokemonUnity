@@ -41,9 +41,9 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 
         this.input = input;
 
-        if (input.submit.pressed)
+        if (input.submit.pressed && !character.Movement.moving)
             character.TryInteract();
-        else if (input.start.pressed)
+        else if (input.start.pressed && !character.Movement.moving)
             pauseUI.Open();
 
         return false;
