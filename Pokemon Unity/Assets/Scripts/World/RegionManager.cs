@@ -10,9 +10,17 @@ public class RegionManager : MonoBehaviour, IService
     
     public RegionManager() => Instance = this;
 
+    private IRegionUI ui;
+
+    private void Awake()
+    {
+        ui = Services.Get<IRegionUI>();
+    }
+
     public void PlayerEnterRegion(RegionsData region)
     {
         currentRegion = region;
         BgmHandler.Instance.PlayMain(currentRegion.mainMusicTrack);
+        ui.ShowRegionName(region.fullName);
     }
 }
