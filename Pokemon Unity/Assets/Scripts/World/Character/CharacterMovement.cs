@@ -47,6 +47,8 @@ public class CharacterMovement : Pausable
     {
         base.Pause();
         character.Animator.Tick(AnimationType.None, currentDirection);
+        StopAllCoroutines();
+        moving = false;
     }
 
     public void ProcessMovement(Direction direction, bool sprinting = false, bool checkPositionEvents = true, bool ignorePaused = false)

@@ -27,7 +27,7 @@ public class PlayerCharacter : Character, IPlayerCharacter
         transform.position = playerData.lastPokeCenterEntrance.position;
     }
 
-    public void EnterEntranceTrehshold(Door entrance)
+    public void EnterEntranceTreshhold(Door entrance)
     {
         playerController.EnterEntranceTrehshold(entrance);
     }
@@ -40,7 +40,6 @@ public class PlayerCharacter : Character, IPlayerCharacter
     public void TravelToEntrance(Door entrance)
     {
         transform.position = entrance.spawnPosition;
-        print(-new GridVector(entrance.directionTriggerToEntrance));
         Movement.LookInDirection(-new GridVector(entrance.directionTriggerToEntrance));
     }
 }

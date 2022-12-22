@@ -39,7 +39,7 @@ public class Door : MonoBehaviour, IInteractable
         EventManager.Unpause();
     }
 
-    void OnTriggerEnter(Collider other) => PlayerCharacter.Instance.EnterEntranceTrehshold(this);
+    void OnTriggerEnter(Collider other) => PlayerCharacter.Instance.EnterEntranceTreshhold(this);
     void OnTriggerExit(Collider other) => PlayerCharacter.Instance.LeaveEntranceTrehshold(this);
 
     public void Enter()
