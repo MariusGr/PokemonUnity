@@ -324,8 +324,6 @@ public class Pokemon
     public StatusEffect HealStatusEffectVolatile(StatusEffectVolatileData statusEffect)
     {
         StatusEffect s = FindVolatileStatusEffect(statusEffect);
-        //TODO testen!!
-        Debug.Log(s);
         if (!(s is null))
             HealStatusEffectVolatile(s);
         return s;

@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class PC : MonoBehaviour, IInteractable
 {
+    [SerializeField] private AudioClip openSound;
+    [SerializeField] private AudioClip closeSound;
+
     private IPokeBoxUI ui;
     private void Awake() => ui = Services.Get<IPokeBoxUI>();
 
     public void Interact(Character player)
     {
         EventManager.Pause();
+        SfxHandler.Play(openSound);
         ui.Open(CloseBox);
     }
 
@@ -17,6 +21,7 @@ public class PC : MonoBehaviour, IInteractable
     {
         if (goBack)
         {
+            SfxHandler.Play(closeSound);
             ui.Close();
             EventManager.Unpause();
         }

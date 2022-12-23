@@ -26,6 +26,25 @@ MonoBehaviour:
   evolution: {fileID: 0}
   encounterRarity: 87
   catchRate: 190
+  cries:
+  - {fileID: 0}
+  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
+  - {fileID: 8300000, guid: 04ea7ef6457367c4499c6a1aa8b2f854, type: 3}
+  - {fileID: 8300000, guid: 690c309537a4378468c57ac487e50d09, type: 3}
+  - {fileID: 8300000, guid: 39ed759d318a624478b5e9ebe52d308e, type: 3}
+  - {fileID: 8300000, guid: 65888572b276e4d49ac86dec140054bd, type: 3}
+  - {fileID: 8300000, guid: 895c0c9efc79d574da525ddf57c04fad, type: 3}
+  - {fileID: 8300000, guid: c70162ba6ba2c2b4596a57f8074f1003, type: 3}
+  - {fileID: 8300000, guid: 000cbe0b3b6c2de41bd264be98307c21, type: 3}
+  - {fileID: 8300000, guid: b266a58f590ee494595b40dd76d1b2a2, type: 3}
+  - {fileID: 8300000, guid: 9f3fd943e2b2f9446be122d81a0acd92, type: 3}
+  faintCries:
+  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
+  - {fileID: 8300000, guid: 04ea7ef6457367c4499c6a1aa8b2f854, type: 3}
+  - {fileID: 8300000, guid: 65888572b276e4d49ac86dec140054bd, type: 3}
+  - {fileID: 8300000, guid: 000cbe0b3b6c2de41bd264be98307c21, type: 3}
+  - {fileID: 8300000, guid: b266a58f590ee494595b40dd76d1b2a2, type: 3}
+  - {fileID: 8300000, guid: 9f3fd943e2b2f9446be122d81a0acd92, type: 3}
   maxHp: 50
   attack: 52
   specialAttack: 65
@@ -34,7 +53,9 @@ MonoBehaviour:
   speed: 55
   baseXPGain: 64
   levelToMoveDataMap:
-    keys: 0000000009000000
+    keys: 01000000020000000300000004000000
     values:
-    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
+    - {fileID: 11400000, guid: 72dc84b68329943ad8f3550095f3a910, type: 2}
     - {fileID: 11400000, guid: acc82a1970c50d64aaf0f346966dbd22, type: 2}
+    - {fileID: 11400000, guid: c57e523610aa794419f8ba5b75317a7f, type: 2}
+    - {fileID: 11400000, guid: 1d81aeb1a0c07ff4a8a52735d53174b6, type: 2}

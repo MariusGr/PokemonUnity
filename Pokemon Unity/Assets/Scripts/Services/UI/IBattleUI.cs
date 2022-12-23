@@ -14,9 +14,14 @@ public interface IBattleUI : IUIView
     public void RefreshMove(Move move);
     public IEnumerator RefreshHPAnimated(int character);
     public IEnumerator RefreshXPAnimated();
+
     public IEnumerator PlayMoveAnimation(int attacker, Move move);
     public IEnumerator PlayBlinkAnimation(int blinkingPokemon);
     public IEnumerator PlayFaintAnimation(int faintedOwner);
+    public IEnumerator PlayInflictStatusAnimation(int owner);
+    public IEnumerator PlayStatUpAnimation(int owner);
+    public IEnumerator PlayStatDownAnimation(int owner);
+
     public IEnumerator MakeOpponentAppear();
     public IEnumerator MakeOpponentDisappear();
     public void OpenBattleMenu(System.Action<BattleOption, bool> callback);

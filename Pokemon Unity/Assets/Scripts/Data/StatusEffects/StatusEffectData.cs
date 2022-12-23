@@ -10,6 +10,7 @@ public abstract class StatusEffectData : ScriptableObject
     public string effectPerRoundText = "";
     public string endOfLifeText = "";
     public string healText = "";
+    public AudioClip sound;
     public bool livesForever = true;
     public int lifetimeRoundsMinimum = 0;
     public int lifetimeRoundsMaximum = 0;

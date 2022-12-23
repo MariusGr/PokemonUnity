@@ -29,6 +29,8 @@ public class SfxHandler : MonoBehaviour
 
     public static AudioSource Play(AudioClip clip)
     {
+        if (clip is null)
+            return null;
         return Play(clip, 1f);
     }
 
@@ -66,7 +68,7 @@ public class SfxHandler : MonoBehaviour
             source = sfxHandler.sources[mostFinishedIndex];
         }
         source.clip = clip;
-        source.volume = PlayerPrefs.GetFloat("sfxVolume");
+        source.volume = 1f;//PlayerPrefs.GetFloat("sfxVolume");
         source.pitch = pitch;
         source.Play();
 

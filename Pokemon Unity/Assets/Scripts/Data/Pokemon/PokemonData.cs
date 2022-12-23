@@ -19,6 +19,10 @@ public class PokemonData : ScriptableObject
     public PokemonData evolution;
     public EncounterRarity encounterRarity;
     public int catchRate;
+    public AudioClip cry => cries[Random.Range(0, cries.Length)];
+    public AudioClip faintCry => faintCries.Length > 0 ? faintCries[Random.Range(0, faintCries.Length)] : cry;
+    [SerializeField] private AudioClip[] cries;
+    [SerializeField] private AudioClip[] faintCries;
 
     public int maxHp;
     public int attack;

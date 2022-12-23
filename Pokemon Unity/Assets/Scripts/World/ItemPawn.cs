@@ -5,6 +5,7 @@ using UnityEngine;
 public class ItemPawn : MonoBehaviour, IInteractable
 {
     [SerializeField] Item item;
+    [SerializeField] AudioClip pickUpMusic;
 
     public void Interact(Character player)
     {
@@ -15,8 +16,11 @@ public class ItemPawn : MonoBehaviour, IInteractable
     private IEnumerator TakeItem(Character player)
     {
         PlayerData.Instance.GiveItem(item);
-        yield return Services.Get<IDialogBox>().DrawText(
-            $"{player.characterData.name} findet {item.data.name}!", DialogBoxContinueMode.User, closeAfterFinish: true);
+        BgmHandler.Instance.PlayMFX(pickUpMusic);
+        Services.Get<IDialogBox>().DrawText(
+            $"{player.characterData.name} findet {item.data.name}!", DialogBoxContinueMode.External);
+        yield return new WaitForSeconds(pickUpMusic.length);
+        Services.Get<IDialogBox>().Close();
         gameObject.SetActive(false);
         EventManager.Unpause();
     }

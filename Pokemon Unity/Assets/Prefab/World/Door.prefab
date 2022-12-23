@@ -252,3 +252,4 @@ MonoBehaviour:
   triggerCollider: {fileID: 9002264714190339017}
   spawn: {fileID: 5990082563132538759}
   otherSide: {fileID: 0}
+  enterSound: {fileID: 8300000, guid: 2902f413722e2314fac6a4f3d3a5ab7e, type: 3}

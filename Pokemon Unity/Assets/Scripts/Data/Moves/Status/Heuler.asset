@@ -18,8 +18,10 @@ MonoBehaviour:
   maxPP: 40
   power: 0
   accuracy: 100
-  statusInflictedTarget: {fileID: 0}
-  statusInflictedSelf: {fileID: 0}
+  statusNonVolatileInflictedTarget: {fileID: 0}
+  statusNonVolatileInflictedSelf: {fileID: 0}
+  statusVolatileInflictedTarget: {fileID: 0}
+  statusVolatileInflictedSelf: {fileID: 0}
   statModifiersSelf:
     keys: 
     values: 
@@ -30,6 +32,8 @@ MonoBehaviour:
   animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
   animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
     type: 2}
+  sound: {fileID: 0}
+  usesCryForSound: 1
   hasSpecialUsageText: 0
   specialUsageText: 
   recoil: 0

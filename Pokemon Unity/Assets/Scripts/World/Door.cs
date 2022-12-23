@@ -9,6 +9,7 @@ public class Door : MonoBehaviour, IInteractable
     [SerializeField] private BoxCollider triggerCollider;
     [SerializeField] private Transform spawn;
     [SerializeField] private Door otherSide;
+    [SerializeField] private AudioClip enterSound;
 
     public Vector3 spawnPosition => spawn.position;
     public Direction directionTriggerToEntrance { get; private set; }
@@ -45,6 +46,7 @@ public class Door : MonoBehaviour, IInteractable
     public void Enter()
     {
         EventManager.Pause();
+        SfxHandler.Play(enterSound);
         StartCoroutine(EnterCoroutine());
     }
 

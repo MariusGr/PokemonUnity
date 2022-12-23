@@ -7,6 +7,9 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
     public static PokemonManager Instance;
 
     [SerializeField] IMoveSelectionUI moveSelectionUI;
+    [SerializeField] AudioClip xpFullSound;
+    [SerializeField] AudioClip levelGainMusic;
+    [SerializeField] AudioClip healSound;
 
     public PokemonManager()
     {
@@ -18,8 +21,13 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 
     public IEnumerator GrowLevel(Pokemon pokemon, System.Action<bool> uiRefreshCallback)
     {
+        SfxHandler.Play(xpFullSound);
+        yield return new WaitForSeconds(xpFullSound.length);
+
         pokemon.GrowLevel();
         uiRefreshCallback(false);
+
+        BgmHandler.Instance.PlayMFX(levelGainMusic);
         yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
 
         MoveData move;
@@ -182,6 +190,8 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                     TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, s.data.healText, pokemon.Name), closeAfterFinish: true);
             }
         }
+
+        SfxHandler.Play(healSound);
 
         if (item.data.consumable)
             PlayerData.Instance.TryTakeItem(item);

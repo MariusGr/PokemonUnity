@@ -33,6 +33,8 @@ MonoBehaviour:
   animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
   animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
     type: 2}
+  sound: {fileID: 8300000, guid: 7ce9e6e09b326914aa84e997328daa99, type: 3}
+  usesCryForSound: 0
   hasSpecialUsageText: 0
   specialUsageText: 
   recoil: 0

@@ -24,6 +24,8 @@ public class MoveData : ScriptableObject
 
     public AnimationClip animationClipPlayer;
     public AnimationClip animationClipOpponent;
+    public AudioClip sound;
+    public bool usesCryForSound;
 
     public bool hasSpecialUsageText;
     public string specialUsageText;

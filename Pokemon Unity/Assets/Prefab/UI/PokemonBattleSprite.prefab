@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2816467818966118007
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.7529412}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -203,6 +203,19 @@ MonoBehaviour:
   faintAnimation:
   - {fileID: 7400000, guid: 8a6fc8cb342254374aafc809440f4fa1, type: 2}
   - {fileID: 7400000, guid: 5107f317fe6894e61846e5edb03c3634, type: 2}
+  inflictStatusAnimation:
+  - {fileID: 7400000, guid: c7c1e9eedbb7e194bb7b35d07d6470d4, type: 2}
+  - {fileID: 7400000, guid: 1880cfed3f942a649945ea78fb17512f, type: 2}
+  statUpAnimation:
+  - {fileID: 7400000, guid: 54df133bafd34a041a958ecdb0b2733c, type: 2}
+  - {fileID: 7400000, guid: 555c4c73ce69a5b41b9f0e1ccd26cfd2, type: 2}
+  statDownAnimation:
+  - {fileID: 7400000, guid: 030a52d544047d941960b064e04ae5d9, type: 2}
+  - {fileID: 7400000, guid: 555c4c73ce69a5b41b9f0e1ccd26cfd2, type: 2}
+  overlay: {fileID: 2816467818966118006}
+  healOverlay: {fileID: 2800000, guid: ce11f55534eba4647ba48f038622408a, type: 3}
+  statUpOverlay: {fileID: 2800000, guid: 95851338e226915449c855926279d0bf, type: 3}
+  statDownOverlay: {fileID: 2800000, guid: 8afc7d480d74f5049aa465b6afe3b9d4, type: 3}
 --- !u!111 &2816467820062953056
 Animation:
   m_ObjectHideFlags: 0

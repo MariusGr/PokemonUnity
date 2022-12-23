@@ -245,3 +245,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item:
     data: {fileID: 11400000, guid: 464d3bda3e31a430fbab7d2d61ba720c, type: 2}
+    count: 0
+  pickUpMusic: {fileID: 8300000, guid: a3842ae94466297459493eec11747789, type: 3}

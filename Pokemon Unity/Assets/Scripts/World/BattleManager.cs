@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using CollectionExtensions;
 
 public class BattleManager : ManagerWithPokemonManager, IBattleManager
 {
@@ -23,6 +24,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     [SerializeField] AudioClip wildVictoryMusicTrack;
     [SerializeField] AudioClip trainerVictoryMusicTrack;
     [SerializeField] AudioClip pokemonCaughtMusicTrack;
+    [SerializeField] AudioClip statUpSound;
+    [SerializeField] AudioClip statDownSound;
+    [SerializeField] AudioClip faintSound;
+    [SerializeField] AudioClip xpGainSound;
+    [SerializeField] InspectorFriendlySerializableDictionary<Effectiveness, AudioClip> moveHitSounds;
 
     private BattleState state;
     private CharacterData playerData;
@@ -605,7 +611,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, pokemon);
-        yield return null;
+        BgmHandler.Instance.PlayMFX(pokemon.data.cry);
+        yield return new WaitForSeconds(pokemon.data.cry.length);
     }
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
@@ -662,9 +669,18 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             // Attack hit successfully
 
             // Animation
+            if (move.data.usesCryForSound)
+                SfxHandler.Play(attackerPokemon.data.cry);
+            else if (!(move.data.sound is null))
+                SfxHandler.Play(move.data.sound);
+
             yield return ui.PlayMoveAnimation(attacker, move);
-            yield return new WaitForSeconds(1f);
-            yield return ui.PlayBlinkAnimation(target);
+
+            yield return new WaitForSeconds(.5f);
+
+            SfxHandler.Play(moveHitSounds[effectiveness]);
+            if (!move.data.doesNotInflictDamage)
+                yield return ui.PlayBlinkAnimation(target);
 
             // Deal damage
             damage = move.data.power < 1 ? 0 : move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
@@ -694,17 +710,16 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 yield return dialogBox.DrawText($"Attacke von {attackingPokemonIdentifier} geht daneben!", DialogBoxContinueMode.User);
         }
 
-        // Aftermath: Faint, Poison, etc.
         if (targetPokemon.isFainted)
             // target pokemon fainted
             yield return Faint(target, targetPokemonIdentifier);
         else
         {
-            // Aftermath e.g. Status effects etc.
             if (move.data.recoil > 0 && damage > 0)
             {
                 yield return dialogBox.DrawText($"{attackingPokemonIdentifier} wird durch Rückstoß getroffen!", DialogBoxContinueMode.Automatic);
                 yield return new WaitForSeconds(1f);
+                SfxHandler.Play(moveHitSounds[Effectiveness.Normal]);
                 yield return ui.PlayBlinkAnimation(target);
                 int recoilDamage = (int)(damage * move.data.recoil);
                 yield return InflictDamage(attacker, recoilDamage);
@@ -735,7 +750,17 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (amount == 0)
             yield break;
 
-        // TODO Animation
+        if (amount > 0)
+        {
+            SfxHandler.Play(statUpSound);
+            yield return ui.PlayStatUpAnimation(target);
+        }
+        else
+        {
+            SfxHandler.Play(statDownSound);
+            yield return ui.PlayStatDownAnimation(target);
+        }
+
         Pokemon targetPokemon = GetActivePokemon(target);
         int result = targetPokemon.InflictStatModifier(stat, amount);
         string statString = TextKeyManager.statToString[stat];
@@ -750,20 +775,25 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 $"{statString} von {targetPokemon.Name} kann nicht weiter steigen!", closeAfterFinish: true);
     }
 
-    private IEnumerator InflictStatusEffect(int target, StatusEffectData statusEffect)
+    private IEnumerator InflictStatusEffect(int targetIndex, StatusEffectData statusEffect)
     {
         // TODO Animation
-        Pokemon targetPokemon = GetActivePokemon(target);
+        Pokemon targetPokemon = GetActivePokemon(targetIndex);
         if (statusEffect is null ||
             statusEffect.isNonVolatile && !(targetPokemon.statusEffectNonVolatile is null) ||
             statusEffect.isVolatile && targetPokemon.HasStatusEffectVolatile(statusEffect)
         )
             yield break;
 
-        yield return dialogBox.DrawText(
-            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), closeAfterFinish: true);
+        dialogBox.DrawText(
+            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), DialogBoxContinueMode.External);
+
+        SfxHandler.Play(statusEffect.sound);
+        yield return ui.PlayInflictStatusAnimation(targetIndex);
+        dialogBox.Close();
+
         targetPokemon.InflictStatusEffect(statusEffect);
-        ui.Refresh(target);
+        ui.Refresh(targetIndex);
     }
 
     private IEnumerator StatusEffectNonVolatileRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
@@ -783,10 +813,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator StatusEffectRoundTick(StatusEffect statusEffect, int targetIndex, Pokemon targetPokemon, bool beforeMove, Action preventMoveCallback)
     {
+        int selfDamage = statusEffect is null ? 0 : statusEffect.data.GetDamageAgainstSelf(targetPokemon);
         int damage = statusEffect is null ? 0 :
             statusEffect.data.damagePerRoundAbsolute +
             Mathf.RoundToInt(statusEffect.data.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp) +
-            statusEffect.data.GetDamageAgainstSelf(targetPokemon);
+            selfDamage;
 
         if (statusEffect is null ||
             beforeMove && !statusEffect.data.takesEffectBeforeMoves ||
@@ -805,8 +836,22 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if ((!lifeTimeEnds || statusEffect.data.takesEffectOnceWhenLifeTimeEnded) && UnityEngine.Random.value <= statusEffect.data.chance)
         {
             if (!lifeTimeEnds)
-                yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                    TextKeyManager.TextKeyPokemon, statusEffect.data.effectPerRoundText, targetPokemon.Name), closeAfterFinish: true);
+                dialogBox.DrawText(TextKeyManager.ReplaceKey(
+                    TextKeyManager.TextKeyPokemon, statusEffect.data.effectPerRoundText, targetPokemon.Name),
+                    DialogBoxContinueMode.External);
+
+            if(selfDamage > 0)
+            {
+                SfxHandler.Play(moveHitSounds[Effectiveness.Normal]);
+                yield return ui.PlayBlinkAnimation(targetIndex);
+            }
+            else
+            {
+                SfxHandler.Play(statusEffect.data.sound);
+                yield return ui.PlayInflictStatusAnimation(targetIndex);
+            }
+            dialogBox.Close();
+
             if (damage > 0)
             {
                 yield return InflictDamage(targetIndex, damage);
@@ -832,7 +877,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator Faint(int characterIndex, string pokemonIdentifier)
     {
-        yield return dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.User);
+        dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.External);
+
+        BgmHandler.Instance.PlayMFX(GetActivePokemon(characterIndex).data.faintCry);
+        yield return new WaitForSeconds(GetActivePokemon(characterIndex).data.cry.length);
+        SfxHandler.Play(faintSound);
         yield return ui.PlayFaintAnimation(characterIndex);
 
         if (opponentIsWild)
@@ -868,7 +917,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         pokemon.GainXP(xp);
         while(true)
         {
+            AudioSource source = SfxHandler.Play(xpGainSound);
+            float time = Time.time;
             yield return ui.RefreshXPAnimated();
+            yield return new WaitForSeconds(Mathf.Max(0, .4f - (Time.time - time)));
+            source.Stop();
             if (!pokemon.WillGrowLevel())
                 break;
             yield return pokemonManager.GrowLevel(pokemon, ui.RefreshPlayerStats);

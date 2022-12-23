@@ -18,6 +18,7 @@ MonoBehaviour:
   effectPerRoundText: <pkmn-name> hat sich aus Verwirrung selbst verletzt!
   endOfLifeText: <pkmn-name> ist nicht mehr verwirrt!
   healText: <pkmn-name> ist nicht mehr verwirrt!
+  sound: {fileID: 8300000, guid: 55f611e1f3accdd4ca2514a30574ee54, type: 3}
   livesForever: 0
   lifetimeRoundsMinimum: 2
   lifetimeRoundsMaximum: 5
