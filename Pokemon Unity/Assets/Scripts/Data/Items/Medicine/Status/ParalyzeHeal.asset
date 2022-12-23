@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: ParalyzeHeal
   m_EditorClassIdentifier: 
+  Id: 96872934-9024-4ebe-a257-3601c9231468
   fullName: Para-Heiler
   category: 1
   price: 1.49

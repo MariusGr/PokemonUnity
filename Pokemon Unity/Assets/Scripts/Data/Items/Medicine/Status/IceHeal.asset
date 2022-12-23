@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: IceHeal
   m_EditorClassIdentifier: 
+  Id: 8a56e576-b200-4c45-8dbc-5668d0e7c945
   fullName: Eisheiler
   category: 1
   price: 1.49
@@ -23,7 +24,11 @@ MonoBehaviour:
   consumable: 1
   usableOnBattleOpponent: 0
   catchesPokemon: 0
+  catchRateBonus: 0
   revives: 0
   healsHPFully: 0
   hpHealed: 0
-  statusHealed: 2
+  healsAllStatusEffectsNonVolatile: 0
+  healsAllStatusEffectsVolatile: 0
+  nonVolatileStatusHealed: {fileID: 0}
+  volatileStatusHealed: {fileID: 0}

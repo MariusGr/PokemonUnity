@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: FullRestore
   m_EditorClassIdentifier: 
+  Id: f90c1281-fa5e-4502-85d8-8b8f4c023514
   fullName: Top-Genesung
   category: 1
   price: 21.99

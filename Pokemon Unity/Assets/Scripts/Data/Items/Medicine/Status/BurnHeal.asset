@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: BurnHeal
   m_EditorClassIdentifier: 
+  Id: fa481ae7-091c-47d7-8c62-e0e20d22fc57
   fullName: Feuerheiler
   category: 1
   price: 1.49

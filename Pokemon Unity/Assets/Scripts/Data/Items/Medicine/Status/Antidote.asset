@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: Antidote
   m_EditorClassIdentifier: 
+  Id: 0e72d55e-43da-4c4a-a0b8-e052e883cc06
   fullName: Gegengift
   category: 1
   price: 1.49

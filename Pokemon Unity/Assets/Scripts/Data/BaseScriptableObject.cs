@@ -32,6 +32,10 @@ public class BaseScriptableObject : ScriptableObject
 
     private void OnValidate()
     {
+        Debug.Log(GetType());
+        //if (this is null)
+        //    Debug.LogWarning("");
+
         instances[Id] = this;
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: FullHeal
   m_EditorClassIdentifier: 
+  Id: 1760c5af-f117-417e-9ccf-18e97ae0fdf3
   fullName: Hyperheiler
   category: 1
   price: 2.99

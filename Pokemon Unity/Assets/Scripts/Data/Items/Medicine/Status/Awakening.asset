@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: Awakening
   m_EditorClassIdentifier: 
+  Id: 9e0efcac-c9e3-416a-9e33-07c6b69a61fe
   fullName: Aufwecker
   category: 1
   price: 1.49

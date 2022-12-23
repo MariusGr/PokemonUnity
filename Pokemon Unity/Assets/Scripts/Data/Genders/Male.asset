@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5259c5e9235e3a5448d1318b4f217aeb, type: 3}
   m_Name: Male
   m_EditorClassIdentifier: 
+  Id: 7a127440-3fbd-4a39-8202-8fe29d274238
   symbol: "\u2642\uFE0F"
   fullName: "M\xE4nnlich"
