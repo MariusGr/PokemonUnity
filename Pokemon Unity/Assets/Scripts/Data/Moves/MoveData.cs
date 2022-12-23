@@ -4,7 +4,7 @@ using UnityEngine;
 using CollectionExtensions;
 
 [CreateAssetMenu(fileName = "NewMove", menuName = "Pokemon/Move")]
-public class MoveData : ScriptableObject
+public class MoveData : BaseScriptableObject
 {
     public string fullName;
     public string description;

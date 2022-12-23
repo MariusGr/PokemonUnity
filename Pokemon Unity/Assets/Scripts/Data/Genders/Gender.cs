@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "Gender", menuName = "Pokemon/Gender")]
-public class Gender : ScriptableObject
+public class Gender : BaseScriptableObject
 {
     public static Gender GetRandomGender() => Globals.Instance.genders[Random.Range(0, Globals.Instance.genders.Length)];
 

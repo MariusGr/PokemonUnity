@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using SimpleJSON;
 
 [Serializable]
 public class NPCData : CharacterData

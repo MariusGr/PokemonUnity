@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 [CreateAssetMenu(fileName = "PokemonData", menuName = "Pokemon/Pokemon Data")]
-public class PokemonData : ScriptableObject
+public class PokemonData : BaseScriptableObject
 {
     public static int Count { get; private set; } = 0;
 

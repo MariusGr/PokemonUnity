@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
   m_Name: Flegmon
   m_EditorClassIdentifier: 
+  Id: 95b86bdb-d1e9-44ee-a6e7-6397f653f4f6
   dex: 2
   fullName: Flegmon
   description: :3
@@ -27,6 +28,8 @@ MonoBehaviour:
   evolution: {fileID: 0}
   encounterRarity: 87
   catchRate: 190
+  cries: []
+  faintCries: []
   maxHp: 90
   attack: 65
   specialAttack: 40

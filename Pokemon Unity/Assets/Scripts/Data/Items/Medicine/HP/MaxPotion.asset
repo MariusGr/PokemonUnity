@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: MaxPotion
   m_EditorClassIdentifier: 
+  Id: 7cfa8464-9e26-4da8-b1f6-771caf33f053
   fullName: Top-Trank
   category: 1
   price: 17.99
@@ -23,7 +24,11 @@ MonoBehaviour:
   consumable: 1
   usableOnBattleOpponent: 0
   catchesPokemon: 0
+  catchRateBonus: 0
   revives: 0
   healsHPFully: 1
   hpHealed: 0
-  statusHealed: 0
+  healsAllStatusEffectsNonVolatile: 0
+  healsAllStatusEffectsVolatile: 0
+  nonVolatileStatusHealed: {fileID: 0}
+  volatileStatusHealed: {fileID: 0}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Giftwolke
   m_EditorClassIdentifier: 
+  Id: 42910976-3f02-49c9-a5b1-1c213a724840
   fullName: Giftwolke
   description: "H\xFCllt Gegner in giftiges Gas ein, kann vergiften."
   pokeType: {fileID: 11400000, guid: f647a3d8033d74746ac3174598f7098b, type: 2}

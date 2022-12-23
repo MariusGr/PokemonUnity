@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Irrlicht
   m_EditorClassIdentifier: 
+  Id: f93cec03-11f9-4961-9ecf-2caee6393ea0
   fullName: Irrlicht
   description: "Angriff mit blau-wei\xDFer Flamme, die den Gegner verbrennt."
   pokeType: {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}

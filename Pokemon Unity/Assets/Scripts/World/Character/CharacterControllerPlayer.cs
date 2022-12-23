@@ -11,17 +11,6 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     private IPauseUI pauseUI;
     private Door currentEntrance = null;
 
-    private void Awake()
-    {
-#if (UNITY_EDITOR)
-        playerData.FillItemsDict();
-#endif
-        foreach (Pokemon p in playerData.pokemons)
-            playerData.AddCaughtPokemon(p.data);
-        foreach (Pokemon p in playerData.pokemonsInBox)
-            playerData.AddCaughtPokemon(p.data);
-    }
-
     private void Start()
     {
         InputManager.Instance.Register(this);

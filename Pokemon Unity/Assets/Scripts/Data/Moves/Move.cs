@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using SimpleJSON;
 
 [System.Serializable]
 public class Move
@@ -28,6 +29,22 @@ public class Move
         this.data = data;
         this.pokemon = pokemon;
         pp = data.maxPP;
+    }
+
+    public Move(JSONNode json, int index, Pokemon pokemon)
+    {
+        this.index = index;
+        data = (MoveData)BaseScriptableObject.Get(json["data"]);
+        pp = json["pp"];
+        this.pokemon = pokemon;
+    }
+
+    public JSONNode ToJSON()
+    {
+        JSONNode json = new JSONObject();
+        json.Add("data", data.Id);
+        json.Add("pp", pp);
+        return json;
     }
 
     public void SetPokemon(Pokemon pokemon) => this.pokemon = pokemon;

@@ -24,6 +24,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
 
     override public void Initialize()
     {
+        character.LoadDefault();
         if (willChallengePlayer)
             battlingNPCs.Add(this);
     }

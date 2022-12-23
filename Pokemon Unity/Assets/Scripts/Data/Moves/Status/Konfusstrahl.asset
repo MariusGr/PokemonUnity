@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Konfusstrahl
   m_EditorClassIdentifier: 
+  Id: e3e3682d-f1e1-4534-b6fb-2b7eef12c038
   fullName: Konfusstrahl
   description: Ein fieser Strahl, der den Gegner verwirrt. Fiees! x3
   pokeType: {fileID: 11400000, guid: 03a6102f034554d5bb088aa2e6cd11b6, type: 2}

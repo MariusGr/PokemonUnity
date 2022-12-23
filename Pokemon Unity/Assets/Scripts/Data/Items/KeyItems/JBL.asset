@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: JBL
   m_EditorClassIdentifier: 
+  Id: 95723de0-b9d8-4806-92eb-bbd9207b7e76
   fullName: JBL Flip 4
   category: 4
   price: 39.99
@@ -24,7 +25,11 @@ MonoBehaviour:
   consumable: 0
   usableOnBattleOpponent: 0
   catchesPokemon: 0
+  catchRateBonus: 0
   revives: 0
   healsHPFully: 0
   hpHealed: 0
-  statusHealed: 0
+  healsAllStatusEffectsNonVolatile: 0
+  healsAllStatusEffectsVolatile: 0
+  nonVolatileStatusHealed: {fileID: 0}
+  volatileStatusHealed: {fileID: 0}

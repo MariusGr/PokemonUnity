@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
   m_Name: Potion
   m_EditorClassIdentifier: 
+  Id: 90c708cc-130a-485e-8d24-ba0e7df8a45d
   fullName: Trank
   category: 1
   price: 2.29
@@ -23,7 +24,11 @@ MonoBehaviour:
   consumable: 1
   usableOnBattleOpponent: 0
   catchesPokemon: 0
+  catchRateBonus: 0
   revives: 0
   healsHPFully: 0
   hpHealed: 20
-  statusHealed: 0
+  healsAllStatusEffectsNonVolatile: 0
+  healsAllStatusEffectsVolatile: 0
+  nonVolatileStatusHealed: {fileID: 0}
+  volatileStatusHealed: {fileID: 0}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using SimpleJSON;
 
 [Serializable]
 public class Item
@@ -14,6 +15,12 @@ public class Item
     {
         this.data = data;
         this.count = count;
+    }
+
+    public Item(JSONNode json)
+    {
+        data = (ItemData)BaseScriptableObject.Get(json["data"]);
+        count = json["count"];
     }
 
     public void Increase(int amount = 1)
@@ -42,6 +49,14 @@ public class Item
             return data.GetHashCode();
         else
             return base.GetHashCode();
+    }
+
+    public JSONNode ToJSON()
+    {
+        JSONNode json = new JSONObject();
+        json.Add("data", data.Id);
+        json.Add("count", count);
+        return json;
     }
 
     public override string ToString() => $"{base.ToString()}: {data} x{count}";

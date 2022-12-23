@@ -23,9 +23,16 @@ public class Character : MonoBehaviour
     {
         foreach (Pokemon pokemon in pokemons)
             pokemon.Initialize(characterData);
+
         startPosition = transform.position;
 
         controller.Initialize();
+    }
+
+    public virtual void LoadDefault()
+    {
+        foreach (Pokemon pokemon in pokemons)
+            pokemon.LoadDefault();
     }
 
     public void Reset()

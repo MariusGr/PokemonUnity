@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Schlangenblick
   m_EditorClassIdentifier: 
+  Id: a6ab8315-512c-4c4b-b9ce-3babc95bcb1f
   fullName: Schlangenblick
   description: "Sch\xFCchtert Gegner ein, so dass er paralysiert wird."
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}

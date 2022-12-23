@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 [Serializable]
 public class Pokemon
@@ -151,6 +152,38 @@ public class Pokemon
 
     private int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
 
+    public JSONNode ToJSON()
+    {
+        JSONNode json = new JSONObject();
+        json.Add("data", data.Id);
+        json.Add("metDate", metDate.ToString());
+        json.Add("metMap", metMap);
+        json.Add("metLevel", metLevel);
+        json.Add("level", level);
+        json.Add("moves", MovesToJSON());
+        json.Add("hp", hp);
+        json.Add("xp", xp);
+        json.Add("gender", gender.Id);
+        return json;
+    }
+
+    private JSONArray MovesToJSON()
+    {
+        JSONArray json = new JSONArray();
+
+        foreach (Move move in moves)
+            json.Add(move.ToJSON());
+
+        return json;
+    }
+
+    private void LoadMovesFromJSON(JSONArray json)
+    {
+        moves = new List<Move>();
+        foreach (JSONNode moveJSON in json)
+            AddMove(moveJSON);
+    }
+
     public Pokemon(EncounterPokemon encounterPokemonData) :
         this(encounterPokemonData.data, UnityEngine.Random.Range(encounterPokemonData.minLevel, encounterPokemonData.maxLevel), null)
     { }
@@ -159,6 +192,22 @@ public class Pokemon
     {
         this.data = pokemonData;
         this.level = level;
+        Initialize(character);
+    }
+
+    public Pokemon(JSONNode json, CharacterData character)
+    {
+        Debug.Log(BaseScriptableObject.Get(json["data"]));
+        data = (PokemonData)BaseScriptableObject.Get(json["data"]);
+        level = json["level"];
+        metDate = DateTime.Parse(json["metDate"]);
+        metLevel = json["metLevel"];
+        metMap = json["metMap"];
+        LoadMovesFromJSON((JSONArray)json["moves"]);
+        hp = json["hp"];
+        xp = json["xp"];
+        gender = (Gender)BaseScriptableObject.Get(json["gender"]);
+
         Initialize(character);
     }
 
@@ -185,9 +234,12 @@ public class Pokemon
         };
 
         statusEffectsVolatile = new List<StatusEffect>();
+    }
 
-        hp = maxHp;
+    public void LoadDefault()
+    {
         moves = new List<Move>();
+        hp = maxHp;
         foreach (int key in data.levelToMoveDataMap.keys)
             if (key <= level)
                 AddMove(data.levelToMoveDataMap[key]);
@@ -196,6 +248,7 @@ public class Pokemon
         xp = data.GetXPForLevel(level);
     }
 
+    public void AddMove(JSONNode json) => moves.Add(new Move(json, moves.Count, this));
     public void AddMove(MoveData moveData) => moves.Add(new Move(moveData, moves.Count, this));
     public void ReplaceMove(Move move, MoveData newMove) => moves[move.index] = new Move(newMove, move.index, this);
 

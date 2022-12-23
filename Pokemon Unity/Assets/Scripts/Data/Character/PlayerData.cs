@@ -4,7 +4,7 @@ using System;
 using SimpleJSON;
 
 [Serializable]
-public class PlayerData : CharacterData, ISavable
+public class PlayerData : CharacterData
 {
     static public PlayerData Instance;
 
@@ -21,15 +21,18 @@ public class PlayerData : CharacterData, ISavable
     };
     public Transform lastPokeCenterEntrance;
 
-#if (UNITY_EDITOR)
     [SerializeField] private List<Item> itemsValues;
 
-    public void FillItemsDict()
+    public void LoadDefault()
     {
-        foreach (Item item in itemsValues)
+        FillItemsDict(itemsValues);
+    }
+
+    public void FillItemsDict(List<Item> itemsList)
+    {
+        foreach (Item item in itemsList)
             GiveItem(item);
     }
-#endif
 
     public HashSet<PokemonData> seenPokemon = new HashSet<PokemonData>();
     public HashSet<PokemonData> caughtPokemon = new HashSet<PokemonData>();
@@ -157,22 +160,44 @@ public class PlayerData : CharacterData, ISavable
         bin[newIndex2] = item2;
     }
 
-    public string GetKey()
-        => $"{GetType()}";
-
-    public JSONObject ToJSON()
+    public JSONArray ItemsToJSON()
     {
-        JSONObject json = new JSONObject();
-        json.Add("name", name);
-        json.Add("money", money);
+        JSONArray json = new JSONArray();
+
+        foreach(List<Item> itemList in items.Values)
+            foreach(Item item in itemList)
+                json.Add(item.ToJSON());
 
         return json;
     }
 
-    public void LoadFromJSON(JSONObject json)
+    public JSONArray PokemonsToJSON()
     {
-        JSONNode jsonData = json[GetKey()];
-        name = jsonData["name"];
-        money = jsonData["money"];
+        JSONArray json = new JSONArray();
+
+        foreach (Pokemon pokemon in pokemons)
+            json.Add(pokemon.ToJSON());
+
+        return json;
+    }
+
+    public JSONArray LoadItemsFromJSON(JSONArray json)
+    {
+        List<Item> itemsList = new List<Item>();
+
+        foreach (JSONNode itemJSON in json)
+            itemsList.Add(new Item(itemJSON));
+        FillItemsDict(itemsList);
+
+        return json;
+    }
+
+    public JSONArray LoadPokemonsFromJSON(JSONArray json)
+    {
+        pokemons = new List<Pokemon>();
+        foreach (JSONNode pokemonJSON in json)
+            GivePokemon(new Pokemon(pokemonJSON, this));
+
+        return json;
     }
 }

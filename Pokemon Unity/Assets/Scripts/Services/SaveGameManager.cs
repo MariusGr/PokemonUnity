@@ -12,6 +12,8 @@ public class SaveGameManager : MonoBehaviour, ISaveGameManager
     private string path => Application.persistentDataPath + "/savegame.sav";
     private Dictionary<string, ISavable> savables = new Dictionary<string, ISavable>();
 
+    //public static JSONArray vector3ToJSON()
+
     public SaveGameManager()
     {
         Instance = this;
@@ -45,6 +47,9 @@ public class SaveGameManager : MonoBehaviour, ISaveGameManager
                 e
             ));
         }
+
+        foreach (KeyValuePair<string, ISavable> entry in savables)
+            entry.Value.LoadDefault();
     }
 
     public void WriteJSON(JSONObject json)
@@ -57,31 +62,34 @@ public class SaveGameManager : MonoBehaviour, ISaveGameManager
     public JSONObject LoadFromJSON()
     {
         string jsonText = "{}";
-        JSONObject json;
 
         // create file of non-existent
         if (!File.Exists(path))
+        {
             InitializeJSON();
+            return null;
+        }
+
         // read file if existent
-        else
-            jsonText = File.ReadAllText(path);
+        jsonText = File.ReadAllText(path);
 
         // Length of 3 is an estimated minimum length the file should have to be valid.
         // This length will be below that of the file is empty or has been non-existent.
         if (File.ReadAllText(path).Length < 3)
         {
             InitializeJSON();
-            json = new JSONObject();
+            return null;
         }
-        else
-            json = (JSONObject)JSON.Parse(jsonText);
 
-        return json;
+        return (JSONObject)JSON.Parse(jsonText);
     }
 
     public void LoadGame()
     {
         JSONObject json = LoadFromJSON();
+
+        if (json is null)
+            return;
 
         foreach (KeyValuePair<string, ISavable> entry in savables)
             entry.Value.LoadFromJSON(json);
