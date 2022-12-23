@@ -5,12 +5,13 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
     [SerializeField] PokedexSelection dexView;
     [SerializeField] PartySelection partyView;
     [SerializeField] BagUI bagView;
+    [SerializeField] SaveGameUI saveGameView;
 
     public PauseUI() => Services.Register(this as IPauseUI);
 
     private void Awake()
     {
-        AssignElements(new object[] { null, null, null });
+        AssignElements(new object[] { null, null, null, null });
     }
 
     public override void Open()
@@ -44,6 +45,8 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
             partyView.Open(callback: ClosePartyView, battle: false, forceSelection: false);
         else if (index == 2)
             bagView.Open(callback: CloseBagView);
+        else if (index == 3)
+            saveGameView.Open(CloseSaveGameView);
     }
 
     private void CloseDexView(ISelectableUIElement selection, bool goBack)
@@ -63,6 +66,8 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
         if (goBack)
             partyView.Close();
     }
+
+    private void CloseSaveGameView() => saveGameView.Close();
 
     protected override void GoBack()
     {

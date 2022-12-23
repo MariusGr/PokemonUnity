@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
     public virtual bool IsPlayer => false;
 
     private void Awake() => Initialize();
-    protected void Initialize()
+    protected virtual void Initialize()
     {
         foreach (Pokemon pokemon in pokemons)
             pokemon.Initialize(characterData);

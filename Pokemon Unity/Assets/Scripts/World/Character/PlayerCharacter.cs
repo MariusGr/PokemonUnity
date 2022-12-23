@@ -19,6 +19,12 @@ public class PlayerCharacter : Character, IPlayerCharacter
 
     private void Awake() => Initialize();
 
+    protected override void Initialize()
+    {
+        base.Initialize();
+        Services.Get<ISaveGameManager>().Register(playerData);
+    }
+
     public Coroutine Defeat() => StartCoroutine(DefeatCoroutine());
     private IEnumerator DefeatCoroutine()
     {

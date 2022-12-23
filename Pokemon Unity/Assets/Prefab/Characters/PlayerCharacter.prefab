@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 7764445228982364533}
-  characterData:
+  playerData:
     name: 
     pokemons: []
     gameobject: {fileID: 7239874394638884248}

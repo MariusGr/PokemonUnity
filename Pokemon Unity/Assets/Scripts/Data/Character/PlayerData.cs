@@ -1,13 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using CollectionExtensions;
-using System.Linq;
-
+using SimpleJSON;
 
 [Serializable]
-public class PlayerData : CharacterData
+public class PlayerData : CharacterData, ISavable
 {
     static public PlayerData Instance;
 
@@ -158,5 +155,24 @@ public class PlayerData : CharacterData
         int newIndex2 = items[item1.data.category].IndexOf(item1);
         bin[newIndex1] = item1;
         bin[newIndex2] = item2;
+    }
+
+    public string GetKey()
+        => $"{GetType()}";
+
+    public JSONObject ToJSON()
+    {
+        JSONObject json = new JSONObject();
+        json.Add("name", name);
+        json.Add("money", money);
+
+        return json;
+    }
+
+    public void LoadFromJSON(JSONObject json)
+    {
+        JSONNode jsonData = json[GetKey()];
+        name = jsonData["name"];
+        money = jsonData["money"];
     }
 }
