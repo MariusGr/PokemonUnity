@@ -30,6 +30,7 @@ public class CharacterMovement : Pausable
         private set
         {
             currentDirectionVector = value;
+            print(currentDirectionVector);
             currentDirection = currentDirectionVector.ToDirection();
         }
     }
@@ -48,6 +49,12 @@ public class CharacterMovement : Pausable
         base.Pause();
         character.Animator.Tick(AnimationType.None, currentDirection);
         StopAllCoroutines();
+        moving = false;
+    }
+
+    protected override void Unpause()
+    {
+        base.Unpause();
         moving = false;
     }
 

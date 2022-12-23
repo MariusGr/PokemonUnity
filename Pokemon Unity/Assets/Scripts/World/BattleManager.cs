@@ -790,6 +790,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         SfxHandler.Play(statusEffect.sound);
         yield return ui.PlayInflictStatusAnimation(targetIndex);
+        yield return new WaitForSeconds(2f);
         dialogBox.Close();
 
         targetPokemon.InflictStatusEffect(statusEffect);

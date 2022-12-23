@@ -26,6 +26,7 @@ public class PlayerData : CharacterData
     public void LoadDefault()
     {
         FillItemsDict(itemsValues);
+        InitCaughtPokemon();
     }
 
     public void FillItemsDict(List<Item> itemsList)
@@ -34,7 +35,7 @@ public class PlayerData : CharacterData
             GiveItem(item);
     }
 
-    public HashSet<PokemonData> seenPokemon = new HashSet<PokemonData>();
+    public HashSet<PokemonData> seenPokemons = new HashSet<PokemonData>();
     public HashSet<PokemonData> caughtPokemon = new HashSet<PokemonData>();
     public List<Pokemon> pokemonsInBox = new List<Pokemon>();
 
@@ -66,9 +67,9 @@ public class PlayerData : CharacterData
         AddSeenPokemon(pokemon);
     }
 
-    public void AddSeenPokemon(PokemonData pokemon) => seenPokemon.Add(pokemon);
+    public void AddSeenPokemon(PokemonData pokemon) => seenPokemons.Add(pokemon);
     public bool HasCaughtPokemon(PokemonData pokemon) => caughtPokemon.Contains(pokemon);
-    public bool HasSeenPokemon(PokemonData pokemon) => seenPokemon.Contains(pokemon);
+    public bool HasSeenPokemon(PokemonData pokemon) => seenPokemons.Contains(pokemon);
 
     public void CatchPokemon(Pokemon pokemon)
     {
@@ -160,6 +161,24 @@ public class PlayerData : CharacterData
         bin[newIndex2] = item2;
     }
 
+    private void InitCaughtPokemon()
+    {
+        InitCaughtPokemonFromPokemons();
+        InitCaughtPokemonsFromBox();
+    }
+
+    private void InitCaughtPokemonFromPokemons()
+    {
+        foreach (Pokemon p in pokemonsInBox)
+            AddCaughtPokemon(p.data);
+    }
+
+    private void InitCaughtPokemonsFromBox()
+    {
+        foreach (Pokemon p in pokemonsInBox)
+            AddCaughtPokemon(p.data);
+    }
+
     public JSONArray ItemsToJSON()
     {
         JSONArray json = new JSONArray();
@@ -181,23 +200,56 @@ public class PlayerData : CharacterData
         return json;
     }
 
-    public JSONArray LoadItemsFromJSON(JSONArray json)
+    public JSONArray PokemonsInBoxToJSON()
+    {
+        JSONArray json = new JSONArray();
+
+        foreach (Pokemon pokemon in pokemonsInBox)
+            json.Add(pokemon.ToJSON());
+
+        return json;
+    }
+
+    public JSONArray SeenPokemonsToJSON()
+    {
+        JSONArray json = new JSONArray();
+
+        foreach (PokemonData pokemon in seenPokemons)
+            json.Add(pokemon.Id);
+
+        return json;
+    }
+
+    public void LoadItemsFromJSON(JSONArray json)
     {
         List<Item> itemsList = new List<Item>();
 
         foreach (JSONNode itemJSON in json)
             itemsList.Add(new Item(itemJSON));
         FillItemsDict(itemsList);
-
-        return json;
     }
 
-    public JSONArray LoadPokemonsFromJSON(JSONArray json)
+    public void LoadPokemonsFromJSON(JSONArray json)
     {
         pokemons = new List<Pokemon>();
         foreach (JSONNode pokemonJSON in json)
             GivePokemon(new Pokemon(pokemonJSON, this));
 
-        return json;
+        InitCaughtPokemonFromPokemons();
+    }
+
+    public void LoadPokemonsInBoxFromJSON(JSONArray json)
+    {
+        pokemonsInBox = new List<Pokemon>();
+        foreach (JSONNode pokemonJSON in json)
+            PutPokemonToBox(new Pokemon(pokemonJSON, this));
+
+        InitCaughtPokemonsFromBox();
+    }
+
+    public void LoadSeenPokemonsFromJSON(JSONArray json)
+    {
+        foreach (JSONNode pokemonJSON in json)
+            AddSeenPokemon((PokemonData)BaseScriptableObject.Get(pokemonJSON));
     }
 }

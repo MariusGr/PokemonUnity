@@ -27,7 +27,7 @@ public class PokedexSelection : ScrollSelection
             data.caught = true;
         }
 
-        foreach (PokemonData pokemon in PlayerData.Instance.seenPokemon)
+        foreach (PokemonData pokemon in PlayerData.Instance.seenPokemons)
         {
             DexEntryData data = dexList[pokemon.dex - 1];
             if (data.caught)

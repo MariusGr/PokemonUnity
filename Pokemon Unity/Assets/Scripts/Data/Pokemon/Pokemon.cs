@@ -186,7 +186,10 @@ public class Pokemon
 
     public Pokemon(EncounterPokemon encounterPokemonData) :
         this(encounterPokemonData.data, UnityEngine.Random.Range(encounterPokemonData.minLevel, encounterPokemonData.maxLevel), null)
-    { }
+    {
+        Initialize(null);
+        LoadDefault();
+    }
 
     public Pokemon(PokemonData pokemonData, int level, CharacterData character)
     {
@@ -207,6 +210,7 @@ public class Pokemon
         hp = json["hp"];
         xp = json["xp"];
         gender = (Gender)BaseScriptableObject.Get(json["gender"]);
+        Debug.Log(gender);
 
         Initialize(character);
     }

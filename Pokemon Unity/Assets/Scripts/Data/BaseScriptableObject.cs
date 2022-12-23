@@ -30,12 +30,5 @@ public class BaseScriptableObject : ScriptableObject
     private static Dictionary<string, BaseScriptableObject> instances = new Dictionary<string, BaseScriptableObject>();
     public static BaseScriptableObject Get(string id) => instances[id];
 
-    private void OnValidate()
-    {
-        Debug.Log(GetType());
-        //if (this is null)
-        //    Debug.LogWarning("");
-
-        instances[Id] = this;
-    }
+    private void OnValidate() => instances[Id] = this;
 }

@@ -63,6 +63,8 @@ public class PlayerCharacter : Character, IPlayerCharacter, ISavable
         json.Add("direction", (Vector3)Movement.CurrentDirectionVector);
         json.Add("items", playerData.ItemsToJSON());
         json.Add("pokemons", playerData.PokemonsToJSON());
+        json.Add("pokemonsInBox", playerData.PokemonsInBoxToJSON());
+        json.Add("pokemonsSeen", playerData.SeenPokemonsToJSON());
         //json.Add("lastPokeCenterEntrance", );
         //json.Add("lastPokeCenterEntrance", );
 
@@ -75,13 +77,11 @@ public class PlayerCharacter : Character, IPlayerCharacter, ISavable
         //playerData.name = jsonData["name"];
         playerData.money = jsonData["money"];
         transform.position = jsonData["position"];
+        Movement.LookInDirection(new GridVector(jsonData["direction"]));
         playerData.LoadItemsFromJSON((JSONArray)jsonData["items"]);
         playerData.LoadPokemonsFromJSON((JSONArray)jsonData["pokemons"]);
-
-        //foreach (Pokemon p in playerData.pokemons)
-        //    playerData.AddCaughtPokemon(p.data);
-        //foreach (Pokemon p in playerData.pokemonsInBox)
-        //    playerData.AddCaughtPokemon(p.data);
+        playerData.LoadPokemonsInBoxFromJSON((JSONArray)jsonData["pokemonsInBox"]);
+        playerData.LoadSeenPokemonsFromJSON((JSONArray)jsonData["pokemonsSeen"]);
     }
 
     public override void LoadDefault()

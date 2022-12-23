@@ -20,6 +20,9 @@ public class PokemonStatsUI : SelectableImage
 
     private void AssignPokemon(Pokemon pokemon)
     {
+        print(pokemon);
+        print(gameObject.name);
+        print(pokemon.gender);
         this.pokemon = pokemon;
         gameObject.SetActive(true);
     }
