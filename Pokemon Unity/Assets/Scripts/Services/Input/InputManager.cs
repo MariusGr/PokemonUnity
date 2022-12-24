@@ -62,8 +62,8 @@ public class InputManager : MonoBehaviour
 
     private void GetInputForButton(InputData.Button button, string inputName)
     {
-        button.pressed = Input.GetButtonDown(inputName);
-        button.heldDown = Input.GetButton(inputName);
+        button.pressed = Input.GetButtonDown(inputName) || MobileInput.Instance.GetButtonPressed(inputName);
+        button.heldDown = Input.GetButton(inputName) || MobileInput.Instance.GetButtonHeldDown(inputName);
     }
 
     private void GetInputForDigitalPad()
@@ -73,11 +73,11 @@ public class InputManager : MonoBehaviour
 
         foreach (string inputName in inputNameToDirection.Keys)
         {
-            if (Input.GetButton(inputName))
+            if (Input.GetButton(inputName) || MobileInput.Instance.GetButtonHeldDown(inputName))
             {
                 Direction direction = inputNameToDirection[inputName];
                 input.digitalPad.heldDown = direction;
-                if (Input.GetButtonDown(inputName))
+                if (Input.GetButtonDown(inputName) || MobileInput.Instance.GetButtonPressed(inputName))
                     input.digitalPad.pressed = direction;
                 break;
             }

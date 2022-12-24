@@ -136,6 +136,9 @@ public class ShadowedText : MonoBehaviour
 
 #if (UNITY_EDITOR)
     private void Update()
+#else
+    private void Awake()
+#endif
     {
         text = _text;
         Refresh();
@@ -146,5 +149,4 @@ public class ShadowedText : MonoBehaviour
         //textShadowDefault.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, textField.rectTransform.sizeDelta.x);
         //textShadowDefault.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textField.rectTransform.sizeDelta.y);
     }
-#endif
 }

@@ -28,8 +28,10 @@ MonoBehaviour:
   evolution: {fileID: 0}
   encounterRarity: 87
   catchRate: 190
-  cries: []
-  faintCries: []
+  cries:
+  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
+  faintCries:
+  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
   maxHp: 90
   attack: 65
   specialAttack: 40

@@ -22,8 +22,6 @@ public class EncounterArea : MonoBehaviour
         foreach (EncounterPokemon p in pokemons)
         {
             givenRarities.Add(p.data.encounterRarity);
-            print(givenRarities.Count);
-            print("---------");
         }
 
         foreach (EncounterRarity e in givenRarities)

@@ -34,7 +34,7 @@ public class BaseScriptableObject : ScriptableObject
         return instances[id];
     }
 
-    private void OnValidate()
+    private void OnEnable()
     {
         if (this is null)
             Debug.LogError($"ID is still null on {GetType()}");
