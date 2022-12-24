@@ -137,6 +137,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
     {
         // TODO: ui close animation
+        dialogBox.Close();
         yield return new WaitForSeconds(2f);
         ui.Close();
 
@@ -611,8 +612,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, pokemon);
-        BgmHandler.Instance.PlayMFX(pokemon.data.cry);
-        yield return new WaitForSeconds(pokemon.data.cry.length);
+        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(pokemon.data.cry));
     }
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
@@ -880,8 +880,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.External);
 
-        BgmHandler.Instance.PlayMFX(GetActivePokemon(characterIndex).data.faintCry);
-        yield return new WaitForSeconds(GetActivePokemon(characterIndex).data.cry.length);
+        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(GetActivePokemon(characterIndex).data.faintCry));
         SfxHandler.Play(faintSound);
         yield return ui.PlayFaintAnimation(characterIndex);
 

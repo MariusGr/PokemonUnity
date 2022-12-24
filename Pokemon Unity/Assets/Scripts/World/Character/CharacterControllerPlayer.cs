@@ -23,6 +23,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     {
         if (paused)
             return;
+
         if (!(currentEntrance is null) && input.digitalPad.heldDown == currentEntrance.directionTriggerToEntrance)
             currentEntrance.Enter();
         else

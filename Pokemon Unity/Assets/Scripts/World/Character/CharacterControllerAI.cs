@@ -1,8 +1,9 @@
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControllerAI : CharacterControllerBase, IInteractable
+public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISavable
 {
     private static List<CharacterControllerAI> battlingNPCs = new List<CharacterControllerAI>();
 
@@ -19,14 +20,12 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
     [SerializeField] public float challengeVisionDistance = 5f;
     [SerializeField] private AudioClip challengeMusicTrack;
 
-    public bool willChallengePlayer => wantsToBattle && !npcData.IsDefeated();
+    public bool willChallengePlayer => wantsToBattle && !npcData.IsDefeated() && !npcData.hasBeenDefeated;
     override public CharacterData CharacterData => npcData;
 
     override public void Initialize()
     {
-        character.LoadDefault();
-        if (willChallengePlayer)
-            battlingNPCs.Add(this);
+        Services.Get<ISaveGameManager>().Register(this);
     }
 
     public void Interact(Character player)
@@ -77,9 +76,8 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
         battlingNPCs.Remove(this);
 
         if (npcDefeated)
-            Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, false);
+            Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
 
-        Services.Get<IDialogBox>().Close();
         EventManager.Unpause();
         return true;
     }
@@ -117,5 +115,34 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable
             yield return new WaitForEndOfFrame();
             character.Movement.ProcessMovement(direction, checkPositionEvents: checkPositionEvents, ignorePaused: true);
         }
+    }
+
+    public string GetKey()
+    {
+        GridVector startPosition = new GridVector(character.startPosition);
+        return $"{GetType()}_{startPosition.x}_{startPosition.y}";
+    }
+
+    public JSONNode ToJSON()
+    {
+        JSONNode json = new JSONObject();
+        json.Add("hasBeenDefeated", npcData.hasBeenDefeated);
+        return json;
+    }
+
+    public void LoadFromJSON(JSONObject json)
+    {
+        JSONNode jsonData = json[GetKey()];
+        npcData.hasBeenDefeated = jsonData["hasBeenDefeated"];
+        character.LoadDefault();
+        if (willChallengePlayer)
+            battlingNPCs.Add(this);
+    }
+
+    public void LoadDefault()
+    {
+        character.LoadDefault();
+        if (willChallengePlayer)
+            battlingNPCs.Add(this);
     }
 }

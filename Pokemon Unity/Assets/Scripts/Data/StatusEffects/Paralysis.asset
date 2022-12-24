@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b83986924b374da061d34e917a7dd, type: 3}
   m_Name: Paralysis
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 3e62a8f068ecb534e8b2031747bd63eb, type: 3}
+  Id: 1f8aea06-0632-408b-ae20-f55a99740715
   nameSubject: Paralyse
   inflictionText: <pkmn-name> ist paralysiert! Es greift eventuell nicht an!
+  notificationPerRoundText: 
   effectPerRoundText: <pkmn-name> ist paralysiert! Es kann sich nicht bewegen!
   endOfLifeText: 
   healText: Paralyse von <pkmn-name> wurde geheilt!
+  sound: {fileID: 0}
   livesForever: 1
   lifetimeRoundsMinimum: 0
   lifetimeRoundsMaximum: 0
@@ -25,6 +27,7 @@ MonoBehaviour:
   takesEffectBeforeMoves: 1
   damagePerRoundAbsolute: 0
   damagePerRoundRelativeToMaxHp: 0
+  powerOfSelfInflictedDamagePerRound: 0
   damageOverTime: 0
   preventsMove: 1
   chance: 0.25
@@ -32,3 +35,4 @@ MonoBehaviour:
   damageModifierRelative: 1
   catchRateBonus: 1.5
   immuneTypes: []
+  icon: {fileID: 21300000, guid: 3e62a8f068ecb534e8b2031747bd63eb, type: 3}

@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b83986924b374da061d34e917a7dd, type: 3}
   m_Name: Sleep
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 97f4b3528ba54494e9d59c5088ea0ed0, type: 3}
+  Id: a6c59333-57fb-460d-85eb-a39d8be47574
   nameSubject: Schlaf
   inflictionText: "<pkmn-name> macht ein Schl\xE4fchen \\|3"
+  notificationPerRoundText: 
   effectPerRoundText: "<pkmn-name> schl\xE4ft tief und fest \\|\\|33"
   endOfLifeText: <pkmn-name> ist aufgewacht!
   healText: <pkmn-name> wurde aufgeweckt!
+  sound: {fileID: 0}
   livesForever: 0
   lifetimeRoundsMinimum: 1
   lifetimeRoundsMaximum: 4
@@ -25,6 +27,7 @@ MonoBehaviour:
   takesEffectBeforeMoves: 1
   damagePerRoundAbsolute: 0
   damagePerRoundRelativeToMaxHp: 0
+  powerOfSelfInflictedDamagePerRound: 0
   damageOverTime: 0
   preventsMove: 1
   chance: 1
@@ -32,3 +35,4 @@ MonoBehaviour:
   damageModifierRelative: 1
   catchRateBonus: 2
   immuneTypes: []
+  icon: {fileID: 21300000, guid: 97f4b3528ba54494e9d59c5088ea0ed0, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b83986924b374da061d34e917a7dd, type: 3}
   m_Name: Burn
   m_EditorClassIdentifier: 
+  Id: 11e9da0d-a918-48e5-9068-dfa39e9045a8
   nameSubject: Verbrennung
   inflictionText: <pkmn-name> wurde verbrannt!
   notificationPerRoundText: 

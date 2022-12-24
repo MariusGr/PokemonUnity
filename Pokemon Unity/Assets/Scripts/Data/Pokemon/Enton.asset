@@ -28,7 +28,6 @@ MonoBehaviour:
   encounterRarity: 87
   catchRate: 190
   cries:
-  - {fileID: 0}
   - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
   - {fileID: 8300000, guid: 04ea7ef6457367c4499c6a1aa8b2f854, type: 3}
   - {fileID: 8300000, guid: 690c309537a4378468c57ac487e50d09, type: 3}

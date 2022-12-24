@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 282b83986924b374da061d34e917a7dd, type: 3}
   m_Name: Poison
   m_EditorClassIdentifier: 
+  Id: 7ed801c1-757c-4d9d-a18b-81569b9aa8c6
   nameSubject: Vergiftung
   inflictionText: <pkmn-name> wurde vergiftet!
   notificationPerRoundText: 

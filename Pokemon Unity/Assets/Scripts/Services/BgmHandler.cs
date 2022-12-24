@@ -236,9 +236,10 @@ public class BgmHandler : MonoBehaviour
     }
 
     /// If you need to play a second MFX immediately after the other, use Play MFX Consecutive
-    public void PlayMFX(AudioClip mfx)
+    public float PlayMFX(AudioClip mfx)
     {
         StartCoroutine(PlayMfxIE(mfx));
+        return mfx.length;
     }
 
     /// Plays an MFX with a slight delay to prevent musical glitches

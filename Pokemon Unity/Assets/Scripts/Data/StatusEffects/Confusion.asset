@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eeb215abfb46024fb6b592d81604295, type: 3}
   m_Name: Confusion
   m_EditorClassIdentifier: 
+  Id: bddacb4f-d454-4015-930f-6d20ef41fc2b
   nameSubject: Verwirrung
   inflictionText: <pkmn-name> ist verwirrt!
   notificationPerRoundText: <pkmn-name> ist verwirrt!
