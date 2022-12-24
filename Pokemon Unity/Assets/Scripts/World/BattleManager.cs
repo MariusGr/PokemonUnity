@@ -28,6 +28,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     [SerializeField] AudioClip statDownSound;
     [SerializeField] AudioClip faintSound;
     [SerializeField] AudioClip xpGainSound;
+    [SerializeField] AudioClip ballCloseSound;
+    [SerializeField] AudioClip ballOpenSound;
     [SerializeField] InspectorFriendlySerializableDictionary<Effectiveness, AudioClip> moveHitSounds;
 
     private BattleState state;
@@ -257,18 +259,25 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield break;
         }
         dialogBox.DrawText($"{playerData.name} wirft {ball.data.fullName}!", DialogBoxContinueMode.External);
+
+        yield return ui.PlayThrowAnimation();
+        ui.HideOpponent();
+        SfxHandler.Play(ballCloseSound);
         float rate = opponentPokemon.GetModifiedCatchRate(ball.data.catchRateBonus);
         int shakeProbability = Mathf.RoundToInt(1048560f / Mathf.Sqrt(Mathf.Sqrt(16711680f / rate)));
 
-        //TODO Throw animation
-
         for (int i = 0; i < 4; i++)
         {
+            yield return ui.PlayShakeAnimation();
+
             int randomValue = UnityEngine.Random.Range(0, 65536);
             if (randomValue >= shakeProbability)
             {
                 // fail
                 print($"Shake #{i}: Catch failed, {randomValue} >= {shakeProbability}");
+                ui.ShowOpponent();
+                ui.HidePokeBallAnimation();
+                SfxHandler.Play(ballOpenSound);
                 yield return dialogBox.DrawText($"{opponentPokemon.Name} hat sich wieder befreit!", DialogBoxContinueMode.User);
                 yield break;
             }

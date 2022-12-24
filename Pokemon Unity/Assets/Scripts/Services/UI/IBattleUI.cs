@@ -22,6 +22,12 @@ public interface IBattleUI : IUIView
     public IEnumerator PlayStatUpAnimation(int owner);
     public IEnumerator PlayStatDownAnimation(int owner);
 
+    public IEnumerator PlayThrowAnimation();
+    public IEnumerator PlayShakeAnimation();
+    public void HideOpponent();
+    public void ShowOpponent();
+    public void HidePokeBallAnimation();
+
     public IEnumerator MakeOpponentAppear();
     public IEnumerator MakeOpponentDisappear();
     public void OpenBattleMenu(System.Action<BattleOption, bool> callback);

@@ -14,6 +14,7 @@ public class BattleUI : InputConsumer, IBattleUI
     [SerializeField] private PlayerPokemonStatsBattleUI playerStats;
     [SerializeField] private PokemonStatsUI opponentStats;
     [SerializeField] private MoveSelectionUI moveSelectionUI;
+    [SerializeField] private PokeBallAnimation ballAnimation;
     [SerializeField] private float hpRefreshSpeed = 1f;
     [SerializeField] private float xpRefreshSpeed = 1f;
 
@@ -31,6 +32,9 @@ public class BattleUI : InputConsumer, IBattleUI
     public void Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
         Open();
+        HidePokeBallAnimation();
+        ballAnimation.ResetAnimation();
+        ShowOpponent();
         Initialize(playerData, playerPokemon, opponentPokemon);
     }
 
@@ -68,6 +72,22 @@ public class BattleUI : InputConsumer, IBattleUI
     public IEnumerator PlayInflictStatusAnimation(int owner) => pokemonSprites[owner].PlayInflictStatusAnimation();
     public IEnumerator PlayStatUpAnimation(int owner) => pokemonSprites[owner].PlayStatUpAnimation();
     public IEnumerator PlayStatDownAnimation(int owner) => pokemonSprites[owner].PlayStatDownAnimation();
+
+    public IEnumerator PlayThrowAnimation()
+    {
+        ballAnimation.gameObject.SetActive(true);
+        return ballAnimation.PlayThrowAnimation();
+    }
+
+    public IEnumerator PlayShakeAnimation()
+    {
+        ballAnimation.gameObject.SetActive(true);
+        return ballAnimation.PlayShakeAnimation();
+    }
+
+    public void HideOpponent() => opponentPokemonSprite.SetSpriteVisible(false);
+    public void ShowOpponent() => opponentPokemonSprite.SetSpriteVisible(true);
+    public void HidePokeBallAnimation() => ballAnimation.gameObject.SetActive(false);
 
     public IEnumerator MakeOpponentAppear()
     {

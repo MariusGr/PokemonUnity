@@ -31,4 +31,6 @@ public class PokemonSprite : AnimatedSprite
         overlay.texture = statDownOverlay;
         return PlayAnimation(statDownAnimation[owner]);
     }
+
+    public void SetSpriteVisible(bool visible) => spriteImage.enabled = visible;
 }
