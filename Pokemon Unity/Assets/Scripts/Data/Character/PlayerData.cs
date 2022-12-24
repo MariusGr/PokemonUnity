@@ -36,7 +36,7 @@ public class PlayerData : CharacterData
     }
 
     public HashSet<PokemonData> seenPokemons = new HashSet<PokemonData>();
-    public HashSet<PokemonData> caughtPokemon = new HashSet<PokemonData>();
+    public HashSet<PokemonData> caughtPokemons = new HashSet<PokemonData>();
     public List<Pokemon> pokemonsInBox = new List<Pokemon>();
 
     public void PutPokemonToBox(Pokemon pokemon) => pokemonsInBox.Add(pokemon);
@@ -63,12 +63,13 @@ public class PlayerData : CharacterData
 
     public void AddCaughtPokemon(PokemonData pokemon)
     {
-        caughtPokemon.Add(pokemon);
+        caughtPokemons.Add(pokemon);
         AddSeenPokemon(pokemon);
     }
 
     public void AddSeenPokemon(PokemonData pokemon) => seenPokemons.Add(pokemon);
-    public bool HasCaughtPokemon(PokemonData pokemon) => caughtPokemon.Contains(pokemon);
+
+    public bool HasCaughtPokemon(PokemonData pokemon) => caughtPokemons.Contains(pokemon);
     public bool HasSeenPokemon(PokemonData pokemon) => seenPokemons.Contains(pokemon);
 
     public void CatchPokemon(Pokemon pokemon)

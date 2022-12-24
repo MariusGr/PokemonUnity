@@ -30,7 +30,6 @@ public class CharacterMovement : Pausable
         private set
         {
             currentDirectionVector = value;
-            print(currentDirectionVector);
             currentDirection = currentDirectionVector.ToDirection();
         }
     }

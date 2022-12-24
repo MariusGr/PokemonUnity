@@ -164,6 +164,7 @@ public class Pokemon
         json.Add("hp", hp);
         json.Add("xp", xp);
         json.Add("gender", gender.Id);
+        json.Add("statusEffectNonVolatile", hasNonVolatileStatusEffect ? statusEffectNonVolatile.ToJSON() : null);
         return json;
     }
 
@@ -200,7 +201,6 @@ public class Pokemon
 
     public Pokemon(JSONNode json, CharacterData character)
     {
-        Debug.Log(BaseScriptableObject.Get(json["data"]));
         data = (PokemonData)BaseScriptableObject.Get(json["data"]);
         level = json["level"];
         metDate = DateTime.Parse(json["metDate"]);
@@ -210,7 +210,8 @@ public class Pokemon
         hp = json["hp"];
         xp = json["xp"];
         gender = (Gender)BaseScriptableObject.Get(json["gender"]);
-        Debug.Log(gender);
+        JSONNode statusEffectJSON = json["statusEffectNonVolatile"];
+        if(!(statusEffectJSON is null) && statusEffectJSON.HasKey("data")) InflictStatusNonVolatileEffect(statusEffectJSON);
 
         Initialize(character);
     }
@@ -359,6 +360,7 @@ public class Pokemon
             InflictStatusNonVolatileEffect((StatusEffectNonVolatileData)statusEffect);
     }
 
+    public void InflictStatusNonVolatileEffect(JSONNode json) => statusEffectNonVolatile = new StatusEffect(json);
     public void InflictStatusNonVolatileEffect(StatusEffectNonVolatileData statusEffect) => statusEffectNonVolatile = new StatusEffect(statusEffect);
     public void InflictStatusVolatileEffect(StatusEffectVolatileData statusEffect) => statusEffectsVolatile.Add(new StatusEffect(statusEffect));
 

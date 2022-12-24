@@ -18,7 +18,7 @@ public class PokedexSelection : ScrollSelection
         for (int i = 0; i < dexList.Length; i++)
             dexList[i] = new DexEntryData(i + 1);
 
-        foreach (PokemonData pokemon in PlayerData.Instance.caughtPokemon)
+        foreach (PokemonData pokemon in PlayerData.Instance.caughtPokemons)
         {
             DexEntryData data = dexList[pokemon.dex - 1];
             data.pokemon = pokemon;

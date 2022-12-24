@@ -28,7 +28,16 @@ public class BaseScriptableObject : ScriptableObject
     [ScriptableObjectId]
     public string Id;
     private static Dictionary<string, BaseScriptableObject> instances = new Dictionary<string, BaseScriptableObject>();
-    public static BaseScriptableObject Get(string id) => instances[id];
+    public static BaseScriptableObject Get(string id)
+    {
+        Debug.Log($"{id}");
+        return instances[id];
+    }
 
-    private void OnValidate() => instances[Id] = this;
+    private void OnValidate()
+    {
+        if (this is null)
+            Debug.LogError($"ID is still null on {GetType()}");
+        instances[Id] = this;
+    }
 }

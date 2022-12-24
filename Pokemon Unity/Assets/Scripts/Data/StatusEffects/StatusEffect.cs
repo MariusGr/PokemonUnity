@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 public class StatusEffect
 {
@@ -15,6 +16,13 @@ public class StatusEffect
         stepCount = 0;
     }
 
+    public StatusEffect(JSONNode json)
+    {
+        data = (StatusEffectData)BaseScriptableObject.Get(json["data"]);
+        lifeTime = json["lifeTime"];
+        stepCount = json["stepCount"];
+    }
+
     public bool OverTimeDamageTick()
     {
         stepCount += 1;
@@ -25,5 +33,14 @@ public class StatusEffect
         }
 
         return false;
+    }
+
+    public JSONNode ToJSON()
+    {
+        JSONNode json = new JSONObject();
+        json.Add("data", data.Id);
+        json.Add("lifeTime", lifeTime);
+        json.Add("stepCount", stepCount);
+        return json;
     }
 }
