@@ -714,10 +714,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             }
 
             yield return InflictStatModifiers(target, move.data.statModifiersTarget);
-            yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
+            if (UnityEngine.Random.value <= move.data.statusVolatileInflictedTargetChance)
+                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
             yield return InflictStatusEffect(target, move.data.statusNonVolatileInflictedTarget);
 
-            yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
+            if (UnityEngine.Random.value <= move.data.statusNonVolatileInflictedTargetChance)
+                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
             yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf);
             yield return InflictStatModifiers(attacker, move.data.statModifiersSelf);
         }

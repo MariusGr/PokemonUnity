@@ -245,9 +245,20 @@ public class Pokemon
     {
         moves = new List<Move>();
         hp = maxHp;
-        foreach (int key in data.levelToMoveDataMap.keys)
+
+        int added = 0;
+        for (int i = data.levelToMoveDataMap.keys.Count - 1; i > -1; i--)
+        {
+            int key = data.levelToMoveDataMap.keys[i];
             if (key <= level)
+            {
                 AddMove(data.levelToMoveDataMap[key]);
+                added++;
+                if (added > 3)
+                    break;
+            }
+        }
+            
 
         if (gender is null) gender = Gender.GetRandomGender();
         xp = data.GetXPForLevel(level);

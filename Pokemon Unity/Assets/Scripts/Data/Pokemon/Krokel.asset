@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
-  m_Name: Flegmon
+  m_Name: Krokel
   m_EditorClassIdentifier: 
   Id: 95b86bdb-d1e9-44ee-a6e7-6397f653f4f6
-  dex: 2
+  dex: 3
   fullName: Flegmon
   description: :3
-  frontSprite: {fileID: 21300000, guid: d945a363a0b237045bba217daf5ac1a7, type: 3}
-  backSprite: {fileID: 21300000, guid: 6f9b1327534f69349a1f500fd3e9882d, type: 3}
+  frontSprite: {fileID: 21300000, guid: 694046985c9b1be41adb89f47ab64e53, type: 3}
+  backSprite: {fileID: 21300000, guid: acfe637f291f764489f163cd8aed0746, type: 3}
   icons:
-  - {fileID: 21300000, guid: 2583b1083f6988e4a8c6c274e2289dd5, type: 3}
-  - {fileID: 21300000, guid: 2583b1083f6988e4a8c6c274e2289dd5, type: 3}
+  - {fileID: 21300000, guid: 91258661d2a1a084dabf269e8f0de125, type: 3}
+  - {fileID: 21300000, guid: 91258661d2a1a084dabf269e8f0de125, type: 3}
   pokemonTypes:
   - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
   - {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
@@ -40,13 +40,6 @@ MonoBehaviour:
   speed: 15
   baseXPGain: 99
   levelToMoveDataMap:
-    keys: 01000000060000000a0000000b0000000f0000001d0000002b00000030000000
+    keys: 00000000
     values:
-    - {fileID: 11400000, guid: 5e1b46daf2b5f5e43b634033d88a1d5c, type: 2}
-    - {fileID: 11400000, guid: 1d81aeb1a0c07ff4a8a52735d53174b6, type: 2}
     - {fileID: 11400000, guid: f38ed1fb8defff141ae682d345d470c4, type: 2}
-    - {fileID: 11400000, guid: e0f6aa1b44037d04cb69dccaf489263a, type: 2}
-    - {fileID: 11400000, guid: 070e6462f9fccbd4eb75b702bbdbf8a4, type: 2}
-    - {fileID: 11400000, guid: be5ebaae658e8d14a809af7fc82b5599, type: 2}
-    - {fileID: 11400000, guid: 3f22d845017af2649b27a58365a34dff, type: 2}
-    - {fileID: 11400000, guid: a2450f6cfb4e1ce40b32ea7e2c2f754e, type: 2}

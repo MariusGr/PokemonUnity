@@ -15,7 +15,7 @@ MonoBehaviour:
   Id: 0ca6c6bf-9606-4abf-8810-eb492c4fd2dc
   dex: 1
   fullName: Enton
-  description: Hat immer Kopf aua
+  description: Hat immer Kopf aua x3
   frontSprite: {fileID: 21300000, guid: f5abdfc3f18024305a95efb37fceeb1a, type: 3}
   backSprite: {fileID: 21300000, guid: e8ebe9f1c3781354799f47541bda2512, type: 3}
   icons:
@@ -53,9 +53,13 @@ MonoBehaviour:
   speed: 55
   baseXPGain: 64
   levelToMoveDataMap:
-    keys: 01000000020000000300000004000000
+    keys: 01000000050000000900000012000000160000001f0000002c00000030000000
     values:
-    - {fileID: 11400000, guid: 72dc84b68329943ad8f3550095f3a910, type: 2}
-    - {fileID: 11400000, guid: acc82a1970c50d64aaf0f346966dbd22, type: 2}
-    - {fileID: 11400000, guid: c57e523610aa794419f8ba5b75317a7f, type: 2}
-    - {fileID: 11400000, guid: 1d81aeb1a0c07ff4a8a52735d53174b6, type: 2}
+    - {fileID: 11400000, guid: 424c6df7e04b8f5478112ff6b405b0e2, type: 2}
+    - {fileID: 11400000, guid: 2b0fe90133ea9964b9c0f6177ae24252, type: 2}
+    - {fileID: 11400000, guid: e0f6aa1b44037d04cb69dccaf489263a, type: 2}
+    - {fileID: 11400000, guid: 070e6462f9fccbd4eb75b702bbdbf8a4, type: 2}
+    - {fileID: 11400000, guid: be5ebaae658e8d14a809af7fc82b5599, type: 2}
+    - {fileID: 11400000, guid: 160a88e5c1c6e604bbe39363d1aee0ce, type: 2}
+    - {fileID: 11400000, guid: 3f22d845017af2649b27a58365a34dff, type: 2}
+    - {fileID: 11400000, guid: ae9a5a0ebdfc3a74fb93c6c7d5dcf3d6, type: 2}

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
-  m_Name: Biss
+  m_Name: Rutenschlag
   m_EditorClassIdentifier: 
-  Id: 577396c0-e893-4d72-b91f-208533d6d3c4
-  fullName: Biss
-  description: 
+  Id: c8850274-ecb9-4e03-9d97-abd48be6dea9
+  fullName: Rutenschlag
+  description: Hieb mit dem Schweif, senkt die VERT. des Gegners.
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
-  maxPP: 25
-  power: 100
-  accuracy: 95
+  maxPP: 30
+  power: 0
+  accuracy: 100
   statusNonVolatileInflictedTarget: {fileID: 0}
   statusNonVolatileInflictedSelf: {fileID: 0}
   statusVolatileInflictedTarget: {fileID: 0}
@@ -27,13 +27,13 @@ MonoBehaviour:
     keys: 
     values: 
   statModifiersTarget:
-    keys: 
-    values: 
-  category: {fileID: 11400000, guid: 72a8a7b706eae414f865696998d0a328, type: 2}
+    keys: 02000000
+    values: ffffffff
+  category: {fileID: 11400000, guid: 59bda30bdc919b7439be3bff0274d97e, type: 2}
   animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
   animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
     type: 2}
-  sound: {fileID: 8300000, guid: 74b5175da14f9624380adea09cd3d6a6, type: 3}
+  sound: {fileID: 8300000, guid: f89534bb6c9d81947a48099633077124, type: 3}
   usesCryForSound: 0
   hasSpecialUsageText: 0
   specialUsageText: 

@@ -14,8 +14,10 @@ public class MoveData : BaseScriptableObject
     public int power;
     public int accuracy;
 
+    public float statusNonVolatileInflictedTargetChance = 1f;
     public StatusEffectNonVolatileData statusNonVolatileInflictedTarget;
     public StatusEffectNonVolatileData statusNonVolatileInflictedSelf;
+    public float statusVolatileInflictedTargetChance = 1f;
     public StatusEffectVolatileData statusVolatileInflictedTarget;
     public StatusEffectVolatileData statusVolatileInflictedSelf;
     public InspectorFriendlySerializableDictionary<Stat, int> statModifiersSelf;

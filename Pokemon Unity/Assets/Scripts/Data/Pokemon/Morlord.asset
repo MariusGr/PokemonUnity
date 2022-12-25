@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
+  m_Name: Morlord
+  m_EditorClassIdentifier: 
+  Id: 95b86bdb-d1e9-44ee-a6e7-6397f653f4f6
+  dex: 4
+  fullName: Morlord
+  description: :3
+  frontSprite: {fileID: 21300000, guid: 5aca842409181d543ab024a73984f410, type: 3}
+  backSprite: {fileID: 21300000, guid: eaa709789f4813b4ebf17a21cc4cbe68, type: 3}
+  icons:
+  - {fileID: 21300000, guid: 2803706528668a749a40da3b6ca8eecd, type: 3}
+  - {fileID: 21300000, guid: 2803706528668a749a40da3b6ca8eecd, type: 3}
+  pokemonTypes:
+  - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
+  - {fileID: 11400000, guid: b7b91fc8353b645d79d3e012a9894646, type: 2}
+  evolutionLevel: 0
+  evolution: {fileID: 0}
+  encounterRarity: 87
+  catchRate: 90
+  cries:
+  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
+  faintCries:
+  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
+  maxHp: 90
+  attack: 65
+  specialAttack: 40
+  defense: 65
+  specialDefense: 40
+  speed: 15
+  baseXPGain: 99
+  levelToMoveDataMap:
+    keys: 00000000
+    values:
+    - {fileID: 11400000, guid: f38ed1fb8defff141ae682d345d470c4, type: 2}
