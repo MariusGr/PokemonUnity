@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Id: 95b86bdb-d1e9-44ee-a6e7-6397f653f4f6
   dex: 3
-  fullName: Flegmon
+  fullName: Krokel
   description: :3
   frontSprite: {fileID: 21300000, guid: 694046985c9b1be41adb89f47ab64e53, type: 3}
   backSprite: {fileID: 21300000, guid: acfe637f291f764489f163cd8aed0746, type: 3}
@@ -22,16 +22,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 91258661d2a1a084dabf269e8f0de125, type: 3}
   - {fileID: 21300000, guid: 91258661d2a1a084dabf269e8f0de125, type: 3}
   pokemonTypes:
-  - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
-  - {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
+  - {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
   evolutionLevel: 0
   evolution: {fileID: 0}
   encounterRarity: 87
   catchRate: 190
   cries:
-  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
+  - {fileID: 8300000, guid: f41bbc68fe0c5844790a39dcd38724cd, type: 3}
   faintCries:
-  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
+  - {fileID: 8300000, guid: f41bbc68fe0c5844790a39dcd38724cd, type: 3}
   maxHp: 90
   attack: 65
   specialAttack: 40
@@ -40,6 +39,13 @@ MonoBehaviour:
   speed: 15
   baseXPGain: 99
   levelToMoveDataMap:
-    keys: 00000000
+    keys: 0000000001000000020000000c000000110000001c0000002000000024000000
     values:
-    - {fileID: 11400000, guid: f38ed1fb8defff141ae682d345d470c4, type: 2}
+    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
+    - {fileID: 11400000, guid: 1eb72c0ee840a154696c8e0b8721a799, type: 2}
+    - {fileID: 11400000, guid: 80fbc3d056c203f418a6b19811815ae0, type: 2}
+    - {fileID: 11400000, guid: 424c6df7e04b8f5478112ff6b405b0e2, type: 2}
+    - {fileID: 11400000, guid: 5e1b46daf2b5f5e43b634033d88a1d5c, type: 2}
+    - {fileID: 11400000, guid: afd4a541c25e862428c09b4691bdd3c9, type: 2}
+    - {fileID: 11400000, guid: bc2bc6e220332194a8faa17ce3e30f43, type: 2}
+    - {fileID: 11400000, guid: b0bcf5e2cf2360843a46b6ce3788b750, type: 2}
