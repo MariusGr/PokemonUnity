@@ -30,6 +30,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     [SerializeField] AudioClip xpGainSound;
     [SerializeField] AudioClip ballCloseSound;
     [SerializeField] AudioClip ballOpenSound;
+    [SerializeField] AudioClip runSound;
     [SerializeField] InspectorFriendlySerializableDictionary<Effectiveness, AudioClip> moveHitSounds;
 
     private BattleState state;
@@ -67,11 +68,9 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     }
 
     private Pokemon GetActivePokemon(int character)
-    {
-        return character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
-    }
+        => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
 
-    private void Reset()
+    private IEnumerator Reset()
     {
         state = BattleState.None;
         runTryCount = 0;
@@ -84,7 +83,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         playerPokemon.HealAllVolatileStatusEffects();
         opponentPokemon.HealAllVolatileStatusEffects();
 
-        ui.Open(playerData, playerPokemon, opponentPokemon);
+        yield return ui.Open(playerData, playerPokemon, opponentPokemon);
         unfaintedPlayerPokemons = new Dictionary<Pokemon, HashSet<Pokemon>>();
         evolvingPokemons = new HashSet<Pokemon>();
     }
@@ -100,9 +99,14 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         characterData = new CharacterData[] { this.playerData, null };
         BgmHandler.Instance.PlayOverlay(wildBattleMusicTrack);
 
-        Reset();
+        StartCoroutine(StartNewEncounterCoroutine(encounterEndtionCallback));
+    }
+
+    IEnumerator StartNewEncounterCoroutine(Func<bool, bool> encounterEndtionCallback)
+    {
+        yield return Reset();
         unfaintedPlayerPokemons[wildPokemon] = new HashSet<Pokemon>() { playerPokemon };
-        StartCoroutine(RoundCoroutine(encounterEndtionCallback));
+        yield return RoundCoroutine(encounterEndtionCallback);
     }
 
     public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndReactionCallback)
@@ -117,13 +121,18 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         PlayerData.Instance.AddSeenPokemon(opponentPokemon.data);
         BgmHandler.Instance.PlayOverlay(trainerBattleMusicTrack);
 
-        Reset();
+        StartCoroutine(StartNewBattleCoroutine(npcBattleEndReactionCallback));
+    }
 
-        foreach(Pokemon p in this.opponentData.pokemons)
+    IEnumerator StartNewBattleCoroutine(Func<bool, bool> npcBattleEndReactionCallback)
+    {
+        yield return Reset();
+
+        foreach (Pokemon p in this.opponentData.pokemons)
             unfaintedPlayerPokemons[p] = new HashSet<Pokemon>();
         unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
-        StartCoroutine(RoundCoroutine(npcBattleEndReactionCallback));
+        yield return RoundCoroutine(npcBattleEndReactionCallback);
     }
 
     private bool CharacterHasBeenDefeated(int index, CharacterData characterData)
@@ -140,8 +149,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         // TODO: ui close animation
         dialogBox.Close();
-        yield return new WaitForSeconds(2f);
-        ui.Close();
+        yield return ui.Close();
 
         // Evolve pokemon if any leveled up enough
         foreach (Pokemon p in evolvingPokemons)

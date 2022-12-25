@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BattleUI : InputConsumer, IBattleUI
 {
+    [SerializeField] private Canvas canvas;
     [SerializeField] private BattleMenu battleMenu;
     [SerializeField] private PartySelection partySelection;
     [SerializeField] private BagUI bagSelection;
@@ -15,6 +16,7 @@ public class BattleUI : InputConsumer, IBattleUI
     [SerializeField] private PokemonStatsUI opponentStats;
     [SerializeField] private MoveSelectionUI moveSelectionUI;
     [SerializeField] private PokeBallAnimation ballAnimation;
+    [SerializeField] private FadeBlack fadeBlack;
     [SerializeField] private float hpRefreshSpeed = 1f;
     [SerializeField] private float xpRefreshSpeed = 1f;
 
@@ -29,13 +31,33 @@ public class BattleUI : InputConsumer, IBattleUI
         pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
 
-    public void Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    public Coroutine Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
     {
+        canvas.enabled = false;
         Open();
         HidePokeBallAnimation();
         ballAnimation.ResetAnimation();
         ShowOpponent();
         Initialize(playerData, playerPokemon, opponentPokemon);
+        return StartCoroutine(OpenAnimation());
+    }
+
+    public new Coroutine Close()
+        => StartCoroutine(CloseAnimation());
+
+    IEnumerator OpenAnimation()
+    {
+        yield return fadeBlack.FadeToBlack();
+        canvas.enabled = true;
+        yield return fadeBlack.FadeFromBlack();
+    }
+
+    IEnumerator CloseAnimation()
+    {
+        yield return fadeBlack.FadeToBlack();
+        canvas.enabled = false;
+        yield return fadeBlack.FadeFromBlack();
+        base.Close();
     }
 
     private void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
