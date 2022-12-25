@@ -52,8 +52,9 @@ public class Door : MonoBehaviour, IInteractable
 
     private IEnumerator EnterCoroutine()
     {
+        yield return Services.Get<IFadeBlack>().FadeToBlack();
         PlayerCharacter.Instance.TravelToEntrance(otherSide);
-        yield return new WaitForSeconds(.2f);
+        yield return Services.Get<IFadeBlack>().FadeFromBlack();
         EventManager.Unpause();
     }
 }
