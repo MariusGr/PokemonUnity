@@ -134,11 +134,12 @@ public class ShadowedText : MonoBehaviour
         horizontalWrapMode = _horizontalWrapMode;
     }
 
-#if (UNITY_EDITOR)
+    //#if (UNITY_EDITOR)
+    //    private void Update()
+    //#else
+    //    private void Start()
+    //#endif
     private void Update()
-#else
-    private void Awake()
-#endif
     {
         text = _text;
         Refresh();

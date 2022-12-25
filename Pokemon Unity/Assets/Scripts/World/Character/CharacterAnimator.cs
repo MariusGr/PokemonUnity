@@ -42,7 +42,7 @@ public class CharacterAnimator : MonoBehaviour
     float lastTickTime = 0;
     float intervalClock = 0;
 
-    private void Start()
+    private void Awake()
     {
         animationSpriteMap = new Dictionary<Tuple<AnimationType, Direction>, Sprite[]>()
         {
@@ -103,7 +103,8 @@ public class CharacterAnimator : MonoBehaviour
         
         if (animation != currentAnimation || direction != currentDirection)
             SetImageSequence(animation, direction);
-        
+        print("danach");
+
         currentDirection = direction;
         currentAnimation = animation;
 
@@ -137,6 +138,8 @@ public class CharacterAnimator : MonoBehaviour
     private void SetImageSequence(AnimationType animation, Direction direction)
     {
         print(direction);
+        print(animation);
+        print(animationSpriteMap);
         if (direction != Direction.None)
             currentImageSequence = animationSpriteMap[new Tuple<AnimationType, Direction>(animation, direction)];
         intervalClock = 0;
