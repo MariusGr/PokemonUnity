@@ -16,5 +16,15 @@ MonoBehaviour:
   titleSprite: {fileID: 21300000, guid: e61807bd3ecc9b04a855867b73bcfc63, type: 3}
   color: {r: 0.8980392, g: 0.7764706, b: 0.18039216, a: 1}
   effectiveness:
-    keys: []
-    values: []
+    keys:
+    - {fileID: 11400000, guid: b7b91fc8353b645d79d3e012a9894646, type: 2}
+    - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
+    - {fileID: 11400000, guid: 9f7dfd2ae4f09459291d4a91b740ac47, type: 2}
+    - {fileID: 11400000, guid: 7c91817e997a3448f8a348682cd8c946, type: 2}
+    - {fileID: 11400000}
+    values:
+    - 0
+    - 2
+    - 2
+    - 0.5
+    - 0.5

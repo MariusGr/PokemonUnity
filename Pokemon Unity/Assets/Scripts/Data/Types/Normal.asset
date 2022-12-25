@@ -18,5 +18,9 @@ MonoBehaviour:
   effectiveness:
     keys:
     - {fileID: 11400000, guid: 03a6102f034554d5bb088aa2e6cd11b6, type: 2}
+    - {fileID: 11400000, guid: f4ed3501401c744dc8828f6448c3be28, type: 2}
+    - {fileID: 11400000, guid: 403e02a791b8b400987b0fff4c05b124, type: 2}
     values:
     - 0
+    - 0.5
+    - 0.5
