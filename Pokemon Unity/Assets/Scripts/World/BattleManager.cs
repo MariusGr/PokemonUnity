@@ -325,7 +325,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         bool success = forceSuccess || opponentIsWild && UnityEngine.Random.Range(0, 256) < playerRunSuccessChance;
 
         if (success)
+        {
+            SfxHandler.Play(runSound);
             yield return dialogBox.DrawText($"Du bist entkommen!", DialogBoxContinueMode.User);
+        }
         else
             yield return dialogBox.DrawText($"Du kannst nicht fliehen!", DialogBoxContinueMode.User);
 
