@@ -21,6 +21,7 @@ public class Character : MonoBehaviour
     private void Awake() => Initialize();
     protected virtual void Initialize()
     {
+        print(gameObject.name);
         foreach (Pokemon pokemon in pokemons)
             pokemon.Initialize(characterData);
 

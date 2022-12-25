@@ -32,13 +32,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 83f8635da32abdd4db6845603ee99351, type: 3}
   faintCries:
   - {fileID: 8300000, guid: 83f8635da32abdd4db6845603ee99351, type: 3}
-  maxHp: 90
-  attack: 65
-  specialAttack: 40
-  defense: 65
-  specialDefense: 40
-  speed: 15
-  baseXPGain: 99
+  maxHp: 95
+  attack: 85
+  specialAttack: 65
+  defense: 85
+  specialDefense: 65
+  speed: 35
+  baseXPGain: 137
   levelToMoveDataMap:
     keys: 00000000010000000200000010000000170000001c00000022000000280000002e000000
     values:

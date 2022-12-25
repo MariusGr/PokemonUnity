@@ -136,6 +136,7 @@ public class CharacterAnimator : MonoBehaviour
 
     private void SetImageSequence(AnimationType animation, Direction direction)
     {
+        print(direction);
         if (direction != Direction.None)
             currentImageSequence = animationSpriteMap[new Tuple<AnimationType, Direction>(animation, direction)];
         intervalClock = 0;

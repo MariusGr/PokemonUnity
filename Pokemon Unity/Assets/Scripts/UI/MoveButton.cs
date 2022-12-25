@@ -14,6 +14,8 @@ public class MoveButton : SelectableImage
 
     public override void Refresh()
     {
+        if (move is null)
+            return;
         textPP.text = $"{move.pp}/{move.data.maxPP}";
         base.Refresh();
     }

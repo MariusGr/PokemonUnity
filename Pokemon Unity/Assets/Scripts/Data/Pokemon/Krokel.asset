@@ -26,18 +26,18 @@ MonoBehaviour:
   evolutionLevel: 0
   evolution: {fileID: 0}
   encounterRarity: 87
-  catchRate: 190
+  catchRate: 45
   cries:
   - {fileID: 8300000, guid: f41bbc68fe0c5844790a39dcd38724cd, type: 3}
   faintCries:
   - {fileID: 8300000, guid: f41bbc68fe0c5844790a39dcd38724cd, type: 3}
-  maxHp: 90
-  attack: 65
-  specialAttack: 40
-  defense: 65
+  maxHp: 67
+  attack: 45
+  specialAttack: 63
+  defense: 59
   specialDefense: 40
-  speed: 15
-  baseXPGain: 99
+  speed: 36
+  baseXPGain: 62
   levelToMoveDataMap:
     keys: 0000000001000000020000000c000000110000001c0000002000000024000000
     values:

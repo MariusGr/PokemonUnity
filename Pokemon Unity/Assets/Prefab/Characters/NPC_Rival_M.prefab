@@ -7,6 +7,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4080989562808411878, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: npcData.sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 55cdd68e2e2607c44a03728d6aac2fb6,
+        type: 3}
     - target: {fileID: 7648897662864623676, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
         type: 3}
       propertyPath: m_RootOrder
@@ -66,19 +72,67 @@ PrefabInstance:
         type: 3}
       propertyPath: idleSpritesUp.Array.data[0]
       value: 
-      objectReference: {fileID: 21300016, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+      objectReference: {fileID: 21300000, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesUp.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesUp.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesUp.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesUp.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
         type: 3}
     - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
         type: 3}
       propertyPath: idleSpritesDown.Array.data[0]
       value: 
-      objectReference: {fileID: 21300000, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+      objectReference: {fileID: 21300016, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
         type: 3}
     - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
         type: 3}
       propertyPath: idleSpritesLeft.Array.data[0]
       value: 
       objectReference: {fileID: 21300024, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesLeft.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300024, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesLeft.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300026, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesLeft.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300028, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
+        type: 3}
+    - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
+        type: 3}
+      propertyPath: walkSpritesLeft.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300030, guid: 8975c4b7c7a9db6468f068a4cdeffcac,
         type: 3}
     - target: {fileID: 7648897662864623677, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
         type: 3}
@@ -113,7 +167,7 @@ PrefabInstance:
     - target: {fileID: 7648897662864623679, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
         type: 3}
       propertyPath: m_Name
-      value: AICharacter (5)
+      value: NPC_Rival_M
       objectReference: {fileID: 0}
     - target: {fileID: 7648897664310770594, guid: 04a5f3c6ab709d249ba6dc20a0fc2462,
         type: 3}

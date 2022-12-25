@@ -16,7 +16,7 @@ PrefabInstance:
         type: 3}
       propertyPath: controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 239008912352255042}
     - target: {fileID: 7308352281778148171, guid: fc3287fb25ce5d94597a0b323f0de039,
         type: 3}
       propertyPath: items.Array.size
