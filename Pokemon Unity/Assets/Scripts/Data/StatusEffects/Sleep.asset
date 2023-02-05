@@ -23,7 +23,7 @@ MonoBehaviour:
   livesForever: 0
   lifetimeRoundsMinimum: 1
   lifetimeRoundsMaximum: 4
-  takesEffectOnceWhenLifeTimeEnded: 1
+  takesEffectOnceWhenLifeTimeEnded: 0
   takesEffectBeforeMoves: 1
   damagePerRoundAbsolute: 0
   damagePerRoundRelativeToMaxHp: 0

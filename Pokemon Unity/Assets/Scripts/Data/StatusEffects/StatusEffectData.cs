@@ -31,11 +31,11 @@ public abstract class StatusEffectData : BaseScriptableObject
     public bool isNonVolatile => GetType() == typeof(StatusEffectNonVolatileData);
 
     public int GetDamageAgainstSelf(Pokemon pokemon)
-        => (int)Mathf.Max(0, Mathf.Floor(
-                    ((.4f * pokemon.level + 2) *
+        => powerOfSelfInflictedDamagePerRound < 1 ? 0 : (int)Mathf.Max(0, Mathf.Floor(
+                    (.4f * pokemon.level + 2) *
                     powerOfSelfInflictedDamagePerRound *
                     (pokemon.statusEffectNonVolatile is null ? 1f : pokemon.statusEffectNonVolatile.data.damageModifierRelative) *
                     pokemon.GetAttack(false) /
-                    pokemon.GetDefense(false) / 50f + 2f))
+                    pokemon.GetDefense(false) / 50f + 2f)
                 );
 }

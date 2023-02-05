@@ -103,7 +103,6 @@ public class CharacterAnimator : MonoBehaviour
         
         if (animation != currentAnimation || direction != currentDirection)
             SetImageSequence(animation, direction);
-        print("danach");
 
         currentDirection = direction;
         currentAnimation = animation;
