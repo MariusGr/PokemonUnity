@@ -20,6 +20,11 @@ public class MoveData : BaseScriptableObject
     public float statusVolatileInflictedTargetChance = 1f;
     public StatusEffectVolatileData statusVolatileInflictedTarget;
     public StatusEffectVolatileData statusVolatileInflictedSelf;
+
+    // TODO: bundle these with wait text that is currently defined in StatusEffectData?
+    public int roundsBeforeFirstEffectVolatile = 0;
+    public int roundsBeforeFirstEffectNonVolatile = 0;
+
     public InspectorFriendlySerializableDictionary<Stat, int> statModifiersSelf;
     public InspectorFriendlySerializableDictionary<Stat, int> statModifiersTarget;
     public MoveCategory category;

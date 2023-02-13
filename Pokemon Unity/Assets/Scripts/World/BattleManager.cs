@@ -82,6 +82,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         opponentPokemon.ResetStatModifiers();
         playerPokemon.HealAllVolatileStatusEffects();
         opponentPokemon.HealAllVolatileStatusEffects();
+        playerPokemon.ResetWaitingStatusEffects();
+        opponentPokemon.ResetWaitingStatusEffects();
 
         yield return ui.Open(playerData, playerPokemon, opponentPokemon);
         unfaintedPlayerPokemons = new Dictionary<Pokemon, HashSet<Pokemon>>();
@@ -629,6 +631,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         Pokemon pokemon = GetActivePokemon(characterIndex);
         pokemon.ResetStatModifiers();
         pokemon.HealAllVolatileStatusEffects();
+        pokemon.ResetWaitingStatusEffects();
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, pokemon);
@@ -643,6 +646,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
     {
         bool canFight = true;
+
         yield return StatusEffectVolatileRoundTick(attacker, true, () => canFight &= false);
         yield return StatusEffectNonVolatileRoundTick(attacker, true, () => canFight &= false);
         if (!canFight)
@@ -715,12 +719,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
             yield return InflictStatModifiers(target, move.data.statModifiersTarget);
             if (UnityEngine.Random.value <= move.data.statusVolatileInflictedTargetChance)
-                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
-            yield return InflictStatusEffect(target, move.data.statusNonVolatileInflictedTarget);
+                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget, move.data.roundsBeforeFirstEffectVolatile);
+            yield return InflictStatusEffect(target, move.data.statusNonVolatileInflictedTarget, move.data.roundsBeforeFirstEffectNonVolatile);
 
             if (UnityEngine.Random.value <= move.data.statusNonVolatileInflictedTargetChance)
-                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget);
-            yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf);
+                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget, move.data.roundsBeforeFirstEffectVolatile);
+            yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf, move.data.roundsBeforeFirstEffectNonVolatile);
             yield return InflictStatModifiers(attacker, move.data.statModifiersSelf);
         }
         else
@@ -750,6 +754,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
             if (attackerPokemon.isFainted)
                 yield return Faint(attacker, attackingPokemonIdentifier);
+            else
+                yield return InflictNextWaitingStatusEffect(attacker);
         }
 
         dialogBox.Close();
@@ -797,7 +803,15 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                 $"{statString} von {targetPokemon.Name} kann nicht weiter steigen!", closeAfterFinish: true);
     }
 
-    private IEnumerator InflictStatusEffect(int targetIndex, StatusEffectData statusEffect)
+    private IEnumerator InflictNextWaitingStatusEffect(int targetIndex)
+    {
+        // TODO separate non volatile and volatile effects
+        Pokemon targetPokemon = GetActivePokemon(targetIndex);
+        yield return InflictStatusEffect(targetIndex, targetPokemon.GetNextNonVolatileStatusEffectFromWaitingList());
+        yield return InflictStatusEffect(targetIndex, targetPokemon.GetNextVolatileStatusEffectFromWaitingList());
+    }
+
+    private IEnumerator InflictStatusEffect(int targetIndex, StatusEffectData statusEffect, int roundsBeforeFirstEffect = 0)
     {
         // TODO Animation
         Pokemon targetPokemon = GetActivePokemon(targetIndex);
@@ -807,16 +821,34 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         )
             yield break;
 
-        dialogBox.DrawText(
-            TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, statusEffect.inflictionText, targetPokemon.Name), DialogBoxContinueMode.External);
+        string inflictionText;
+        bool willBeInflictedNow = roundsBeforeFirstEffect < 1;
+        if (!willBeInflictedNow)
+        {
+            targetPokemon.InflictWaitingStatusEffect(new WaitingStatusEffect(statusEffect, roundsBeforeFirstEffect));
+            inflictionText = statusEffect.waitForEffectText;
+        }
+        else
+            inflictionText = statusEffect.inflictionText;
 
-        SfxHandler.Play(statusEffect.sound);
-        yield return ui.PlayInflictStatusAnimation(targetIndex);
+        dialogBox.DrawText(
+            TextKeyManager.ReplaceKey(
+                TextKeyManager.TextKeyPokemon,
+                inflictionText,
+                targetPokemon.Name), DialogBoxContinueMode.External);
+
+        if(willBeInflictedNow)
+        {
+            SfxHandler.Play(statusEffect.sound);
+            yield return ui.PlayInflictStatusAnimation(targetIndex);
+            yield return new WaitForSeconds(2f);
+
+            targetPokemon.InflictStatusEffect(statusEffect);
+            ui.Refresh(targetIndex);
+        }
+
         yield return new WaitForSeconds(2f);
         dialogBox.Close();
-
-        targetPokemon.InflictStatusEffect(statusEffect);
-        ui.Refresh(targetIndex);
     }
 
     private IEnumerator StatusEffectNonVolatileRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
@@ -836,14 +868,15 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator StatusEffectRoundTick(StatusEffect statusEffect, int targetIndex, Pokemon targetPokemon, bool beforeMove, Action preventMoveCallback)
     {
-        int selfDamage = statusEffect is null ? 0 : statusEffect.data.GetDamageAgainstSelf(targetPokemon);
-        int damage = statusEffect is null ? 0 :
-            statusEffect.data.damagePerRoundAbsolute +
+        if (statusEffect is null)
+            yield break;
+
+        int selfDamage = statusEffect.data.GetDamageAgainstSelf(targetPokemon);
+        int damage = statusEffect.data.damagePerRoundAbsolute +
             Mathf.RoundToInt(statusEffect.data.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp) +
             selfDamage;
 
-        if (statusEffect is null ||
-            beforeMove && !statusEffect.data.takesEffectBeforeMoves ||
+        if (beforeMove && !statusEffect.data.takesEffectBeforeMoves ||
             !beforeMove && statusEffect.data.takesEffectBeforeMoves ||
             damage < 1 && !statusEffect.data.preventsMove
         )
@@ -859,9 +892,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if ((!lifeTimeEnds || statusEffect.data.takesEffectOnceWhenLifeTimeEnded) && UnityEngine.Random.value <= statusEffect.data.chance)
         {
             if (!lifeTimeEnds)
+            {
                 dialogBox.DrawText(TextKeyManager.ReplaceKey(
                     TextKeyManager.TextKeyPokemon, statusEffect.data.effectPerRoundText, targetPokemon.Name),
                     DialogBoxContinueMode.External);
+                yield return new WaitForSeconds(1f);
+            }
 
             if(selfDamage > 0)
             {

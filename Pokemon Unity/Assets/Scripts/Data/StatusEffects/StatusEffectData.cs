@@ -8,6 +8,7 @@ public abstract class StatusEffectData : BaseScriptableObject
     public string inflictionText = "";
     public string notificationPerRoundText = "";
     public string effectPerRoundText = "";
+    public string waitForEffectText = "";
     public string endOfLifeText = "";
     public string healText = "";
     public AudioClip sound;

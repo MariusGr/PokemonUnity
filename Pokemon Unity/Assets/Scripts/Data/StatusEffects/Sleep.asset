@@ -17,12 +17,14 @@ MonoBehaviour:
   inflictionText: "<pkmn-name> macht ein Schl\xE4fchen \\|3"
   notificationPerRoundText: 
   effectPerRoundText: "<pkmn-name> schl\xE4ft tief und fest \\|\\|33"
+  waitForEffectText: "<pkmn-name> wird ganz m\xFCde...  \\|\\|33"
   endOfLifeText: <pkmn-name> ist aufgewacht!
   healText: <pkmn-name> wurde aufgeweckt!
   sound: {fileID: 0}
   livesForever: 0
   lifetimeRoundsMinimum: 1
   lifetimeRoundsMaximum: 4
+  roundsBeforeFirstEffect: 1
   takesEffectOnceWhenLifeTimeEnded: 0
   takesEffectBeforeMoves: 1
   damagePerRoundAbsolute: 0

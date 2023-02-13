@@ -7,6 +7,8 @@ using SimpleJSON;
 [Serializable]
 public class Pokemon
 {
+    // TODO Wrapper class specifically for in-battle useage with stat modifiers, volatile status effects and waiting status effects
+
     //https://bulbapedia.bulbagarden.net/wiki/Stat#Stage_multipliers
     private static readonly float[] statStageMultipliers = new float[]
     {
@@ -110,6 +112,8 @@ public class Pokemon
     [SerializeField] private StatusEffect _statusEffectNonVolatile = null;
     public StatusEffect statusEffectNonVolatile { get => _statusEffectNonVolatile; private set { _statusEffectNonVolatile = value; } }
     public List<StatusEffect> statusEffectsVolatile = new List<StatusEffect>();
+    public List<WaitingStatusEffect> waitingStatusEffectsVolatile = new List<WaitingStatusEffect>();
+    public List<WaitingStatusEffect> waitingStatusEffectsNonVolatile = new List<WaitingStatusEffect>();
     public float catchRateStatusBonus
     {
         get
@@ -328,6 +332,15 @@ public class Pokemon
             stage.stage = 0;
     }
 
+    public void ResetWaitingVolatileStatusEffects() => waitingStatusEffectsVolatile = new List<WaitingStatusEffect>();
+    public void ResetWaitingNonVolatileStatusEffects() => waitingStatusEffectsNonVolatile = new List<WaitingStatusEffect>();
+
+    public void ResetWaitingStatusEffects()
+    {
+        ResetWaitingNonVolatileStatusEffects();
+        ResetWaitingVolatileStatusEffects();
+    }
+
     public void Faint()
     {
         hp = 0;
@@ -363,6 +376,50 @@ public class Pokemon
         return true;
     }
 
+    public void InflictWaitingStatusEffect(WaitingStatusEffect statusEffect)
+    {
+        if (statusEffect.data.isNonVolatile)
+            waitingStatusEffectsNonVolatile.Add(statusEffect);
+        else
+            waitingStatusEffectsVolatile.Add(statusEffect);
+    }
+
+    public StatusEffectData GetNextVolatileStatusEffectFromWaitingList()
+    {
+        StatusEffectData statusEffect = GetNextStatusEffectFromWaitingList(waitingStatusEffectsVolatile);
+
+        if (!(statusEffect is null))
+            ResetWaitingVolatileStatusEffects();
+
+        return statusEffect;
+    }
+
+    public StatusEffectData GetNextNonVolatileStatusEffectFromWaitingList()
+    {
+        StatusEffectData statusEffect = GetNextStatusEffectFromWaitingList(waitingStatusEffectsNonVolatile);
+
+        if (!(statusEffect is null))
+            ResetWaitingNonVolatileStatusEffects();
+
+        return statusEffect;
+    }
+
+    private StatusEffectData GetNextStatusEffectFromWaitingList(List<WaitingStatusEffect> waitingStatusEffects)
+    {
+        StatusEffectData statusEffect = null;
+        foreach(WaitingStatusEffect effect in waitingStatusEffects)
+        {
+            effect.waitTimeRounds--;
+            if (effect.waitTimeRounds < 1)
+            {
+                statusEffect = effect.data;
+                break;
+            }
+        }
+
+        return statusEffect;
+    }
+
     public void InflictStatusEffect(StatusEffectData statusEffect)
     {
         if (statusEffect.isVolatile)
@@ -372,8 +429,10 @@ public class Pokemon
     }
 
     public void InflictStatusNonVolatileEffect(JSONNode json) => statusEffectNonVolatile = new StatusEffect(json);
-    public void InflictStatusNonVolatileEffect(StatusEffectNonVolatileData statusEffect) => statusEffectNonVolatile = new StatusEffect(statusEffect);
-    public void InflictStatusVolatileEffect(StatusEffectVolatileData statusEffect) => statusEffectsVolatile.Add(new StatusEffect(statusEffect));
+    public void InflictStatusNonVolatileEffect(StatusEffectNonVolatileData statusEffect)
+        => statusEffectNonVolatile = new StatusEffect(statusEffect);
+    public void InflictStatusVolatileEffect(StatusEffectVolatileData statusEffect)
+        => statusEffectsVolatile.Add(new StatusEffect(statusEffect));
 
     public void InflictDamageOverTime()
     {
