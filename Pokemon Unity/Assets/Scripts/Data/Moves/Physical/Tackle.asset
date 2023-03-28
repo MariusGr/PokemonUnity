@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Tackle
   m_EditorClassIdentifier: 
-  Id: c8850274-ecb9-4e03-9d97-abd48be6dea9
+  Id: 14cb3402-a477-472e-b97c-083280c7c153
   fullName: Tackle
   description: "Trifft den Gegner mit vollem K\xF6rpereinsatz."
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
   maxPP: 30
   power: 50
   accuracy: 95
+  statusNonVolatileInflictedTargetChance: 1
   statusNonVolatileInflictedTarget: {fileID: 0}
   statusNonVolatileInflictedSelf: {fileID: 0}
+  statusVolatileInflictedTargetChance: 1
   statusVolatileInflictedTarget: {fileID: 0}
   statusVolatileInflictedSelf: {fileID: 0}
+  roundsBeforeFirstEffectVolatile: 0
+  roundsBeforeFirstEffectNonVolatile: 0
   statModifiersSelf:
     keys: 
     values: 

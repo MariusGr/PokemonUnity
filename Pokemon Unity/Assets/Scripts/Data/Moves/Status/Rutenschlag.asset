@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Rutenschlag
   m_EditorClassIdentifier: 
-  Id: c8850274-ecb9-4e03-9d97-abd48be6dea9
+  Id: 39a40c29-f8ac-443f-9568-5822717bf4f1
   fullName: Rutenschlag
   description: Hieb mit dem Schweif, senkt die VERT. des Gegners.
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
   maxPP: 30
   power: 0
   accuracy: 100
+  statusNonVolatileInflictedTargetChance: 1
   statusNonVolatileInflictedTarget: {fileID: 0}
   statusNonVolatileInflictedSelf: {fileID: 0}
+  statusVolatileInflictedTargetChance: 1
   statusVolatileInflictedTarget: {fileID: 0}
   statusVolatileInflictedSelf: {fileID: 0}
+  roundsBeforeFirstEffectVolatile: 0
+  roundsBeforeFirstEffectNonVolatile: 0
   statModifiersSelf:
     keys: 
     values: 

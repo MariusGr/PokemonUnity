@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Glut
   m_EditorClassIdentifier: 
-  Id: 577396c0-e893-4d72-b91f-208533d6d3c4
+  Id: 7dadc764-7f6e-40bc-9e1f-b2938ad541ba
   fullName: Glut
   description: Schwache Feuer-Attacke. Verbrennt Gegner evtl.
   pokeType: {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
@@ -26,6 +26,8 @@ MonoBehaviour:
   statusVolatileInflictedTargetChance: 1
   statusVolatileInflictedTarget: {fileID: 0}
   statusVolatileInflictedSelf: {fileID: 0}
+  roundsBeforeFirstEffectVolatile: 0
+  roundsBeforeFirstEffectNonVolatile: 0
   statModifiersSelf:
     keys: 
     values: 

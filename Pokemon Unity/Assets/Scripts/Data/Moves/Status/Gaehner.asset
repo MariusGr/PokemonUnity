@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Gaehner
   m_EditorClassIdentifier: 
-  Id: c93806d2-f307-489c-8202-4e480242a3fb
+  Id: c3ec07dc-cf2a-4903-8b22-737d5ab7f2ac
   fullName: "G\xE4hner"
   description: "Angreifer g\xE4hnt und Geg. schl\xE4ft in der n\xE4chsten Runde ein."
   pokeType: {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}

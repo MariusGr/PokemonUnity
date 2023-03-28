@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Kreideschrei
   m_EditorClassIdentifier: 
-  Id: c8850274-ecb9-4e03-9d97-abd48be6dea9
+  Id: 312b0b9c-5608-4fee-9e2f-8d703fdba162
   fullName: Kreideschrei
   description: "St\xF6\xDFt einen Schrei aus, um gegn. VERT. zu senken."
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
@@ -25,6 +25,8 @@ MonoBehaviour:
   statusVolatileInflictedTargetChance: 1
   statusVolatileInflictedTarget: {fileID: 0}
   statusVolatileInflictedSelf: {fileID: 0}
+  roundsBeforeFirstEffectVolatile: 0
+  roundsBeforeFirstEffectNonVolatile: 0
   statModifiersSelf:
     keys: 
     values: 

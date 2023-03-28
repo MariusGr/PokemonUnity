@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Schallwelle
   m_EditorClassIdentifier: 
-  Id: 577396c0-e893-4d72-b91f-208533d6d3c4
+  Id: e70ca9de-711b-4fae-862a-6743f3403cd9
   fullName: Schallwelle
   description: Laute Attacke mit Schallwellen.
   pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
@@ -25,6 +25,8 @@ MonoBehaviour:
   statusVolatileInflictedTargetChance: 1
   statusVolatileInflictedTarget: {fileID: 0}
   statusVolatileInflictedSelf: {fileID: 0}
+  roundsBeforeFirstEffectVolatile: 0
+  roundsBeforeFirstEffectNonVolatile: 0
   statModifiersSelf:
     keys: 
     values: 

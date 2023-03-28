@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: Konfusion
   m_EditorClassIdentifier: 
-  Id: 577396c0-e893-4d72-b91f-208533d6d3c4
+  Id: a73f2aa1-8c63-4c43-bd06-d016acd6984a
   fullName: Konfusion
   description: 'Psycho-Attacke, die den Gegner evtl. verwirrt. '
   pokeType: {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
@@ -26,6 +26,8 @@ MonoBehaviour:
   statusVolatileInflictedTarget: {fileID: 11400000, guid: 6666f410ef21a0849a4f6ee4e4c856eb,
     type: 2}
   statusVolatileInflictedSelf: {fileID: 0}
+  roundsBeforeFirstEffectVolatile: 0
+  roundsBeforeFirstEffectNonVolatile: 0
   statModifiersSelf:
     keys: 
     values: 

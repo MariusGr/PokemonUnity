@@ -81,6 +81,7 @@ public class SaveGameManager : MonoBehaviour, ISaveGameManager
             return null;
         }
 
+        Debug.Log($"Loading game from {path}...");
         return (JSONObject)JSON.Parse(jsonText);
     }
 

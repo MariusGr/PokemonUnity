@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
   m_Name: Krokel
   m_EditorClassIdentifier: 
-  Id: 95b86bdb-d1e9-44ee-a6e7-6397f653f4f6
+  Id: 9ef023c3-3a56-474c-b656-1f18e0179113
   dex: 3
   fullName: Krokel
   description: :3

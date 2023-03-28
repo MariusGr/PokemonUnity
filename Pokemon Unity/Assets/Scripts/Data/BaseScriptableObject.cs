@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ScriptableObjectIdAttribute : PropertyAttribute { }
 
+
 #if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(ScriptableObjectIdAttribute))]
 public class ScriptableObjectIdDrawer : PropertyDrawer
@@ -34,10 +35,25 @@ public class BaseScriptableObject : ScriptableObject
         return instances[id];
     }
 
+    public void AssignNewUID()
+    {
+        Id = System.Guid.NewGuid().ToString();
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
+
     private void OnEnable()
     {
         if (this is null)
             Debug.LogError($"ID is still null on {GetType()}");
+
+        while (instances.ContainsKey(Id))
+        {
+            AssignNewUID();
+        }
+
+        Debug.Log(Id);
         instances[Id] = this;
     }
 }

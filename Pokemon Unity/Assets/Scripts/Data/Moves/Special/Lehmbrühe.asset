@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
   m_Name: "Lehmbr\xFChe"
   m_EditorClassIdentifier: 
-  Id: 577396c0-e893-4d72-b91f-208533d6d3c4
+  Id: 37236a19-9582-49e3-8acc-ab8449dc8359
   fullName: "Lehmbr\xFChe"
   description: Greift mit Matsch an und senkt evtl. die Genauigkeit des Gegners.
   pokeType: {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
@@ -25,6 +25,8 @@ MonoBehaviour:
   statusVolatileInflictedTargetChance: 1
   statusVolatileInflictedTarget: {fileID: 0}
   statusVolatileInflictedSelf: {fileID: 0}
+  roundsBeforeFirstEffectVolatile: 0
+  roundsBeforeFirstEffectNonVolatile: 0
   statModifiersSelf:
     keys: 
     values: 
