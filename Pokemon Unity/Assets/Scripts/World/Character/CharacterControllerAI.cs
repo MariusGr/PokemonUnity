@@ -77,6 +77,8 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
 
         if (npcDefeated)
             Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
+        else
+            transform.position = character.startPosition;
 
         EventManager.Unpause();
         return true;
