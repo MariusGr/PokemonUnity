@@ -36,7 +36,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &9572202
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -49,10 +49,11 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &120640
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +477,7 @@ PrefabInstance:
     - target: {fileID: 9002264713956316183, guid: 395aa22a58b0e8d4ca2cf0fc86480a9c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.54999936
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9002264713956316183, guid: 395aa22a58b0e8d4ca2cf0fc86480a9c,
         type: 3}
@@ -486,7 +487,7 @@ PrefabInstance:
     - target: {fileID: 9002264713956316183, guid: 395aa22a58b0e8d4ca2cf0fc86480a9c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.4500001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9002264713956316183, guid: 395aa22a58b0e8d4ca2cf0fc86480a9c,
         type: 3}

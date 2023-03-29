@@ -29,9 +29,10 @@ public class PlayerCharacter : Character, IPlayerCharacter, ISavable
     public Coroutine Defeat() => StartCoroutine(DefeatCoroutine());
     private IEnumerator DefeatCoroutine()
     {
-        yield return Services.Get<IDialogBox>().DrawText($"Tja... ab ins Poke-Center. Scheiﬂe gelaufen...", DialogBoxContinueMode.User, closeAfterFinish: true);
+        yield return Services.Get<IDialogBox>().DrawText($"Tja... ab ins Poke-Center. Schei?e gelaufen...", DialogBoxContinueMode.User, closeAfterFinish: true);
         PlayerData.Instance.HealAllPokemons();
         transform.position = playerData.lastPokeCenterEntrance.position;
+        Movement.LookInDirection(Direction.Down);
     }
 
     public void EnterEntranceTreshhold(Door entrance)
