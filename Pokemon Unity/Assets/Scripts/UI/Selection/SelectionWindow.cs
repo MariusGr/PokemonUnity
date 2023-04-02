@@ -6,6 +6,8 @@ using System;
 public abstract class SelectionWindow : ClosableView, ISelectionWindow
 {
     [SerializeField] protected SelectableUIElement[] elements;
+    [SerializeField] private AudioClip selectSound;
+
     protected ISelectableUIElement[] _elements;
 
     public ISelectableUIElement selectedElement => _elements is null ? null : _elements[selectedIndex];
@@ -33,9 +35,9 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         }
 
         if (startSelection > _elements.Length - 1)
-            SelectElement(_elements.Length - 1);
+            SelectElementSilent(_elements.Length - 1);
         else if (startSelection > -1)
-            SelectElement(startSelection);
+            SelectElementSilent(startSelection);
         base.Open(callback);
     }
 
@@ -90,13 +92,20 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
             element.AssignOnSelectCallback(callback);
     }
 
-    virtual protected void SelectElement(int index) => SelectElement(index, true);
-    virtual protected void SelectElement(int index, bool deselectPreviouslySelected)
+    private void SelectElementSilent(int index) => SelectElementSilent(index, true);
+    private void SelectElementSilent(int index, bool deselectPreviouslySelected)
     {
         if (deselectPreviouslySelected)
             selectedElement.Deselect();
         selectedIndex = index;
         selectedElement.Select();
+    }
+
+    virtual protected void SelectElement(int index) => SelectElement(index, true);
+    virtual protected void SelectElement(int index, bool deselectPreviouslySelected)
+    {
+        SelectElementSilent(index, deselectPreviouslySelected);
+        SfxHandler.Play(selectSound);
     }
 
     virtual protected void SelectElement(ISelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.GetIndex());

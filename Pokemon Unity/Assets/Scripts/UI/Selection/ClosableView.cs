@@ -5,6 +5,9 @@ using System;
 
 public class ClosableView : InputConsumer
 {
+    [SerializeField] AudioClip openSound;
+    [SerializeField] AudioClip closeSound;
+
     protected Action<ISelectableUIElement, bool> callback;
 
     public override void Open() => Open(null);
@@ -12,6 +15,13 @@ public class ClosableView : InputConsumer
     {
         this.callback = callback;
         base.Open();
+        SfxHandler.Play(openSound);
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        SfxHandler.Play(closeSound);
     }
 
     public override bool ProcessInput(InputData input)

@@ -10,6 +10,7 @@ public class ShopUI : ItemSelection, IShopUI
     [SerializeField] private TextCycleSelection cycleSelection;
     [SerializeField] private ShadowedText moneyText;
     [SerializeField] private ShadowedText inBagCountText;
+    [SerializeField] private AudioClip buySound;
 
     public ShopUI() => Services.Register(this as IShopUI);
 
@@ -75,7 +76,7 @@ public class ShopUI : ItemSelection, IShopUI
             PlayerData.Instance.GiveItem(new Item(chosenItem, quantity.count));
             RefreshInBagCount(chosenItem);
             RefreshMoney();
-            //TODO sound
+            SfxHandler.Play(buySound);
         }
     }
 }
