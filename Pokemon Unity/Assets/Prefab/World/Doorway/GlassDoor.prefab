@@ -246,6 +246,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3627115343759758592, guid: 843953405e15c4833b53996b6db397e2,
+        type: 3}
+      propertyPath: leadsToIndoorArea
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3627115343759758606, guid: 843953405e15c4833b53996b6db397e2,
         type: 3}
       propertyPath: m_Center.x
