@@ -499,7 +499,7 @@ MonoBehaviour:
   - {fileID: 2604332211319590875, guid: 97e71b1452e29134385a9276a83184f3, type: 3}
   - {fileID: -2511523175173307748, guid: 97e71b1452e29134385a9276a83184f3, type: 3}
   - {fileID: 193501226095105834, guid: 97e71b1452e29134385a9276a83184f3, type: 3}
-  interval: 0.2
+  interval: 0.15
 --- !u!143 &4906085682500282844
 CharacterController:
   m_ObjectHideFlags: 0
