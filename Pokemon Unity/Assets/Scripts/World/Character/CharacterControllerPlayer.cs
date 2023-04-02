@@ -24,7 +24,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
         if (paused)
             return;
 
-        if (!(currentEntrance is null) && input.digitalPad.heldDown == currentEntrance.directionTriggerToEntrance)
+        if (!character.Movement.moving && !(currentEntrance is null) && input.digitalPad.heldDown == currentEntrance.directionTriggerToEntrance)
             currentEntrance.Enter();
         else
             character.Movement.ProcessMovement(input.digitalPad.heldDown, input.chancel.heldDown);
