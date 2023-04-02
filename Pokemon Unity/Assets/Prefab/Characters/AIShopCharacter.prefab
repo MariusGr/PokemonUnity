@@ -12,10 +12,36 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 7308352281778148171}
+    - target: {fileID: 4482100471133316240, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300008, guid: ccaf77e45cc6ef341b398972c52eef1a,
+        type: 3}
+    - target: {fileID: 4482100471133316245, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4482100472230959003, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4482100472241696881, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
         type: 3}
       propertyPath: m_Name
       value: AIShopCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4482100472371566350, guid: 809c9f42216ed7e4283cfa0fe969633a,
         type: 3}
@@ -96,6 +122,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300008, guid: ccaf77e45cc6ef341b398972c52eef1a,
         type: 3}
+    - target: {fileID: 7201143823274885417, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 809c9f42216ed7e4283cfa0fe969633a, type: 3}
 --- !u!1 &7467561318510768237 stripped
@@ -133,3 +164,4 @@ MonoBehaviour:
 
     Kann ich helfen?'
   byeText: Beehre uns bald wieder!
+  items: []
