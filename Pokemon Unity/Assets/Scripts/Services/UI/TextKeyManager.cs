@@ -42,8 +42,9 @@ public static class TextKeyManager
 
     public static string PlaceNewLineChars(string text)
     {
+        text = text.Replace("\\n", "\n");
         text = text.Replace("\\|", placeHolder);
-        text = text.Replace('|', '\n');
+        text = text.Replace('|', '\t');
         text = text.Replace(placeHolder, "|");
         return text;
     }

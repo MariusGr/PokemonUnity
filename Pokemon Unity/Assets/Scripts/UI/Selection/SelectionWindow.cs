@@ -34,10 +34,13 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
                 _elements[i].Deselect();
         }
 
+        AudioClip selectSoundBackup = selectSound;
+        selectSound = null;
         if (startSelection > _elements.Length - 1)
-            SelectElementSilent(_elements.Length - 1);
+            SelectElement(_elements.Length - 1);
         else if (startSelection > -1)
-            SelectElementSilent(startSelection);
+            SelectElement(startSelection);
+        selectSound = selectSoundBackup;
         base.Open(callback);
     }
 
@@ -92,19 +95,13 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
             element.AssignOnSelectCallback(callback);
     }
 
-    private void SelectElementSilent(int index) => SelectElementSilent(index, true);
-    private void SelectElementSilent(int index, bool deselectPreviouslySelected)
+    virtual protected void SelectElement(int index) => SelectElement(index, true);
+    virtual protected void SelectElement(int index, bool deselectPreviouslySelected)
     {
         if (deselectPreviouslySelected)
             selectedElement.Deselect();
         selectedIndex = index;
         selectedElement.Select();
-    }
-
-    virtual protected void SelectElement(int index) => SelectElement(index, true);
-    virtual protected void SelectElement(int index, bool deselectPreviouslySelected)
-    {
-        SelectElementSilent(index, deselectPreviouslySelected);
         SfxHandler.Play(selectSound);
     }
 
