@@ -25,7 +25,10 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
             return;
 
         if (!character.Movement.moving && !(currentEntrance is null) && input.digitalPad.heldDown == currentEntrance.directionTriggerToEntrance)
+        {
+            character.Movement.LookInDirection(currentEntrance.directionTriggerToEntrance);
             currentEntrance.Enter();
+        }
         else
             character.Movement.ProcessMovement(input.digitalPad.heldDown, input.chancel.heldDown);
     }
