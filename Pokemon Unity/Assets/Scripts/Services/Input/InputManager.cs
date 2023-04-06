@@ -62,8 +62,15 @@ public class InputManager : MonoBehaviour
 
     private void GetInputForButton(InputData.Button button, string inputName)
     {
-        button.pressed = Input.GetButtonDown(inputName) || MobileInput.Instance.GetButtonPressed(inputName);
-        button.heldDown = Input.GetButton(inputName) || MobileInput.Instance.GetButtonHeldDown(inputName);
+        button.pressed = Input.GetButtonDown(inputName) || UIInput.Instance.GetButtonPressed(inputName);
+        button.heldDown = Input.GetButton(inputName) || UIInput.Instance.GetButtonHeldDown(inputName);
+    }
+
+    private bool GetDigitalPadHeldDown(string inputName)
+    {
+        if(inputName == RightInputName || inputName == UpInputName)
+            return Input.GetAxisRaw(inputName) > .5f;
+        return Input.GetAxisRaw(inputName) < -.5f;
     }
 
     private void GetInputForDigitalPad()
@@ -73,11 +80,11 @@ public class InputManager : MonoBehaviour
 
         foreach (string inputName in inputNameToDirection.Keys)
         {
-            if (Input.GetButton(inputName) || MobileInput.Instance.GetButtonHeldDown(inputName))
+            if (Input.GetButton(inputName) || UIInput.Instance.GetButtonHeldDown(inputName) || GetDigitalPadHeldDown(inputName))
             {
                 Direction direction = inputNameToDirection[inputName];
                 input.digitalPad.heldDown = direction;
-                if (Input.GetButtonDown(inputName) || MobileInput.Instance.GetButtonPressed(inputName))
+                if (Input.GetButtonDown(inputName) || UIInput.Instance.GetButtonPressed(inputName))
                     input.digitalPad.pressed = direction;
                 break;
             }
