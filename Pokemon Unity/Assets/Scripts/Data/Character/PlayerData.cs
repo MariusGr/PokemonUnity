@@ -170,7 +170,7 @@ public class PlayerData : CharacterData
 
     private void InitCaughtPokemonFromPokemons()
     {
-        foreach (Pokemon p in pokemonsInBox)
+        foreach (Pokemon p in pokemons)
             AddCaughtPokemon(p.data);
     }
 
