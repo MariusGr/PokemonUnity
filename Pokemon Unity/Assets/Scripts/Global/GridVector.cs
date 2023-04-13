@@ -26,6 +26,8 @@ public class GridVector
         }
     }
 
+    public float magnitude => new Vector2(x, y).magnitude;
+
     static Dictionary<GridVector, Direction> gridVectorToDirectionMap = new Dictionary<GridVector, Direction>()
     {
         { new GridVector(0, 0), Direction.None },

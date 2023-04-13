@@ -138,6 +138,8 @@ public class CharacterMovement : Pausable
     public void LookInPlayerDirection() => LookInDirection(GridVector.GetLookAt(character.position, PlayerCharacter.Instance.position));
     public void LookInDirection(GridVector direction)
     {
+        if (direction.magnitude == 0)
+            return;
         CurrentDirectionVector = direction;
         character.Animator.Tick(AnimationType.None, currentDirection);
     }
