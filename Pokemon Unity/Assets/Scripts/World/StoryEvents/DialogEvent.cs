@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DialogEvent : MonoBehaviour
+[CreateAssetMenu(fileName = "DialogEvent", menuName = "Story Events/Dialog Event")]
+public class DialogEvent : StoryEvent
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string text;
 
-    // Update is called once per frame
-    void Update()
+    protected override void Invoke()
     {
-        
+        base.Invoke();
     }
 }
