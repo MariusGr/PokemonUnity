@@ -13,6 +13,8 @@ public class InputManager : MonoBehaviour
     [SerializeField] private string LeftInputName;
     [SerializeField] private string UpInputName;
     [SerializeField] private string DownInputName;
+    [SerializeField] private string HorizontalAxisName;
+    [SerializeField] private string VerticalAxisName;
 
     private Dictionary<string, Direction> inputNameToDirection = new Dictionary<string, Direction>();
     private List<IInputConsumer> inputConsumers = new List<IInputConsumer>();
@@ -68,15 +70,18 @@ public class InputManager : MonoBehaviour
 
     private bool GetDigitalPadHeldDown(string inputName)
     {
-        if(inputName == RightInputName || inputName == UpInputName)
-            return Input.GetAxisRaw(inputName) > .5f;
-        return Input.GetAxisRaw(inputName) < -.5f;
+        string axisName = inputName == RightInputName || inputName == LeftInputName ? HorizontalAxisName : VerticalAxisName;
+        if (inputName == RightInputName || inputName == UpInputName)
+            return Input.GetAxisRaw(axisName) > .5f;
+        return Input.GetAxisRaw(axisName) < -.5f;
     }
 
     private void GetInputForDigitalPad()
     {
         input.digitalPad.heldDown = Direction.None;
         input.digitalPad.pressed = Direction.None;
+
+        print(Input.GetAxisRaw("Horizontal"));
 
         foreach (string inputName in inputNameToDirection.Keys)
         {
