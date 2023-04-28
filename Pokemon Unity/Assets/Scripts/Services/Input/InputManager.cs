@@ -71,17 +71,16 @@ public class InputManager : MonoBehaviour
     private bool GetDigitalPadHeldDown(string inputName)
     {
         string axisName = inputName == RightInputName || inputName == LeftInputName ? HorizontalAxisName : VerticalAxisName;
+        Debug.Log(axisName + "  " + Input.GetAxisRaw(axisName));
         if (inputName == RightInputName || inputName == UpInputName)
-            return Input.GetAxisRaw(axisName) > .5f;
-        return Input.GetAxisRaw(axisName) < -.5f;
+            return Input.GetAxisRaw(axisName) > .8f;
+        return Input.GetAxisRaw(axisName) < -.8f;
     }
 
     private void GetInputForDigitalPad()
     {
         input.digitalPad.heldDown = Direction.None;
         input.digitalPad.pressed = Direction.None;
-
-        print(Input.GetAxisRaw("Horizontal"));
 
         foreach (string inputName in inputNameToDirection.Keys)
         {
