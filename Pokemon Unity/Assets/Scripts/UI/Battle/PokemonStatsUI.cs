@@ -42,30 +42,30 @@ public class PokemonStatsUI : SelectableImage
     override public void Refresh()
     {
         nameText.text = pokemon.Name;
-        level.text = pokemon.level.ToString();
+        level.text = pokemon.Level.ToString();
         gender.text = pokemon.gender.symbol;
 
-        if (pokemon.statusEffectNonVolatile is null)
+        if (pokemon.StatusEffectNonVolatile is null)
             status.enabled = false;
         else
         {
             print(pokemon);
-            print(pokemon.statusEffectNonVolatile);
-            print(pokemon.statusEffectNonVolatile.data);
-            print(((StatusEffectNonVolatileData)pokemon.statusEffectNonVolatile.data).icon);
-            status.sprite = ((StatusEffectNonVolatileData)pokemon.statusEffectNonVolatile.data).icon;
+            print(pokemon.StatusEffectNonVolatile);
+            print(pokemon.StatusEffectNonVolatile.Data);
+            print(((StatusEffectNonVolatileData)pokemon.StatusEffectNonVolatile.Data).icon);
+            status.sprite = ((StatusEffectNonVolatileData)pokemon.StatusEffectNonVolatile.Data).icon;
             status.enabled = true;
         }
 
         RefreshHP();
     }
 
-    virtual public void RefreshHP() => hpBar.Value = pokemon.hpNormalized;
+    virtual public void RefreshHP() => hpBar.Value = pokemon.HpNormalized;
 
     public IEnumerator RefreshHPAnimated() => RefreshHPAnimated(barAnimationSpeed);
     public virtual IEnumerator RefreshHPAnimated(float speed)
     {
-        yield return hpBar.SetValueAnimated(pokemon.hpNormalized, speed);
+        yield return hpBar.SetValueAnimated(pokemon.HpNormalized, speed);
     }
 
     public bool IsPlayingAnimation() => isPlayingAnimation;

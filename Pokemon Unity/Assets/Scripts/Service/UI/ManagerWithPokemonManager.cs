@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ManagerWithPokemonManager : ManagerWithDialogBox
 {
-    protected PokemonManager pokemonManager;
+    protected IPokemonManager pokemonManager;
 
     protected override void Initialize()
     {
         base.Initialize();
-        pokemonManager = (PokemonManager)Services.Get<IPokemonManager>();
+        pokemonManager = (IPokemonManager)Services.Get<IPokemonManager>();
     }
 }

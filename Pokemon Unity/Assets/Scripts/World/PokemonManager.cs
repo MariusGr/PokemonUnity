@@ -19,7 +19,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 
     private void Awake() => Initialize();
 
-    public IEnumerator GrowLevel(Pokemon pokemon, System.Action<bool> uiRefreshCallback)
+    public IEnumerator GrowLevel(IPokemon pokemon, System.Action<bool> uiRefreshCallback)
     {
         SfxHandler.Play(xpFullSound);
         yield return new WaitForSeconds(xpFullSound.length);
@@ -28,34 +28,34 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
         uiRefreshCallback(false);
 
         BgmHandler.Instance.PlayMFX(levelGainMusic);
-        yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
+        yield return dialogBox.DrawText($"{pokemon.Name} erreicht Level {pokemon.Level}!", DialogBoxContinueMode.User, closeAfterFinish: true);
 
-        MoveData move;
-        if (pokemon.data.levelToMoveDataMap.TryGetValue(pokemon.level, out move))
+        IMoveData move;
+        if (pokemon.Data.GetMoveLearnedAtLevel(pokemon.Level, out move))
             yield return TryLearnMove(pokemon, move);
     }
 
-    public IEnumerator TryLearnMove(Pokemon pokemon, MoveData move)
+    public IEnumerator TryLearnMove(IPokemon pokemon, IMoveData move)
     {
-        if (pokemon.moves.Count >= 4)
+        if (pokemon.Moves.Count >= 4)
         {
             while (true)
             {
                 // Should an move be forgotten?
-                yield return dialogBox.DrawText($"{pokemon.Name} will {move.fullName} erlernen.", DialogBoxContinueMode.User);
+                yield return dialogBox.DrawText($"{pokemon.Name} will {move.Name} erlernen.", DialogBoxContinueMode.User);
                 yield return dialogBox.DrawText($"Aber {pokemon.Name} kann keine weiteren Attacken mehr erlernen!", DialogBoxContinueMode.User);
-                yield return dialogBox.DrawChoiceBox($"Soll {pokemon.Name} eine Attacke vergessen um {move.fullName} zu erlernen?");
+                yield return dialogBox.DrawChoiceBox($"Soll {pokemon.Name} eine Attacke vergessen um {move.Name} zu erlernen?");
                 if (dialogBox.GetChosenIndex() == 0)
                 {
                     // Forget move
 
                     // Let player choose move
                     dialogBox.Close();
-                    Move choosenMove = null;
+                    IMove choosenMove = null;
                     bool goBack = false;
                     moveSelectionUI.Open((ISelectableUIElement selection, bool back) =>
                     {
-                        choosenMove = selection is null ? null : pokemon.moves[selection.GetIndex()];
+                        choosenMove = selection is null ? null : pokemon.Moves[selection.GetIndex()];
                         goBack = back;
                     });
 
@@ -67,7 +67,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                     {
                         yield return dialogBox.DrawText($"Und...", DialogBoxContinueMode.User);
                         yield return dialogBox.DrawText($"Zack!", DialogBoxContinueMode.User);
-                        yield return dialogBox.DrawText($"{pokemon.Name} hat {choosenMove.data.fullName} vergessen, und...", DialogBoxContinueMode.User);
+                        yield return dialogBox.DrawText($"{pokemon.Name} hat {choosenMove.Data.Name} vergessen, und...", DialogBoxContinueMode.User);
                         pokemon.ReplaceMove(choosenMove, move);
                         break;
                     }
@@ -75,54 +75,54 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                 else
                 {
                     // Dont forget move
-                    yield return dialogBox.DrawText($"{move.fullName} wurde nicht erlernt.", DialogBoxContinueMode.User);
+                    yield return dialogBox.DrawText($"{move.Name} wurde nicht erlernt.", DialogBoxContinueMode.User);
                     yield break;
                 }
             }
         }
         else
             pokemon.AddMove(move);
-        yield return dialogBox.DrawText($"{pokemon.Name} hat {move.fullName} erlernt!", DialogBoxContinueMode.User);
+        yield return dialogBox.DrawText($"{pokemon.Name} hat {move.Name} erlernt!", DialogBoxContinueMode.User);
         moveSelectionUI.Assign(pokemon);
     }
 
-    public Coroutine TryUseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation, System.Action<bool> success)
+    public Coroutine TryUseItemOnPokemon(IItem item, IPokemon pokemon, IEnumerator animation, System.Action<bool> success)
         => StartCoroutine(TryUseItemOnPokemonCoroutine(item, pokemon, animation, success));
 
-    IEnumerator TryUseItemOnPokemonCoroutine(Item item, Pokemon pokemon, IEnumerator animation, System.Action<bool> success)
+    IEnumerator TryUseItemOnPokemonCoroutine(IItem item, IPokemon pokemon, IEnumerator animation, System.Action<bool> success)
     {
         // TODO Implement healing volatile status
-        if (item.data.canBeUsedOnOwnPokemon)
+        if (item.data.CanBeUsedOnOwnPokemon)
         {
-            if (pokemon.isFainted && !item.data.revives)
+            if (pokemon.IsFainted && !item.data.Revives)
                 yield return dialogBox.DrawText
-                    ($"Du kannst {item.data.fullName} nicht auf besiegte Pok?mon anwenden!", closeAfterFinish: true);
-            else if (item.data.healsHPOnly && pokemon.isAtFullHP)
+                    ($"Du kannst {item.data.Name} nicht auf besiegte Pok?mon anwenden!", closeAfterFinish: true);
+            else if (item.data.HealsHPOnly && pokemon.IsAtFullHP)
                 yield return dialogBox.DrawText(
                     $"KP von {pokemon.Name} ist breits voll!", DialogBoxContinueMode.User, closeAfterFinish: true);
-            else if (!pokemon.hasNonVolatileStatusEffect && item.data.healsStatusEffectsNonVolatileOnly)
+            else if (!pokemon.HasNonVolatileStatusEffect && item.data.HealsStatusEffectsNonVolatileOnly)
                 yield return dialogBox.DrawText(
                     $"Das h?tte keinen Effekt, denn {pokemon.Name} hat keine Statusprobleme.", closeAfterFinish: true);
-            else if (!pokemon.hasVolatileStatusEffects && item.data.healsStatusEffectsVolatileOnly)
+            else if (!pokemon.HasVolatileStatusEffects && item.data.HealsStatusEffectsVolatileOnly)
                 yield return dialogBox.DrawText($"Das h?tte keinen Effekt!", closeAfterFinish: true);
-            else if (pokemon.hasNonVolatileStatusEffect &&
-                !item.data.HealsStatusEffectNonVolatile(pokemon.statusEffectNonVolatile) &&
-                item.data.healsStatusEffectsNonVolatileOnly)
+            else if (pokemon.HasNonVolatileStatusEffect &&
+                !item.data.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile) &&
+                item.data.HealsStatusEffectsNonVolatileOnly)
                 yield return dialogBox.DrawText(
-                    $"Du kannst {pokemon.statusEffectNonVolatile.data.nameSubject} von {pokemon.Name} damit nicht heilen.", closeAfterFinish: true);
-            else if (pokemon.hasVolatileStatusEffects &&
-                !item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile) &&
-                item.data.healsStatusEffectsNonVolatileOnly)
+                    $"Du kannst {pokemon.StatusEffectNonVolatile.Data.NameSubject} von {pokemon.Name} damit nicht heilen.", closeAfterFinish: true);
+            else if (pokemon.HasVolatileStatusEffects &&
+                !item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile) &&
+                item.data.HealsStatusEffectsNonVolatileOnly)
             {
-                print(pokemon.hasVolatileStatusEffects);
-                print(!item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile));
-                print(item.data.healsStatusEffectsNonVolatileOnly);
+                print(pokemon.HasVolatileStatusEffects);
+                print(!item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile));
+                print(item.data.HealsStatusEffectsNonVolatileOnly);
                 yield return dialogBox.DrawText($"Das h?tte keinen Effekt!", closeAfterFinish: true);
             }
                 
             else
             {
-                yield return dialogBox.DrawChoiceBox($"{item.data.fullName} {pokemon.Name} geben?");
+                yield return dialogBox.DrawChoiceBox($"{item.data.Name} {pokemon.Name} geben?");
                 if (dialogBox.GetChosenIndex() == 0)
                 {
                     yield return UseItemOnPokemon(item, pokemon, animation);
@@ -134,66 +134,66 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             }
         }
         else
-            yield return dialogBox.DrawText($"{item.data.fullName} kann nicht auf deine Pokemon angewendet werden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            yield return dialogBox.DrawText($"{item.data.Name} kann nicht auf deine Pokemon angewendet werden!", DialogBoxContinueMode.User, closeAfterFinish: true);
         success?.Invoke(false);
     }
 
-    IEnumerator UseItemOnPokemon(Item item, Pokemon pokemon, IEnumerator animation)
+    IEnumerator UseItemOnPokemon(IItem item, IPokemon pokemon, IEnumerator animation)
     {
-        print($"Use item {item.data.fullName}");
-        if (item.data.healsHPFully)
+        print($"Use item {item.data.Name}");
+        if (item.data.HealsHPFully)
         {
             pokemon.HealHPFully();
             yield return animation;
             yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde vollst?ndig aufgef?llt!", closeAfterFinish: true);
         }
-        else if(item.data.hpHealed > 0)
+        else if(item.data.HpHealed > 0)
         {
-            pokemon.HealHP(item.data.hpHealed);
+            pokemon.HealHP(item.data.HpHealed);
             yield return animation;
-            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.hpHealed} Punkte aufgef?llt!", closeAfterFinish: true);
+            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.HpHealed} Punkte aufgef?llt!", closeAfterFinish: true);
         }
 
-        print(item.data.HealsStatusEffectNonVolatile(pokemon.statusEffectNonVolatile));
-        if (item.data.HealsStatusEffectNonVolatile(pokemon.statusEffectNonVolatile))
+        print(item.data.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile));
+        if (item.data.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile))
         {
-            print(pokemon.hasNonVolatileStatusEffect);
-            if (pokemon.hasNonVolatileStatusEffect)
+            print(pokemon.HasNonVolatileStatusEffect);
+            if (pokemon.HasNonVolatileStatusEffect)
             {
-                string text = pokemon.statusEffectNonVolatile.data.healText;
-                if (item.data.healsAllStatusEffectsNonVolatile)
+                string text = pokemon.StatusEffectNonVolatile.Data.HealText;
+                if (item.data.HealsAllStatusEffectsNonVolatile)
                     pokemon.HealAllStatusEffectsNonVolatile();
                 else
-                    pokemon.HealStatusEffectNonVolatile(item.data.nonVolatileStatusHealed);
+                    pokemon.HealStatusEffectNonVolatile(item.data.NonVolatileStatusHealed);
                 yield return dialogBox.DrawText(
                     TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, text, pokemon.Name), closeAfterFinish: true);
             }
         }
 
-        print(item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile));
-        if (item.data.HealsStatusEffectVolatile(pokemon.statusEffectsVolatile))
+        print(item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile));
+        if (item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile))
         {
-            StatusEffect[] healedStatus;
-            if (item.data.healsAllStatusEffectsVolatile)
+            IStatusEffect[] healedStatus;
+            if (item.data.HealsAllStatusEffectsVolatile)
             {
-                healedStatus = pokemon.statusEffectsVolatile.ToArray();
+                healedStatus = pokemon.StatusEffectsVolatile.ToArray();
                 pokemon.HealAllVolatileStatusEffects();
             }
             else
-                healedStatus = new StatusEffect[] { pokemon.HealStatusEffectVolatile(item.data.volatileStatusHealed) };
+                healedStatus = new IStatusEffect[] { pokemon.HealStatusEffectVolatile(item.data.VolatileStatusHealed) };
 
             foreach (StatusEffect s in healedStatus)
             {
                 if (healedStatus is null)
                     continue;
                 yield return dialogBox.DrawText(
-                    TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, s.data.healText, pokemon.Name), closeAfterFinish: true);
+                    TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, s.Data.HealText, pokemon.Name), closeAfterFinish: true);
             }
         }
 
         SfxHandler.Play(healSound);
 
-        if (item.data.consumable)
+        if (item.data.Consumable)
             PlayerData.Instance.TryTakeItem(item);
 
         yield return null;
@@ -201,15 +201,15 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 
     public IEnumerator HandleWalkDamage(System.Action playerHasBeenDefeatedCallback)
     {
-        foreach (Pokemon pokemon in PlayerData.Instance.pokemons)
+        foreach (Pokemon pokemon in PlayerData.Instance.Pokemons)
         {
-            if (pokemon.statusEffectNonVolatile is null)
+            if (pokemon.StatusEffectNonVolatile is null)
                 continue;
-            StatusEffectData statusEffect = pokemon.statusEffectNonVolatile.data;
+            IStatusEffectData statusEffect = pokemon.StatusEffectNonVolatile.Data;
             pokemon.InflictDamageOverTime();
-            if (pokemon.isFainted)
+            if (pokemon.IsFainted)
             {
-                yield return dialogBox.DrawText($"{pokemon.Name} wurde durch {statusEffect.nameSubject} besiegt.", closeAfterFinish: true);
+                yield return dialogBox.DrawText($"{pokemon.Name} wurde durch {statusEffect.NameSubject} besiegt.", closeAfterFinish: true);
                 if (PlayerData.Instance.IsDefeated())
                 {
                     playerHasBeenDefeatedCallback?.Invoke();

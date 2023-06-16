@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IEvolutionUI : IUIView
 {
-    public IEnumerator AnimateEvolution(Pokemon before, Pokemon after);
+    public IEnumerator AnimateEvolution(IPokemon before, IPokemon after);
 }

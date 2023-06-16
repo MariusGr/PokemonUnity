@@ -20,8 +20,8 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
     private void Awake() => DoOnAwake();
     private void OnEnable() => DoOnEnable();
     protected void DoOnAwake() => iconStartPosistion = icon.transform.localPosition;
-    protected virtual Sprite GetCurrentBackgroundIdle() => pokemon.isFainted ? backgroundFaint : backgroundDefault;
-    protected virtual Sprite GetCurrentBackgroundSelected() => pokemon.isFainted ? backgroundFaintSelected : backgroundDefaultSelected;
+    protected virtual Sprite GetCurrentBackgroundIdle() => pokemon.IsFainted ? backgroundFaint : backgroundDefault;
+    protected virtual Sprite GetCurrentBackgroundSelected() => pokemon.IsFainted ? backgroundFaintSelected : backgroundDefaultSelected;
 
     protected void DoOnEnable()
     {
@@ -58,13 +58,13 @@ public class PokemonPartyViewStatsUI : PlayerPokemonStatsUI
     IEnumerator IconAnimation()
     {
         int iconIndex = 0;
-        float interval = Mathf.Clamp((1f - pokemon.hpNormalized), .1f, .8f);
+        float interval = Mathf.Clamp((1f - pokemon.HpNormalized), .1f, .8f);
         bool toggle = false;
         while (true)
         {
             yield return new WaitForSeconds(interval);
-            iconIndex = (iconIndex + 1) % pokemon.data.icons.Length;
-            icon.sprite = pokemon.data.icons[iconIndex];
+            iconIndex = (iconIndex + 1) % pokemon.Data.Icons.Length;
+            icon.sprite = pokemon.Data.Icons[iconIndex];
             if (toggle)
                 icon.transform.localPosition = iconStartPosistion + iconOffset;
             else

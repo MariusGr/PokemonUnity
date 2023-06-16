@@ -12,7 +12,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
 
     private Pokemon chosenPartyPokemon;
     private Pokemon chosenBoxPokemon;
-    private string notEnoughAlivePokemonsErrorMessage = "Du musst mindestens ein unbesiegtes Pokémon im Team behalten!";
+    private string notEnoughAlivePokemonsErrorMessage = "Du musst mindestens ein unbesiegtes Pok?on im Team behalten!";
 
     public PokeBoxUI() => Services.Register(this as IPokeBoxUI);
 
@@ -77,7 +77,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
             Pokemon pokemon = ((PokemonListEntryUI)selection).pokemon;
             if (chosenPartyPokemon is null)
                 chosenBoxPokemon = pokemon;
-            else if (pokemon.isFainted && PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(chosenPartyPokemon))
+            else if (pokemon.IsFainted && PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(chosenPartyPokemon))
             {
                 GlobalDialogBox.Instance.DrawText(notEnoughAlivePokemonsErrorMessage, closeAfterFinish: true);
                 return;
@@ -101,7 +101,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
             Pokemon pokemon = ((PlayerPokemonStatsUI)selection).pokemon;
             if (chosenBoxPokemon is null)
                 chosenPartyPokemon = pokemon;
-            else if (chosenBoxPokemon.isFainted && PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(pokemon))
+            else if (chosenBoxPokemon.IsFainted && PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(pokemon))
             {
                 GlobalDialogBox.Instance.DrawText(notEnoughAlivePokemonsErrorMessage, closeAfterFinish: true);
                 return;
@@ -162,9 +162,9 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
             {
                 if (currentSelectionIsParty)
                 {
-                    if (PlayerData.Instance.pokemons.Count < 2)
+                    if (PlayerData.Instance.Pokemons.Count < 2)
                     {
-                        yield return GlobalDialogBox.Instance.DrawText("Du musst mindestens ein Pokémon im Team behalten!");
+                        yield return GlobalDialogBox.Instance.DrawText("Du musst mindestens ein Pok?on im Team behalten!");
                         continue;
                     }
                     else if (PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(pokemon))
@@ -213,7 +213,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
 
     private void RefreshViews()
     {
-        partySelection.AssignElements(PlayerData.Instance.pokemons.ToArray());
+        partySelection.AssignElements(PlayerData.Instance.Pokemons.ToArray());
         boxSelection.AssignItems(PlayerData.Instance.pokemonsInBox.ToArray());
     }
 

@@ -11,7 +11,7 @@ public class SummarySelection : ScalarSelection
 
     private const int MovesView = 3;
     private int pokemonIndex;
-    private Pokemon pokemon => PlayerData.Instance.pokemons[pokemonIndex];
+    private IPokemon pokemon => PlayerData.Instance.Pokemons[pokemonIndex];
     private MoveButtonSummary swapMoveButton;
 
     public SummarySelection() => Instance = this;
@@ -78,12 +78,12 @@ public class SummarySelection : ScalarSelection
         {
             if (input.digitalPad.pressed == Direction.Up)
             {
-                SetPokemon((pokemonIndex + 1) % PlayerData.Instance.pokemons.Count);
+                SetPokemon((pokemonIndex + 1) % PlayerData.Instance.Pokemons.Count);
                 return true;
             }
             if (input.digitalPad.pressed == Direction.Down)
             {
-                SetPokemon(pokemonIndex < 1 ? PlayerData.Instance.pokemons.Count - 1 : pokemonIndex - 1);
+                SetPokemon(pokemonIndex < 1 ? PlayerData.Instance.Pokemons.Count - 1 : pokemonIndex - 1);
                 return true;
             }
         }

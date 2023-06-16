@@ -31,7 +31,7 @@ public class BattleUI : InputConsumer, IBattleUI
         pokemonSprites = new PokemonSprite[] { playerPokemonSprite, opponentPokemonSprite };
     }
 
-    public Coroutine Open(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    public Coroutine Open(ICharacterData playerData, IPokemon playerPokemon, IPokemon opponentPokemon)
     {
         canvas.enabled = false;
         Open();
@@ -60,18 +60,18 @@ public class BattleUI : InputConsumer, IBattleUI
         base.Close();
     }
 
-    private void Initialize(CharacterData playerData, Pokemon playerPokemon, Pokemon opponentPokemon)
+    private void Initialize(ICharacterData playerData, IPokemon playerPokemon, IPokemon opponentPokemon)
     {
         SwitchToPokemon(Constants.PlayerIndex, playerPokemon);
         SwitchToPokemon(Constants.OpponentIndex, opponentPokemon);
         opponentSprite.SetVisiblity(false);
-        partySelection.AssignElements(playerData.pokemons.ToArray());
+        partySelection.AssignElements(playerData.Pokemons.ToArray());
     }
 
-    public void SwitchToPokemon(int characterIndex, Pokemon pokemon)
+    public void SwitchToPokemon(int characterIndex, IPokemon pokemon)
     {
         stats[characterIndex].AssignElement(pokemon);
-        pokemonSprites[characterIndex].SetSprite(pokemon.data.GetBattleSprite(characterIndex));
+        pokemonSprites[characterIndex].SetSprite(pokemon.Data.GetBattleSprite(characterIndex));
         if (characterIndex == Constants.PlayerIndex)
             moveSelectionUI.Assign(pokemon);
     }
@@ -81,14 +81,14 @@ public class BattleUI : InputConsumer, IBattleUI
     public void RefreshHP(int character) => stats[character].RefreshHP();
     public void RefreshXP() => playerStats.RefreshXP();
     public void ResetXP() => playerStats.ResetXP();
-    public void RefreshMove(Move move) => moveSelectionUI.RefreshMove(move);
+    public void RefreshMove(IMove move) => moveSelectionUI.RefreshMove(move);
 
     public IEnumerator RefreshHPAnimated(int character)
     {
         yield return stats[character].RefreshHPAnimated(hpRefreshSpeed);
     }
     public IEnumerator RefreshXPAnimated() => playerStats.RefreshXPAnimated(xpRefreshSpeed);
-    public IEnumerator PlayMoveAnimation(int attacker, Move move) => pokemonSprites[attacker].PlayMoveAnimation(move);
+    public IEnumerator PlayMoveAnimation(int attacker, IMove move) => pokemonSprites[attacker].PlayMoveAnimation(move);
     public IEnumerator PlayBlinkAnimation(int blinkingPokemon) => pokemonSprites[blinkingPokemon].PlayBlinkAnimation();
     public IEnumerator PlayFaintAnimation(int faintedOwner) => pokemonSprites[faintedOwner].PlayFaintAnimation();
     public IEnumerator PlayInflictStatusAnimation(int owner) => pokemonSprites[owner].PlayInflictStatusAnimation();
@@ -130,9 +130,9 @@ public class BattleUI : InputConsumer, IBattleUI
         => partySelection.Open(callback, forceSelection: forceSelection, startSelection: PlayerData.Instance.GetFirstAlivePokemonIndex(), battle: true);
     public void OpenBagSelection(System.Action<ISelectableUIElement, bool> callback)
         => bagSelection.OpenBattle(callback);
-    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback, Pokemon pokemon)
+    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback, IPokemon pokemon)
     {
-        moveSelectionUI.AssignElements(pokemon.moves.ToArray());
+        moveSelectionUI.AssignElements(pokemon.Moves.ToArray());
         moveSelectionUI.Open(callback);
     }
 

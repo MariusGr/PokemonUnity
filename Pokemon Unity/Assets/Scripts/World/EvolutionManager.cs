@@ -8,14 +8,14 @@ public class EvolutionManager : MonoBehaviour, IEvolutionManager
 
     public EvolutionManager() => Services.Register(this as IEvolutionManager);
     private void Awake() => ui = Services.Get<IEvolutionUI>();
-    public void Evolve(Pokemon pokemon) => StartCoroutine(EvolutionCoroutine(pokemon));
+    public void Evolve(IPokemon pokemon) => StartCoroutine(EvolutionCoroutine(pokemon));
 
-    public IEnumerator EvolutionCoroutine(Pokemon pokemon)
+    public IEnumerator EvolutionCoroutine(IPokemon pokemon)
     {
-        Pokemon evolved = pokemon.GetEvolvedVersion();
+        IPokemon evolved = pokemon.GetEvolvedVersion();
         ui.Open();
         yield return ui.AnimateEvolution(pokemon, evolved);
-        pokemon.character.ExchangePokemon(pokemon, evolved);
+        pokemon.Character.ExchangePokemon(pokemon, evolved);
         // TODO Learn all moves of new evolution
         ui.Close();
     }

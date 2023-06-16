@@ -5,39 +5,38 @@ using System;
 using SimpleJSON;
 
 [Serializable]
-public class Item
+public class Item : IItem
 {
-    public ItemData data;
-    [SerializeField] private int count = 1;
-    public int Count => count;
+    [field: SerializeField] public IItemData data { get; private set; }
+    [field: SerializeField] public int Count { get; private set; } = 0;
 
     public Item(ItemData data, int count)
     {
         this.data = data;
-        this.count = count;
+        Count = count;
     }
 
     public Item(JSONNode json)
     {
         data = (ItemData)BaseScriptableObject.Get(json["data"]);
-        count = json["count"];
+        Count = json["count"];
     }
 
     public void Increase(int amount = 1)
     {
-        count += amount;
-        Debug.Log("Item Count  " + count);
+        Count += amount;
+        Debug.Log("Item Count  " + Count);
     }
 
     public bool Decrease(int amount = 1)
     {
-        count = Math.Max(0, count - amount);
-        return count > 0;
+        Count = Math.Max(0, Count - amount);
+        return Count > 0;
     }
 
     public override bool Equals(object other)
     {
-        if (data.stacks)
+        if (data.Stacks)
             return data == ((Item)other).data;
         else
             return base.Equals(other);
@@ -45,7 +44,7 @@ public class Item
 
     public override int GetHashCode()
     {
-        if (data.stacks)
+        if (data.Stacks)
             return data.GetHashCode();
         else
             return base.GetHashCode();
@@ -55,9 +54,9 @@ public class Item
     {
         JSONNode json = new JSONObject();
         json.Add("data", data.Id);
-        json.Add("count", count);
+        json.Add("count", Count);
         return json;
     }
 
-    public override string ToString() => $"{base.ToString()}: {data} x{count}";
+    public override string ToString() => $"{base.ToString()}: {data} x{Count}";
 }

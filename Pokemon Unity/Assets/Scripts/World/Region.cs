@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Region : MonoBehaviour
 {
-    public RegionsData data;
+    public RegionData data;
 
     void OnTriggerEnter(Collider other)
     {

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IShopUI : ICallbackUIView
 {
-    public void Open(System.Action<ISelectableUIElement, bool> callback, ItemData[] items);
+    public void Open(System.Action<ISelectableUIElement, bool> callback, IItemData[] items);
 }

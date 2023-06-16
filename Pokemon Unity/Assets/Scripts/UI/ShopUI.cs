@@ -19,7 +19,7 @@ public class ShopUI : ItemSelection, IShopUI
     private void RefreshMoney() => moneyText.text = $"\n{Money.FormatMoneyToString(PlayerData.Instance.money)}";
     private void RefreshInBagCount(ItemData item) => inBagCountText.text = $"\nx  {PlayerData.Instance.GetItemCount(item)}";
 
-    public void Open(Action<ISelectableUIElement, bool> callback, ItemData[] items)
+    public void Open(Action<ISelectableUIElement, bool> callback, IItemData[] items)
     {
         Open(callback);
         RefreshMoney();
@@ -44,8 +44,8 @@ public class ShopUI : ItemSelection, IShopUI
         }
 
         chosenItem = ((ItemShopListEntryUI)selection).item;
-        dialogBox.DrawText($"{chosenItem.fullName}? Aber gerne.\nWie ?", DialogBoxContinueMode.External);
-        cycleSelection.Open(ChooseQuantity, chosenItem.price);
+        dialogBox.DrawText($"{chosenItem.Name}? Aber gerne.\nWie ?", DialogBoxContinueMode.External);
+        cycleSelection.Open(ChooseQuantity, chosenItem.Price);
     }
 
     private void ChooseQuantity(ISelectableUIElement selection, bool goBack)

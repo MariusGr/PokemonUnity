@@ -115,7 +115,7 @@ public class BagUI : ItemSelection
     private void RefreshItemSelection()=>
         activeItemSelection.AssignItems(PlayerData.Instance.items[itemSelections.keys[choosenItemViewIndex - 1]].ToArray());
     private void RefreshPartySelection() =>
-        partySelection.AssignElements(PlayerData.Instance.pokemons.ToArray());
+        partySelection.AssignElements(PlayerData.Instance.Pokemons.ToArray());
 
     private bool HandleGoBack(bool goBack)
     {
@@ -147,18 +147,18 @@ public class BagUI : ItemSelection
     private IEnumerator ChooseItemCoroutine(ISelectableUIElement selection)
     {
         ItemBagListEntryUI entry = (ItemBagListEntryUI)selection;
-        if (inBattle && entry.item.data.usableOnBattleOpponent)
+        if (inBattle && entry.item.data.UsableOnBattleOpponent)
         {
-            if (entry.item.data.catchesPokemon)
+            if (entry.item.data.CatchesPokemon)
             {
                 if (!Services.Get<IBattleManager>().OpponentIsWild())
                 {
                     yield return GlobalDialogBox.Instance.DrawText(
-                        "Du kannst keine Bälle in einem Trainer-Kampf verwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+                        "Du kannst keine B?le in einem Trainer-Kampf verwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
                     yield break;
                 }
 
-                yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.fullName} verwenden?");
+                yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.Name} verwenden?");
                 if (GlobalDialogBox.Instance.chosenIndex == 1)
                     yield break;
 
@@ -186,7 +186,7 @@ public class BagUI : ItemSelection
     IEnumerator UseItemOnPokemon(PlayerPokemonStatsUI statsUI)
     {
         bool itemUsed = false;
-        yield return PokemonManager.Instance.TryUseItemOnPokemon(
+        yield return Services.Get<IPokemonManager>().TryUseItemOnPokemon(
             activeItemSelection.choosenItem, statsUI.pokemon, statsUI.RefreshHPAnimated(), (bool success) => itemUsed = success);
 
         RefreshPartySelection();

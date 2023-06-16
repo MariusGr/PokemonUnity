@@ -5,7 +5,7 @@ using System;
 using SimpleJSON;
 
 [Serializable]
-public class NPCData : CharacterData
+public class NPCData : CharacterData, INPCData
 {
     public Sprite sprite;
     public string defaultText;
@@ -17,9 +17,9 @@ public class NPCData : CharacterData
     public float priceMoneyBase = 0;
     public bool hasBeenDefeated = false;
 
-    override public float GetPriceMoney() => pokemons[pokemons.Count - 1].level * priceMoneyBase;
+    override public float GetPriceMoney() => Pokemons[Pokemons.Count - 1].Level * priceMoneyBase;
 
     // TODO take start position
     public string GetKey()
-        => $"{GetType()}_{name}_{gameobject.transform.position.x}_{gameobject.transform.position.y}_{gameobject.transform.position.z}";
+        => $"{GetType()}_{Name}_{Gameobject.transform.position.x}_{Gameobject.transform.position.y}_{Gameobject.transform.position.z}";
 }

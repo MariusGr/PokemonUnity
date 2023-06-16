@@ -24,10 +24,10 @@ public class ScriptableObjectIdDrawer : PropertyDrawer
 }
 #endif
 
-public class BaseScriptableObject : ScriptableObject
+public class BaseScriptableObject : ScriptableObject, IInstanceWithId
 {
-    [ScriptableObjectId]
-    public string Id;
+    [field: ScriptableObjectId]
+    public string Id { get; private set; }
     private static Dictionary<string, BaseScriptableObject> instances = new Dictionary<string, BaseScriptableObject>();
     public static BaseScriptableObject Get(string id)
     {

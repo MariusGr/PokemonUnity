@@ -5,25 +5,25 @@ using CollectionExtensions;
 
 
 [CreateAssetMenu(fileName = "NewPokemonType", menuName = "Pokemon/Pokemon Type")]
-public class PokemonTypeData : ScriptableObject
+public class PokemonTypeData : ScriptableObject, IPokemonTypeData
 {
-    public string fullName = "Type";
-    public Sprite titleSprite;
-    public Color color = Color.white;
+    [field: SerializeField] public string FullName { get; private set; } = "Type";
+    [field: SerializeField] public Sprite TitleSprite { get; private set; }
+    [field: SerializeField] public Color Color { get; private set; } = Color.white;
 
-    public InspectorFriendlySerializableDictionary<PokemonTypeData, float> effectiveness;
+    public InspectorFriendlySerializableDictionary<IPokemonTypeData, float> effectiveness;
 
-    public float GetEffectiveness(PokemonTypeData againstType)
+    public float GetEffectiveness(IPokemonTypeData againstType)
     {
         if (effectiveness.keys.Contains(againstType))
             return effectiveness[againstType];
         return 1f;
     }
 
-    public float GetEffectiveness(Pokemon pokemon)
+    public float GetEffectiveness(IPokemon pokemon)
     {
         float effectiveness = 1f;
-        foreach (PokemonTypeData type in pokemon.data.pokemonTypes)
+        foreach (PokemonTypeData type in pokemon.Data.PokemonTypes)
             effectiveness *= GetEffectiveness(type);
         return effectiveness;
     }

@@ -16,7 +16,7 @@ public class MoveButton : SelectableImage
     {
         if (move is null)
             return;
-        textPP.text = $"{move.pp}/{move.data.maxPP}";
+        textPP.text = $"{move.Pp}/{move.Data.MaxPP}";
         base.Refresh();
     }
 
@@ -25,8 +25,8 @@ public class MoveButton : SelectableImage
         Move move = (Move)element;
         this.move = move;
         imageType.enabled = true;
-        textName.text = move.data.fullName;
-        imageType.sprite = move.data.pokeType.titleSprite;
+        textName.text = move.Data.Name;
+        imageType.sprite = move.Data.PokeType.TitleSprite;
 
         Refresh();
         base.AssignElement(element);

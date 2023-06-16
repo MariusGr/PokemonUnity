@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IMoveSelectionUI : ISelectionWindow
 {
-    public void Assign(Pokemon pokemon);
-    public void RefreshMove(Move move);
+    public void Assign(IPokemon pokemon);
+    public void RefreshMove(IMove move);
 }

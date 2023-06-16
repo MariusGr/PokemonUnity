@@ -5,51 +5,54 @@ using System;
 using System.Linq;
 
 [Serializable]
-public abstract class CharacterData
+public abstract class CharacterData : ICharacterData
 {
-    public string name;
-    public string nameGenitive => name.Length > 0 && name[name.Length - 1] == 's' ? $"{name}'" : $"{name}s";
-    public List<Pokemon> pokemons;
-    public GameObject gameobject;
+    [field: SerializeField] public string Name { get; private set; }
+    public string NameGenitive => Name.Length > 0 && Name[Name.Length - 1] == 's' ? $"{Name}'" : $"{Name}s";
+    [field: SerializeField] public List<IPokemon> Pokemons { get; protected set; }
+    [field: SerializeField] public GameObject Gameobject { get; private set; }
 
     public void HealAllPokemons()
     {
-        foreach (Pokemon p in pokemons)
+        foreach (Pokemon p in Pokemons)
             p.HealFully();
     }
 
-    public virtual void GivePokemon(Pokemon pokemon)
+    public virtual void GivePokemon(IPokemon pokemon)
     {
-        if (pokemons.Contains(pokemon))
+        if (Pokemons.Contains(pokemon))
         {
-            Debug.LogWarning($"Tried to give {this} on Gameobject {gameobject} pokemon {pokemon.data.name} but pokemon ist already in party.");
+            Debug.LogWarning($"Tried to give {this} on Gameobject {Gameobject} pokemon {pokemon.Data.Name} but pokemon ist already in party.");
             return;
         }
-        if (pokemons.Count > 5)
+        if (Pokemons.Count > 5)
         {
-            Debug.LogWarning($"Tried to give {this} on Gameobject {gameobject} pokemon {pokemon.data.name} but party is full.");
+            Debug.LogWarning($"Tried to give {this} on Gameobject {Gameobject} pokemon {pokemon.Data.Name} but party is full.");
             return;
         }
-        pokemons.Add(pokemon);
+        Pokemons.Add((Pokemon)pokemon);
     }
 
-    public void SwapPokemons(Pokemon pokemon1, Pokemon pokemon2)
+    public void SwapPokemons(IPokemon pokemon1, IPokemon pokemon2)
     {
         if (pokemon1 == pokemon2)
             return;
-        int newIndex1 = pokemons.IndexOf(pokemon2);
-        int newIndex2 = pokemons.IndexOf(pokemon1);
-        pokemons[newIndex1] = pokemon1;
-        pokemons[newIndex2] = pokemon2;
+
+        Pokemon p1 = (Pokemon)pokemon1;
+        Pokemon p2 = (Pokemon)pokemon2;
+        int newIndex1 = Pokemons.IndexOf(p2);
+        int newIndex2 = Pokemons.IndexOf(p1);
+        Pokemons[newIndex1] = p1;
+        Pokemons[newIndex2] = p2;
     }
 
-    public bool PartyIsFull() => pokemons.Count > 5;
-    public bool WouldBeDeafeatetWithoutPokemon(Pokemon pokemon) => pokemons.Count(p => !p.isFainted && p != pokemon) < 1;
+    public bool PartyIsFull() => Pokemons.Count > 5;
+    public bool WouldBeDeafeatetWithoutPokemon(IPokemon pokemon) => Pokemons.Count(p => !p.IsFainted && p != pokemon) < 1;
 
     public bool IsDefeated()
     {
-        foreach (Pokemon p in pokemons)
-            if (!p.isFainted)
+        foreach (Pokemon p in Pokemons)
+            if (!p.IsFainted)
                 return false;
         return true;
     }
@@ -59,18 +62,18 @@ public abstract class CharacterData
 
     public int GetFirstAlivePokemonIndex()
     {
-        for (int i = 0; i < pokemons.Count; i++)
+        for (int i = 0; i < Pokemons.Count; i++)
         {
-            if (!pokemons[i].isFainted)
+            if (!Pokemons[i].IsFainted)
                 return i;
         }
 
         return -1;
     }
 
-    public void ExchangePokemon(Pokemon before, Pokemon after)
+    public void ExchangePokemon(IPokemon before, IPokemon after)
     {
-        int index = pokemons.IndexOf(before);
-        pokemons[index] = after;
+        int index = Pokemons.IndexOf((Pokemon)before);
+        Pokemons[index] = (Pokemon)after;
     }
 }

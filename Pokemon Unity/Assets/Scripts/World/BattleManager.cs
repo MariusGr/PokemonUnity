@@ -34,25 +34,25 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     [SerializeField] InspectorFriendlySerializableDictionary<Effectiveness, AudioClip> moveHitSounds;
 
     private BattleState state;
-    private CharacterData playerData;
-    private NPCData opponentData;
+    private ICharacterData playerData;
+    private INPCData opponentData;
     private int[] pokemonIndex = new int[] { 0, 0 };
     private bool[] isDefeated = new bool[] { false, false };
     private bool opponentIsWild = false;
     private int runTryCount = 0;
-    private Dictionary<Pokemon, HashSet<Pokemon>> unfaintedPlayerPokemons;
+    private Dictionary<IPokemon, HashSet<IPokemon>> unfaintedPlayerPokemons;
     private HashSet<Pokemon> evolvingPokemons;
-    private int playerRunSuccessChance => playerPokemon.speedUnmodified >= opponentPokemon.speedUnmodified ? 256 :
-        (playerPokemon.speedUnmodified * 128 / Math.Min(1, opponentPokemon.speedUnmodified) + 30 * runTryCount) % 256;
+    private int playerRunSuccessChance => playerPokemon.SpeedUnmodified >= opponentPokemon.SpeedUnmodified ? 256 :
+        (playerPokemon.SpeedUnmodified * 128 / Math.Min(1, opponentPokemon.SpeedUnmodified) + 30 * runTryCount) % 256;
 
     private BattleOption playerBattleOption = BattleOption.None;
     private BattleOption opponentBattleOption = BattleOption.None;
 
-    private CharacterData[] characterData;
+    private ICharacterData[] characterData;
 
-    private Pokemon wildPokemon;
-    private Pokemon playerPokemon => GetActivePokemon(Constants.PlayerIndex);
-    private Pokemon opponentPokemon => GetActivePokemon(Constants.OpponentIndex);
+    private IPokemon wildPokemon;
+    private IPokemon playerPokemon => GetActivePokemon(Constants.PlayerIndex);
+    private IPokemon opponentPokemon => GetActivePokemon(Constants.OpponentIndex);
 
     private IBattleUI ui;
     private IEvolutionManager evolutionManager;
@@ -67,8 +67,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         Initialize();
     }
 
-    private Pokemon GetActivePokemon(int character)
-        => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].pokemons[pokemonIndex[character]];
+    private IPokemon GetActivePokemon(int character)
+        => character == Constants.OpponentIndex && opponentIsWild ? wildPokemon : characterData[character].Pokemons[pokemonIndex[character]];
 
     private IEnumerator Reset()
     {
@@ -86,19 +86,19 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         opponentPokemon.ResetWaitingStatusEffects();
 
         yield return ui.Open(playerData, playerPokemon, opponentPokemon);
-        unfaintedPlayerPokemons = new Dictionary<Pokemon, HashSet<Pokemon>>();
+        unfaintedPlayerPokemons = new Dictionary<IPokemon, HashSet<IPokemon>>();
         evolvingPokemons = new HashSet<Pokemon>();
     }
 
-    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, Func<bool, bool> encounterEndtionCallback)
+    public void StartNewEncounter(ICharacterData playerData, IPokemon wildPokemon, Func<bool, bool> encounterEndtionCallback)
     {
         print("StartNewEncounter");
         this.wildPokemon = wildPokemon;
-        PlayerData.Instance.AddSeenPokemon(wildPokemon.data);
+        PlayerData.Instance.AddSeenPokemon(wildPokemon.Data);
         opponentIsWild = true;
         this.playerData = playerData;
         opponentData = null;
-        characterData = new CharacterData[] { this.playerData, null };
+        characterData = new ICharacterData[] { this.playerData, null };
         BgmHandler.Instance.PlayOverlay(wildBattleMusicTrack);
 
         StartCoroutine(StartNewEncounterCoroutine(encounterEndtionCallback));
@@ -107,20 +107,20 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     IEnumerator StartNewEncounterCoroutine(Func<bool, bool> encounterEndtionCallback)
     {
         yield return Reset();
-        unfaintedPlayerPokemons[wildPokemon] = new HashSet<Pokemon>() { playerPokemon };
+        unfaintedPlayerPokemons[wildPokemon] = new HashSet<IPokemon>() { playerPokemon };
         yield return RoundCoroutine(encounterEndtionCallback);
     }
 
-    public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndReactionCallback)
+    public void StartNewBattle(ICharacterData playerData, INPCData opponentData, Func<bool, bool> npcBattleEndReactionCallback)
     {
         print("StartNewBattle");
         opponentIsWild = false;
         state = BattleState.None;
         this.playerData = playerData;
         this.opponentData = opponentData;
-        characterData = new CharacterData[] { this.playerData, this.opponentData };
+        characterData = new ICharacterData[] { this.playerData, this.opponentData };
         pokemonIndex[Constants.OpponentIndex] = opponentData.GetFirstAlivePokemonIndex();
-        PlayerData.Instance.AddSeenPokemon(opponentPokemon.data);
+        PlayerData.Instance.AddSeenPokemon(opponentPokemon.Data);
         BgmHandler.Instance.PlayOverlay(trainerBattleMusicTrack);
 
         StartCoroutine(StartNewBattleCoroutine(npcBattleEndReactionCallback));
@@ -130,14 +130,14 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         yield return Reset();
 
-        foreach (Pokemon p in this.opponentData.pokemons)
-            unfaintedPlayerPokemons[p] = new HashSet<Pokemon>();
+        foreach (Pokemon p in opponentData.Pokemons)
+            unfaintedPlayerPokemons[p] = new HashSet<IPokemon>();
         unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
         yield return RoundCoroutine(npcBattleEndReactionCallback);
     }
 
-    private bool CharacterHasBeenDefeated(int index, CharacterData characterData)
+    private bool CharacterHasBeenDefeated(int index, ICharacterData characterData)
         => index == Constants.OpponentIndex && (
                 !(characterData is null) && characterData.IsDefeated() || characterData is null
         ) || index == Constants.PlayerIndex && characterData.IsDefeated();
@@ -167,11 +167,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         {
             // Get Decisions
             opponentBattleOption = BattleOption.None;
-            Move opponentMove;
+            IMove opponentMove;
             int opponentPokemonIndex = -1;
             GetDecisionOpponent(out opponentBattleOption, out opponentMove);
             playerBattleOption = BattleOption.None;
-            Move playerMove = null;
+            IMove playerMove = null;
             Item playerItem = null;
             int playerPokemonIndex = -1;
             yield return GetDecisionPlayer((battleOption, move, item, index) =>
@@ -249,7 +249,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator PlayerUseItem(Item item)
     {
-        if (!item.data.usableOnBattleOpponent)
+        if (!item.data.UsableOnBattleOpponent)
         {
             // TODO: This is a workaround. It actually only needs to be called in case item has been used on player's active pokemon
             ui.Refresh(Constants.PlayerIndex);
@@ -257,7 +257,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield break;
         }
 
-        if (item.data.catchesPokemon)
+        if (item.data.CatchesPokemon)
             yield return PlayerThrowBall(item);
     }
 
@@ -265,15 +265,15 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         if (!PlayerData.Instance.TryTakeItem(ball))
         {
-            Debug.LogError($"Tried to take ball {ball.data.fullName} from player, but player does not own this item!");
+            Debug.LogError($"Tried to take ball {ball.data.Name} from player, but player does not own this item!");
             yield break;
         }
-        dialogBox.DrawText($"{playerData.name} wirft {ball.data.fullName}!", DialogBoxContinueMode.External);
+        dialogBox.DrawText($"{playerData.Name} wirft {ball.data.Name}!", DialogBoxContinueMode.External);
 
         yield return ui.PlayThrowAnimation();
         ui.HideOpponent();
         SfxHandler.Play(ballCloseSound);
-        float rate = opponentPokemon.GetModifiedCatchRate(ball.data.catchRateBonus);
+        float rate = opponentPokemon.GetModifiedCatchRate(ball.data.CatchRateBonus);
         int shakeProbability = Mathf.RoundToInt(1048560f / Mathf.Sqrt(Mathf.Sqrt(16711680f / rate)));
 
         for (int i = 0; i < 4; i++)
@@ -303,7 +303,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         dialogBox.DrawText($"{opponentPokemon.Name} wurde gefangen!", DialogBoxContinueMode.External);
         yield return new WaitForSeconds(5f);
         BgmHandler.Instance.PlayOverlay(wildVictoryMusicTrack);
-        if (!PlayerData.Instance.HasCaughtPokemon(opponentPokemon.data))
+        if (!PlayerData.Instance.HasCaughtPokemon(opponentPokemon.Data))
             yield return dialogBox.DrawText($"Für {opponentPokemon.Name} wird einer neuer Eintrag im Pokedex angelegt.");
 
         if (PlayerData.Instance.PartyIsFull())
@@ -349,18 +349,18 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         callback(choosenOption);
     }
 
-    private void GetDecisionOpponent(out BattleOption battleOption, out Move opponentMove)
+    private void GetDecisionOpponent(out BattleOption battleOption, out IMove opponentMove)
     {
         // TODO: implement more intelligent decision making
         battleOption = BattleOption.Fight;
         opponentMove = GetMoveOpponent();
     }
 
-    private IEnumerator GetDecisionPlayer(Action<BattleOption, Move, Item, int> callback)
+    private IEnumerator GetDecisionPlayer(Action<BattleOption, IMove, Item, int> callback)
     {
         bool goBack = false;
         BattleOption battleOption;
-        Move chosenMove = null;
+        IMove chosenMove = null;
         Item chosenItem = null;
         int choosenPokemon = -1;
 
@@ -432,13 +432,13 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         callback(battleOption, chosenMove, chosenItem, choosenPokemon);
     }
 
-    private Move GetMoveOpponent()
+    private IMove GetMoveOpponent()
     {
         // TODO: implement more intelligent move choose
-        return opponentPokemon.moves[UnityEngine.Random.Range(0, opponentPokemon.moves.Count)];
+        return opponentPokemon.Moves[UnityEngine.Random.Range(0, opponentPokemon.Moves.Count)];
     }
 
-    private IEnumerator GetMovePlayer(Action<Move, bool> callback)
+    private IEnumerator GetMovePlayer(Action<IMove, bool> callback)
     {
         if(!playerPokemon.HasUsableMoves())
         {
@@ -448,18 +448,18 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         }
 
         // Let player Choose move
-        Move choosenMove = null;
+        IMove choosenMove = null;
         bool goBack = false;
         ui.OpenMoveSelection((ISelectableUIElement selection, bool back) =>
         {
             goBack = back;
-            choosenMove = selection is null ? null : playerPokemon.moves[selection.GetIndex()];
+            choosenMove = selection is null ? null : playerPokemon.Moves[selection.GetIndex()];
         }, playerPokemon);
         print("wait for play to choose move");
         yield return new WaitUntil(() => choosenMove != null || goBack);
         ui.CloseMoveSelection();
 
-        if (!(choosenMove is null) && choosenMove.pp < 1)
+        if (!(choosenMove is null) && choosenMove.Pp < 1)
         {
             choosenMove = null;
             yield return dialogBox.DrawText("Keine AP übrig!", DialogBoxContinueMode.User, true);
@@ -518,12 +518,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator GetNextPokemonOpponent()
     {
         opponentBattleOption = BattleOption.None;
-        for (int i = 0; i < opponentData.pokemons.Count; i++)
+        for (int i = 0; i < opponentData.Pokemons.Count; i++)
         {
-            Pokemon pokemon = opponentData.pokemons[i];
-            if (!pokemon.isFainted)
+            IPokemon pokemon = opponentData.Pokemons[i];
+            if (!pokemon.IsFainted)
             {
-                yield return dialogBox.DrawText($"{opponentData.name} wird als nächstes {pokemon.SpeciesName} einsetzen.", DialogBoxContinueMode.User);
+                yield return dialogBox.DrawText($"{opponentData.Name} wird als nächstes {pokemon.SpeciesName} einsetzen.", DialogBoxContinueMode.User);
                 while(true)
                 {
                     yield return dialogBox.DrawChoiceBox("Möchtest du dein Pokémon wechseln?");
@@ -578,7 +578,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             if (goBack)
                 break;
 
-            if (playerData.pokemons[choosenPokemonIndex].isFainted)
+            if (playerData.Pokemons[choosenPokemonIndex].IsFainted)
             {
                 choosenPokemonIndex = -1;
                 yield return dialogBox.DrawText($"{playerPokemon.Name}\nist K.O.!", DialogBoxContinueMode.User, true);
@@ -626,24 +626,24 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         unfaintedPlayerPokemons[opponentPokemon].Add(playerPokemon);
 
         if (characterIndex == Constants.OpponentIndex)
-            PlayerData.Instance.AddSeenPokemon(opponentPokemon.data);
+            PlayerData.Instance.AddSeenPokemon(opponentPokemon.Data);
 
-        Pokemon pokemon = GetActivePokemon(characterIndex);
+        IPokemon pokemon = GetActivePokemon(characterIndex);
         pokemon.ResetStatModifiers();
         pokemon.HealAllVolatileStatusEffects();
         pokemon.ResetWaitingStatusEffects();
 
         // TODO Animate pokemon deployment
         ui.SwitchToPokemon(characterIndex, pokemon);
-        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(pokemon.data.cry));
+        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(pokemon.Data.Cry));
     }
 
-    string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
+    string GetUniqueIdentifier(IPokemon pokemon, IPokemon other, ICharacterData character)
         => pokemon.Name == other.Name ? (
-            character is null ? (pokemon == opponentPokemon ? $"Wildes {pokemon.Name}" : pokemon.Name) : $"{character.nameGenitive} {pokemon.Name}"
+            character is null ? (pokemon == opponentPokemon ? $"Wildes {pokemon.Name}" : pokemon.Name) : $"{character.NameGenitive} {pokemon.Name}"
         ) : pokemon.Name;
 
-    private IEnumerator MoveCoroutine(int attacker, int target, Move move)
+    private IEnumerator MoveCoroutine(int attacker, int target, IMove move)
     {
         bool canFight = true;
 
@@ -652,14 +652,14 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (!canFight)
             yield break;
 
-        CharacterData attackerCharacter = null;
-        CharacterData targetCharacter = null;
+        ICharacterData attackerCharacter = null;
+        ICharacterData targetCharacter = null;
         if (target == Constants.PlayerIndex || !opponentIsWild)
             targetCharacter = characterData[target];
         if (attacker == Constants.PlayerIndex || !opponentIsWild)
             attackerCharacter = characterData[attacker];
-        Pokemon attackerPokemon = GetActivePokemon(attacker);
-        Pokemon targetPokemon = GetActivePokemon(target);
+        IPokemon attackerPokemon = GetActivePokemon(attacker);
+        IPokemon targetPokemon = GetActivePokemon(target);
         move.DecrementPP();
         ui.RefreshMove(move);
 
@@ -668,11 +668,11 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         string targetPokemonIdentifier = GetUniqueIdentifier(targetPokemon, attackerPokemon, targetCharacter);
 
         // Display usage text
-        string defaultUsageText = $"{attackingPokemonIdentifier} setzt {move.data.fullName} ein!";
+        string defaultUsageText = $"{attackingPokemonIdentifier} setzt {move.Data.Name} ein!";
         string usageText = null;
-        if (move.data.hasSpecialUsageText)
+        if (move.Data.HasSpecialUsageText)
         {
-            usageText = move.data.specialUsageText;
+            usageText = move.Data.SpecialUsageText;
             usageText = TextKeyManager.ReplaceKey(TextKeyManager.TextKeyAttackerPokemon, usageText, attackingPokemonIdentifier);
             usageText = TextKeyManager.ReplaceKey(TextKeyManager.TextKeyDefaultUsageText, usageText, defaultUsageText);
         }
@@ -687,27 +687,27 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         int damage = 0;
         Effectiveness effectiveness = Effectiveness.Normal;
 
-        Move.FailReason failReason = Move.FailReason.None;
+        FailReason failReason = FailReason.None;
         if (move.TryHit(attackerPokemon, targetPokemon, out failReason))
         {
             // Attack hit successfully
 
             // Animation
-            if (move.data.usesCryForSound)
-                SfxHandler.Play(attackerPokemon.data.cry);
-            else if (!(move.data.sound is null))
-                SfxHandler.Play(move.data.sound);
+            if (move.Data.UsesCryForSound)
+                SfxHandler.Play(attackerPokemon.Data.Cry);
+            else if (!(move.Data.Sound is null))
+                SfxHandler.Play(move.Data.Sound);
 
             yield return ui.PlayMoveAnimation(attacker, move);
 
             yield return new WaitForSeconds(.5f);
 
             SfxHandler.Play(moveHitSounds[effectiveness]);
-            if (!move.data.doesNotInflictDamage)
+            if (!move.Data.DoesNotInflictDamage)
                 yield return ui.PlayBlinkAnimation(target);
 
             // Deal damage
-            damage = move.data.power < 1 ? 0 : move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
+            damage = move.Data.Power < 1 ? 0 : move.GetDamageAgainst(attackerPokemon, targetPokemon, out critical, out effectiveness);
             if (damage > 0)
             {
                 yield return InflictDamage(target, damage);
@@ -717,42 +717,42 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
                     yield return dialogBox.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
             }
 
-            yield return InflictStatModifiers(target, move.data.statModifiersTarget);
-            if (UnityEngine.Random.value <= move.data.statusVolatileInflictedTargetChance)
-                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget, move.data.roundsBeforeFirstEffectVolatile);
-            yield return InflictStatusEffect(target, move.data.statusNonVolatileInflictedTarget, move.data.roundsBeforeFirstEffectNonVolatile);
+            yield return InflictStatModifiers(target, move.Data.StatModifiersTarget);
+            if (UnityEngine.Random.value <= move.Data.StatusVolatileInflictedTargetChance)
+                yield return InflictStatusEffect(target, move.Data.StatusVolatileInflictedTarget, move.Data.RoundsBeforeFirstEffectVolatile);
+            yield return InflictStatusEffect(target, move.Data.StatusNonVolatileInflictedTarget, move.Data.RoundsBeforeFirstEffectNonVolatile);
 
-            if (UnityEngine.Random.value <= move.data.statusNonVolatileInflictedTargetChance)
-                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget, move.data.roundsBeforeFirstEffectVolatile);
-            yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf, move.data.roundsBeforeFirstEffectNonVolatile);
-            yield return InflictStatModifiers(attacker, move.data.statModifiersSelf);
+            if (UnityEngine.Random.value <= move.Data.StatusNonVolatileInflictedTargetChance)
+                yield return InflictStatusEffect(target, move.Data.StatusVolatileInflictedTarget, move.Data.RoundsBeforeFirstEffectVolatile);
+            yield return InflictStatusEffect(attacker, move.Data.StatusNonVolatileInflictedSelf, move.Data.RoundsBeforeFirstEffectNonVolatile);
+            yield return InflictStatModifiers(attacker, move.Data.StatModifiersSelf);
         }
         else
         {
             // Attack failed
-            if (failReason == Move.FailReason.NoEffect)
+            if (failReason == FailReason.NoEffect)
                 yield return dialogBox.DrawText($"Es hat keinen Effekt!", DialogBoxContinueMode.User);
             else
                 yield return dialogBox.DrawText($"Attacke von {attackingPokemonIdentifier} geht daneben!", DialogBoxContinueMode.User);
         }
 
-        if (targetPokemon.isFainted)
+        if (targetPokemon.IsFainted)
             // target pokemon fainted
             yield return Faint(target, targetPokemonIdentifier);
         else
         {
-            if (move.data.recoil > 0 && damage > 0)
+            if (move.Data.Recoil > 0 && damage > 0)
             {
                 yield return dialogBox.DrawText($"{attackingPokemonIdentifier} wird durch Rückstoß getroffen!", DialogBoxContinueMode.Automatic);
                 yield return new WaitForSeconds(1f);
                 SfxHandler.Play(moveHitSounds[Effectiveness.Normal]);
                 yield return ui.PlayBlinkAnimation(target);
-                int recoilDamage = (int)(damage * move.data.recoil);
+                int recoilDamage = (int)(damage * move.Data.Recoil);
                 yield return InflictDamage(attacker, recoilDamage);
                 yield return ui.RefreshHPAnimated(attacker);
             }
 
-            if (attackerPokemon.isFainted)
+            if (attackerPokemon.IsFainted)
                 yield return Faint(attacker, attackingPokemonIdentifier);
             else
                 yield return InflictNextWaitingStatusEffect(attacker);
@@ -789,7 +789,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield return ui.PlayStatDownAnimation(target);
         }
 
-        Pokemon targetPokemon = GetActivePokemon(target);
+        IPokemon targetPokemon = GetActivePokemon(target);
         int result = targetPokemon.InflictStatModifier(stat, amount);
         string statString = TextKeyManager.statToString[stat];
         if (result == 0)
@@ -806,18 +806,18 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator InflictNextWaitingStatusEffect(int targetIndex)
     {
         // TODO separate non volatile and volatile effects
-        Pokemon targetPokemon = GetActivePokemon(targetIndex);
+        IPokemon targetPokemon = GetActivePokemon(targetIndex);
         yield return InflictStatusEffect(targetIndex, targetPokemon.GetNextNonVolatileStatusEffectFromWaitingList());
         yield return InflictStatusEffect(targetIndex, targetPokemon.GetNextVolatileStatusEffectFromWaitingList());
     }
 
-    private IEnumerator InflictStatusEffect(int targetIndex, StatusEffectData statusEffect, int roundsBeforeFirstEffect = 0)
+    private IEnumerator InflictStatusEffect(int targetIndex, IStatusEffectData statusEffect, int roundsBeforeFirstEffect = 0)
     {
         // TODO Animation
-        Pokemon targetPokemon = GetActivePokemon(targetIndex);
+        IPokemon targetPokemon = GetActivePokemon(targetIndex);
         if (statusEffect is null ||
-            statusEffect.isNonVolatile && !(targetPokemon.statusEffectNonVolatile is null) ||
-            statusEffect.isVolatile && targetPokemon.HasStatusEffectVolatile(statusEffect)
+            statusEffect.IsNonVolatile && !(targetPokemon.StatusEffectNonVolatile is null) ||
+            statusEffect.IsVolatile && targetPokemon.HasStatusEffectVolatile(statusEffect)
         )
             yield break;
 
@@ -826,10 +826,10 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (!willBeInflictedNow)
         {
             targetPokemon.InflictWaitingStatusEffect(new WaitingStatusEffect(statusEffect, roundsBeforeFirstEffect));
-            inflictionText = statusEffect.waitForEffectText;
+            inflictionText = statusEffect.WaitForEffectText;
         }
         else
-            inflictionText = statusEffect.inflictionText;
+            inflictionText = statusEffect.InflictionText;
 
         dialogBox.DrawText(
             TextKeyManager.ReplaceKey(
@@ -839,7 +839,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
         if(willBeInflictedNow)
         {
-            SfxHandler.Play(statusEffect.sound);
+            SfxHandler.Play(statusEffect.Sound);
             yield return ui.PlayInflictStatusAnimation(targetIndex);
             yield return new WaitForSeconds(2f);
 
@@ -853,48 +853,48 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator StatusEffectNonVolatileRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
     {
-        Pokemon targetPokemon = GetActivePokemon(target);
-        yield return StatusEffectRoundTick(targetPokemon.statusEffectNonVolatile, target, targetPokemon, beforeMove, preventMoveCallback);
+        IPokemon targetPokemon = GetActivePokemon(target);
+        yield return StatusEffectRoundTick(targetPokemon.StatusEffectNonVolatile, target, targetPokemon, beforeMove, preventMoveCallback);
     }
 
     private IEnumerator StatusEffectVolatileRoundTick(int target, bool beforeMove, Action preventMoveCallback = null)
     {
-        Pokemon targetPokemon = GetActivePokemon(target);
-        StatusEffect[] statusList = new StatusEffect[targetPokemon.statusEffectsVolatile.Count];
-        targetPokemon.statusEffectsVolatile.CopyTo(statusList);
+        IPokemon targetPokemon = GetActivePokemon(target);
+        StatusEffect[] statusList = new StatusEffect[targetPokemon.StatusEffectsVolatile.Count];
+        targetPokemon.StatusEffectsVolatile.CopyTo(statusList);
         foreach (StatusEffect s in statusList)
             yield return StatusEffectRoundTick(s, target, targetPokemon, beforeMove, preventMoveCallback);
     }
 
-    private IEnumerator StatusEffectRoundTick(StatusEffect statusEffect, int targetIndex, Pokemon targetPokemon, bool beforeMove, Action preventMoveCallback)
+    private IEnumerator StatusEffectRoundTick(IStatusEffect statusEffect, int targetIndex, IPokemon targetPokemon, bool beforeMove, Action preventMoveCallback)
     {
         if (statusEffect is null)
             yield break;
 
-        int selfDamage = statusEffect.data.GetDamageAgainstSelf(targetPokemon);
-        int damage = statusEffect.data.damagePerRoundAbsolute +
-            Mathf.RoundToInt(statusEffect.data.damagePerRoundRelativeToMaxHp * targetPokemon.maxHp) +
+        int selfDamage = statusEffect.Data.GetDamageAgainstSelf(targetPokemon);
+        int damage = statusEffect.Data.DamagePerRoundAbsolute +
+            Mathf.RoundToInt(statusEffect.Data.DamagePerRoundRelativeToMaxHp * targetPokemon.MaxHp) +
             selfDamage;
 
-        if (beforeMove && !statusEffect.data.takesEffectBeforeMoves ||
-            !beforeMove && statusEffect.data.takesEffectBeforeMoves ||
-            damage < 1 && !statusEffect.data.preventsMove
+        if (beforeMove && !statusEffect.Data.TakesEffectBeforeMoves ||
+            !beforeMove && statusEffect.Data.TakesEffectBeforeMoves ||
+            damage < 1 && !statusEffect.Data.PreventsMove
         )
             yield break;
 
-        bool lifeTimeEnds = !statusEffect.data.livesForever && statusEffect.lifeTime < 1;
+        bool lifeTimeEnds = !statusEffect.Data.LivesForever && statusEffect.LifeTime < 1;
         if (lifeTimeEnds)
             yield return HealStatus(targetIndex, statusEffect);
-        else if (statusEffect.data.notificationPerRoundText != "")
+        else if (statusEffect.Data.NotificationPerRoundText != "")
             yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                TextKeyManager.TextKeyPokemon, statusEffect.data.notificationPerRoundText, targetPokemon.Name), closeAfterFinish: true);
+                TextKeyManager.TextKeyPokemon, statusEffect.Data.NotificationPerRoundText, targetPokemon.Name), closeAfterFinish: true);
 
-        if ((!lifeTimeEnds || statusEffect.data.takesEffectOnceWhenLifeTimeEnded) && UnityEngine.Random.value <= statusEffect.data.chance)
+        if ((!lifeTimeEnds || statusEffect.Data.TakesEffectOnceWhenLifeTimeEnded) && UnityEngine.Random.value <= statusEffect.Data.Chance)
         {
             if (!lifeTimeEnds)
             {
                 dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                    TextKeyManager.TextKeyPokemon, statusEffect.data.effectPerRoundText, targetPokemon.Name),
+                    TextKeyManager.TextKeyPokemon, statusEffect.Data.EffectPerRoundText, targetPokemon.Name),
                     DialogBoxContinueMode.External);
                 yield return new WaitForSeconds(1f);
             }
@@ -906,7 +906,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             }
             else
             {
-                SfxHandler.Play(statusEffect.data.sound);
+                SfxHandler.Play(statusEffect.Data.Sound);
                 yield return ui.PlayInflictStatusAnimation(targetIndex);
             }
             dialogBox.Close();
@@ -914,22 +914,22 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             if (damage > 0)
             {
                 yield return InflictDamage(targetIndex, damage);
-                if (targetPokemon.isFainted)
+                if (targetPokemon.IsFainted)
                     yield return Faint(targetIndex, targetPokemon.Name);
             }
 
-            if (statusEffect.data.preventsMove)
+            if (statusEffect.Data.PreventsMove)
                 preventMoveCallback?.Invoke();
 
-            statusEffect.lifeTime--;
+            statusEffect.LifeTime--;
         }
     }
 
-    private IEnumerator HealStatus(int target, StatusEffect statusEffect)
+    private IEnumerator HealStatus(int target, IStatusEffect statusEffect)
     {
-        Pokemon targetPokemon = GetActivePokemon(target);
+        IPokemon targetPokemon = GetActivePokemon(target);
         yield return dialogBox.DrawText(TextKeyManager.ReplaceKey(
-                    TextKeyManager.TextKeyPokemon, statusEffect.data.endOfLifeText, targetPokemon.Name), closeAfterFinish: true);
+                    TextKeyManager.TextKeyPokemon, statusEffect.Data.EndOfLifeText, targetPokemon.Name), closeAfterFinish: true);
         targetPokemon.HealStatus(statusEffect);
         ui.Refresh(target);
     }
@@ -938,7 +938,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         dialogBox.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.External);
 
-        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(GetActivePokemon(characterIndex).data.faintCry));
+        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(GetActivePokemon(characterIndex).Data.FaintCry));
         SfxHandler.Play(faintSound);
         yield return ui.PlayFaintAnimation(characterIndex);
 
@@ -946,7 +946,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             BgmHandler.Instance.PlayOverlay(wildVictoryMusicTrack);
 
         if (characterIndex == Constants.PlayerIndex)
-            foreach (HashSet<Pokemon> set in unfaintedPlayerPokemons.Values)
+            foreach (HashSet<IPokemon> set in unfaintedPlayerPokemons.Values)
                 set.Remove(playerPokemon);
         else
             yield return DistributePlayerXP();
@@ -962,7 +962,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator DistributePlayerXP()
     {
-        HashSet<Pokemon> gainingPokemons = unfaintedPlayerPokemons[opponentPokemon];
+        HashSet<IPokemon> gainingPokemons = unfaintedPlayerPokemons[opponentPokemon];
         int gainedXP = opponentPokemon.GetXPGainedFromFaint(opponentIsWild) / gainingPokemons.Count;
         foreach (Pokemon p in gainingPokemons.Where(p => !p.IsLeveledToMax()))
             yield return GainXP(p, gainedXP);
@@ -993,8 +993,8 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     private IEnumerator Defeat(int loserIndex)
     {
         int winnerIndex = loserIndex > 0 ? 0 : 1;
-        CharacterData winner = characterData[winnerIndex];
-        CharacterData loser = characterData[loserIndex];
+        ICharacterData winner = characterData[winnerIndex];
+        ICharacterData loser = characterData[loserIndex];
         bool winnerIsTrainer = !(winner is null);
         bool loserIsTrainer = !(loser is null);
 
@@ -1003,7 +1003,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
         if (loserIsTrainer)
         {
             BgmHandler.Instance.PlayOverlay(trainerVictoryMusicTrack);
-            yield return dialogBox.DrawText($"{loser.name} wurde besiegt!", DialogBoxContinueMode.User);
+            yield return dialogBox.DrawText($"{loser.Name} wurde besiegt!", DialogBoxContinueMode.User);
         }
 
         if (loserIndex == Constants.OpponentIndex)

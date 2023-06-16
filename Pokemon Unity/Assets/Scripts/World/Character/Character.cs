@@ -14,7 +14,7 @@ public class Character : MonoBehaviour
     public CharacterAnimator Animator => animator;
     public GridVector position => new GridVector(transform.position);
     public CharacterData characterData => controller.CharacterData;
-    public Pokemon[] pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.pokemons.ToArray();
+    public IPokemon[] pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.Pokemons.ToArray();
     public Vector3 startPosition { get; private set; }
     public virtual bool IsPlayer => false;
 

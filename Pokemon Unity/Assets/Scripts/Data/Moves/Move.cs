@@ -4,73 +4,67 @@ using UnityEngine;
 using System;
 using SimpleJSON;
 
-[System.Serializable]
-public class Move
+[Serializable]
+public class Move : IMove
 {
-    public enum FailReason
-    {
-        None,
-        Miss,
-        NoEffect,
-    }
+    [field: SerializeField] public IMoveData Data { get; private set; }
+    [field: SerializeField] public IPokemon pokemon { get; private set; }
+    [field: SerializeField] public int Index { get; set; }
+    [field: SerializeField] public int Pp { get; private set; }
+    [field: SerializeField] public bool IsBlocked { get; private set; }
 
-    public MoveData data;
-    public int index;
-    public int pp;
-    public bool isBlocked;
+    public bool IsUsable => Pp > 0 && !IsBlocked;
 
-    public bool isUsable => pp > 0 && !isBlocked;
-
-    private Pokemon pokemon;
+    public Move(IMoveData data, int index, Pokemon pokemon) : this((MoveData)data, index, pokemon) { }
 
     public Move(MoveData data, int index, Pokemon pokemon)
     {
-        this.index = index;
-        this.data = data;
+        Index = index;
+        Data = data;
         this.pokemon = pokemon;
-        pp = data.maxPP;
+        Pp = data.MaxPP;
     }
 
     public Move(JSONNode json, int index, Pokemon pokemon)
     {
-        this.index = index;
-        data = (MoveData)BaseScriptableObject.Get(json["data"]);
-        pp = json["pp"];
+        Index = index;
+        Data = (MoveData)BaseScriptableObject.Get(json["data"]);
+        Pp = json["pp"];
         this.pokemon = pokemon;
     }
 
     public JSONNode ToJSON()
     {
         JSONNode json = new JSONObject();
-        json.Add("data", data.Id);
-        json.Add("pp", pp);
+        json.Add("data", Data.Id);
+        json.Add("pp", Pp);
         return json;
     }
 
-    public void SetPokemon(Pokemon pokemon) => this.pokemon = pokemon;
+    public void SetPokemon(IPokemon pokemon) => this.pokemon = pokemon;
 
     // https://bulbapedia.bulbagarden.net/wiki/Accuracy
-    public bool TryHit(Pokemon attacker, Pokemon target, out FailReason failReason)
+    public bool TryHit(IPokemon attacker, IPokemon target, out FailReason failReason)
     {
         failReason = FailReason.None;
 
         if (
-            data.onlyInflictsNonVolatileStatusEffectOnTarget && target.NonVolatileStatusWillNotHaveEffect(data.statusNonVolatileInflictedTarget) ||
-            data.onlyInflictsVolatileStatusOnTarget && target.VolatileStatusWillNotHaveEffect(data.statusVolatileInflictedTarget) ||
-            data.onlyInflictsBothStatusEffectsOnTarget &&
-            target.NonVolatileStatusWillNotHaveEffect(data.statusNonVolatileInflictedTarget) &&
-            target.VolatileStatusWillNotHaveEffect(data.statusVolatileInflictedTarget)
+            Data.OnlyInflictsNonVolatileStatusEffectOnTarget && target.NonVolatileStatusWillNotHaveEffect(Data.StatusNonVolatileInflictedTarget) ||
+            Data.OnlyInflictsVolatileStatusOnTarget && target.VolatileStatusWillNotHaveEffect(Data.StatusVolatileInflictedTarget) ||
+            Data.OnlyInflictsBothStatusEffectsOnTarget &&
+            target.NonVolatileStatusWillNotHaveEffect(Data.StatusNonVolatileInflictedTarget) &&
+            target.VolatileStatusWillNotHaveEffect(Data.StatusVolatileInflictedTarget)
         )
         {
             failReason = FailReason.NoEffect;
             return false;
         }
 
-        if (data.accuracy < 0)
+        if (Data.Accuracy < 0)
             return true;
 
-        int accuracyModified = (int)(data.accuracy * attacker.stageAccuracy.GetMultiplier());
-        Debug.Log($"accuracy: {data.accuracy}, accuracyModified: {accuracyModified}");
+        int accuracyModified = (int)(Data.Accuracy * attacker.StageAccuracy.GetMultiplier());
+        Debug.Log($"accuracy: {Data.Accuracy}, accuracyModified: {accuracyModified}");
 
         if (UnityEngine.Random.Range(0, 100) < accuracyModified)
             return true;
@@ -79,16 +73,16 @@ public class Move
         return false;
     }
 
-    public int GetDamageAgainst(Pokemon attacker, Pokemon target, out bool critcal, out Effectiveness effectiveness)
+    public int GetDamageAgainst(IPokemon attacker, IPokemon target, out bool critcal, out Effectiveness effectiveness)
     {
-        critcal = UnityEngine.Random.value * 255f <= attacker.data.speed / 2f;
+        critcal = UnityEngine.Random.value * 255f <= attacker.Data.Speed / 2f;
         float criticalFactor = 1f;
         if (critcal)
             criticalFactor = 1.5f;
 
-        float stab = attacker.MatchesType(data.pokeType) ? 1.5f : 1f;
+        float stab = attacker.MatchesType(Data.PokeType) ? 1.5f : 1f;
 
-        float effectivenessFactor = data.pokeType.GetEffectiveness(target);
+        float effectivenessFactor = Data.PokeType.GetEffectiveness(target);
         if (effectivenessFactor <= 0)
             effectiveness = Effectiveness.Ineffecitve;
         else if (effectivenessFactor < 1)
@@ -98,19 +92,19 @@ public class Move
         else
             effectiveness = Effectiveness.Normal;
 
-        int targetDefense = data.category.isSpecial ? target.GetSpecialDefense(critcal) : target.GetDefense(critcal);
-        int attackerAttack = data.category.isSpecial ? attacker.GetSpecialAttack(critcal) : attacker.GetAttack(critcal);
+        int targetDefense = Data.Category.IsSpecial ? target.GetSpecialDefense(critcal) : target.GetDefense(critcal);
+        int attackerAttack = Data.Category.IsSpecial ? attacker.GetSpecialAttack(critcal) : attacker.GetAttack(critcal);
 
         int damage = (int)Mathf.Max(
             0, Mathf.Floor(
-                ((.4f * attacker.level + 2) *
-                data.power *
-                (attacker.statusEffectNonVolatile is null ? 1f : attacker.statusEffectNonVolatile.data.damageModifierRelative) *
+                ((.4f * attacker.Level + 2) *
+                Data.Power *
+                (attacker.StatusEffectNonVolatile is null ? 1f : attacker.StatusEffectNonVolatile.Data.DamageModifierRelative) *
                 attackerAttack /
                 targetDefense / 50f + 2f) *
                 criticalFactor * stab * effectivenessFactor)
         );
-        Debug.Log($"level: {attacker.level}, power: {data.power}, attack: {attackerAttack}," +
+        Debug.Log($"level: {attacker.Level}, power: {Data.Power}, attack: {attackerAttack}," +
             $"defense: {targetDefense}, critical: {criticalFactor}, stab: {stab}, effectiveness: {effectivenessFactor}, total: {damage}");
 
         if (damage < 1)
@@ -119,14 +113,14 @@ public class Move
         return damage;
     }
 
-    public bool IsFaster(Move other)
+    public bool IsFaster(IMove other)
     {
-        Debug.Log($"Faster? {pokemon}: {pokemon.speed} vs. {other.pokemon}: {other.pokemon.speed}");
-        if (pokemon.speed != other.pokemon.speed)
-            return pokemon.speed > other.pokemon.speed;
+        Debug.Log($"Faster? {pokemon}: {pokemon.Speed} vs. {other.pokemon}: {other.pokemon.Speed}");
+        if (pokemon.Speed != other.pokemon.Speed)
+            return pokemon.Speed > other.pokemon.Speed;
         return UnityEngine.Random.value > .5f;
     }
 
-    public void DecrementPP() => pp = data.maxPP > 0 ? Math.Max(0, pp - 1) : pp;
-    public void ReplenishPP() => pp = data.maxPP;
+    public void DecrementPP() => Pp = Data.MaxPP > 0 ? Math.Max(0, Pp - 1) : Pp;
+    public void ReplenishPP() => Pp = Data.MaxPP;
 }

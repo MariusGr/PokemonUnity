@@ -5,7 +5,7 @@ using UnityEngine;
 using SimpleJSON;
 
 [Serializable]
-public class Pokemon
+public class Pokemon : IPokemon
 {
     // TODO Wrapper class specifically for in-battle useage with stat modifiers, volatile status effects and waiting status effects
 
@@ -42,133 +42,103 @@ public class Pokemon
         266f / 100f,
         300f / 100f,
     };
-    
-    public class StageMultiplier
-    {
-        private float[] multipliers;
-        protected int index;
-        public int stage
-        {
-            get => IndexToStage(index);
-            set => index = StageToIndex(value);
-        }
-        protected float multiplier => multipliers[index];
 
-        public StageMultiplier(float[] multipliers)
-        {
-            index = 6;
-            this.multipliers = multipliers;
-        }
+    [field: SerializeField] public IPokemonData Data { get; private set; }
+    [field: SerializeField] public ICharacterData Character { get; private set; }
+    [field: SerializeField] public int Id { get; private set; }
+    [field: SerializeField] public string Nickname { get; private set; } = null;
 
-        public float GetMultiplier() => multiplier;
-        public virtual float GetMultiplier(bool criticalHit) => multiplier;
-        private int StageToIndex(int stage) => Math.Max(0, Math.Min(multipliers.Length, stage + 6));
-        private int IndexToStage(int index) => index - 6;
-        protected float GetMultiplier(int stage) => multipliers[StageToIndex(stage)];
-        //public float GetMultiplier(int substractStage = 0) => multipliers[Math.Max(0, Math.Min(multipliers.Length, stage + substractStage + 6))];
-    }
+    [field: SerializeField] public DateTime MetDate { get; set; }
+    [field: SerializeField] public string MetMap { get; set; } = "Entonhausen";
+    [field: SerializeField] public string MetLevel { get; set; }
 
-    public class StageMultiplierOffensive : StageMultiplier
-    {
-        public StageMultiplierOffensive(float[] multipliers) : base(multipliers) { }
-        public override float GetMultiplier(bool criticalHit) => criticalHit ? GetMultiplier(Math.Max(0, stage)) : multiplier;
-    }
-
-    public class StageMultiplierDefensive : StageMultiplier
-    {
-        public StageMultiplierDefensive(float[] multipliers) : base(multipliers) { }
-        public override float GetMultiplier(bool criticalHit) => criticalHit ? GetMultiplier(Math.Min(0, stage)) : multiplier;
-    }
-
-    public PokemonData data;
-    public CharacterData character { get; private set; }
-    public int id;
-    public string nickname = null;
-
-    public DateTime metDate;
-    public string metMap = "Entonhausen";
-    public string metLevel;
-
-    public int level;
-    public int GetAttack(bool criticalHit) => (int)(attackUnmodified * stageAttack.GetMultiplier(criticalHit));
-    public int GetSpecialAttack(bool criticalHit) => (int)(specialAttackUnmodified * stageSpecialAttack.GetMultiplier(criticalHit));
-    public int GetDefense(bool criticalHit) => (int)(defenseUnmodified * stageDefense.GetMultiplier(criticalHit));
-    public int GetSpecialDefense(bool criticalHit) => (int)(specialDefenseUnmodified * stageSpecialDefense.GetMultiplier(criticalHit));
+    [field: SerializeField] public int Level { get; private set; }
+    public int GetAttack(bool criticalHit) => (int)(AttackUnmodified * stageAttack.GetMultiplier(criticalHit));
+    public int GetSpecialAttack(bool criticalHit) => (int)(SpecialAttackUnmodified * stageSpecialAttack.GetMultiplier(criticalHit));
+    public int GetDefense(bool criticalHit) => (int)(DefenseUnmodified * stageDefense.GetMultiplier(criticalHit));
+    public int GetSpecialDefense(bool criticalHit) => (int)(SpecialDefenseUnmodified * stageSpecialDefense.GetMultiplier(criticalHit));
     // TODO same for volatile status
-    public int speed
-        => (int)(speedUnmodified * stageSpeed.GetMultiplier() * (statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.data.statModifierSpeedRelative));
+    public int Speed
+        => (int)(SpeedUnmodified * stageSpeed.GetMultiplier() * (StatusEffectNonVolatile is null ? 1f : StatusEffectNonVolatile.Data.StatModifierSpeedRelative));
 
-    public int attackUnmodified => BasteStatToStat(data.attack);
-    public int specialAttackUnmodified => BasteStatToStat(data.specialAttack);
-    public int defenseUnmodified => BasteStatToStat(data.defense);
-    public int specialDefenseUnmodified => BasteStatToStat(data.specialDefense);
-    public int speedUnmodified => BasteStatToStat(data.speed);
-    public int maxHp => BasteStatToStat(data.maxHp);
+    public int AttackUnmodified => BasteStatToStat(Data.Attack);
+    public int SpecialAttackUnmodified => BasteStatToStat(Data.SpecialAttack);
+    public int DefenseUnmodified => BasteStatToStat(Data.Defense);
+    public int SpecialDefenseUnmodified => BasteStatToStat(Data.SpecialDefense);
+    public int SpeedUnmodified => BasteStatToStat(Data.Speed);
+    public int MaxHp => BasteStatToStat(Data.MaxHp);
 
-    public List<Move> moves;
+    [field: SerializeField] public List<IMove> Moves { get; private set; }
     public int hp;
     public int xp;
-    public int xpNeededForNextLevel => data.GetXPForLevel(level + 1);
-    [SerializeField] private StatusEffect _statusEffectNonVolatile = null;
-    public StatusEffect statusEffectNonVolatile { get => _statusEffectNonVolatile; private set { _statusEffectNonVolatile = value; } }
-    public List<StatusEffect> statusEffectsVolatile = new List<StatusEffect>();
-    public List<WaitingStatusEffect> waitingStatusEffectsVolatile = new List<WaitingStatusEffect>();
-    public List<WaitingStatusEffect> waitingStatusEffectsNonVolatile = new List<WaitingStatusEffect>();
+    public int xpNeededForNextLevel => Data.GetXPForLevel(Level + 1);
+    [field: SerializeField] public IStatusEffect StatusEffectNonVolatile { get; private set; }
+    [field: SerializeField] public List<IStatusEffect> StatusEffectsVolatile { get; private set; } = new List<IStatusEffect>();
+    public List<IWaitingStatusEffect> waitingStatusEffectsVolatile = new List<IWaitingStatusEffect>();
+    public List<IWaitingStatusEffect> waitingStatusEffectsNonVolatile = new List<IWaitingStatusEffect>();
     public float catchRateStatusBonus
     {
         get
         {
-            float catchRateBonus = statusEffectNonVolatile is null ? 1f : statusEffectNonVolatile.data.catchRateBonus;
-            foreach (StatusEffect s in statusEffectsVolatile)
-                catchRateBonus *= s.data.catchRateBonus;
+            float catchRateBonus = StatusEffectNonVolatile is null ? 1f : StatusEffectNonVolatile.Data.CatchRateBonus;
+            foreach (IStatusEffect s in StatusEffectsVolatile)
+                catchRateBonus *= s.Data.CatchRateBonus;
             return catchRateBonus;
         }
     }
 
-    public bool isFainted => hp < 1;
-    public bool isAtFullHP => hp >= maxHp;
-    public bool hasNonVolatileStatusEffect => !(statusEffectNonVolatile is null);
-    public bool hasVolatileStatusEffects => statusEffectsVolatile.Count > 0;
-    public StageMultiplierOffensive stageAttack;
-    public StageMultiplierOffensive stageSpecialAttack;
-    public StageMultiplierDefensive stageDefense;
-    public StageMultiplierDefensive stageSpecialDefense;
-    public StageMultiplier stageSpeed;
-    public StageMultiplierOffensive stageAccuracy;
-    public StageMultiplierDefensive stageEvasion;
-    private Dictionary<Stat, StageMultiplier> statToStage;
+    public bool IsFainted => hp < 1;
+    public bool IsAtFullHP => hp >= MaxHp;
+    public bool HasNonVolatileStatusEffect => !(StatusEffectNonVolatile is null);
+    public bool HasVolatileStatusEffects => StatusEffectsVolatile.Count > 0;
+    public IPokemon.StageMultiplierOffensive stageAttack;
+    public IPokemon.StageMultiplierOffensive stageSpecialAttack;
+    public IPokemon.StageMultiplierDefensive stageDefense;
+    public IPokemon.StageMultiplierDefensive stageSpecialDefense;
+    public IPokemon.StageMultiplier stageSpeed;
+    public IPokemon.StageMultiplierOffensive stageAccuracy;
+    public IPokemon.StageMultiplierDefensive stageEvasion;
+    private Dictionary<Stat, IPokemon.StageMultiplier> statToStage;
 
-    public float hpNormalized => (float)hp / maxHp;
-    public float xpNormalized
+    public IPokemon.StageMultiplierOffensive StageAttack => stageAttack;
+    public IPokemon.StageMultiplierOffensive StageSpecialAttack => stageSpecialAttack;
+    public IPokemon.StageMultiplierDefensive StageDefense => stageDefense;
+    public IPokemon.StageMultiplierDefensive StageSpecialDefense => stageSpecialDefense;
+    public IPokemon.StageMultiplier StageSpeed => stageSpeed;
+    public IPokemon.StageMultiplierOffensive StageAccuracy => stageAccuracy;
+    public IPokemon.StageMultiplierDefensive StageEvasion => stageEvasion;
+
+    public float HpNormalized => (float)hp / MaxHp;
+    public float XpNormalized
     {
         get
         {
-            int xpMilestoneCurrent = data.GetXPForLevel(level);
+            int xpMilestoneCurrent = Data.GetXPForLevel(Level);
             Debug.Log($"current {xpMilestoneCurrent} next {xpNeededForNextLevel}, xp {xp} norm {(xp - xpMilestoneCurrent) / (xpNeededForNextLevel - xpMilestoneCurrent)}");
 
             return Math.Min(1f, (xp - xpMilestoneCurrent) / (float)(xpNeededForNextLevel - xpMilestoneCurrent));
         }
     }
 
-    public string Name => nickname is null || nickname.Length < 1 ? SpeciesName : nickname;
-    public string SpeciesName => data.fullName.ToUpper();
+    public string Name => Nickname is null || Nickname.Length < 1 ? SpeciesName : Nickname;
+    public string SpeciesName => Data.FullName.ToUpper();
     public Gender gender;
 
-    private int BasteStatToStat(int baseStat) => baseStat + baseStat * level / 50;
+    private int BasteStatToStat(int baseStat) => baseStat + baseStat * Level / 50;
 
     public JSONNode ToJSON()
     {
         JSONNode json = new JSONObject();
-        json.Add("data", data.Id);
-        json.Add("metDate", metDate.ToString());
-        json.Add("metMap", metMap);
-        json.Add("metLevel", metLevel);
-        json.Add("level", level);
+        json.Add("data", Data.Id);
+        json.Add("metDate", MetDate.ToString());
+        json.Add("metMap", MetMap);
+        json.Add("metLevel", MetLevel);
+        json.Add("level", Level);
         json.Add("moves", MovesToJSON());
         json.Add("hp", hp);
         json.Add("xp", xp);
         json.Add("gender", gender.Id);
-        json.Add("statusEffectNonVolatile", hasNonVolatileStatusEffect ? statusEffectNonVolatile.ToJSON() : null);
+        json.Add("statusEffectNonVolatile", HasNonVolatileStatusEffect ? StatusEffectNonVolatile.ToJSON() : null);
         return json;
     }
 
@@ -176,7 +146,7 @@ public class Pokemon
     {
         JSONArray json = new JSONArray();
 
-        foreach (Move move in moves)
+        foreach (Move move in Moves)
             json.Add(move.ToJSON());
 
         return json;
@@ -184,7 +154,7 @@ public class Pokemon
 
     private void LoadMovesFromJSON(JSONArray json)
     {
-        moves = new List<Move>();
+        Moves = new List<IMove>();
         foreach (JSONNode moveJSON in json)
             AddMove(moveJSON);
     }
@@ -196,20 +166,21 @@ public class Pokemon
         LoadDefault();
     }
 
-    public Pokemon(PokemonData pokemonData, int level, CharacterData character)
+    public Pokemon(IPokemonData data, int level, ICharacterData character) : this((PokemonData)data, level, (CharacterData)character) { }
+    public Pokemon(PokemonData data, int level, CharacterData character)
     {
-        this.data = pokemonData;
-        this.level = level;
+        Data = data;
+        this.Level = level;
         Initialize(character);
     }
 
     public Pokemon(JSONNode json, CharacterData character)
     {
-        data = (PokemonData)BaseScriptableObject.Get(json["data"]);
-        level = json["level"];
-        metDate = DateTime.Parse(json["metDate"]);
-        metLevel = json["metLevel"];
-        metMap = json["metMap"];
+        Data = (PokemonData)BaseScriptableObject.Get(json["data"]);
+        Level = json["level"];
+        MetDate = DateTime.Parse(json["metDate"]);
+        MetLevel = json["metLevel"];
+        MetMap = json["metMap"];
         LoadMovesFromJSON((JSONArray)json["moves"]);
         hp = json["hp"];
         xp = json["xp"];
@@ -222,16 +193,16 @@ public class Pokemon
 
     public void Initialize(CharacterData character)
     {
-        this.character = character;
-        stageAttack = new StageMultiplierOffensive(statStageMultipliers);
-        stageSpecialAttack = new StageMultiplierOffensive(statStageMultipliers);
-        stageDefense = new StageMultiplierDefensive(statStageMultipliers);
-        stageSpecialDefense = new StageMultiplierDefensive(statStageMultipliers);
-        stageSpeed = new StageMultiplier(statStageMultipliers);
-        stageAccuracy = new StageMultiplierOffensive(accuracyStageMultipliers);
-        stageEvasion = new StageMultiplierDefensive(accuracyStageMultipliers);
+        this.Character = character;
+        stageAttack = new IPokemon.StageMultiplierOffensive(statStageMultipliers);
+        stageSpecialAttack = new IPokemon.StageMultiplierOffensive(statStageMultipliers);
+        stageDefense = new IPokemon.StageMultiplierDefensive(statStageMultipliers);
+        stageSpecialDefense = new IPokemon.StageMultiplierDefensive(statStageMultipliers);
+        stageSpeed = new IPokemon.StageMultiplier(statStageMultipliers);
+        stageAccuracy = new IPokemon.StageMultiplierOffensive(accuracyStageMultipliers);
+        stageEvasion = new IPokemon.StageMultiplierDefensive(accuracyStageMultipliers);
 
-        statToStage = new Dictionary<Stat, StageMultiplier>()
+        statToStage = new Dictionary<Stat, IPokemon.StageMultiplier>()
         {
             { Stat.Attack, stageAttack },
             { Stat.SpecialAttack, stageSpecialAttack },
@@ -242,59 +213,58 @@ public class Pokemon
             { Stat.Evasion, stageEvasion },
         };
 
-        statusEffectsVolatile = new List<StatusEffect>();
+        StatusEffectsVolatile = new List<IStatusEffect>();
     }
 
     public void LoadDefault()
     {
-        moves = new List<Move>();
-        hp = maxHp;
+        Moves = new List<IMove>();
+        hp = MaxHp;
 
         int added = 0;
-        for (int i = data.levelToMoveDataMap.keys.Count - 1; i > -1; i--)
+        for (int i = Data.LevelToMoveDataMap.keys.Count - 1; i > -1; i--)
         {
-            int key = data.levelToMoveDataMap.keys[i];
-            if (key <= level)
+            int key = Data.LevelToMoveDataMap.keys[i];
+            if (key <= Level)
             {
-                AddMove(data.levelToMoveDataMap[key]);
+                AddMove(Data.LevelToMoveDataMap[key]);
                 added++;
                 if (added > 3)
                     break;
             }
         }
-            
 
         if (gender is null) gender = Gender.GetRandomGender();
-        xp = data.GetXPForLevel(level);
+        xp = Data.GetXPForLevel(Level);
     }
 
-    public void AddMove(JSONNode json) => moves.Add(new Move(json, moves.Count, this));
-    public void AddMove(MoveData moveData) => moves.Add(new Move(moveData, moves.Count, this));
-    public void ReplaceMove(Move move, MoveData newMove) => moves[move.index] = new Move(newMove, move.index, this);
+    public void AddMove(JSONNode json) => Moves.Add(new Move(json, Moves.Count, this));
+    public void AddMove(IMoveData moveData) => Moves.Add(new Move(moveData, Moves.Count, this));
+    public void ReplaceMove(IMove move, IMoveData newMove) => Moves[move.Index] = new Move(newMove, move.Index, this);
 
-    public void SwapMoves(Move move1, Move move2)
+    public void SwapMoves(IMove move1, IMove move2)
     {
         if (move1 == move2)
             return;
-        int newIndex1 = move2.index;
-        int newIndex2 = move1.index;
-        moves[newIndex1] = move1;
-        moves[newIndex2] = move2;
-        move1.index = newIndex1;
-        move2.index = newIndex2;
+        int newIndex1 = move2.Index;
+        int newIndex2 = move1.Index;
+        Moves[newIndex1] = move1;
+        Moves[newIndex2] = move2;
+        move1.Index = newIndex1;
+        move2.Index = newIndex2;
     }
 
     public bool HasUsableMoves()
     {
-        foreach (Move move in moves)
-            if (move.isUsable)
+        foreach (Move move in Moves)
+            if (move.IsUsable)
                 return true;
         return false;
     }
 
-    public bool MatchesType(PokemonTypeData type)
+    public bool MatchesType(IPokemonTypeData type)
     {
-        foreach (PokemonTypeData myType in data.pokemonTypes)
+        foreach (IPokemonTypeData myType in Data.PokemonTypes)
             if (myType == type)
                 return true;
         return false;
@@ -315,25 +285,25 @@ public class Pokemon
 
     public int InflictStatModifier(Stat stat, int amount)
     {
-        StageMultiplier stage = statToStage[stat];
+        IPokemon.StageMultiplier stage = statToStage[stat];
         int result = 0;
-        if (stage.stage + amount > 6)
+        if (stage.Stage + amount > 6)
             result = 1;
-        if (stage.stage + amount < -6)
+        if (stage.Stage + amount < -6)
             result = - 1;
 
-        stage.stage = Math.Min(6, Math.Max(-6, stage.stage + amount));
+        stage.Stage = Math.Min(6, Math.Max(-6, stage.Stage + amount));
         return result;
     }
 
     public void ResetStatModifiers()
     {
-        foreach (StageMultiplier stage in statToStage.Values)
-            stage.stage = 0;
+        foreach (IPokemon.StageMultiplier stage in statToStage.Values)
+            stage.Stage = 0;
     }
 
-    public void ResetWaitingVolatileStatusEffects() => waitingStatusEffectsVolatile = new List<WaitingStatusEffect>();
-    public void ResetWaitingNonVolatileStatusEffects() => waitingStatusEffectsNonVolatile = new List<WaitingStatusEffect>();
+    public void ResetWaitingVolatileStatusEffects() => waitingStatusEffectsVolatile = new List<IWaitingStatusEffect>();
+    public void ResetWaitingNonVolatileStatusEffects() => waitingStatusEffectsNonVolatile = new List<IWaitingStatusEffect>();
 
     public void ResetWaitingStatusEffects()
     {
@@ -348,45 +318,45 @@ public class Pokemon
         HealStatusAllEffects();
     }
 
-    public bool NonVolatileStatusWillNotHaveEffect(StatusEffectNonVolatileData statusEffect)
-        => hasNonVolatileStatusEffect || IsImmuneToStatusEffect(statusEffect);
-    public bool VolatileStatusWillNotHaveEffect(StatusEffectVolatileData statusEffect)
+    public bool NonVolatileStatusWillNotHaveEffect(IStatusEffectNonVolatileData statusEffect)
+        => HasNonVolatileStatusEffect || IsImmuneToStatusEffect(statusEffect);
+    public bool VolatileStatusWillNotHaveEffect(IStatusEffectVolatileData statusEffect)
         => HasStatusEffectVolatile(statusEffect) || IsImmuneToStatusEffect(statusEffect);
 
-    public bool IsImmuneToStatusEffect(StatusEffectData statusEffect)
+    public bool IsImmuneToStatusEffect(IStatusEffectData statusEffect)
     {
-        foreach (PokemonTypeData type in data.pokemonTypes)
-            if (statusEffect.immuneTypes.Contains(type))
+        foreach (PokemonTypeData type in Data.PokemonTypes)
+            if (statusEffect.ImmuneTypes.Contains(type))
                 return true;
         return false;
     }
 
-    private StatusEffect FindVolatileStatusEffect(StatusEffectData statusEffect)
+    private IStatusEffect FindVolatileStatusEffect(IStatusEffectData statusEffect)
     {
-        foreach (StatusEffect s in statusEffectsVolatile)
-            if (s.data == statusEffect)
+        foreach (IStatusEffect s in StatusEffectsVolatile)
+            if (s.Data == statusEffect)
                 return s;
         return null;
     }
 
-    public bool HasStatusEffectVolatile(StatusEffectData statusEffect)
+    public bool HasStatusEffectVolatile(IStatusEffectData statusEffect)
     {
         if (FindVolatileStatusEffect(statusEffect) is null)
             return false;
         return true;
     }
 
-    public void InflictWaitingStatusEffect(WaitingStatusEffect statusEffect)
+    public void InflictWaitingStatusEffect(IWaitingStatusEffect statusEffect)
     {
-        if (statusEffect.data.isNonVolatile)
+        if (statusEffect.Data.IsNonVolatile)
             waitingStatusEffectsNonVolatile.Add(statusEffect);
         else
             waitingStatusEffectsVolatile.Add(statusEffect);
     }
 
-    public StatusEffectData GetNextVolatileStatusEffectFromWaitingList()
+    public IStatusEffectData GetNextVolatileStatusEffectFromWaitingList()
     {
-        StatusEffectData statusEffect = GetNextStatusEffectFromWaitingList(waitingStatusEffectsVolatile);
+        IStatusEffectData statusEffect = GetNextStatusEffectFromWaitingList(waitingStatusEffectsVolatile);
 
         if (!(statusEffect is null))
             ResetWaitingVolatileStatusEffects();
@@ -394,9 +364,9 @@ public class Pokemon
         return statusEffect;
     }
 
-    public StatusEffectData GetNextNonVolatileStatusEffectFromWaitingList()
+    public IStatusEffectData GetNextNonVolatileStatusEffectFromWaitingList()
     {
-        StatusEffectData statusEffect = GetNextStatusEffectFromWaitingList(waitingStatusEffectsNonVolatile);
+        IStatusEffectData statusEffect = GetNextStatusEffectFromWaitingList(waitingStatusEffectsNonVolatile);
 
         if (!(statusEffect is null))
             ResetWaitingNonVolatileStatusEffects();
@@ -404,15 +374,15 @@ public class Pokemon
         return statusEffect;
     }
 
-    private StatusEffectData GetNextStatusEffectFromWaitingList(List<WaitingStatusEffect> waitingStatusEffects)
+    private IStatusEffectData GetNextStatusEffectFromWaitingList(List<IWaitingStatusEffect> waitingStatusEffects)
     {
-        StatusEffectData statusEffect = null;
+        IStatusEffectData statusEffect = null;
         foreach(WaitingStatusEffect effect in waitingStatusEffects)
         {
             effect.waitTimeRounds--;
             if (effect.waitTimeRounds < 1)
             {
-                statusEffect = effect.data;
+                statusEffect = effect.Data;
                 break;
             }
         }
@@ -420,53 +390,53 @@ public class Pokemon
         return statusEffect;
     }
 
-    public void InflictStatusEffect(StatusEffectData statusEffect)
+    public void InflictStatusEffect(IStatusEffectData statusEffect)
     {
-        if (statusEffect.isVolatile)
+        if (statusEffect.IsVolatile)
             InflictStatusVolatileEffect((StatusEffectVolatileData)statusEffect);
-        else if (statusEffect.isNonVolatile)
+        else if (statusEffect.IsNonVolatile)
             InflictStatusNonVolatileEffect((StatusEffectNonVolatileData)statusEffect);
     }
 
-    public void InflictStatusNonVolatileEffect(JSONNode json) => statusEffectNonVolatile = new StatusEffect(json);
-    public void InflictStatusNonVolatileEffect(StatusEffectNonVolatileData statusEffect)
-        => statusEffectNonVolatile = new StatusEffect(statusEffect);
-    public void InflictStatusVolatileEffect(StatusEffectVolatileData statusEffect)
-        => statusEffectsVolatile.Add(new StatusEffect(statusEffect));
+    public void InflictStatusNonVolatileEffect(JSONNode json) => StatusEffectNonVolatile = new StatusEffect(json);
+    public void InflictStatusNonVolatileEffect(IStatusEffectNonVolatileData statusEffect)
+        => StatusEffectNonVolatile = new StatusEffect(statusEffect);
+    public void InflictStatusVolatileEffect(IStatusEffectVolatileData statusEffect)
+        => StatusEffectsVolatile.Add(new StatusEffect(statusEffect));
 
     public void InflictDamageOverTime()
     {
-        if (statusEffectNonVolatile is null || statusEffectNonVolatile.data.damageOverTime < 1)
+        if (StatusEffectNonVolatile is null || StatusEffectNonVolatile.Data.DamageOverTime < 1)
             return;
 
         // TODO: volatile status effects
-        if (statusEffectNonVolatile.OverTimeDamageTick())
-            InflictDamage(statusEffectNonVolatile.data.damageOverTime);
+         if (StatusEffectNonVolatile.OverTimeDamageTick())
+            InflictDamage(StatusEffectNonVolatile.Data.DamageOverTime);
     }
 
-    public void HealStatusEffectNonVolatile(StatusEffectData statusEffect)
-        => statusEffectNonVolatile = statusEffectNonVolatile.data == statusEffect ? null : statusEffectNonVolatile;
+    public void HealStatusEffectNonVolatile(IStatusEffectData statusEffect)
+        => StatusEffectNonVolatile = StatusEffectNonVolatile.Data == statusEffect ? null : StatusEffectNonVolatile;
     public void HealAllStatusEffectsNonVolatile()
-        => statusEffectNonVolatile = null;
-    public void HealAllVolatileStatusEffects() => statusEffectsVolatile = new List<StatusEffect>();
+        => StatusEffectNonVolatile = null;
+    public void HealAllVolatileStatusEffects() => StatusEffectsVolatile = new List<IStatusEffect>();
 
-    public StatusEffect HealStatusEffectVolatile(StatusEffectVolatileData statusEffect)
+    public IStatusEffect HealStatusEffectVolatile(IStatusEffectVolatileData statusEffect)
     {
-        StatusEffect s = FindVolatileStatusEffect(statusEffect);
+        IStatusEffect s = FindVolatileStatusEffect(statusEffect);
         if (!(s is null))
             HealStatusEffectVolatile(s);
         return s;
     }
 
-    public void HealStatusEffectVolatile(StatusEffect statusEffect)
+    public void HealStatusEffectVolatile(IStatusEffect statusEffect)
     {
-        if (statusEffectsVolatile.Contains(statusEffect))
-            statusEffectsVolatile.Remove(statusEffect);
+        if (StatusEffectsVolatile.Contains(statusEffect))
+            StatusEffectsVolatile.Remove(statusEffect);
     }
 
     public void HealStatusAllEffects()
     {
-        statusEffectNonVolatile = null;
+        StatusEffectNonVolatile = null;
         HealAllVolatileStatusEffects();
     }
 
@@ -474,53 +444,53 @@ public class Pokemon
     {
         HealHPFully();
 
-        foreach (Move move in moves)
+        foreach (Move move in Moves)
             move.ReplenishPP();
 
         HealStatusAllEffects();
         // TODO: HEal status effects
     }
 
-    public void HealHP(int hp) => this.hp = Math.Min(maxHp, this.hp + hp);
-    public void HealHPFully() => hp = maxHp;
-    public void HealStatus(StatusEffect statusEffect)
+    public void HealHP(int hp) => this.hp = Math.Min(MaxHp, this.hp + hp);
+    public void HealHPFully() => hp = MaxHp;
+    public void HealStatus(IStatusEffect statusEffect)
     {
-        if (statusEffect.data.isVolatile)
+        if (statusEffect.Data.IsVolatile)
             HealStatusEffectVolatile(statusEffect);
-        else if (statusEffect.data.isNonVolatile)
-            HealStatusEffectNonVolatile(statusEffect.data);
+        else if (statusEffect.Data.IsNonVolatile)
+            HealStatusEffectNonVolatile(statusEffect.Data);
     }
 
     // https://bulbapedia.bulbagarden.net/wiki/Experience
     public int GetXPGainedFromFaint(bool opponentIsWild)
     {
         float a = opponentIsWild ? 1f : 1.5f;
-        return (int)((data.baseXPGain * level / 7f) * a);
+        return (int)((Data.BaseXPGain * Level / 7f) * a);
     }
 
-    public int GainXP(int xp) => IsLeveledToMax() ? this.xp = data.GetXPForLevel(100) : this.xp += xp;
+    public int GainXP(int xp) => IsLeveledToMax() ? this.xp = Data.GetXPForLevel(100) : this.xp += xp;
     public void GrowLevel()
     {
         // TODO: learn new moves
-        float hpBefore = hpNormalized;
-        level++;
-        hp = (int)Mathf.Ceil(hpBefore * maxHp);
+        float hpBefore = HpNormalized;
+        Level++;
+        hp = (int)Mathf.Ceil(hpBefore * MaxHp);
     }
 
     public bool WillGrowLevel() => xp >= xpNeededForNextLevel && !IsLeveledToMax();
-    public bool IsLeveledToMax() => level >= 100;
-    public bool WillEvolve() => data.evolutionLevel > 1 && !(data.evolution is null) && level >= data.evolutionLevel;
+    public bool IsLeveledToMax() => Level >= 100;
+    public bool WillEvolve() => Data.EvolutionLevel > 1 && !(Data.Evolution is null) && Level >= Data.EvolutionLevel;
 
-    public Pokemon GetEvolvedVersion()
+    public IPokemon GetEvolvedVersion()
     {
-        Pokemon evolved = new Pokemon(data.evolution, level, character);
+        Pokemon evolved = new Pokemon(Data.Evolution, Level, Character);
         evolved.xp = xp;
-        evolved.hp = (int)(evolved.maxHp * hpNormalized);
+        evolved.hp = (int)(evolved.MaxHp * HpNormalized);
         evolved.gender = gender;
-        evolved.nickname = nickname;
-        evolved.moves = new List<Move>();
-        foreach (Move m in moves)
-            evolved.moves.Add(m);
+        evolved.Nickname = Nickname;
+        evolved.Moves = new List<IMove>();
+        foreach (Move m in Moves)
+            evolved.Moves.Add(m);
         return evolved;
     }
 
@@ -528,8 +498,8 @@ public class Pokemon
     public float GetModifiedCatchRate(float bonus)
     {
         return Mathf.Max(
-            (3f * maxHp - 2f * hp) * data.catchRate * bonus * catchRateStatusBonus / (3f * maxHp),
-            data.catchRate / 3f);
+            (3f * MaxHp - 2f * hp) * Data.CatchRate * bonus * catchRateStatusBonus / (3f * MaxHp),
+            Data.CatchRate / 3f);
     }
 
     public override string ToString() => $"{base.ToString()} {Name} {SpeciesName}";

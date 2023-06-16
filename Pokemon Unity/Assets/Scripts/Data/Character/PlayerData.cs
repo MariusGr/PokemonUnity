@@ -35,8 +35,8 @@ public class PlayerData : CharacterData
             GiveItem(item);
     }
 
-    public HashSet<PokemonData> seenPokemons = new HashSet<PokemonData>();
-    public HashSet<PokemonData> caughtPokemons = new HashSet<PokemonData>();
+    public HashSet<IPokemonData> seenPokemons = new HashSet<IPokemonData>();
+    public HashSet<IPokemonData> caughtPokemons = new HashSet<IPokemonData>();
     public List<Pokemon> pokemonsInBox = new List<Pokemon>();
 
     public void PutPokemonToBox(Pokemon pokemon) => pokemonsInBox.Add(pokemon);
@@ -44,48 +44,47 @@ public class PlayerData : CharacterData
     public void MovePokemonFromPartyToBox(Pokemon pokemon)
     {
         pokemonsInBox.Add(pokemon);
-        pokemons.Remove(pokemon);
+        Pokemons.Remove(pokemon);
     }
 
     public void MovePokemonFromBoxToParty(Pokemon pokemon)
     {
-        pokemons.Add(pokemon);
+        Pokemons.Add(pokemon);
         pokemonsInBox.Remove(pokemon);
     }
 
     public void SwapPartyToBox(Pokemon partyPokemon, Pokemon boxPokemon)
     {
-        int partyIndex = pokemons.IndexOf(partyPokemon);
+        int partyIndex = Pokemons.IndexOf(partyPokemon);
         int boxIndex = pokemonsInBox.IndexOf(boxPokemon);
-        pokemons[partyIndex] = boxPokemon;
+        Pokemons[partyIndex] = boxPokemon;
         pokemonsInBox[boxIndex] = partyPokemon;
     }
 
-    public void AddCaughtPokemon(PokemonData pokemon)
+    public void AddCaughtPokemon(IPokemonData pokemon)
     {
         caughtPokemons.Add(pokemon);
         AddSeenPokemon(pokemon);
     }
 
-    public void AddSeenPokemon(PokemonData pokemon) => seenPokemons.Add(pokemon);
+    public void AddSeenPokemon(IPokemonData pokemon) => seenPokemons.Add((PokemonData)pokemon);
 
-    public bool HasCaughtPokemon(PokemonData pokemon) => caughtPokemons.Contains(pokemon);
+    public bool HasCaughtPokemon(IPokemonData pokemon) => caughtPokemons.Contains(pokemon);
     public bool HasSeenPokemon(PokemonData pokemon) => seenPokemons.Contains(pokemon);
 
-    public void CatchPokemon(Pokemon pokemon)
+    public void CatchPokemon(IPokemon pokemon)
     {
         GivePokemon(pokemon);
-        pokemon.metDate = DateTime.Now;
-        pokemon.metLevel = pokemon.level.ToString();
-        // TODO: Enter actual map
-        pokemon.metMap = "Dortmund";
-        AddCaughtPokemon(pokemon.data);
+        pokemon.MetDate = DateTime.Now;
+        pokemon.MetLevel = pokemon.Level.ToString();
+        pokemon.MetMap = Services.Get<IRegionManager>().currentRegion.Name;
+        AddCaughtPokemon(pokemon.Data);
     }
 
-    public override void GivePokemon(Pokemon pokemon)
+    public override void GivePokemon(IPokemon pokemon)
     {
         if (PartyIsFull())
-            pokemonsInBox.Add(pokemon);
+            pokemonsInBox.Add((Pokemon)pokemon);
         else
             base.GivePokemon(pokemon);
     }
@@ -110,9 +109,9 @@ public class PlayerData : CharacterData
 
     public void GiveItem(Item item)
     {
-        List<Item> list = items[item.data.category];
+        List<Item> list = items[item.data.Category];
         Item presentItem = list.Find(x => x.Equals(item));
-        if (item.data.stacks)
+        if (item.data.Stacks)
             if (presentItem is null)
                 list.Add(item);
             else
@@ -122,15 +121,15 @@ public class PlayerData : CharacterData
                 list.Add(item);
     }
 
-    public bool TryTakeItem(Item item)
+    public bool TryTakeItem(IItem item)
     {
-        List<Item> list = items[item.data.category];
+        List<Item> list = items[item.data.Category];
         Item presentItem = list.Find(x => x.Equals(item));
 
         if (presentItem is null)
             return false;
 
-        if (item.data.stacks)
+        if (item.data.Stacks)
             if (presentItem.Decrease())
                 return true;
 
@@ -140,9 +139,9 @@ public class PlayerData : CharacterData
 
     public int GetItemCount(ItemData itemData)
     {
-        List<Item> list = items[itemData.category];
+        List<Item> list = items[itemData.Category];
 
-        if (itemData.stacks)
+        if (itemData.Stacks)
         {
             Item presentItem = list.Find(x => x.data == itemData);
             return presentItem is null ? 0 : presentItem.Count;
@@ -153,11 +152,11 @@ public class PlayerData : CharacterData
 
     public void SwapItems(Item item1, Item item2)
     {
-        if (item1 == item2 || item1.data.category != item2.data.category)
+        if (item1 == item2 || item1.data.Category != item2.data.Category)
             return;
-        List<Item> bin = items[item1.data.category];
-        int newIndex1 = items[item1.data.category].IndexOf(item2);
-        int newIndex2 = items[item1.data.category].IndexOf(item1);
+        List<Item> bin = items[item1.data.Category];
+        int newIndex1 = items[item1.data.Category].IndexOf(item2);
+        int newIndex2 = items[item1.data.Category].IndexOf(item1);
         bin[newIndex1] = item1;
         bin[newIndex2] = item2;
     }
@@ -170,14 +169,14 @@ public class PlayerData : CharacterData
 
     private void InitCaughtPokemonFromPokemons()
     {
-        foreach (Pokemon p in pokemons)
-            AddCaughtPokemon(p.data);
+        foreach (Pokemon p in Pokemons)
+            AddCaughtPokemon(p.Data);
     }
 
     private void InitCaughtPokemonsFromBox()
     {
         foreach (Pokemon p in pokemonsInBox)
-            AddCaughtPokemon(p.data);
+            AddCaughtPokemon(p.Data);
     }
 
     public JSONArray ItemsToJSON()
@@ -195,7 +194,7 @@ public class PlayerData : CharacterData
     {
         JSONArray json = new JSONArray();
 
-        foreach (Pokemon pokemon in pokemons)
+        foreach (Pokemon pokemon in Pokemons)
             json.Add(pokemon.ToJSON());
 
         return json;
@@ -232,7 +231,7 @@ public class PlayerData : CharacterData
 
     public void LoadPokemonsFromJSON(JSONArray json)
     {
-        pokemons = new List<Pokemon>();
+        Pokemons = new List<IPokemon>();
         foreach (JSONNode pokemonJSON in json)
             GivePokemon(new Pokemon(pokemonJSON, this));
 

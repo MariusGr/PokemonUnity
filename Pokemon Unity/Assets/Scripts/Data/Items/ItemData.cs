@@ -3,51 +3,51 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "Item/Item")]
-public class ItemData : BaseScriptableObject
+public class ItemData : BaseScriptableObject, IItemData
 {
-    public string fullName;
-    public ItemCategory category;
-    public float price;
-    public Sprite icon;
-    public string details;
-    public string description;
-    public MoveData moveLearned;
-    public bool stacks;
-    public bool consumable;
-    public bool usableOnBattleOpponent;
-    public bool catchesPokemon;
-    public float catchRateBonus;
-    public bool revives;
-    public bool healsHPFully;
-    public int hpHealed;
-    public bool healsAllStatusEffectsNonVolatile;
-    public bool healsAllStatusEffectsVolatile;
-    public StatusEffectNonVolatileData nonVolatileStatusHealed;
-    public StatusEffectVolatileData volatileStatusHealed;
+    [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField] public ItemCategory Category { get; private set; }
+    [field: SerializeField] public float Price { get; private set; }
+    [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField] public string Details { get; private set; }
+    [field: SerializeField] public IMoveData MoveLearned { get; private set; }
+    [field: SerializeField] public bool Stacks { get; private set; }
+    [field: SerializeField] public bool Consumable { get; private set; }
+    [field: SerializeField] public bool UsableOnBattleOpponent { get; private set; }
+    [field: SerializeField] public bool CatchesPokemon { get; private set; }
+    [field: SerializeField] public float CatchRateBonus { get; private set; }
+    [field: SerializeField] public bool Revives { get; private set; }
+    [field: SerializeField] public bool HealsHPFully { get; private set; }
+    [field: SerializeField] public int HpHealed { get; private set; }
+    [field: SerializeField] public bool HealsAllStatusEffectsNonVolatile { get; private set; }
+    [field: SerializeField] public bool HealsAllStatusEffectsVolatile { get; private set; }
+    [field: SerializeField] public IStatusEffectNonVolatileData NonVolatileStatusHealed { get; private set; }
+    [field: SerializeField] public IStatusEffectVolatileData VolatileStatusHealed { get; private set; }
 
-    public bool canBeUsedOnOwnPokemon => category == ItemCategory.Medicine || category == ItemCategory.Food;
-    public string Description => moveLearned is null ? description : moveLearned.description;
-    public bool healsHP => healsHPFully || hpHealed > 0;
-    public bool healsHPOnly => !healsStatusEffectsNonVolatile && healsHP;
+    public bool CanBeUsedOnOwnPokemon => Category == ItemCategory.Medicine || Category == ItemCategory.Food;
+    [SerializeField] private string description;
+    public string Description => MoveLearned is null ? description : MoveLearned.Description;
+    public bool HealsHP => HealsHPFully || HpHealed > 0;
+    public bool HealsHPOnly => !HealsStatusEffectsNonVolatile && HealsHP;
 
-    public bool healsStatusEffectsNonVolatile => (healsAllStatusEffectsNonVolatile || !(nonVolatileStatusHealed is null));
-    public bool healsStatusEffectsNonVolatileOnly => !healsStatusEffectsVolatile && healsStatusEffectsNonVolatile && !healsHP;
-    public bool HealsStatusEffectNonVolatile(StatusEffect statusEffect)
-        => !(statusEffect is null) && (healsAllStatusEffectsNonVolatile || nonVolatileStatusHealed == statusEffect.data);
+    public bool HealsStatusEffectsNonVolatile => (HealsAllStatusEffectsNonVolatile || !(NonVolatileStatusHealed is null));
+    public bool HealsStatusEffectsNonVolatileOnly => !HealsStatusEffectsVolatile && HealsStatusEffectsNonVolatile && !HealsHP;
+    public bool HealsStatusEffectNonVolatile(IStatusEffect statusEffect)
+        => !(statusEffect is null) && (HealsAllStatusEffectsNonVolatile || NonVolatileStatusHealed == statusEffect.Data);
 
-    public bool healsStatusEffectsVolatile => (healsAllStatusEffectsVolatile || !(volatileStatusHealed is null));
-    public bool healsStatusEffectsVolatileOnly => !healsAllStatusEffectsNonVolatile && healsStatusEffectsVolatile && !healsHP;
-    public bool HealsStatusEffectVolatile(List<StatusEffect> statusEffects)
+    public bool HealsStatusEffectsVolatile => (HealsAllStatusEffectsVolatile || !(VolatileStatusHealed is null));
+    public bool HealsStatusEffectsVolatileOnly => !HealsAllStatusEffectsNonVolatile && HealsStatusEffectsVolatile && !HealsHP;
+    public bool HealsStatusEffectVolatile(List<IStatusEffect> statusEffects)
     {
-        if (healsAllStatusEffectsVolatile)
+        if (HealsAllStatusEffectsVolatile)
             return true;
 
-        foreach(StatusEffect s in statusEffects)
-            if (!(s is null) && volatileStatusHealed == s.data)
+        foreach (StatusEffect s in statusEffects)
+            if (!(s is null) && VolatileStatusHealed == s.Data)
                 return true;
 
         return false;
     }
 
-    public override string ToString() => fullName;
+    public override string ToString() => Name;
 }

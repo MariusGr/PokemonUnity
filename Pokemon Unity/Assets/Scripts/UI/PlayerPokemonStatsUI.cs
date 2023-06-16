@@ -15,12 +15,12 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
 
         hp.text = pokemon.hp.ToString();
         if (!(maxHP is null))
-            maxHP.text = pokemon.maxHp.ToString();
+            maxHP.text = pokemon.MaxHp.ToString();
     }
 
     override public IEnumerator RefreshHPAnimated(float speed)
     {
-        StartCoroutine(hpBar.SetValueAnimated(pokemon.hpNormalized, speed));
+        StartCoroutine(hpBar.SetValueAnimated(pokemon.HpNormalized, speed));
         StartCoroutine(AnimateHPTextCoroutine());
         yield return new WaitWhile(() => hpBar.IsPlayingAnimation());
     }
@@ -29,7 +29,7 @@ public class PlayerPokemonStatsUI : PokemonStatsUI
     {
         while(hpBar.IsPlayingAnimation())
         {
-            hp.text = ((int)(pokemon.maxHp * hpBar.Value)).ToString();
+            hp.text = ((int)(pokemon.MaxHp * hpBar.Value)).ToString();
             yield return new WaitForEndOfFrame();
         }
 

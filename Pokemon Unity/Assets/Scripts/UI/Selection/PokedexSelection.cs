@@ -20,7 +20,7 @@ public class PokedexSelection : ScrollSelection
 
         foreach (PokemonData pokemon in PlayerData.Instance.caughtPokemons)
         {
-            DexEntryData data = dexList[pokemon.dex - 1];
+            DexEntryData data = dexList[pokemon.Dex - 1];
             data.pokemon = pokemon;
             data.pokemon = pokemon;
             data.seen = true;
@@ -29,7 +29,7 @@ public class PokedexSelection : ScrollSelection
 
         foreach (PokemonData pokemon in PlayerData.Instance.seenPokemons)
         {
-            DexEntryData data = dexList[pokemon.dex - 1];
+            DexEntryData data = dexList[pokemon.Dex - 1];
             if (data.caught)
                 continue;
             data.pokemon = pokemon;
@@ -45,16 +45,16 @@ public class PokedexSelection : ScrollSelection
         base.SelectElement(index);
 
         DexEntryData data = ((PokedexListEntryUI)selectedElement).dexEntryData;
-        selectedName.text = data.pokemon is null ? "???" : data.pokemon.fullName;
+        selectedName.text = data.pokemon is null ? "???" : data.pokemon.FullName;
 
         description.gameObject.SetActive(data.caught);
         selectedSprite.enabled = data.seen;
         selectedType1.enabled = data.seen;
-        selectedType2.enabled = data.seen && data.pokemon.pokemonTypes.Length > 1 && !(data.pokemon.pokemonTypes[1] is null);
-        selectedSprite.sprite = data.pokemon is null ? null : data.pokemon.frontSprite;
+        selectedType2.enabled = data.seen && data.pokemon.PokemonTypes.Length > 1 && !(data.pokemon.PokemonTypes[1] is null);
+        selectedSprite.sprite = data.pokemon is null ? null : data.pokemon.FrontSprite;
 
-        selectedType1.sprite = data.caught ? data.pokemon.pokemonTypes[0].titleSprite : unknownType;
-        selectedType2.sprite = data.caught && selectedType2.enabled ? data.pokemon.pokemonTypes[1].titleSprite : unknownType;
-        description.text = data.pokemon is null ? "" : data.pokemon.description;
+        selectedType1.sprite = data.caught ? data.pokemon.PokemonTypes[0].TitleSprite : unknownType;
+        selectedType2.sprite = data.caught && selectedType2.enabled ? data.pokemon.PokemonTypes[1].TitleSprite : unknownType;
+        description.text = data.pokemon is null ? "" : data.pokemon.Description;
     }
 }

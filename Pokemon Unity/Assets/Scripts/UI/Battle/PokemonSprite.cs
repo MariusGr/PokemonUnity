@@ -18,7 +18,7 @@ public class PokemonSprite : AnimatedSprite
 
     public IEnumerator PlayInflictStatusAnimation() => PlayAnimation(inflictStatusAnimation[owner]);
     public IEnumerator PlayFaintAnimation() => PlayAnimation(faintAnimation[owner]);
-    public IEnumerator PlayMoveAnimation(Move move) => PlayAnimation(move.data.GetAnimationClip(owner));
+    public IEnumerator PlayMoveAnimation(IMove move) => PlayAnimation(move.Data.GetAnimationClip(owner));
 
     public IEnumerator PlayStatUpAnimation()
     {

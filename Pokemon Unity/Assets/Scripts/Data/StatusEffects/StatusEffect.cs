@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
 
-public class StatusEffect
+public class StatusEffect : IStatusEffect
 {
-    public StatusEffectData data;
-    public int lifeTime;
+    [field: SerializeField] public IStatusEffectData Data { get; private set; }
+    [field: SerializeField] public int LifeTime { get; set; }
     private int stepCount;
 
-    public StatusEffect(StatusEffectData data)
+    public StatusEffect(IStatusEffectData data)
     {
-        this.data = data;
-        lifeTime = Random.Range(data.lifetimeRoundsMinimum, data.lifetimeRoundsMaximum);
+        Data = data;
+        LifeTime = Random.Range(Data.LifetimeRoundsMinimum, Data.LifetimeRoundsMaximum);
         stepCount = 0;
     }
 
     public StatusEffect(JSONNode json)
     {
-        data = (StatusEffectData)BaseScriptableObject.Get(json["data"]);
-        lifeTime = json["lifeTime"];
+        Data = (StatusEffectData)BaseScriptableObject.Get(json["data"]);
+        LifeTime = json["lifeTime"];
         stepCount = json["stepCount"];
     }
 
@@ -38,8 +38,8 @@ public class StatusEffect
     public JSONNode ToJSON()
     {
         JSONNode json = new JSONObject();
-        json.Add("data", data.Id);
-        json.Add("lifeTime", lifeTime);
+        json.Add("data", Data.Id);
+        json.Add("lifeTime", LifeTime);
         json.Add("stepCount", stepCount);
         return json;
     }

@@ -75,5 +75,5 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
         Close();
     }
 
-    public void RefreshMove(Move move) => RefreshElement(move.index);
+    public void RefreshMove(Move move) => RefreshElement(move.Index);
 }

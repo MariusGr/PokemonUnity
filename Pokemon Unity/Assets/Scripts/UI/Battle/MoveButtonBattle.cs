@@ -11,7 +11,7 @@ public class MoveButtonBattle : MoveButton
     {
         move = (Move)element;
         imageCover.enabled = true;
-        imageCover.color = move.data.pokeType.color;
+        imageCover.color = move.Data.PokeType.Color;
         imageBackground.color = Color.white;
         base.AssignElement(element);
     }

@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class MoveSelectionUI : SelectionGraphWindow, IMoveSelectionUI
 {
-    public void Assign(Pokemon pokemon) => AssignElements(pokemon.moves.ToArray());
-    public void RefreshMove(Move move) => RefreshElement(move.index);
+    public void Assign(IPokemon pokemon) => AssignElements(pokemon.Moves.ToArray());
+    public void RefreshMove(IMove move) => RefreshElement(move.Index);
 }

@@ -30,29 +30,29 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
     {
         base.Refresh();
         RefreshXP();
-        pokemonImage.sprite = pokemon.data.frontSprite;
+        pokemonImage.sprite = pokemon.Data.FrontSprite;
 
-        Type1Image.sprite = pokemon.data.pokemonTypes[0].titleSprite;
-        Sprite type2Sprite = pokemon.data.GetType2Sprite();
+        Type1Image.sprite = pokemon.Data.PokemonTypes[0].TitleSprite;
+        Sprite type2Sprite = pokemon.Data.GetType2Sprite();
         Type2Image.sprite = type2Sprite;
         if (type2Sprite is null)
             Type2Image.gameObject.SetActive(false);
         else
             Type2Image.gameObject.SetActive(true);
 
-        dexNoText.text = pokemon.data.dex.ToString();
-        speciesText.text = pokemon.data.fullName.ToString().ToUpper();
-        idText.text = pokemon.id.ToString();
-        metDateText.text = pokemon.metDate.ToString();
-        metMapText.text = pokemon.metMap.ToString();
-        metLevelText.text = pokemon.metLevel.ToString();
-        statsText.text = $"{pokemon.attackUnmodified}\n{pokemon.defenseUnmodified}\n{pokemon.specialAttackUnmodified}\n{pokemon.specialDefenseUnmodified}\n{pokemon.speedUnmodified}";
+        dexNoText.text = pokemon.Data.Dex.ToString();
+        speciesText.text = pokemon.Data.FullName.ToString().ToUpper();
+        idText.text = pokemon.Id.ToString();
+        metDateText.text = pokemon.MetDate.ToString();
+        metMapText.text = pokemon.MetMap.ToString();
+        metLevelText.text = pokemon.MetLevel.ToString();
+        statsText.text = $"{pokemon.AttackUnmodified}\n{pokemon.DefenseUnmodified}\n{pokemon.SpecialAttackUnmodified}\n{pokemon.SpecialDefenseUnmodified}\n{pokemon.SpeedUnmodified}";
         moveSelection.Assign(pokemon);
         moveSelection.AssignOnSelectCallback(RefreshMoveSelection);
         CloseMoveSelection();
     }
 
-    public void RefreshMoves(Pokemon pokemon)
+    public void RefreshMoves(IPokemon pokemon)
     {
         moveSelection.Assign(pokemon);
         RefreshMoveSelection(moveSelection.selectedElement.GetPayload());
@@ -77,16 +77,16 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
         moveAccuracyText.gameObject.SetActive(true);
         movePowerText.gameObject.SetActive(true);
         moveCategoryImage.gameObject.SetActive(true);
-        moveDescriptionText.text = move.data.description;
-        moveAccuracyText.text = move.data.accuracy.ToString();
-        movePowerText.text = move.data.power.ToString();
-        moveCategoryImage.sprite = move.data.category.icon;
+        moveDescriptionText.text = move.Data.Description;
+        moveAccuracyText.text = move.Data.Accuracy.ToString();
+        movePowerText.text = move.Data.Power.ToString();
+        moveCategoryImage.sprite = move.Data.Category.Icon;
     }
 
     public override void RefreshHP()
     {
         base.RefreshHP();
-        hp.text = $"{pokemon.hp}/{pokemon.maxHp}";
+        hp.text = $"{pokemon.hp}/{pokemon.MaxHp}";
     }
 
     public override void RefreshXP()

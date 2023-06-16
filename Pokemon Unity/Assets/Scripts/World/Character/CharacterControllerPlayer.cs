@@ -15,7 +15,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     {
         InputManager.Instance.Register(this);
         pauseUI = Services.Get<IPauseUI>();
-        DebugExtensions.DebugExtension.Log(playerData.pokemons);
+        DebugExtensions.DebugExtension.Log(playerData.Pokemons);
         SignUpForPause();
     }
 

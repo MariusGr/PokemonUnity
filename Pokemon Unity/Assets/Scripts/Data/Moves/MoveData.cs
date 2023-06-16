@@ -4,79 +4,79 @@ using UnityEngine;
 using CollectionExtensions;
 
 [CreateAssetMenu(fileName = "NewMove", menuName = "Pokemon/Move")]
-public class MoveData : BaseScriptableObject
+public class MoveData : BaseScriptableObject, IMoveData
 {
-    public string fullName;
-    public string description;
-    public PokemonTypeData pokeType;
+    [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField] public string Description { get; private set; }
+    [field: SerializeField] public IPokemonTypeData PokeType { get; private set; }
 
-    public int maxPP;
-    public int power;
-    public int accuracy;
+    [field: SerializeField] public int MaxPP { get; private set; }
+    [field: SerializeField] public int Power { get; private set; }
+    [field: SerializeField] public int Accuracy { get; private set; }
 
-    public float statusNonVolatileInflictedTargetChance = 1f;
-    public StatusEffectNonVolatileData statusNonVolatileInflictedTarget;
-    public StatusEffectNonVolatileData statusNonVolatileInflictedSelf;
-    public float statusVolatileInflictedTargetChance = 1f;
-    public StatusEffectVolatileData statusVolatileInflictedTarget;
-    public StatusEffectVolatileData statusVolatileInflictedSelf;
+    [field: SerializeField] public float StatusNonVolatileInflictedTargetChance { get; private set; } = 1f;
+    [field: SerializeField] public IStatusEffectNonVolatileData StatusNonVolatileInflictedTarget { get; private set; }
+    [field: SerializeField] public IStatusEffectNonVolatileData StatusNonVolatileInflictedSelf { get; private set; }
+    [field: SerializeField] public float StatusVolatileInflictedTargetChance { get; private set; } = 1f;
+    [field: SerializeField] public IStatusEffectVolatileData StatusVolatileInflictedTarget { get; private set; }
+    [field: SerializeField] public IStatusEffectVolatileData StatusVolatileInflictedSelf { get; private set; }
 
     // TODO: bundle these with wait text that is currently defined in StatusEffectData?
-    public int roundsBeforeFirstEffectVolatile = 0;
-    public int roundsBeforeFirstEffectNonVolatile = 0;
+    [field: SerializeField] public int RoundsBeforeFirstEffectVolatile { get; private set; } = 0;
+    [field: SerializeField] public int RoundsBeforeFirstEffectNonVolatile { get; private set; } = 0;
 
-    public InspectorFriendlySerializableDictionary<Stat, int> statModifiersSelf;
-    public InspectorFriendlySerializableDictionary<Stat, int> statModifiersTarget;
-    public MoveCategory category;
+    [field: SerializeField] public InspectorFriendlySerializableDictionary<Stat, int> StatModifiersSelf { get; private set; }
+    [field: SerializeField] public InspectorFriendlySerializableDictionary<Stat, int> StatModifiersTarget { get; private set; }
+    [field: SerializeField] public IMoveCategory Category { get; private set; }
 
-    public AnimationClip animationClipPlayer;
-    public AnimationClip animationClipOpponent;
-    public AudioClip sound;
-    public bool usesCryForSound;
+    [field: SerializeField] public AnimationClip AnimationClipPlayer { get; private set; }
+    [field: SerializeField] public AnimationClip AnimationClipOpponent { get; private set; }
+    [field: SerializeField] public AudioClip Sound { get; private set; }
+    [field: SerializeField] public bool UsesCryForSound { get; private set; }
 
-    public bool hasSpecialUsageText;
-    public string specialUsageText;
+    [field: SerializeField] public bool HasSpecialUsageText { get; private set; }
+    [field: SerializeField] public string SpecialUsageText { get; private set; }
 
-    public float recoil = 0;
+    [field: SerializeField] public float Recoil { get; private set; } = 0;
 
-    public bool doesNotInflictDamage => power < 1;
-    public bool doesNotInflictRecoil => recoil < 1;
+    public bool DoesNotInflictDamage => Power < 1;
+    public bool DoesNotInflictRecoil => Recoil < 1;
 
-    public bool doesNotModifyStats
-        => statModifiersTarget.Count < 1 &&
-        statModifiersSelf.Count < 1;
+    public bool DoesNotModifyStats
+        => StatModifiersTarget.Count < 1 &&
+        StatModifiersSelf.Count < 1;
 
-    public bool onlyInflictsNonVolatileStatusEffectOnTarget
-        => doesNotInflictDamage &&
-        !(statusNonVolatileInflictedTarget is null) &&
-        statusVolatileInflictedTarget is null &&
-        statusNonVolatileInflictedSelf is null &&
-        statusVolatileInflictedSelf is null &&
-        doesNotInflictRecoil &&
-        doesNotModifyStats;
+    public bool OnlyInflictsNonVolatileStatusEffectOnTarget
+        => DoesNotInflictDamage &&
+        !(StatusNonVolatileInflictedTarget is null) &&
+        StatusVolatileInflictedTarget is null &&
+        StatusNonVolatileInflictedSelf is null &&
+        StatusVolatileInflictedSelf is null &&
+        DoesNotInflictRecoil &&
+        DoesNotModifyStats;
 
-    public bool onlyInflictsVolatileStatusOnTarget
-        => doesNotInflictDamage &&
-        !(statusVolatileInflictedTarget is null) &&
-        statusNonVolatileInflictedTarget is null &&
-        statusNonVolatileInflictedSelf is null &&
-        statusVolatileInflictedSelf is null &&
-        doesNotInflictRecoil &&
-        doesNotModifyStats;
+    public bool OnlyInflictsVolatileStatusOnTarget
+        => DoesNotInflictDamage &&
+        !(StatusVolatileInflictedTarget is null) &&
+        StatusNonVolatileInflictedTarget is null &&
+        StatusNonVolatileInflictedSelf is null &&
+        StatusVolatileInflictedSelf is null &&
+        DoesNotInflictRecoil &&
+        DoesNotModifyStats;
 
-    public bool onlyInflictsBothStatusEffectsOnTarget
-        => doesNotInflictDamage &&
-        !(statusVolatileInflictedTarget is null) &&
-        !(statusNonVolatileInflictedTarget is null) &&
-        statusNonVolatileInflictedSelf is null &&
-        statusVolatileInflictedSelf is null &&
-        doesNotInflictRecoil &&
-        doesNotModifyStats;
+    public bool OnlyInflictsBothStatusEffectsOnTarget
+        => DoesNotInflictDamage &&
+        !(StatusVolatileInflictedTarget is null) &&
+        !(StatusNonVolatileInflictedTarget is null) &&
+        StatusNonVolatileInflictedSelf is null &&
+        StatusVolatileInflictedSelf is null &&
+        DoesNotInflictRecoil &&
+        DoesNotModifyStats;
 
     public AnimationClip GetAnimationClip(int character)
     {
         if (character == Constants.PlayerIndex)
-            return animationClipPlayer;
-        return animationClipOpponent;
+            return AnimationClipPlayer;
+        return AnimationClipOpponent;
     }
 }

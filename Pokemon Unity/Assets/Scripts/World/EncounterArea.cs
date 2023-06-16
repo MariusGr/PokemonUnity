@@ -21,7 +21,7 @@ public class EncounterArea : MonoBehaviour
     {
         foreach (EncounterPokemon p in pokemons)
         {
-            givenRarities.Add(p.data.encounterRarity);
+            givenRarities.Add(p.data.EncounterRarity);
         }
 
         foreach (EncounterRarity e in givenRarities)
@@ -31,7 +31,7 @@ public class EncounterArea : MonoBehaviour
         }
 
         foreach (EncounterPokemon p in pokemons)
-            rarityToPokemonMap[p.data.encounterRarity].Add(p);
+            rarityToPokemonMap[p.data.EncounterRarity].Add(p);
     }
 
     // TODO: should this be here in this class? Maybe own class!
@@ -81,7 +81,7 @@ public class EncounterArea : MonoBehaviour
         // Get all pokemon with that rarity in this area
         List<EncounterPokemon> currentPokemons = new List<EncounterPokemon>();
         foreach (EncounterPokemon p in pokemons)
-            if (p.data.encounterRarity == currentRarity)
+            if (p.data.EncounterRarity == currentRarity)
                 currentPokemons.Add(p);
 
         // Choose random pokemon with currentRarity

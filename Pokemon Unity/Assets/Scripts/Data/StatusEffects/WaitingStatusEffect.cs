@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaitingStatusEffect
+public class WaitingStatusEffect : IWaitingStatusEffect
 {
-    public StatusEffectData data;
+    public IStatusEffectData Data { get; private set; }
     public int waitTimeRounds;
 
-    public WaitingStatusEffect(StatusEffectData statusEffect, int waitTimeRounds)
+    public WaitingStatusEffect(IStatusEffectData statusEffect, int waitTimeRounds)
     {
-        data = statusEffect;
+        Data = statusEffect;
         this.waitTimeRounds = waitTimeRounds;
     }
 }

@@ -14,9 +14,9 @@ public class ItemShopListEntryUI : ItemListEntryUI
 
         item = (ItemData)payload;
         speratorText.gameObject.SetActive(false);
-        detailsText.text = Money.FormatMoneyToString(item.price);
-        icon.sprite = item.icon;
-        nameText.text = item.fullName;
+        detailsText.text = Money.FormatMoneyToString(item.Price);
+        icon.sprite = item.Icon;
+        nameText.text = item.Name;
     }
 
     public override void AssignNone()

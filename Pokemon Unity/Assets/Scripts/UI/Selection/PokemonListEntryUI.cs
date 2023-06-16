@@ -13,6 +13,6 @@ public class PokemonListEntryUI : ListEntryUI
 
         pokemon = (Pokemon)payload;
         nameText.text = pokemon.Name;
-        icon.enabled = pokemon.data.icon;
+        icon.enabled = pokemon.Data.Icon;
     }
 }

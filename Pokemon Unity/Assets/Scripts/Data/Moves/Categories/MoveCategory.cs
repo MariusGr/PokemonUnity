@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewMoveCategory", menuName = "Pokemon/MoveCategory")]
-public class MoveCategory : ScriptableObject
+public class MoveCategory : ScriptableObject, IMoveCategory
 {
-    public string fullName;
-    public Sprite icon;
-    public bool isSpecial;
+    [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField] public Sprite Icon { get; private set; }
+    [field: SerializeField] public bool IsSpecial { get; private set; }
 }
