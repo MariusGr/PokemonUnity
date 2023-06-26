@@ -12,41 +12,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
   m_Name: Flegmon
   m_EditorClassIdentifier: 
-  Id: b415b2f5-902b-449f-9d15-f807946f4add
-  dex: 2
-  fullName: Flegmon
-  description: :3
-  frontSprite: {fileID: 21300000, guid: d945a363a0b237045bba217daf5ac1a7, type: 3}
-  backSprite: {fileID: 21300000, guid: 6f9b1327534f69349a1f500fd3e9882d, type: 3}
-  icons:
+  <Id>k__BackingField: ef95c962-5b40-436d-8bfd-033f75974439
+  <Dex>k__BackingField: 2
+  <SpeciesName>k__BackingField: Flegmon
+  <Description>k__BackingField: :3
+  <FrontSprite>k__BackingField: {fileID: 21300000, guid: d945a363a0b237045bba217daf5ac1a7,
+    type: 3}
+  <BackSprite>k__BackingField: {fileID: 21300000, guid: 6f9b1327534f69349a1f500fd3e9882d,
+    type: 3}
+  <Icons>k__BackingField:
   - {fileID: 21300000, guid: 2583b1083f6988e4a8c6c274e2289dd5, type: 3}
   - {fileID: 21300000, guid: 2583b1083f6988e4a8c6c274e2289dd5, type: 3}
-  pokemonTypes:
-  - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
-  - {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
-  evolutionLevel: 0
-  evolution: {fileID: 0}
-  encounterRarity: 87
-  catchRate: 190
+  <PokemonTypes>k__BackingField:
+  - _underlyingValue: {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
+  - _underlyingValue: {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
+  <EvolutionLevel>k__BackingField: 0
+  <Evolution>k__BackingField:
+    _underlyingValue: {fileID: 0}
+  <EncounterRarity>k__BackingField: 87
+  <CatchRate>k__BackingField: 190
   cries:
   - {fileID: 8300000, guid: b2aeca3a406a6f84e9c51d89f955e725, type: 3}
   faintCries:
   - {fileID: 8300000, guid: b2aeca3a406a6f84e9c51d89f955e725, type: 3}
-  maxHp: 90
-  attack: 65
-  specialAttack: 40
-  defense: 65
-  specialDefense: 40
-  speed: 15
-  baseXPGain: 99
-  levelToMoveDataMap:
+  <MaxHp>k__BackingField: 90
+  <Attack>k__BackingField: 65
+  <SpecialAttack>k__BackingField: 40
+  <Defense>k__BackingField: 65
+  <SpecialDefense>k__BackingField: 40
+  <Speed>k__BackingField: 15
+  <BaseXPGain>k__BackingField: 99
+  <LevelToMoveDataMap>k__BackingField:
     keys: 010000000300000006000000090000000c0000001d0000002b00000030000000
-    values:
-    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
-    - {fileID: 11400000, guid: 1d81aeb1a0c07ff4a8a52735d53174b6, type: 2}
-    - {fileID: 11400000, guid: e0f6aa1b44037d04cb69dccaf489263a, type: 2}
-    - {fileID: 11400000, guid: 5e1b46daf2b5f5e43b634033d88a1d5c, type: 2}
-    - {fileID: 11400000, guid: 070e6462f9fccbd4eb75b702bbdbf8a4, type: 2}
-    - {fileID: 11400000, guid: be5ebaae658e8d14a809af7fc82b5599, type: 2}
-    - {fileID: 11400000, guid: 3f22d845017af2649b27a58365a34dff, type: 2}
-    - {fileID: 11400000, guid: a2450f6cfb4e1ce40b32ea7e2c2f754e, type: 2}
+    valuesInterface:
+    - _underlyingValue: {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 1d81aeb1a0c07ff4a8a52735d53174b6,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: e0f6aa1b44037d04cb69dccaf489263a,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 5e1b46daf2b5f5e43b634033d88a1d5c,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 070e6462f9fccbd4eb75b702bbdbf8a4,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: be5ebaae658e8d14a809af7fc82b5599,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 3f22d845017af2649b27a58365a34dff,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: a2450f6cfb4e1ce40b32ea7e2c2f754e,
+        type: 2}

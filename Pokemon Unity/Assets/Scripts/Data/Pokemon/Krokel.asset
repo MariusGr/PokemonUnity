@@ -12,40 +12,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
   m_Name: Krokel
   m_EditorClassIdentifier: 
-  Id: 9ef023c3-3a56-474c-b656-1f18e0179113
-  dex: 3
-  fullName: Krokel
-  description: :3
-  frontSprite: {fileID: 21300000, guid: 694046985c9b1be41adb89f47ab64e53, type: 3}
-  backSprite: {fileID: 21300000, guid: acfe637f291f764489f163cd8aed0746, type: 3}
-  icons:
+  <Id>k__BackingField: a823725d-4300-4de5-8a1a-95a6850dd0a6
+  <Dex>k__BackingField: 3
+  <SpeciesName>k__BackingField: Krokel
+  <Description>k__BackingField: :3
+  <FrontSprite>k__BackingField: {fileID: 21300000, guid: 694046985c9b1be41adb89f47ab64e53,
+    type: 3}
+  <BackSprite>k__BackingField: {fileID: 21300000, guid: acfe637f291f764489f163cd8aed0746,
+    type: 3}
+  <Icons>k__BackingField:
   - {fileID: 21300000, guid: 91258661d2a1a084dabf269e8f0de125, type: 3}
   - {fileID: 21300000, guid: 91258661d2a1a084dabf269e8f0de125, type: 3}
-  pokemonTypes:
-  - {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
-  evolutionLevel: 0
-  evolution: {fileID: 0}
-  encounterRarity: 87
-  catchRate: 45
+  <PokemonTypes>k__BackingField:
+  - _underlyingValue: {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
+  <EvolutionLevel>k__BackingField: 0
+  <Evolution>k__BackingField:
+    _underlyingValue: {fileID: 0}
+  <EncounterRarity>k__BackingField: 87
+  <CatchRate>k__BackingField: 45
   cries:
   - {fileID: 8300000, guid: f41bbc68fe0c5844790a39dcd38724cd, type: 3}
   faintCries:
   - {fileID: 8300000, guid: f41bbc68fe0c5844790a39dcd38724cd, type: 3}
-  maxHp: 67
-  attack: 45
-  specialAttack: 63
-  defense: 59
-  specialDefense: 40
-  speed: 36
-  baseXPGain: 62
-  levelToMoveDataMap:
+  <MaxHp>k__BackingField: 67
+  <Attack>k__BackingField: 45
+  <SpecialAttack>k__BackingField: 63
+  <Defense>k__BackingField: 59
+  <SpecialDefense>k__BackingField: 40
+  <Speed>k__BackingField: 36
+  <BaseXPGain>k__BackingField: 62
+  <LevelToMoveDataMap>k__BackingField:
     keys: 0000000001000000020000000c000000110000001c0000002000000024000000
-    values:
-    - {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65, type: 2}
-    - {fileID: 11400000, guid: 1eb72c0ee840a154696c8e0b8721a799, type: 2}
-    - {fileID: 11400000, guid: 80fbc3d056c203f418a6b19811815ae0, type: 2}
-    - {fileID: 11400000, guid: 424c6df7e04b8f5478112ff6b405b0e2, type: 2}
-    - {fileID: 11400000, guid: 5e1b46daf2b5f5e43b634033d88a1d5c, type: 2}
-    - {fileID: 11400000, guid: afd4a541c25e862428c09b4691bdd3c9, type: 2}
-    - {fileID: 11400000, guid: bc2bc6e220332194a8faa17ce3e30f43, type: 2}
-    - {fileID: 11400000, guid: b0bcf5e2cf2360843a46b6ce3788b750, type: 2}
+    valuesInterface:
+    - _underlyingValue: {fileID: 11400000, guid: 0149e59292364474d863eb9c67196b65,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 1eb72c0ee840a154696c8e0b8721a799,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 80fbc3d056c203f418a6b19811815ae0,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 424c6df7e04b8f5478112ff6b405b0e2,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: 5e1b46daf2b5f5e43b634033d88a1d5c,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: afd4a541c25e862428c09b4691bdd3c9,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: bc2bc6e220332194a8faa17ce3e30f43,
+        type: 2}
+    - _underlyingValue: {fileID: 11400000, guid: b0bcf5e2cf2360843a46b6ce3788b750,
+        type: 2}
