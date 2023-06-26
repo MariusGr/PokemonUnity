@@ -21,7 +21,7 @@ public class PokedexListEntryUI : ListEntryUI
         if (dexEntryData.pokemon is null)
             nameText.text = "-----";
         else
-            nameText.text = dexEntryData.pokemon.FullName;
+            nameText.text = dexEntryData.pokemon.SpeciesName;
 
         icon.enabled = dexEntryData.caught;
     }

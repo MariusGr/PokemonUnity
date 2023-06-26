@@ -32,7 +32,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
         RefreshXP();
         pokemonImage.sprite = pokemon.Data.FrontSprite;
 
-        Type1Image.sprite = pokemon.Data.PokemonTypes[0].TitleSprite;
+        Type1Image.sprite = pokemon.Data.PokemonTypes[0].Value.TitleSprite;
         Sprite type2Sprite = pokemon.Data.GetType2Sprite();
         Type2Image.sprite = type2Sprite;
         if (type2Sprite is null)
@@ -41,7 +41,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
             Type2Image.gameObject.SetActive(true);
 
         dexNoText.text = pokemon.Data.Dex.ToString();
-        speciesText.text = pokemon.Data.FullName.ToString().ToUpper();
+        speciesText.text = pokemon.Data.SpeciesName.ToString().ToUpper();
         idText.text = pokemon.Id.ToString();
         metDateText.text = pokemon.MetDate.ToString();
         metMapText.text = pokemon.MetMap.ToString();

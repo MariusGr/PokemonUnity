@@ -26,7 +26,7 @@ public class ScriptableObjectIdDrawer : PropertyDrawer
 
 public class BaseScriptableObject : ScriptableObject, IInstanceWithId
 {
-    [field: ScriptableObjectId]
+    [field: SerializeField]
     public string Id { get; private set; }
     private static Dictionary<string, BaseScriptableObject> instances = new Dictionary<string, BaseScriptableObject>();
     public static BaseScriptableObject Get(string id)

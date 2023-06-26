@@ -1,9 +1,10 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using AYellowpaper;
 
 namespace CollectionExtensions
 {
     [Serializable]
-    public class IntMoveDataDictionary : InspectorFriendlySerializableDictionary<int, IMoveData> { }
+    public class IntMoveDataDictionary : DictionaryWithInterfaceTypeValues<int, IMoveData, ScriptableObject> { }
 }

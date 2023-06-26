@@ -45,7 +45,7 @@ public class PokedexSelection : ScrollSelection
         base.SelectElement(index);
 
         DexEntryData data = ((PokedexListEntryUI)selectedElement).dexEntryData;
-        selectedName.text = data.pokemon is null ? "???" : data.pokemon.FullName;
+        selectedName.text = data.pokemon is null ? "???" : data.pokemon.SpeciesName;
 
         description.gameObject.SetActive(data.caught);
         selectedSprite.enabled = data.seen;
@@ -53,8 +53,8 @@ public class PokedexSelection : ScrollSelection
         selectedType2.enabled = data.seen && data.pokemon.PokemonTypes.Length > 1 && !(data.pokemon.PokemonTypes[1] is null);
         selectedSprite.sprite = data.pokemon is null ? null : data.pokemon.FrontSprite;
 
-        selectedType1.sprite = data.caught ? data.pokemon.PokemonTypes[0].TitleSprite : unknownType;
-        selectedType2.sprite = data.caught && selectedType2.enabled ? data.pokemon.PokemonTypes[1].TitleSprite : unknownType;
+        selectedType1.sprite = data.caught ? data.pokemon.PokemonTypes[0].Value.TitleSprite : unknownType;
+        selectedType2.sprite = data.caught && selectedType2.enabled ? data.pokemon.PokemonTypes[1].Value.TitleSprite : unknownType;
         description.text = data.pokemon is null ? "" : data.pokemon.Description;
     }
 }

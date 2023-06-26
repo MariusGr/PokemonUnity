@@ -121,7 +121,7 @@ public class Pokemon : IPokemon
     }
 
     public string Name => Nickname is null || Nickname.Length < 1 ? SpeciesName : Nickname;
-    public string SpeciesName => Data.FullName.ToUpper();
+    public string SpeciesName => Data.SpeciesName.ToUpper();
     public Gender gender;
 
     private int BasteStatToStat(int baseStat) => baseStat + baseStat * Level / 50;
@@ -483,7 +483,7 @@ public class Pokemon : IPokemon
 
     public IPokemon GetEvolvedVersion()
     {
-        Pokemon evolved = new Pokemon(Data.Evolution, Level, Character);
+        Pokemon evolved = new Pokemon(Data.Evolution.Value, Level, Character);
         evolved.xp = xp;
         evolved.hp = (int)(evolved.MaxHp * HpNormalized);
         evolved.gender = gender;

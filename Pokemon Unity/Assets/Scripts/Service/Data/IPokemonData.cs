@@ -1,21 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper;
 
 public interface IPokemonData
 {
     public string Name { get; }
     public string Id { get; }
     public int Dex { get; }
-    public string FullName { get; }
+    public string SpeciesName { get; }
     public string Description { get; }
     public Sprite FrontSprite { get; }
     public Sprite BackSprite { get; }
     public Sprite[] Icons { get; }
     public Sprite Icon { get; }
-    public IPokemonTypeData[] PokemonTypes { get; }
+    public InterfaceReference<IPokemonTypeData, ScriptableObject>[] PokemonTypes { get; }
     public int EvolutionLevel { get; }
-    public IPokemonData Evolution { get; }
+    public InterfaceReference<IPokemonData, ScriptableObject> Evolution { get; }
     public EncounterRarity EncounterRarity { get; }
     public int CatchRate { get; }
     public AudioClip Cry { get; }

@@ -23,6 +23,6 @@ public class EvolutionUI : UIView, IEvolutionUI
         yield return dialogBox.DrawText("Was?", DialogBoxContinueMode.User);
         yield return dialogBox.DrawText($"{before.Name} entwicklet sich!", DialogBoxContinueMode.User);
         pokemonImage.sprite = before.Data.FrontSprite;
-        yield return dialogBox.DrawText($"{before.Name} hat sich zu {after.Data.FullName} entwickelt!", DialogBoxContinueMode.User);
+        yield return dialogBox.DrawText($"{before.Name} hat sich zu {after.Data.SpeciesName} entwickelt!", DialogBoxContinueMode.User);
     }
 }
