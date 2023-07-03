@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper;
 
 public abstract class StatusEffectData : BaseScriptableObject, IStatusEffectData
 {
@@ -26,7 +27,7 @@ public abstract class StatusEffectData : BaseScriptableObject, IStatusEffectData
     [field: SerializeField] public float StatModifierSpeedRelative { get; private set; } = 1f;
     [field: SerializeField] public float DamageModifierRelative { get; private set; } = 1f;
     [field: SerializeField] public float CatchRateBonus { get; private set; } = 1f;
-    [field: SerializeField] public List<IPokemonTypeData> ImmuneTypes { get; private set; }
+    [field: SerializeField, RequireInterface(typeof(IPokemonTypeData))] public List<ScriptableObject> ImmuneTypes { get; private set; }
 
     public bool IsVolatile => GetType() == typeof(StatusEffectVolatileData);
     public bool IsNonVolatile => GetType() == typeof(StatusEffectNonVolatileData);

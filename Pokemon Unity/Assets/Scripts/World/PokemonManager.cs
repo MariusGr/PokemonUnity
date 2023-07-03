@@ -164,7 +164,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                 if (item.data.HealsAllStatusEffectsNonVolatile)
                     pokemon.HealAllStatusEffectsNonVolatile();
                 else
-                    pokemon.HealStatusEffectNonVolatile(item.data.NonVolatileStatusHealed);
+                    pokemon.HealStatusEffectNonVolatile(item.data.NonVolatileStatusHealed.Value);
                 yield return dialogBox.DrawText(
                     TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, text, pokemon.Name), closeAfterFinish: true);
             }
@@ -180,7 +180,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
                 pokemon.HealAllVolatileStatusEffects();
             }
             else
-                healedStatus = new IStatusEffect[] { pokemon.HealStatusEffectVolatile(item.data.VolatileStatusHealed) };
+                healedStatus = new IStatusEffect[] { pokemon.HealStatusEffectVolatile(item.data.VolatileStatusHealed.Value) };
 
             foreach (StatusEffect s in healedStatus)
             {

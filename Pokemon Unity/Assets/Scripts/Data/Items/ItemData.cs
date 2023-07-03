@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper;
 
 [CreateAssetMenu(fileName = "NewItem", menuName = "Item/Item")]
 public class ItemData : BaseScriptableObject, IItemData
@@ -10,7 +11,7 @@ public class ItemData : BaseScriptableObject, IItemData
     [field: SerializeField] public float Price { get; private set; }
     [field: SerializeField] public Sprite Icon { get; private set; }
     [field: SerializeField] public string Details { get; private set; }
-    [field: SerializeField] public IMoveData MoveLearned { get; private set; }
+    [field: SerializeField] public InterfaceReference<IMoveData, ScriptableObject> MoveLearned { get; private set; }
     [field: SerializeField] public bool Stacks { get; private set; }
     [field: SerializeField] public bool Consumable { get; private set; }
     [field: SerializeField] public bool UsableOnBattleOpponent { get; private set; }
@@ -21,12 +22,12 @@ public class ItemData : BaseScriptableObject, IItemData
     [field: SerializeField] public int HpHealed { get; private set; }
     [field: SerializeField] public bool HealsAllStatusEffectsNonVolatile { get; private set; }
     [field: SerializeField] public bool HealsAllStatusEffectsVolatile { get; private set; }
-    [field: SerializeField] public IStatusEffectNonVolatileData NonVolatileStatusHealed { get; private set; }
-    [field: SerializeField] public IStatusEffectVolatileData VolatileStatusHealed { get; private set; }
+    [field: SerializeField] public InterfaceReference<IStatusEffectNonVolatileData, ScriptableObject> NonVolatileStatusHealed { get; private set; }
+    [field: SerializeField] public InterfaceReference<IStatusEffectVolatileData, ScriptableObject> VolatileStatusHealed { get; private set; }
 
     public bool CanBeUsedOnOwnPokemon => Category == ItemCategory.Medicine || Category == ItemCategory.Food;
     [SerializeField] private string description;
-    public string Description => MoveLearned is null ? description : MoveLearned.Description;
+    public string Description => MoveLearned is null ? description : MoveLearned.Value.Description;
     public bool HealsHP => HealsHPFully || HpHealed > 0;
     public bool HealsHPOnly => !HealsStatusEffectsNonVolatile && HealsHP;
 

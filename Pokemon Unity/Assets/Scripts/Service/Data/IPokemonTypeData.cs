@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IPokemonTypeData
 {
-    public string FullName { get; }
+    public string Name { get; }
     public Sprite TitleSprite { get; }
     public Color Color { get; }
 

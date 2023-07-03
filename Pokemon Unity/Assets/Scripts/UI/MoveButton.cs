@@ -26,7 +26,7 @@ public class MoveButton : SelectableImage
         this.move = move;
         imageType.enabled = true;
         textName.text = move.Data.Name;
-        imageType.sprite = move.Data.PokeType.TitleSprite;
+        imageType.sprite = move.Data.PokeType.Value.TitleSprite;
 
         Refresh();
         base.AssignElement(element);

@@ -27,7 +27,7 @@ public interface IStatusEffectData
     public float StatModifierSpeedRelative { get; }
     public float DamageModifierRelative { get; }
     public float CatchRateBonus { get; }
-    public List<IPokemonTypeData> ImmuneTypes { get; }
+    public List<ScriptableObject> ImmuneTypes { get; }
 
     public bool IsVolatile { get; }
     public bool IsNonVolatile { get; }

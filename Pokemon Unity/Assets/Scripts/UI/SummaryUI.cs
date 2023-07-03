@@ -80,7 +80,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
         moveDescriptionText.text = move.Data.Description;
         moveAccuracyText.text = move.Data.Accuracy.ToString();
         movePowerText.text = move.Data.Power.ToString();
-        moveCategoryImage.sprite = move.Data.Category.Icon;
+        moveCategoryImage.sprite = move.Data.Category.Value.Icon;
     }
 
     public override void RefreshHP()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper;
 
 public interface IItemData : IInstanceWithId
 {
@@ -9,7 +10,7 @@ public interface IItemData : IInstanceWithId
     Sprite Icon { get; }
     string Details { get; }
     string Description { get; }
-    IMoveData MoveLearned { get; }
+    InterfaceReference<IMoveData, ScriptableObject> MoveLearned { get; }
     bool Stacks { get; }
     bool Consumable { get; }
     bool UsableOnBattleOpponent { get; }
@@ -20,8 +21,8 @@ public interface IItemData : IInstanceWithId
     int HpHealed { get; }
     bool HealsAllStatusEffectsNonVolatile { get; }
     bool HealsAllStatusEffectsVolatile { get; }
-    IStatusEffectNonVolatileData NonVolatileStatusHealed { get; }
-    IStatusEffectVolatileData VolatileStatusHealed { get; }
+    InterfaceReference<IStatusEffectNonVolatileData, ScriptableObject> NonVolatileStatusHealed { get; }
+    InterfaceReference<IStatusEffectVolatileData, ScriptableObject> VolatileStatusHealed { get; }
     bool CanBeUsedOnOwnPokemon { get; }
     bool HealsHP { get; }
     bool HealsHPOnly { get; }

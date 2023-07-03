@@ -2,24 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CollectionExtensions;
+using AYellowpaper;
 
 [CreateAssetMenu(fileName = "NewMove", menuName = "Pokemon/Move")]
 public class MoveData : BaseScriptableObject, IMoveData
 {
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
-    [field: SerializeField] public IPokemonTypeData PokeType { get; private set; }
+    [field: SerializeField] public InterfaceReference<IPokemonTypeData, ScriptableObject> PokeType { get; private set; }
 
     [field: SerializeField] public int MaxPP { get; private set; }
     [field: SerializeField] public int Power { get; private set; }
     [field: SerializeField] public int Accuracy { get; private set; }
 
     [field: SerializeField] public float StatusNonVolatileInflictedTargetChance { get; private set; } = 1f;
-    [field: SerializeField] public IStatusEffectNonVolatileData StatusNonVolatileInflictedTarget { get; private set; }
-    [field: SerializeField] public IStatusEffectNonVolatileData StatusNonVolatileInflictedSelf { get; private set; }
+    [field: SerializeField] public InterfaceReference<IStatusEffectNonVolatileData, ScriptableObject> StatusNonVolatileInflictedTarget { get; private set; }
+    [field: SerializeField] public InterfaceReference<IStatusEffectNonVolatileData, ScriptableObject> StatusNonVolatileInflictedSelf { get; private set; }
     [field: SerializeField] public float StatusVolatileInflictedTargetChance { get; private set; } = 1f;
-    [field: SerializeField] public IStatusEffectVolatileData StatusVolatileInflictedTarget { get; private set; }
-    [field: SerializeField] public IStatusEffectVolatileData StatusVolatileInflictedSelf { get; private set; }
+    [field: SerializeField] public InterfaceReference<IStatusEffectVolatileData, ScriptableObject> StatusVolatileInflictedTarget { get; private set; }
+    [field: SerializeField] public InterfaceReference<IStatusEffectVolatileData, ScriptableObject> StatusVolatileInflictedSelf { get; private set; }
 
     // TODO: bundle these with wait text that is currently defined in StatusEffectData?
     [field: SerializeField] public int RoundsBeforeFirstEffectVolatile { get; private set; } = 0;
@@ -27,7 +28,7 @@ public class MoveData : BaseScriptableObject, IMoveData
 
     [field: SerializeField] public InspectorFriendlySerializableDictionary<Stat, int> StatModifiersSelf { get; private set; }
     [field: SerializeField] public InspectorFriendlySerializableDictionary<Stat, int> StatModifiersTarget { get; private set; }
-    [field: SerializeField] public IMoveCategory Category { get; private set; }
+    [field: SerializeField] public InterfaceReference<IMoveCategory, ScriptableObject> Category { get; private set; }
 
     [field: SerializeField] public AnimationClip AnimationClipPlayer { get; private set; }
     [field: SerializeField] public AnimationClip AnimationClipOpponent { get; private set; }

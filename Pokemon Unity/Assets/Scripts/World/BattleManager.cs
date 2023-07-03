@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using CollectionExtensions;
+using AYellowpaper;
 
 public class BattleManager : ManagerWithPokemonManager, IBattleManager
 {
@@ -719,12 +720,12 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
             yield return InflictStatModifiers(target, move.Data.StatModifiersTarget);
             if (UnityEngine.Random.value <= move.Data.StatusVolatileInflictedTargetChance)
-                yield return InflictStatusEffect(target, move.Data.StatusVolatileInflictedTarget, move.Data.RoundsBeforeFirstEffectVolatile);
-            yield return InflictStatusEffect(target, move.Data.StatusNonVolatileInflictedTarget, move.Data.RoundsBeforeFirstEffectNonVolatile);
+                yield return InflictStatusEffect(target, move.Data.StatusVolatileInflictedTarget.Value, move.Data.RoundsBeforeFirstEffectVolatile);
+            yield return InflictStatusEffect(target, move.Data.StatusNonVolatileInflictedTarget.Value, move.Data.RoundsBeforeFirstEffectNonVolatile);
 
             if (UnityEngine.Random.value <= move.Data.StatusNonVolatileInflictedTargetChance)
-                yield return InflictStatusEffect(target, move.Data.StatusVolatileInflictedTarget, move.Data.RoundsBeforeFirstEffectVolatile);
-            yield return InflictStatusEffect(attacker, move.Data.StatusNonVolatileInflictedSelf, move.Data.RoundsBeforeFirstEffectNonVolatile);
+                yield return InflictStatusEffect(target, move.Data.StatusVolatileInflictedTarget.Value, move.Data.RoundsBeforeFirstEffectVolatile);
+            yield return InflictStatusEffect(attacker, move.Data.StatusNonVolatileInflictedSelf.Value, move.Data.RoundsBeforeFirstEffectNonVolatile);
             yield return InflictStatModifiers(attacker, move.Data.StatModifiersSelf);
         }
         else

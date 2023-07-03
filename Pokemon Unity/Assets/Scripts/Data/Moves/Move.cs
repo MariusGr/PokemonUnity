@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using SimpleJSON;
+using AYellowpaper;
 
 [Serializable]
 public class Move : IMove
@@ -49,11 +50,11 @@ public class Move : IMove
         failReason = FailReason.None;
 
         if (
-            Data.OnlyInflictsNonVolatileStatusEffectOnTarget && target.NonVolatileStatusWillNotHaveEffect(Data.StatusNonVolatileInflictedTarget) ||
-            Data.OnlyInflictsVolatileStatusOnTarget && target.VolatileStatusWillNotHaveEffect(Data.StatusVolatileInflictedTarget) ||
+            Data.OnlyInflictsNonVolatileStatusEffectOnTarget && target.NonVolatileStatusWillNotHaveEffect(Data.StatusNonVolatileInflictedTarget.Value) ||
+            Data.OnlyInflictsVolatileStatusOnTarget && target.VolatileStatusWillNotHaveEffect(Data.StatusVolatileInflictedTarget.Value) ||
             Data.OnlyInflictsBothStatusEffectsOnTarget &&
-            target.NonVolatileStatusWillNotHaveEffect(Data.StatusNonVolatileInflictedTarget) &&
-            target.VolatileStatusWillNotHaveEffect(Data.StatusVolatileInflictedTarget)
+            target.NonVolatileStatusWillNotHaveEffect(Data.StatusNonVolatileInflictedTarget.Value) &&
+            target.VolatileStatusWillNotHaveEffect(Data.StatusVolatileInflictedTarget.Value)
         )
         {
             failReason = FailReason.NoEffect;
@@ -80,9 +81,9 @@ public class Move : IMove
         if (critcal)
             criticalFactor = 1.5f;
 
-        float stab = attacker.MatchesType(Data.PokeType) ? 1.5f : 1f;
+        float stab = attacker.MatchesType(Data.PokeType.Value) ? 1.5f : 1f;
 
-        float effectivenessFactor = Data.PokeType.GetEffectiveness(target);
+        float effectivenessFactor = Data.PokeType.Value.GetEffectiveness(target);
         if (effectivenessFactor <= 0)
             effectiveness = Effectiveness.Ineffecitve;
         else if (effectivenessFactor < 1)
@@ -92,8 +93,8 @@ public class Move : IMove
         else
             effectiveness = Effectiveness.Normal;
 
-        int targetDefense = Data.Category.IsSpecial ? target.GetSpecialDefense(critcal) : target.GetDefense(critcal);
-        int attackerAttack = Data.Category.IsSpecial ? attacker.GetSpecialAttack(critcal) : attacker.GetAttack(critcal);
+        int targetDefense = Data.Category.Value.IsSpecial ? target.GetSpecialDefense(critcal) : target.GetDefense(critcal);
+        int attackerAttack = Data.Category.Value.IsSpecial ? attacker.GetSpecialAttack(critcal) : attacker.GetAttack(critcal);
 
         int damage = (int)Mathf.Max(
             0, Mathf.Floor(
