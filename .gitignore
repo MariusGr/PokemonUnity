@@ -55,3 +55,7 @@ git-journal.fish
 # Logs
 [Ll]ogs/
 .DS_Store
+
+# Tools
+TOOLS/ScriptableObjectConverter/old
+TOOLS/ScriptableObjectConverter/done
