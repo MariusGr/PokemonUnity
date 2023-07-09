@@ -1,12 +1,11 @@
 {
-    "name": "UI",
+    "name": "Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:1beb2850256c5b14281c85efd9f23839",
-        "GUID:f4ce8ebd8163945bd90a35c39f3bfc69",
-        "GUID:ca0aaa16868f14691906c62b97dff1f7",
-        "GUID:4c5f402a5e9e10c4db091e28433c6567",
-        "GUID:7177d4bdab84142e5b099e1017f7e7bc"
+        "GUID:aaace811c02858946823daeebd688b3d",
+        "GUID:ea454296d8702b84aac5d66b1bac0e79",
+        "GUID:41001c73f33cf9b478d0d3a5fd565417",
+        "GUID:2b5c04e029d8f5145a39b70f0cfa7f1e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
