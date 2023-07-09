@@ -77,8 +77,7 @@ public class PlayerData : CharacterData
         GivePokemon(pokemon);
         pokemon.metDate = DateTime.Now;
         pokemon.metLevel = pokemon.level.ToString();
-        // TODO: Enter actual map
-        pokemon.metMap = "Dortmund";
+        pokemon.metMap = RegionManager.Instance.currentRegion.name;
         AddCaughtPokemon(pokemon.data);
     }
 
