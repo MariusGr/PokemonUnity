@@ -2,33 +2,46 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
-  m_Name: FullRestore
-  m_EditorClassIdentifier: 
-  Id: f90c1281-fa5e-4502-85d8-8b8f4c023514
-  fullName: Top-Genesung
-  category: 1
-  price: 21.99
-  icon: {fileID: 21300000, guid: 9a583bee5535da746886b6c4f23be04f, type: 3}
-  details: 
+  <CatchRateBonus>k__BackingField: 0
+  <CatchesPokemon>k__BackingField: 0
+  <Category>k__BackingField: 1
+  <Consumable>k__BackingField: 1
+  <Details>k__BackingField: ''
+  <HealsAllStatusEffectsNonVolatile>k__BackingField: 1
+  <HealsAllStatusEffectsVolatile>k__BackingField: 1
+  <HealsHPFully>k__BackingField: 1
+  <HpHealed>k__BackingField: 0
+  <Icon>k__BackingField:
+    fileID: 21300000
+    guid: 9a583bee5535da746886b6c4f23be04f
+    type: 3
+  <Id>k__BackingField: d12865c4-6db4-4717-9a97-ac5eee7f9c02
+  <MoveLearned>k__BackingField:
+    fileID: 0
+  <Name>k__BackingField: Top-Genesung
+  <NonVolatileStatusHealed>k__BackingField:
+    fileID: 0
+  <Price>k__BackingField: 21.99
+  <Revives>k__BackingField: 0
+  <Stacks>k__BackingField: 1
+  <UsableOnBattleOpponent>k__BackingField: 0
+  <VolatileStatusHealed>k__BackingField:
+    fileID: 0
   description: Stellt KP und Status wieder her.
-  moveLearned: {fileID: 0}
-  stacks: 1
-  consumable: 1
-  usableOnBattleOpponent: 0
-  catchesPokemon: 0
-  catchRateBonus: 0
-  revives: 0
-  healsHPFully: 1
-  hpHealed: 0
-  healsAllStatusEffectsNonVolatile: 1
-  healsAllStatusEffectsVolatile: 1
-  nonVolatileStatusHealed: {fileID: 0}
-  volatileStatusHealed: {fileID: 0}
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: FullRestore
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: dedbb7a70a1684c44b309d274f3d1cc3
+    type: 3

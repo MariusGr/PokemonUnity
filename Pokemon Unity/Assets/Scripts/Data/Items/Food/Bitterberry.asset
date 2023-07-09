@@ -2,34 +2,48 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
-  m_Name: Bitterberry
-  m_EditorClassIdentifier: 
-  Id: 083389ec-3df4-4845-a40a-1aedff81d00f
-  fullName: Bitterbeere
-  category: 2
-  price: 1.49
-  icon: {fileID: 21300000, guid: 572a59e698790f243bd932c3129eee5b, type: 3}
-  details: 
+  <CatchRateBonus>k__BackingField: 0
+  <CatchesPokemon>k__BackingField: 0
+  <Category>k__BackingField: 2
+  <Consumable>k__BackingField: 1
+  <Details>k__BackingField: ''
+  <HealsAllStatusEffectsNonVolatile>k__BackingField: 0
+  <HealsAllStatusEffectsVolatile>k__BackingField: 0
+  <HealsHPFully>k__BackingField: 0
+  <HpHealed>k__BackingField: 0
+  <Icon>k__BackingField:
+    fileID: 21300000
+    guid: 572a59e698790f243bd932c3129eee5b
+    type: 3
+  <Id>k__BackingField: 35080c3a-c0ff-48eb-b964-8b32840914df
+  <MoveLearned>k__BackingField:
+    fileID: 0
+  <Name>k__BackingField: Bitterbeere
+  <NonVolatileStatusHealed>k__BackingField:
+    fileID: 0
+  <Price>k__BackingField: 1.49
+  <Revives>k__BackingField: 0
+  <Stacks>k__BackingField: 1
+  <UsableOnBattleOpponent>k__BackingField: 0
+  <VolatileStatusHealed>k__BackingField:
+    fileID: 11400000
+    guid: 6666f410ef21a0849a4f6ee4e4c856eb
+    type: 2
   description: Heilt Verwirrung.
-  moveLearned: {fileID: 0}
-  stacks: 1
-  consumable: 1
-  usableOnBattleOpponent: 0
-  catchesPokemon: 0
-  catchRateBonus: 0
-  revives: 0
-  healsHPFully: 0
-  hpHealed: 0
-  healsAllStatusEffectsNonVolatile: 0
-  healsAllStatusEffectsVolatile: 0
-  nonVolatileStatusHealed: {fileID: 0}
-  volatileStatusHealed: {fileID: 11400000, guid: 6666f410ef21a0849a4f6ee4e4c856eb,
-    type: 2}
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Bitterberry
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: dedbb7a70a1684c44b309d274f3d1cc3
+    type: 3

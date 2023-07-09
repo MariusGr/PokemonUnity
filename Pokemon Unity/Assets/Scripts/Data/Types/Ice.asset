@@ -2,19 +2,36 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
-  m_Name: Ice
-  m_EditorClassIdentifier: 
-  fullName: Eis
-  titleSprite: {fileID: 21300000, guid: 31d1168c3a6d30e418755aaa196c9609, type: 3}
-  color: {r: 0.40784314, g: 0.7294118, b: 0.6745098, a: 1}
-  effectiveness:
-    keys: []
+  <Color>k__BackingField:
+    a: 1
+    b: 0.6745098
+    g: 0.7294118
+    r: 0.40784314
+  <Name>k__BackingField: Eis
+  <TitleSprite>k__BackingField:
+    fileID: 21300000
+    guid: 31d1168c3a6d30e418755aaa196c9609
+    type: 3
+  Effectiveness:
+    keysInterface: []
     values: []
+  effectiveness:
+    keysInterface: []
+    values: []
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Ice
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: f2be8ece2d1d04626b111b6f25618260
+    type: 3

@@ -2,29 +2,50 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
-  m_Name: Ground
-  m_EditorClassIdentifier: 
-  fullName: Boden
-  titleSprite: {fileID: 21300000, guid: c03eaceebcb4b6a4286cff17d3189171, type: 3}
-  color: {r: 0.65882355, g: 0.6, b: 0.35686275, a: 1}
-  effectiveness:
-    keys:
-    - {fileID: 11400000, guid: 9f7dfd2ae4f09459291d4a91b740ac47, type: 2}
-    - {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
-    - {fileID: 11400000, guid: e916bb68d0b0d40138d89a68da7939c6, type: 2}
-    - {fileID: 11400000, guid: f647a3d8033d74746ac3174598f7098b, type: 2}
-    - {fileID: 11400000, guid: f4ed3501401c744dc8828f6448c3be28, type: 2}
-    - {fileID: 11400000, guid: 403e02a791b8b400987b0fff4c05b124, type: 2}
-    - {fileID: 11400000, guid: 7c91817e997a3448f8a348682cd8c946, type: 2}
-    - {fileID: 11400000, guid: 7f77824c749ca4f51a17e03ac544b6d1, type: 2}
+  <Color>k__BackingField:
+    a: 1
+    b: 0.35686275
+    g: 0.6
+    r: 0.65882355
+  <Name>k__BackingField: Boden
+  <TitleSprite>k__BackingField:
+    fileID: 21300000
+    guid: c03eaceebcb4b6a4286cff17d3189171
+    type: 3
+  Effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 9f7dfd2ae4f09459291d4a91b740ac47
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 41dede384953f49349c71b5e108252d7
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: e916bb68d0b0d40138d89a68da7939c6
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f647a3d8033d74746ac3174598f7098b
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f4ed3501401c744dc8828f6448c3be28
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 403e02a791b8b400987b0fff4c05b124
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7c91817e997a3448f8a348682cd8c946
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7f77824c749ca4f51a17e03ac544b6d1
+        type: 2
     values:
     - 0
     - 2
@@ -34,3 +55,63 @@ MonoBehaviour:
     - 2
     - 0.5
     - 0.5
+  effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 9f7dfd2ae4f09459291d4a91b740ac47
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 41dede384953f49349c71b5e108252d7
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: e916bb68d0b0d40138d89a68da7939c6
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f647a3d8033d74746ac3174598f7098b
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f4ed3501401c744dc8828f6448c3be28
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 403e02a791b8b400987b0fff4c05b124
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7c91817e997a3448f8a348682cd8c946
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7f77824c749ca4f51a17e03ac544b6d1
+        type: 2
+    values:
+    - 0
+    - 2
+    - 2
+    - 2
+    - 2
+    - 2
+    - 0.5
+    - 0.5
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Ground
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: f2be8ece2d1d04626b111b6f25618260
+    type: 3

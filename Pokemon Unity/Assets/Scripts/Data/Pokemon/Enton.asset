@@ -2,68 +2,140 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
-  m_Name: Enton
-  m_EditorClassIdentifier: 
-  <Id>k__BackingField: 57a5f36b-865d-4325-a9b8-5c9f4d872853
-  <Dex>k__BackingField: 2
-  <SpeciesName>k__BackingField: Enton
-  <Description>k__BackingField: Hat immer Kopf aua x3
-  <FrontSprite>k__BackingField: {fileID: 21300000, guid: f5abdfc3f18024305a95efb37fceeb1a,
-    type: 3}
-  <BackSprite>k__BackingField: {fileID: 21300000, guid: e8ebe9f1c3781354799f47541bda2512,
-    type: 3}
-  <Icons>k__BackingField:
-  - {fileID: -5320860673121723558, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
-  - {fileID: -5776730608683299111, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
-  <PokemonTypes>k__BackingField:
-  - _underlyingValue: {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
-  - _underlyingValue: {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
-  <EvolutionLevel>k__BackingField: 0
-  <Evolution>k__BackingField:
-    _underlyingValue: {fileID: 0}
-  <EncounterRarity>k__BackingField: 87
-  <CatchRate>k__BackingField: 190
-  cries:
-  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
-  - {fileID: 8300000, guid: 04ea7ef6457367c4499c6a1aa8b2f854, type: 3}
-  - {fileID: 8300000, guid: 690c309537a4378468c57ac487e50d09, type: 3}
-  - {fileID: 8300000, guid: 39ed759d318a624478b5e9ebe52d308e, type: 3}
-  - {fileID: 8300000, guid: 65888572b276e4d49ac86dec140054bd, type: 3}
-  - {fileID: 8300000, guid: 895c0c9efc79d574da525ddf57c04fad, type: 3}
-  - {fileID: 8300000, guid: c70162ba6ba2c2b4596a57f8074f1003, type: 3}
-  - {fileID: 8300000, guid: 000cbe0b3b6c2de41bd264be98307c21, type: 3}
-  - {fileID: 8300000, guid: b266a58f590ee494595b40dd76d1b2a2, type: 3}
-  - {fileID: 8300000, guid: 9f3fd943e2b2f9446be122d81a0acd92, type: 3}
-  faintCries:
-  - {fileID: 8300000, guid: e6d0420bd812c2e4e88104a1b2ae4471, type: 3}
-  - {fileID: 8300000, guid: 04ea7ef6457367c4499c6a1aa8b2f854, type: 3}
-  - {fileID: 8300000, guid: 65888572b276e4d49ac86dec140054bd, type: 3}
-  - {fileID: 8300000, guid: 000cbe0b3b6c2de41bd264be98307c21, type: 3}
-  - {fileID: 8300000, guid: b266a58f590ee494595b40dd76d1b2a2, type: 3}
-  - {fileID: 8300000, guid: 9f3fd943e2b2f9446be122d81a0acd92, type: 3}
-  <MaxHp>k__BackingField: 50
   <Attack>k__BackingField: 52
-  <SpecialAttack>k__BackingField: 65
-  <Defense>k__BackingField: 50
-  <SpecialDefense>k__BackingField: 50
-  <Speed>k__BackingField: 55
+  <BackSprite>k__BackingField:
+    fileID: 21300000
+    guid: e8ebe9f1c3781354799f47541bda2512
+    type: 3
   <BaseXPGain>k__BackingField: 64
+  <CatchRate>k__BackingField: 190
+  <Defense>k__BackingField: 50
+  <Description>k__BackingField: Hat immer Kopf aua x3
+  <Dex>k__BackingField: 1
+  <EncounterRarity>k__BackingField: 87
+  <Evolution>k__BackingField:
+    fileID: 0
+  <EvolutionLevel>k__BackingField: -1
+  <FrontSprite>k__BackingField:
+    fileID: 21300000
+    guid: f5abdfc3f18024305a95efb37fceeb1a
+    type: 3
+  <Icons>k__BackingField:
+  - fileID: -5320860673121723558
+    guid: dd7dd0a214effdd459458f3871963a84
+    type: 3
+  - fileID: -5776730608683299111
+    guid: dd7dd0a214effdd459458f3871963a84
+    type: 3
+  <Id>k__BackingField: 12e70604-66a6-46c5-8692-37d8de2a2cf5
   <LevelToMoveDataMap>k__BackingField:
     keys: 01000000050000000900000012000000160000001f0000002c00000030000000
     valuesInterface:
-    - _underlyingValue: {fileID: 11400000, guid: 424c6df7e04b8f5478112ff6b405b0e2, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 2b0fe90133ea9964b9c0f6177ae24252, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: e0f6aa1b44037d04cb69dccaf489263a, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 070e6462f9fccbd4eb75b702bbdbf8a4, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: be5ebaae658e8d14a809af7fc82b5599, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 160a88e5c1c6e604bbe39363d1aee0ce, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 3f22d845017af2649b27a58365a34dff, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: ae9a5a0ebdfc3a74fb93c6c7d5dcf3d6, type: 2}
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 424c6df7e04b8f5478112ff6b405b0e2
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 2b0fe90133ea9964b9c0f6177ae24252
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: e0f6aa1b44037d04cb69dccaf489263a
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 070e6462f9fccbd4eb75b702bbdbf8a4
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: be5ebaae658e8d14a809af7fc82b5599
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 160a88e5c1c6e604bbe39363d1aee0ce
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 3f22d845017af2649b27a58365a34dff
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: ae9a5a0ebdfc3a74fb93c6c7d5dcf3d6
+        type: 2
+  <MaxHp>k__BackingField: 50
+  <PokemonTypes>k__BackingField:
+  - fileID: 11400000
+    guid: 5f24d8694adb0444b9320a89b2326680
+    type: 2
+  <SpecialAttack>k__BackingField: 65
+  <SpecialDefense>k__BackingField: 50
+  <SpeciesName>k__BackingField: Enton
+  <Speed>k__BackingField: 55
+  cries:
+  - fileID: 8300000
+    guid: e6d0420bd812c2e4e88104a1b2ae4471
+    type: 3
+  - fileID: 8300000
+    guid: 04ea7ef6457367c4499c6a1aa8b2f854
+    type: 3
+  - fileID: 8300000
+    guid: 690c309537a4378468c57ac487e50d09
+    type: 3
+  - fileID: 8300000
+    guid: 39ed759d318a624478b5e9ebe52d308e
+    type: 3
+  - fileID: 8300000
+    guid: 65888572b276e4d49ac86dec140054bd
+    type: 3
+  - fileID: 8300000
+    guid: 895c0c9efc79d574da525ddf57c04fad
+    type: 3
+  - fileID: 8300000
+    guid: c70162ba6ba2c2b4596a57f8074f1003
+    type: 3
+  - fileID: 8300000
+    guid: 000cbe0b3b6c2de41bd264be98307c21
+    type: 3
+  - fileID: 8300000
+    guid: b266a58f590ee494595b40dd76d1b2a2
+    type: 3
+  - fileID: 8300000
+    guid: 9f3fd943e2b2f9446be122d81a0acd92
+    type: 3
+  faintCries:
+  - fileID: 8300000
+    guid: e6d0420bd812c2e4e88104a1b2ae4471
+    type: 3
+  - fileID: 8300000
+    guid: 04ea7ef6457367c4499c6a1aa8b2f854
+    type: 3
+  - fileID: 8300000
+    guid: 65888572b276e4d49ac86dec140054bd
+    type: 3
+  - fileID: 8300000
+    guid: 000cbe0b3b6c2de41bd264be98307c21
+    type: 3
+  - fileID: 8300000
+    guid: b266a58f590ee494595b40dd76d1b2a2
+    type: 3
+  - fileID: 8300000
+    guid: 9f3fd943e2b2f9446be122d81a0acd92
+    type: 3
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Enton
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: 70ccacc46fede42d2ad98f6b249be0f8
+    type: 3

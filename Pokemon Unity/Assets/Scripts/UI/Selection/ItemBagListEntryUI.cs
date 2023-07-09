@@ -25,13 +25,13 @@ public class ItemBagListEntryUI : ItemListEntryUI
         item = (Item)payload;
         speratorText.gameObject.SetActive(false);
         detailsText.text = item.Count.ToString(); ;
-        icon.sprite = item.data.Icon;
-        nameText.text = item.data.Name;
+        icon.sprite = item.Data.Value.Icon;
+        nameText.text = item.Data.Value.Name;
 
-        if (item.data.Stacks)
+        if (item.Data.Value.Stacks)
             speratorText.gameObject.SetActive(true);
         else
-            detailsText.text = item.data.Details;
+            detailsText.text = item.Data.Value.Details;
     }
 
     public override void Refresh()

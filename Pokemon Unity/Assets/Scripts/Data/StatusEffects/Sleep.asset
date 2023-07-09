@@ -2,39 +2,50 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  <CatchRateBonus>k__BackingField: 2
+  <Chance>k__BackingField: 1
+  <DamageModifierRelative>k__BackingField: 1
+  <DamageOverTime>k__BackingField: 0
+  <DamagePerRoundAbsolute>k__BackingField: 0
+  <DamagePerRoundRelativeToMaxHp>k__BackingField: 0
+  <EffectPerRoundText>k__BackingField: "<pkmn-name> schl\xE4ft tief und fest \\|\\\
+    |33"
+  <EndOfLifeText>k__BackingField: <pkmn-name> ist aufgewacht!
+  <HealText>k__BackingField: <pkmn-name> wurde aufgeweckt!
+  <Id>k__BackingField: a585dfb3-5c4c-4c1d-b96d-1be680b8d379
+  <ImmuneTypes>k__BackingField: []
+  <InflictionText>k__BackingField: "<pkmn-name> macht ein Schl\xE4fchen \\|3"
+  <LifetimeRoundsMaximum>k__BackingField: 4
+  <LifetimeRoundsMinimum>k__BackingField: 1
+  <LivesForever>k__BackingField: 0
+  <NameSubject>k__BackingField: Schlaf
+  <NotificationPerRoundText>k__BackingField: ''
+  <PowerOfSelfInflictedDamagePerRound>k__BackingField: 0
+  <PreventsMove>k__BackingField: 1
+  <Sound>k__BackingField:
+    fileID: 0
+  <StatModifierSpeedRelative>k__BackingField: 1
+  <TakesEffectBeforeMoves>k__BackingField: 1
+  <TakesEffectOnceWhenLifeTimeEnded>k__BackingField: 0
+  <WaitForEffectText>k__BackingField: "<pkmn-name> wird ganz m\xFCde...  \\|\\|33"
+  icon:
+    fileID: 21300000
+    guid: 97f4b3528ba54494e9d59c5088ea0ed0
+    type: 3
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282b83986924b374da061d34e917a7dd, type: 3}
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
   m_Name: Sleep
-  m_EditorClassIdentifier: 
-  Id: a6c59333-57fb-460d-85eb-a39d8be47574
-  nameSubject: Schlaf
-  inflictionText: "<pkmn-name> macht ein Schl\xE4fchen \\|3"
-  notificationPerRoundText: 
-  effectPerRoundText: "<pkmn-name> schl\xE4ft tief und fest \\|\\|33"
-  waitForEffectText: "<pkmn-name> wird ganz m\xFCde...  \\|\\|33"
-  endOfLifeText: <pkmn-name> ist aufgewacht!
-  healText: <pkmn-name> wurde aufgeweckt!
-  sound: {fileID: 0}
-  livesForever: 0
-  lifetimeRoundsMinimum: 1
-  lifetimeRoundsMaximum: 4
-  roundsBeforeFirstEffect: 1
-  takesEffectOnceWhenLifeTimeEnded: 0
-  takesEffectBeforeMoves: 1
-  damagePerRoundAbsolute: 0
-  damagePerRoundRelativeToMaxHp: 0
-  powerOfSelfInflictedDamagePerRound: 0
-  damageOverTime: 0
-  preventsMove: 1
-  chance: 1
-  statModifierSpeedRelative: 1
-  damageModifierRelative: 1
-  catchRateBonus: 2
-  immuneTypes: []
-  icon: {fileID: 21300000, guid: 97f4b3528ba54494e9d59c5088ea0ed0, type: 3}
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: 282b83986924b374da061d34e917a7dd
+    type: 3

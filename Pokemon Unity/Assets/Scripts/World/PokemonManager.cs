@@ -92,37 +92,37 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
     IEnumerator TryUseItemOnPokemonCoroutine(IItem item, IPokemon pokemon, IEnumerator animation, System.Action<bool> success)
     {
         // TODO Implement healing volatile status
-        if (item.data.CanBeUsedOnOwnPokemon)
+        if (item.Data.Value.CanBeUsedOnOwnPokemon)
         {
-            if (pokemon.IsFainted && !item.data.Revives)
+            if (pokemon.IsFainted && !item.Data.Value.Revives)
                 yield return dialogBox.DrawText
-                    ($"Du kannst {item.data.Name} nicht auf besiegte Pok?mon anwenden!", closeAfterFinish: true);
-            else if (item.data.HealsHPOnly && pokemon.IsAtFullHP)
+                    ($"Du kannst {item.Data.Value.Name} nicht auf besiegte Pok?mon anwenden!", closeAfterFinish: true);
+            else if (item.Data.Value.HealsHPOnly && pokemon.IsAtFullHP)
                 yield return dialogBox.DrawText(
                     $"KP von {pokemon.Name} ist breits voll!", DialogBoxContinueMode.User, closeAfterFinish: true);
-            else if (!pokemon.HasNonVolatileStatusEffect && item.data.HealsStatusEffectsNonVolatileOnly)
+            else if (!pokemon.HasNonVolatileStatusEffect && item.Data.Value.HealsStatusEffectsNonVolatileOnly)
                 yield return dialogBox.DrawText(
                     $"Das h?tte keinen Effekt, denn {pokemon.Name} hat keine Statusprobleme.", closeAfterFinish: true);
-            else if (!pokemon.HasVolatileStatusEffects && item.data.HealsStatusEffectsVolatileOnly)
+            else if (!pokemon.HasVolatileStatusEffects && item.Data.Value.HealsStatusEffectsVolatileOnly)
                 yield return dialogBox.DrawText($"Das h?tte keinen Effekt!", closeAfterFinish: true);
             else if (pokemon.HasNonVolatileStatusEffect &&
-                !item.data.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile) &&
-                item.data.HealsStatusEffectsNonVolatileOnly)
+                !item.Data.Value.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile) &&
+                item.Data.Value.HealsStatusEffectsNonVolatileOnly)
                 yield return dialogBox.DrawText(
                     $"Du kannst {pokemon.StatusEffectNonVolatile.Data.NameSubject} von {pokemon.Name} damit nicht heilen.", closeAfterFinish: true);
             else if (pokemon.HasVolatileStatusEffects &&
-                !item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile) &&
-                item.data.HealsStatusEffectsNonVolatileOnly)
+                !item.Data.Value.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile) &&
+                item.Data.Value.HealsStatusEffectsNonVolatileOnly)
             {
                 print(pokemon.HasVolatileStatusEffects);
-                print(!item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile));
-                print(item.data.HealsStatusEffectsNonVolatileOnly);
+                print(!item.Data.Value.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile));
+                print(item.Data.Value.HealsStatusEffectsNonVolatileOnly);
                 yield return dialogBox.DrawText($"Das h?tte keinen Effekt!", closeAfterFinish: true);
             }
                 
             else
             {
-                yield return dialogBox.DrawChoiceBox($"{item.data.Name} {pokemon.Name} geben?");
+                yield return dialogBox.DrawChoiceBox($"{item.Data.Value.Name} {pokemon.Name} geben?");
                 if (dialogBox.GetChosenIndex() == 0)
                 {
                     yield return UseItemOnPokemon(item, pokemon, animation);
@@ -134,53 +134,53 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
             }
         }
         else
-            yield return dialogBox.DrawText($"{item.data.Name} kann nicht auf deine Pokemon angewendet werden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+            yield return dialogBox.DrawText($"{item.Data.Value.Name} kann nicht auf deine Pokemon angewendet werden!", DialogBoxContinueMode.User, closeAfterFinish: true);
         success?.Invoke(false);
     }
 
     IEnumerator UseItemOnPokemon(IItem item, IPokemon pokemon, IEnumerator animation)
     {
-        print($"Use item {item.data.Name}");
-        if (item.data.HealsHPFully)
+        print($"Use item {item.Data.Value.Name}");
+        if (item.Data.Value.HealsHPFully)
         {
             pokemon.HealHPFully();
             yield return animation;
             yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde vollst?ndig aufgef?llt!", closeAfterFinish: true);
         }
-        else if(item.data.HpHealed > 0)
+        else if(item.Data.Value.HpHealed > 0)
         {
-            pokemon.HealHP(item.data.HpHealed);
+            pokemon.HealHP(item.Data.Value.HpHealed);
             yield return animation;
-            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.data.HpHealed} Punkte aufgef?llt!", closeAfterFinish: true);
+            yield return dialogBox.DrawText($"Die KP von {pokemon.Name} wurde um {item.Data.Value.HpHealed} Punkte aufgef?llt!", closeAfterFinish: true);
         }
 
-        print(item.data.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile));
-        if (item.data.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile))
+        print(item.Data.Value.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile));
+        if (item.Data.Value.HealsStatusEffectNonVolatile(pokemon.StatusEffectNonVolatile))
         {
             print(pokemon.HasNonVolatileStatusEffect);
             if (pokemon.HasNonVolatileStatusEffect)
             {
                 string text = pokemon.StatusEffectNonVolatile.Data.HealText;
-                if (item.data.HealsAllStatusEffectsNonVolatile)
+                if (item.Data.Value.HealsAllStatusEffectsNonVolatile)
                     pokemon.HealAllStatusEffectsNonVolatile();
                 else
-                    pokemon.HealStatusEffectNonVolatile(item.data.NonVolatileStatusHealed.Value);
+                    pokemon.HealStatusEffectNonVolatile(item.Data.Value.NonVolatileStatusHealed.Value);
                 yield return dialogBox.DrawText(
                     TextKeyManager.ReplaceKey(TextKeyManager.TextKeyPokemon, text, pokemon.Name), closeAfterFinish: true);
             }
         }
 
-        print(item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile));
-        if (item.data.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile))
+        print(item.Data.Value.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile));
+        if (item.Data.Value.HealsStatusEffectVolatile(pokemon.StatusEffectsVolatile))
         {
             IStatusEffect[] healedStatus;
-            if (item.data.HealsAllStatusEffectsVolatile)
+            if (item.Data.Value.HealsAllStatusEffectsVolatile)
             {
                 healedStatus = pokemon.StatusEffectsVolatile.ToArray();
                 pokemon.HealAllVolatileStatusEffects();
             }
             else
-                healedStatus = new IStatusEffect[] { pokemon.HealStatusEffectVolatile(item.data.VolatileStatusHealed.Value) };
+                healedStatus = new IStatusEffect[] { pokemon.HealStatusEffectVolatile(item.Data.Value.VolatileStatusHealed.Value) };
 
             foreach (StatusEffect s in healedStatus)
             {
@@ -193,7 +193,7 @@ public class PokemonManager : ManagerWithDialogBox, IPokemonManager
 
         SfxHandler.Play(healSound);
 
-        if (item.data.Consumable)
+        if (item.Data.Value.Consumable)
             PlayerData.Instance.TryTakeItem(item);
 
         yield return null;

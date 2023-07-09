@@ -2,34 +2,48 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
-  m_Name: Antidote
-  m_EditorClassIdentifier: 
-  Id: 0e72d55e-43da-4c4a-a0b8-e052e883cc06
-  fullName: Gegengift
-  category: 1
-  price: 1.49
-  icon: {fileID: 21300000, guid: 572a59e698790f243bd932c3129eee5b, type: 3}
-  details: 
+  <CatchRateBonus>k__BackingField: 0
+  <CatchesPokemon>k__BackingField: 0
+  <Category>k__BackingField: 1
+  <Consumable>k__BackingField: 1
+  <Details>k__BackingField: ''
+  <HealsAllStatusEffectsNonVolatile>k__BackingField: 0
+  <HealsAllStatusEffectsVolatile>k__BackingField: 0
+  <HealsHPFully>k__BackingField: 0
+  <HpHealed>k__BackingField: 0
+  <Icon>k__BackingField:
+    fileID: 21300000
+    guid: 572a59e698790f243bd932c3129eee5b
+    type: 3
+  <Id>k__BackingField: b3f283a5-30a9-4233-b942-29387029be29
+  <MoveLearned>k__BackingField:
+    fileID: 0
+  <Name>k__BackingField: Gegengift
+  <NonVolatileStatusHealed>k__BackingField:
+    fileID: 11400000
+    guid: a753b4252c1544f1d9e4c13f0a917601
+    type: 2
+  <Price>k__BackingField: 1.49
+  <Revives>k__BackingField: 0
+  <Stacks>k__BackingField: 1
+  <UsableOnBattleOpponent>k__BackingField: 0
+  <VolatileStatusHealed>k__BackingField:
+    fileID: 0
   description: Heilt Vergiftung.
-  moveLearned: {fileID: 0}
-  stacks: 1
-  consumable: 1
-  usableOnBattleOpponent: 0
-  catchesPokemon: 0
-  catchRateBonus: 0
-  revives: 0
-  healsHPFully: 0
-  hpHealed: 0
-  healsAllStatusEffectsNonVolatile: 0
-  healsAllStatusEffectsVolatile: 0
-  nonVolatileStatusHealed: {fileID: 11400000, guid: a753b4252c1544f1d9e4c13f0a917601,
-    type: 2}
-  volatileStatusHealed: {fileID: 0}
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Antidote
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: dedbb7a70a1684c44b309d274f3d1cc3
+    type: 3

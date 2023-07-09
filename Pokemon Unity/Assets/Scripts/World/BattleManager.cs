@@ -250,7 +250,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
 
     private IEnumerator PlayerUseItem(Item item)
     {
-        if (!item.data.UsableOnBattleOpponent)
+        if (!item.Data.Value.UsableOnBattleOpponent)
         {
             // TODO: This is a workaround. It actually only needs to be called in case item has been used on player's active pokemon
             ui.Refresh(Constants.PlayerIndex);
@@ -258,7 +258,7 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
             yield break;
         }
 
-        if (item.data.CatchesPokemon)
+        if (item.Data.Value.CatchesPokemon)
             yield return PlayerThrowBall(item);
     }
 
@@ -266,15 +266,15 @@ public class BattleManager : ManagerWithPokemonManager, IBattleManager
     {
         if (!PlayerData.Instance.TryTakeItem(ball))
         {
-            Debug.LogError($"Tried to take ball {ball.data.Name} from player, but player does not own this item!");
+            Debug.LogError($"Tried to take ball {ball.Data.Value.Name} from player, but player does not own this item!");
             yield break;
         }
-        dialogBox.DrawText($"{playerData.Name} wirft {ball.data.Name}!", DialogBoxContinueMode.External);
+        dialogBox.DrawText($"{playerData.Name} wirft {ball.Data.Value.Name}!", DialogBoxContinueMode.External);
 
         yield return ui.PlayThrowAnimation();
         ui.HideOpponent();
         SfxHandler.Play(ballCloseSound);
-        float rate = opponentPokemon.GetModifiedCatchRate(ball.data.CatchRateBonus);
+        float rate = opponentPokemon.GetModifiedCatchRate(ball.Data.Value.CatchRateBonus);
         int shakeProbability = Mathf.RoundToInt(1048560f / Mathf.Sqrt(Mathf.Sqrt(16711680f / rate)));
 
         for (int i = 0; i < 4; i++)

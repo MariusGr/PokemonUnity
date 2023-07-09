@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using SimpleJSON;
+using AYellowpaper;
 
 [Serializable]
 public class Item : IItem
 {
-    [field: SerializeField] public IItemData data { get; private set; }
+    [field: SerializeField] public InterfaceReference<IItemData, ScriptableObject> Data { get; private set; }
     [field: SerializeField] public int Count { get; private set; } = 0;
 
     public Item(ItemData data, int count)
     {
-        this.data = data;
+        Data.Value = data;
         Count = count;
     }
 
     public Item(JSONNode json)
     {
-        data = (ItemData)BaseScriptableObject.Get(json["data"]);
+        Data.Value = (ItemData)BaseScriptableObject.Get(json["data"]);
         Count = json["count"];
     }
 
@@ -36,16 +37,16 @@ public class Item : IItem
 
     public override bool Equals(object other)
     {
-        if (data.Stacks)
-            return data == ((Item)other).data;
+        if (Data.Value.Stacks)
+            return Data == ((Item)other).Data;
         else
             return base.Equals(other);
     }
 
     public override int GetHashCode()
     {
-        if (data.Stacks)
-            return data.GetHashCode();
+        if (Data.Value.Stacks)
+            return Data.GetHashCode();
         else
             return base.GetHashCode();
     }
@@ -53,10 +54,10 @@ public class Item : IItem
     public JSONNode ToJSON()
     {
         JSONNode json = new JSONObject();
-        json.Add("data", data.Id);
+        json.Add("data", Data.Value.Id);
         json.Add("count", Count);
         return json;
     }
 
-    public override string ToString() => $"{base.ToString()}: {data} x{Count}";
+    public override string ToString() => $"{base.ToString()}: {Data} x{Count}";
 }

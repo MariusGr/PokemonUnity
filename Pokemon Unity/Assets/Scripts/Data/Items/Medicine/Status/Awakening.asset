@@ -2,34 +2,48 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
-  m_Name: Awakening
-  m_EditorClassIdentifier: 
-  Id: 9e0efcac-c9e3-416a-9e33-07c6b69a61fe
-  fullName: Aufwecker
-  category: 1
-  price: 1.49
-  icon: {fileID: 21300000, guid: ac218febf48c16e44bb8300716558173, type: 3}
-  details: 
+  <CatchRateBonus>k__BackingField: 0
+  <CatchesPokemon>k__BackingField: 0
+  <Category>k__BackingField: 1
+  <Consumable>k__BackingField: 1
+  <Details>k__BackingField: ''
+  <HealsAllStatusEffectsNonVolatile>k__BackingField: 0
+  <HealsAllStatusEffectsVolatile>k__BackingField: 0
+  <HealsHPFully>k__BackingField: 0
+  <HpHealed>k__BackingField: 0
+  <Icon>k__BackingField:
+    fileID: 21300000
+    guid: ac218febf48c16e44bb8300716558173
+    type: 3
+  <Id>k__BackingField: 1a117feb-03c7-4ed1-8b10-a957c626d690
+  <MoveLearned>k__BackingField:
+    fileID: 0
+  <Name>k__BackingField: Aufwecker
+  <NonVolatileStatusHealed>k__BackingField:
+    fileID: 11400000
+    guid: 96276f6085ca9324f9f754dd6329f89d
+    type: 2
+  <Price>k__BackingField: 1.49
+  <Revives>k__BackingField: 0
+  <Stacks>k__BackingField: 1
+  <UsableOnBattleOpponent>k__BackingField: 0
+  <VolatileStatusHealed>k__BackingField:
+    fileID: 0
   description: "Weckt schlafende Pok\xE9mon auf."
-  moveLearned: {fileID: 0}
-  stacks: 1
-  consumable: 1
-  usableOnBattleOpponent: 0
-  catchesPokemon: 0
-  catchRateBonus: 0
-  revives: 0
-  healsHPFully: 0
-  hpHealed: 0
-  healsAllStatusEffectsNonVolatile: 0
-  healsAllStatusEffectsVolatile: 0
-  nonVolatileStatusHealed: {fileID: 11400000, guid: 96276f6085ca9324f9f754dd6329f89d,
-    type: 2}
-  volatileStatusHealed: {fileID: 0}
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Awakening
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: dedbb7a70a1684c44b309d274f3d1cc3
+    type: 3

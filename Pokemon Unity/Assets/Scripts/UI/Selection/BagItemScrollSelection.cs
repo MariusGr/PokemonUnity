@@ -12,7 +12,7 @@ public class BagItemScrollSelection : ItemScrollSelection
     protected override void SelectElement(int index)
     {
         base.SelectElement(index);
-        description.text = selectedItem is null ? "" : selectedItem.data.Description;
+        description.text = selectedItem is null ? "" : selectedItem.Data.Value.Description;
     }
 
     protected override void MoveViewFrame(int shift)

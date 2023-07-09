@@ -11,12 +11,12 @@ public class PokemonTypeData : ScriptableObject, IPokemonTypeData
     [field: SerializeField] public Sprite TitleSprite { get; private set; }
     [field: SerializeField] public Color Color { get; private set; } = Color.white;
 
-    public DictionaryWithInterfaceTypeKeys<IPokemonTypeData, float, ScriptableObject> effectiveness;
+    public DictionaryWithInterfaceTypeKeys<IPokemonTypeData, float, ScriptableObject> Effectiveness;
 
     public float GetEffectiveness(IPokemonTypeData againstType)
     {
-        if (effectiveness.keys.Contains(againstType))
-            return effectiveness[againstType];
+        if (Effectiveness.keys.Contains(againstType))
+            return Effectiveness[againstType];
         return 1f;
     }
 

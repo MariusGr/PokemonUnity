@@ -2,19 +2,36 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
-  m_Name: Steel
-  m_EditorClassIdentifier: 
-  fullName: Stahl
-  titleSprite: {fileID: 21300000, guid: 1905f1619cc83f24794e86a09c0758a6, type: 3}
-  color: {r: 0.6, g: 0.6, b: 0.65882355, a: 1}
-  effectiveness:
-    keys: []
+  <Color>k__BackingField:
+    a: 1
+    b: 0.65882355
+    g: 0.6
+    r: 0.6
+  <Name>k__BackingField: Stahl
+  <TitleSprite>k__BackingField:
+    fileID: 21300000
+    guid: 1905f1619cc83f24794e86a09c0758a6
+    type: 3
+  Effectiveness:
+    keysInterface: []
     values: []
+  effectiveness:
+    keysInterface: []
+    values: []
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Steel
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: f2be8ece2d1d04626b111b6f25618260
+    type: 3

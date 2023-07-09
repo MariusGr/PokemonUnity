@@ -2,37 +2,51 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  <CatchRateBonus>k__BackingField: 1.5
+  <Chance>k__BackingField: 0.25
+  <DamageModifierRelative>k__BackingField: 1
+  <DamageOverTime>k__BackingField: 0
+  <DamagePerRoundAbsolute>k__BackingField: 0
+  <DamagePerRoundRelativeToMaxHp>k__BackingField: 0
+  <EffectPerRoundText>k__BackingField: <pkmn-name> ist paralysiert! Es kann sich nicht
+    bewegen!
+  <EndOfLifeText>k__BackingField: ''
+  <HealText>k__BackingField: Paralyse von <pkmn-name> wurde geheilt!
+  <Id>k__BackingField: 3c49a121-30f9-430d-9760-68ade53e5a84
+  <ImmuneTypes>k__BackingField: []
+  <InflictionText>k__BackingField: <pkmn-name> ist paralysiert! Es greift eventuell
+    nicht an!
+  <LifetimeRoundsMaximum>k__BackingField: 0
+  <LifetimeRoundsMinimum>k__BackingField: 0
+  <LivesForever>k__BackingField: 1
+  <NameSubject>k__BackingField: Paralyse
+  <NotificationPerRoundText>k__BackingField: ''
+  <PowerOfSelfInflictedDamagePerRound>k__BackingField: 0
+  <PreventsMove>k__BackingField: 1
+  <Sound>k__BackingField:
+    fileID: 0
+  <StatModifierSpeedRelative>k__BackingField: 0.25
+  <TakesEffectBeforeMoves>k__BackingField: 1
+  <TakesEffectOnceWhenLifeTimeEnded>k__BackingField: 0
+  <WaitForEffectText>k__BackingField: null
+  icon:
+    fileID: 21300000
+    guid: 3e62a8f068ecb534e8b2031747bd63eb
+    type: 3
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282b83986924b374da061d34e917a7dd, type: 3}
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
   m_Name: Paralysis
-  m_EditorClassIdentifier: 
-  Id: 1f8aea06-0632-408b-ae20-f55a99740715
-  nameSubject: Paralyse
-  inflictionText: <pkmn-name> ist paralysiert! Es greift eventuell nicht an!
-  notificationPerRoundText: 
-  effectPerRoundText: <pkmn-name> ist paralysiert! Es kann sich nicht bewegen!
-  endOfLifeText: 
-  healText: Paralyse von <pkmn-name> wurde geheilt!
-  sound: {fileID: 0}
-  livesForever: 1
-  lifetimeRoundsMinimum: 0
-  lifetimeRoundsMaximum: 0
-  takesEffectOnceWhenLifeTimeEnded: 0
-  takesEffectBeforeMoves: 1
-  damagePerRoundAbsolute: 0
-  damagePerRoundRelativeToMaxHp: 0
-  powerOfSelfInflictedDamagePerRound: 0
-  damageOverTime: 0
-  preventsMove: 1
-  chance: 0.25
-  statModifierSpeedRelative: 0.25
-  damageModifierRelative: 1
-  catchRateBonus: 1.5
-  immuneTypes: []
-  icon: {fileID: 21300000, guid: 3e62a8f068ecb534e8b2031747bd63eb, type: 3}
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: 282b83986924b374da061d34e917a7dd
+    type: 3

@@ -2,29 +2,82 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
-  m_Name: Electric
-  m_EditorClassIdentifier: 
-  fullName: Elektro
-  titleSprite: {fileID: 21300000, guid: e61807bd3ecc9b04a855867b73bcfc63, type: 3}
-  color: {r: 0.8980392, g: 0.7764706, b: 0.18039216, a: 1}
-  effectiveness:
-    keys:
-    - {fileID: 11400000, guid: b7b91fc8353b645d79d3e012a9894646, type: 2}
-    - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
-    - {fileID: 11400000, guid: 9f7dfd2ae4f09459291d4a91b740ac47, type: 2}
-    - {fileID: 11400000, guid: 7c91817e997a3448f8a348682cd8c946, type: 2}
-    - {fileID: 11400000}
+  <Color>k__BackingField:
+    a: 1
+    b: 0.18039216
+    g: 0.7764706
+    r: 0.8980392
+  <Name>k__BackingField: Elektro
+  <TitleSprite>k__BackingField:
+    fileID: 21300000
+    guid: e61807bd3ecc9b04a855867b73bcfc63
+    type: 3
+  Effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: b7b91fc8353b645d79d3e012a9894646
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 5f24d8694adb0444b9320a89b2326680
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 9f7dfd2ae4f09459291d4a91b740ac47
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7c91817e997a3448f8a348682cd8c946
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
     values:
     - 0
     - 2
     - 2
     - 0.5
     - 0.5
+  effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: b7b91fc8353b645d79d3e012a9894646
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 5f24d8694adb0444b9320a89b2326680
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 9f7dfd2ae4f09459291d4a91b740ac47
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7c91817e997a3448f8a348682cd8c946
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+    values:
+    - 0
+    - 2
+    - 2
+    - 0.5
+    - 0.5
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Electric
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: f2be8ece2d1d04626b111b6f25618260
+    type: 3

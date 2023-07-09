@@ -2,30 +2,52 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
-  m_Name: Grass
-  m_EditorClassIdentifier: 
-  fullName: Pflanze
-  titleSprite: {fileID: 21300000, guid: e7616bb95e534c348a585930f5abcbc1, type: 3}
-  color: {r: 0.34509805, g: 0.6627451, b: 0.31764707, a: 1}
-  effectiveness:
-    keys:
-    - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
-    - {fileID: 11400000, guid: f4ed3501401c744dc8828f6448c3be28, type: 2}
-    - {fileID: 11400000, guid: c50feaa8d34104df6bf7fcd24283dfbd, type: 2}
-    - {fileID: 11400000}
-    - {fileID: 11400000, guid: 7f77824c749ca4f51a17e03ac544b6d1, type: 2}
-    - {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
-    - {fileID: 11400000, guid: f647a3d8033d74746ac3174598f7098b, type: 2}
-    - {fileID: 11400000, guid: 9f7dfd2ae4f09459291d4a91b740ac47, type: 2}
-    - {fileID: 11400000, guid: 403e02a791b8b400987b0fff4c05b124, type: 2}
+  <Color>k__BackingField:
+    a: 1
+    b: 0.31764707
+    g: 0.6627451
+    r: 0.34509805
+  <Name>k__BackingField: Pflanze
+  <TitleSprite>k__BackingField:
+    fileID: 21300000
+    guid: e7616bb95e534c348a585930f5abcbc1
+    type: 3
+  Effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 5f24d8694adb0444b9320a89b2326680
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f4ed3501401c744dc8828f6448c3be28
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: c50feaa8d34104df6bf7fcd24283dfbd
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7f77824c749ca4f51a17e03ac544b6d1
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 41dede384953f49349c71b5e108252d7
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f647a3d8033d74746ac3174598f7098b
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 9f7dfd2ae4f09459291d4a91b740ac47
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 403e02a791b8b400987b0fff4c05b124
+        type: 2
     values:
     - 2
     - 2
@@ -36,3 +58,66 @@ MonoBehaviour:
     - 0.5
     - 0.5
     - 0.5
+  effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 5f24d8694adb0444b9320a89b2326680
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f4ed3501401c744dc8828f6448c3be28
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: c50feaa8d34104df6bf7fcd24283dfbd
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 7f77824c749ca4f51a17e03ac544b6d1
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 41dede384953f49349c71b5e108252d7
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f647a3d8033d74746ac3174598f7098b
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 9f7dfd2ae4f09459291d4a91b740ac47
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 403e02a791b8b400987b0fff4c05b124
+        type: 2
+    values:
+    - 2
+    - 2
+    - 2
+    - 0.5
+    - 0.5
+    - 0.5
+    - 0.5
+    - 0.5
+    - 0.5
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Grass
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: f2be8ece2d1d04626b111b6f25618260
+    type: 3

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper;
 
 public interface IItem : IJSONConvertable
 {
-    public IItemData data { get; }
+    public InterfaceReference<IItemData, ScriptableObject> Data { get; }
     public int Count { get; }
 
     public void Increase(int amount = 1);

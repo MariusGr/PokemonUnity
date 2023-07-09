@@ -2,16 +2,23 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5259c5e9235e3a5448d1318b4f217aeb, type: 3}
-  m_Name: Male
-  m_EditorClassIdentifier: 
-  Id: 7a127440-3fbd-4a39-8202-8fe29d274238
-  symbol: "\u2642\uFE0F"
+  <Id>k__BackingField: 3b828a3e-591f-4f35-9ff4-cc1fdc4b819c
   fullName: "M\xE4nnlich"
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Male
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: 5259c5e9235e3a5448d1318b4f217aeb
+    type: 3
+  symbol: "\u2642\uFE0F"

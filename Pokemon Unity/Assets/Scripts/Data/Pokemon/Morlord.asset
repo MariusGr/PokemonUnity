@@ -2,54 +2,105 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
-  m_Name: Morlord
-  m_EditorClassIdentifier: 
-  <Id>k__BackingField: dc61d430-f1a1-4414-8f60-eb5582dd3129
-  <Dex>k__BackingField: 0
-  <SpeciesName>k__BackingField: Morlord
-  <Description>k__BackingField: :3
-  <FrontSprite>k__BackingField: {fileID: 21300018, guid: b3122a354e8532f41843a9ccb7e08579,
-    type: 3}
-  <BackSprite>k__BackingField: {fileID: 21300006, guid: 84a124553996f1d4f8fb919b21dbdefb,
-    type: 3}
-  <Icons>k__BackingField:
-  - {fileID: 21300002, guid: 84a124553996f1d4f8fb919b21dbdefb, type: 3}
-  <PokemonTypes>k__BackingField:
-  - _underlyingValue: {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
-  - _underlyingValue: {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
-  <EvolutionLevel>k__BackingField: 0
-  <Evolution>k__BackingField:
-    _underlyingValue: {fileID: 0}
-  <EncounterRarity>k__BackingField: 87
-  <CatchRate>k__BackingField: 90
-  cries:
-  - {fileID: 8300000, guid: 83f8635da32abdd4db6845603ee99351, type: 3}
-  faintCries:
-  - {fileID: 8300000, guid: 83f8635da32abdd4db6845603ee99351, type: 3}
-  <MaxHp>k__BackingField: 95
   <Attack>k__BackingField: 85
-  <SpecialAttack>k__BackingField: 65
-  <Defense>k__BackingField: 85
-  <SpecialDefense>k__BackingField: 65
-  <Speed>k__BackingField: 35
+  <BackSprite>k__BackingField:
+    fileID: 21300000
+    guid: eaa709789f4813b4ebf17a21cc4cbe68
+    type: 3
   <BaseXPGain>k__BackingField: 137
+  <CatchRate>k__BackingField: 90
+  <Defense>k__BackingField: 85
+  <Description>k__BackingField: :3
+  <Dex>k__BackingField: 4
+  <EncounterRarity>k__BackingField: 87
+  <Evolution>k__BackingField:
+    fileID: 0
+  <EvolutionLevel>k__BackingField: 0
+  <FrontSprite>k__BackingField:
+    fileID: 21300000
+    guid: 5aca842409181d543ab024a73984f410
+    type: 3
+  <Icons>k__BackingField:
+  - fileID: 21300000
+    guid: 2803706528668a749a40da3b6ca8eecd
+    type: 3
+  - fileID: 21300000
+    guid: 2803706528668a749a40da3b6ca8eecd
+    type: 3
+  <Id>k__BackingField: dc61d430-f1a1-4414-8f60-eb5582dd3129
   <LevelToMoveDataMap>k__BackingField:
     keys: 00000000010000000200000010000000170000001c00000022000000280000002e000000
     valuesInterface:
-    - _underlyingValue: {fileID: 11400000, guid: 2b0fe90133ea9964b9c0f6177ae24252, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: e0f6aa1b44037d04cb69dccaf489263a, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 208f6109b3818e6438755371a69e0b6f, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 354c22651b518a34ea812b10b193b791, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 5e1b46daf2b5f5e43b634033d88a1d5c, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 36b342b873b335e4883e09f7ef03e222, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 31e66b5afa86b834f9a3a0833acb986a, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 3f22d845017af2649b27a58365a34dff, type: 2}
-    - _underlyingValue: {fileID: 11400000, guid: 72dc84b68329943ad8f3550095f3a910, type: 2}
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 2b0fe90133ea9964b9c0f6177ae24252
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: e0f6aa1b44037d04cb69dccaf489263a
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 208f6109b3818e6438755371a69e0b6f
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 354c22651b518a34ea812b10b193b791
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 5e1b46daf2b5f5e43b634033d88a1d5c
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 36b342b873b335e4883e09f7ef03e222
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 31e66b5afa86b834f9a3a0833acb986a
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 3f22d845017af2649b27a58365a34dff
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 72dc84b68329943ad8f3550095f3a910
+        type: 2
+  <MaxHp>k__BackingField: 95
+  <PokemonTypes>k__BackingField:
+  - fileID: 11400000
+    guid: 5f24d8694adb0444b9320a89b2326680
+    type: 2
+  - fileID: 11400000
+    guid: b7b91fc8353b645d79d3e012a9894646
+    type: 2
+  <SpecialAttack>k__BackingField: 65
+  <SpecialDefense>k__BackingField: 65
+  <SpeciesName>k__BackingField: Morlord
+  <Speed>k__BackingField: 35
+  cries:
+  - fileID: 8300000
+    guid: 83f8635da32abdd4db6845603ee99351
+    type: 3
+  faintCries:
+  - fileID: 8300000
+    guid: 83f8635da32abdd4db6845603ee99351
+    type: 3
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Morlord
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: 70ccacc46fede42d2ad98f6b249be0f8
+    type: 3

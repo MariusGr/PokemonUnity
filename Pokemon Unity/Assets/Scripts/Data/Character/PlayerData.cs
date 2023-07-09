@@ -109,9 +109,9 @@ public class PlayerData : CharacterData
 
     public void GiveItem(Item item)
     {
-        List<Item> list = items[item.data.Category];
+        List<Item> list = items[item.Data.Value.Category];
         Item presentItem = list.Find(x => x.Equals(item));
-        if (item.data.Stacks)
+        if (item.Data.Value.Stacks)
             if (presentItem is null)
                 list.Add(item);
             else
@@ -123,13 +123,13 @@ public class PlayerData : CharacterData
 
     public bool TryTakeItem(IItem item)
     {
-        List<Item> list = items[item.data.Category];
+        List<Item> list = items[item.Data.Value.Category];
         Item presentItem = list.Find(x => x.Equals(item));
 
         if (presentItem is null)
             return false;
 
-        if (item.data.Stacks)
+        if (item.Data.Value.Stacks)
             if (presentItem.Decrease())
                 return true;
 
@@ -137,26 +137,26 @@ public class PlayerData : CharacterData
         return true;
     }
 
-    public int GetItemCount(ItemData itemData)
+    public int GetItemCount(IItemData itemData)
     {
         List<Item> list = items[itemData.Category];
 
         if (itemData.Stacks)
         {
-            Item presentItem = list.Find(x => x.data == itemData);
+            Item presentItem = list.Find(x => x.Data.Value == itemData);
             return presentItem is null ? 0 : presentItem.Count;
         }
 
-        return list.FindAll(x => x.data == itemData).Count;
+        return list.FindAll(x => x.Data.Value == itemData).Count;
     }
 
     public void SwapItems(Item item1, Item item2)
     {
-        if (item1 == item2 || item1.data.Category != item2.data.Category)
+        if (item1 == item2 || item1.Data.Value.Category != item2.Data.Value.Category)
             return;
-        List<Item> bin = items[item1.data.Category];
-        int newIndex1 = items[item1.data.Category].IndexOf(item2);
-        int newIndex2 = items[item1.data.Category].IndexOf(item1);
+        List<Item> bin = items[item1.Data.Value.Category];
+        int newIndex1 = items[item1.Data.Value.Category].IndexOf(item2);
+        int newIndex2 = items[item1.Data.Value.Category].IndexOf(item1);
         bin[newIndex1] = item1;
         bin[newIndex2] = item2;
     }

@@ -2,38 +2,54 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  <CatchRateBonus>k__BackingField: 1.5
+  <Chance>k__BackingField: 1
+  <DamageModifierRelative>k__BackingField: 0.5
+  <DamageOverTime>k__BackingField: 0
+  <DamagePerRoundAbsolute>k__BackingField: 0
+  <DamagePerRoundRelativeToMaxHp>k__BackingField: 0.175
+  <EffectPerRoundText>k__BackingField: Die Verbrennung schadet <pkmn-name>!
+  <EndOfLifeText>k__BackingField: ''
+  <HealText>k__BackingField: Verbrennung von <pkmn-name> wurde geheilt!
+  <Id>k__BackingField: ec78de4d-2b08-4b1e-8b21-9735e76abb35
+  <ImmuneTypes>k__BackingField:
+  - fileID: 11400000
+    guid: 41dede384953f49349c71b5e108252d7
+    type: 2
+  <InflictionText>k__BackingField: <pkmn-name> wurde verbrannt!
+  <LifetimeRoundsMaximum>k__BackingField: 0
+  <LifetimeRoundsMinimum>k__BackingField: 0
+  <LivesForever>k__BackingField: 1
+  <NameSubject>k__BackingField: Verbrennung
+  <NotificationPerRoundText>k__BackingField: ''
+  <PowerOfSelfInflictedDamagePerRound>k__BackingField: 0
+  <PreventsMove>k__BackingField: 0
+  <Sound>k__BackingField:
+    fileID: 8300000
+    guid: 68e857b4d88acb340add040a2ee80689
+    type: 3
+  <StatModifierSpeedRelative>k__BackingField: 1
+  <TakesEffectBeforeMoves>k__BackingField: 0
+  <TakesEffectOnceWhenLifeTimeEnded>k__BackingField: 0
+  <WaitForEffectText>k__BackingField: null
+  icon:
+    fileID: 21300000
+    guid: 4f73bcb0025109146b21f6efdd88d370
+    type: 3
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 282b83986924b374da061d34e917a7dd, type: 3}
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
   m_Name: Burn
-  m_EditorClassIdentifier: 
-  Id: 11e9da0d-a918-48e5-9068-dfa39e9045a8
-  nameSubject: Verbrennung
-  inflictionText: <pkmn-name> wurde verbrannt!
-  notificationPerRoundText: 
-  effectPerRoundText: Die Verbrennung schadet <pkmn-name>!
-  endOfLifeText: 
-  healText: Verbrennung von <pkmn-name> wurde geheilt!
-  sound: {fileID: 8300000, guid: 68e857b4d88acb340add040a2ee80689, type: 3}
-  livesForever: 1
-  lifetimeRoundsMinimum: 0
-  lifetimeRoundsMaximum: 0
-  takesEffectOnceWhenLifeTimeEnded: 0
-  takesEffectBeforeMoves: 0
-  damagePerRoundAbsolute: 0
-  damagePerRoundRelativeToMaxHp: 0.175
-  powerOfSelfInflictedDamagePerRound: 0
-  damageOverTime: 0
-  preventsMove: 0
-  chance: 1
-  statModifierSpeedRelative: 1
-  damageModifierRelative: 0.5
-  catchRateBonus: 1.5
-  immuneTypes:
-  - {fileID: 11400000, guid: 41dede384953f49349c71b5e108252d7, type: 2}
-  icon: {fileID: 21300000, guid: 4f73bcb0025109146b21f6efdd88d370, type: 3}
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: 282b83986924b374da061d34e917a7dd
+    type: 3

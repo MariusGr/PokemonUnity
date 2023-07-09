@@ -2,36 +2,48 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  <CatchRateBonus>k__BackingField: 1
+  <Chance>k__BackingField: 0.5
+  <DamageModifierRelative>k__BackingField: 1
+  <DamageOverTime>k__BackingField: 0
+  <DamagePerRoundAbsolute>k__BackingField: 0
+  <DamagePerRoundRelativeToMaxHp>k__BackingField: 0
+  <EffectPerRoundText>k__BackingField: <pkmn-name> hat sich aus Verwirrung selbst
+    verletzt!
+  <EndOfLifeText>k__BackingField: <pkmn-name> ist nicht mehr verwirrt!
+  <HealText>k__BackingField: <pkmn-name> ist nicht mehr verwirrt!
+  <Id>k__BackingField: 57828124-44c1-4317-8fb3-4adbc30b36b7
+  <ImmuneTypes>k__BackingField: []
+  <InflictionText>k__BackingField: <pkmn-name> ist verwirrt!
+  <LifetimeRoundsMaximum>k__BackingField: 5
+  <LifetimeRoundsMinimum>k__BackingField: 2
+  <LivesForever>k__BackingField: 0
+  <NameSubject>k__BackingField: Verwirrung
+  <NotificationPerRoundText>k__BackingField: <pkmn-name> ist verwirrt!
+  <PowerOfSelfInflictedDamagePerRound>k__BackingField: 40
+  <PreventsMove>k__BackingField: 1
+  <Sound>k__BackingField:
+    fileID: 8300000
+    guid: 55f611e1f3accdd4ca2514a30574ee54
+    type: 3
+  <StatModifierSpeedRelative>k__BackingField: 1
+  <TakesEffectBeforeMoves>k__BackingField: 1
+  <TakesEffectOnceWhenLifeTimeEnded>k__BackingField: 0
+  <WaitForEffectText>k__BackingField: null
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eeb215abfb46024fb6b592d81604295, type: 3}
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
   m_Name: Confusion
-  m_EditorClassIdentifier: 
-  Id: bddacb4f-d454-4015-930f-6d20ef41fc2b
-  nameSubject: Verwirrung
-  inflictionText: <pkmn-name> ist verwirrt!
-  notificationPerRoundText: <pkmn-name> ist verwirrt!
-  effectPerRoundText: <pkmn-name> hat sich aus Verwirrung selbst verletzt!
-  endOfLifeText: <pkmn-name> ist nicht mehr verwirrt!
-  healText: <pkmn-name> ist nicht mehr verwirrt!
-  sound: {fileID: 8300000, guid: 55f611e1f3accdd4ca2514a30574ee54, type: 3}
-  livesForever: 0
-  lifetimeRoundsMinimum: 2
-  lifetimeRoundsMaximum: 5
-  takesEffectOnceWhenLifeTimeEnded: 0
-  takesEffectBeforeMoves: 1
-  damagePerRoundAbsolute: 0
-  damagePerRoundRelativeToMaxHp: 0
-  powerOfSelfInflictedDamagePerRound: 40
-  damageOverTime: 0
-  preventsMove: 1
-  chance: 0.5
-  statModifierSpeedRelative: 1
-  damageModifierRelative: 1
-  catchRateBonus: 1
-  immuneTypes: []
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: 1eeb215abfb46024fb6b592d81604295
+    type: 3

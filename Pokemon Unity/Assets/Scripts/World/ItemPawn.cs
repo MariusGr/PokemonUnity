@@ -16,7 +16,7 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
     public string GetKey()
     {
         GridVector position = new GridVector(transform.position);
-        return $"{item.data.GetType()}_{position.x}_{position.y}";
+        return $"{item.Data.GetType()}_{position.x}_{position.y}";
     }
 
     public void Interact(Character player)
@@ -46,7 +46,7 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
         PlayerData.Instance.GiveItem(item);
         BgmHandler.Instance.PlayMFX(pickUpMusic);
         Services.Get<IDialogBox>().DrawText(
-            $"{player.characterData.Name} findet {item.data.Name}!", DialogBoxContinueMode.External);
+            $"{player.characterData.Name} findet {item.Data.Value.Name}!", DialogBoxContinueMode.External);
         yield return new WaitForSeconds(pickUpMusic.length);
         Services.Get<IDialogBox>().Close();
         gameObject.SetActive(false);

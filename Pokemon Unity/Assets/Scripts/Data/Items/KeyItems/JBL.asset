@@ -2,34 +2,47 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  <CatchRateBonus>k__BackingField: 0
+  <CatchesPokemon>k__BackingField: 0
+  <Category>k__BackingField: 4
+  <Consumable>k__BackingField: 0
+  <Details>k__BackingField: Krass
+  <HealsAllStatusEffectsNonVolatile>k__BackingField: 0
+  <HealsAllStatusEffectsVolatile>k__BackingField: 0
+  <HealsHPFully>k__BackingField: 0
+  <HpHealed>k__BackingField: 0
+  <Icon>k__BackingField:
+    fileID: 21300000
+    guid: f11e0b49505fb5e4296d3f8b81b19a86
+    type: 3
+  <Id>k__BackingField: fc151b05-55b6-4e97-a390-700671709bc5
+  <MoveLearned>k__BackingField:
+    fileID: 0
+  <Name>k__BackingField: JBL Flip 4
+  <NonVolatileStatusHealed>k__BackingField:
+    fileID: 0
+  <Price>k__BackingField: 39.99
+  <Revives>k__BackingField: 0
+  <Stacks>k__BackingField: 0
+  <UsableOnBattleOpponent>k__BackingField: 0
+  <VolatileStatusHealed>k__BackingField:
+    fileID: 0
+  description: "Eine Bluetoothbox, mit der man Musik h\xF6ren kann, zum Beispiel Schranz\
+    \ oder DnB!"
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
   m_Name: JBL
-  m_EditorClassIdentifier: 
-  Id: 95723de0-b9d8-4806-92eb-bbd9207b7e76
-  fullName: JBL Flip 4
-  category: 4
-  price: 39.99
-  icon: {fileID: 21300000, guid: f11e0b49505fb5e4296d3f8b81b19a86, type: 3}
-  details: Krass
-  description: "Eine Bluetoothbox, mit der man Musik h\xF6ren kann, zum Beispiel
-    Schranz oder DnB!"
-  moveLearned: {fileID: 0}
-  stacks: 0
-  consumable: 0
-  usableOnBattleOpponent: 0
-  catchesPokemon: 0
-  catchRateBonus: 0
-  revives: 0
-  healsHPFully: 0
-  hpHealed: 0
-  healsAllStatusEffectsNonVolatile: 0
-  healsAllStatusEffectsVolatile: 0
-  nonVolatileStatusHealed: {fileID: 0}
-  volatileStatusHealed: {fileID: 0}
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: dedbb7a70a1684c44b309d274f3d1cc3
+    type: 3

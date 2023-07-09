@@ -147,9 +147,9 @@ public class BagUI : ItemSelection
     private IEnumerator ChooseItemCoroutine(ISelectableUIElement selection)
     {
         ItemBagListEntryUI entry = (ItemBagListEntryUI)selection;
-        if (inBattle && entry.item.data.UsableOnBattleOpponent)
+        if (inBattle && entry.item.Data.Value.UsableOnBattleOpponent)
         {
-            if (entry.item.data.CatchesPokemon)
+            if (entry.item.Data.Value.CatchesPokemon)
             {
                 if (!Services.Get<IBattleManager>().OpponentIsWild())
                 {
@@ -158,7 +158,7 @@ public class BagUI : ItemSelection
                     yield break;
                 }
 
-                yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.Name} verwenden?");
+                yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.Data.Value.Name} verwenden?");
                 if (GlobalDialogBox.Instance.chosenIndex == 1)
                     yield break;
 

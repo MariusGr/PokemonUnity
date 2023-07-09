@@ -2,43 +2,68 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  <Accuracy>k__BackingField: 100
+  <AnimationClipOpponent>k__BackingField:
+    fileID: 7400000
+    guid: 8b5b0e11df68479439ec874472e33b64
+    type: 2
+  <AnimationClipPlayer>k__BackingField:
+    fileID: 7400000
+    guid: fc4031a1273054fe8a29e835226a362b
+    type: 2
+  <Category>k__BackingField:
+    fileID: 11400000
+    guid: f8f40b02d9b4624429547c6a81fe81de
+    type: 2
+  <Description>k__BackingField: Senkt evtl. SPEZ.-VER des Gegners.
+  <HasSpecialUsageText>k__BackingField: 0
+  <Id>k__BackingField: 2a1baf0e-a94b-4db4-864d-a607f9afee9b
+  <MaxPP>k__BackingField: 10
+  <Name>k__BackingField: Psychokinese
+  <PokeType>k__BackingField:
+    fileID: 11400000
+    guid: 99e360b7999477a48a1404f0de71c1db
+    type: 2
+  <Power>k__BackingField: 90
+  <Recoil>k__BackingField: 0
+  <RoundsBeforeFirstEffectNonVolatile>k__BackingField: 0
+  <RoundsBeforeFirstEffectVolatile>k__BackingField: 0
+  <Sound>k__BackingField:
+    fileID: 8300000
+    guid: 446548d94d215fe4a81a1f6d36da985d
+    type: 3
+  <SpecialUsageText>k__BackingField: ''
+  <StatModifiersSelf>k__BackingField:
+    keys: null
+    values: null
+  <StatModifiersTarget>k__BackingField:
+    keys: null
+    values: null
+  <StatusNonVolatileInflictedSelf>k__BackingField:
+    fileID: 0
+  <StatusNonVolatileInflictedTarget>k__BackingField:
+    fileID: 0
+  <StatusNonVolatileInflictedTargetChance>k__BackingField: 1
+  <StatusVolatileInflictedSelf>k__BackingField:
+    fileID: 0
+  <StatusVolatileInflictedTarget>k__BackingField:
+    fileID: 0
+  <StatusVolatileInflictedTargetChance>k__BackingField: 1
+  <UsesCryForSound>k__BackingField: 0
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
   m_Name: Psychokinese
-  m_EditorClassIdentifier: 
-  Id: 400ea7ed-1740-4b9c-bc50-c16b2fec08fb
-  fullName: Psychokinese
-  description: Senkt evtl. SPEZ.-VER des Gegners.
-  pokeType: {fileID: 11400000, guid: 99e360b7999477a48a1404f0de71c1db, type: 2}
-  maxPP: 10
-  power: 90
-  accuracy: 100
-  statusNonVolatileInflictedTargetChance: 1
-  statusNonVolatileInflictedTarget: {fileID: 0}
-  statusNonVolatileInflictedSelf: {fileID: 0}
-  statusVolatileInflictedTargetChance: 1
-  statusVolatileInflictedTarget: {fileID: 0}
-  statusVolatileInflictedSelf: {fileID: 0}
-  roundsBeforeFirstEffectVolatile: 0
-  roundsBeforeFirstEffectNonVolatile: 0
-  statModifiersSelf:
-    keys: 
-    values: 
-  statModifiersTarget:
-    keys: 
-    values: 
-  category: {fileID: 11400000, guid: f8f40b02d9b4624429547c6a81fe81de, type: 2}
-  animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
-  animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
-    type: 2}
-  sound: {fileID: 8300000, guid: 446548d94d215fe4a81a1f6d36da985d, type: 3}
-  usesCryForSound: 0
-  hasSpecialUsageText: 0
-  specialUsageText: 
-  recoil: 0
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c
+    type: 3

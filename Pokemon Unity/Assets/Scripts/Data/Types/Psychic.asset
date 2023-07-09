@@ -2,27 +2,72 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2be8ece2d1d04626b111b6f25618260, type: 3}
-  m_Name: Psychic
-  m_EditorClassIdentifier: 
-  fullName: Psycho
-  titleSprite: {fileID: 21300000, guid: 55af5073cdd443a41be2a13cdd1bd5e5, type: 3}
-  color: {r: 0.8980392, g: 0.34901962, b: 0.4509804, a: 1}
-  effectiveness:
-    keys:
-    - {fileID: 11400000, guid: c323c026c4ba745a5932fb9ae800e30a, type: 2}
-    - {fileID: 11400000, guid: f647a3d8033d74746ac3174598f7098b, type: 2}
-    - {fileID: 11400000, guid: 403e02a791b8b400987b0fff4c05b124, type: 2}
-    - {fileID: 11400000}
+  <Color>k__BackingField:
+    a: 1
+    b: 0.4509804
+    g: 0.34901962
+    r: 0.8980392
+  <Name>k__BackingField: Psycho
+  <TitleSprite>k__BackingField:
+    fileID: 21300000
+    guid: 55af5073cdd443a41be2a13cdd1bd5e5
+    type: 3
+  Effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: c323c026c4ba745a5932fb9ae800e30a
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f647a3d8033d74746ac3174598f7098b
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 403e02a791b8b400987b0fff4c05b124
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
     values:
     - 2
     - 2
     - 0.5
     - 0.5
+  effectiveness:
+    keysInterface:
+    - _underlyingValue:
+        fileID: 11400000
+        guid: c323c026c4ba745a5932fb9ae800e30a
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: f647a3d8033d74746ac3174598f7098b
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+        guid: 403e02a791b8b400987b0fff4c05b124
+        type: 2
+    - _underlyingValue:
+        fileID: 11400000
+    values:
+    - 2
+    - 2
+    - 0.5
+    - 0.5
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
+  m_EditorHideFlags: 0
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
+  m_Name: Psychic
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: f2be8ece2d1d04626b111b6f25618260
+    type: 3

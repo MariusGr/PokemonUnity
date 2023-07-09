@@ -2,39 +2,69 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  <Accuracy>k__BackingField: -1
+  <AnimationClipOpponent>k__BackingField:
+    fileID: 7400000
+    guid: 8b5b0e11df68479439ec874472e33b64
+    type: 2
+  <AnimationClipPlayer>k__BackingField:
+    fileID: 7400000
+    guid: fc4031a1273054fe8a29e835226a362b
+    type: 2
+  <Category>k__BackingField:
+    fileID: 11400000
+    guid: 72a8a7b706eae414f865696998d0a328
+    type: 2
+  <Description>k__BackingField: ''
+  <HasSpecialUsageText>k__BackingField: 1
+  <Id>k__BackingField: afe614ff-29f8-4457-bbb4-9b4d71740d34
+  <MaxPP>k__BackingField: 0
+  <Name>k__BackingField: Verzweifler
+  <PokeType>k__BackingField:
+    fileID: 11400000
+    guid: df744fd8179eb4392915fa0d088ff495
+    type: 2
+  <Power>k__BackingField: 50
+  <Recoil>k__BackingField: 0.5
+  <RoundsBeforeFirstEffectNonVolatile>k__BackingField: 0
+  <RoundsBeforeFirstEffectVolatile>k__BackingField: 0
+  <Sound>k__BackingField:
+    fileID: 8300000
+    guid: 8e76abe5e5cc2a74ba948ebd9c3f625d
+    type: 3
+  <SpecialUsageText>k__BackingField: "<attacking-pkmn-name> hat keine Attacken mehr\
+    \ \xFCbrig!|<default-usage-text>"
+  <StatModifiersSelf>k__BackingField:
+    keys: null
+    values: null
+  <StatModifiersTarget>k__BackingField:
+    keys: null
+    values: null
+  <StatusNonVolatileInflictedSelf>k__BackingField:
+    fileID: 0
+  <StatusNonVolatileInflictedTarget>k__BackingField:
+    fileID: 0
+  <StatusNonVolatileInflictedTargetChance>k__BackingField: 1
+  <StatusVolatileInflictedSelf>k__BackingField:
+    fileID: 0
+  <StatusVolatileInflictedTarget>k__BackingField:
+    fileID: 0
+  <StatusVolatileInflictedTargetChance>k__BackingField: 1
+  <UsesCryForSound>k__BackingField: 0
+  m_CorrespondingSourceObject:
+    fileID: 0
+  m_EditorClassIdentifier: null
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c, type: 3}
+  m_Enabled: 1
+  m_GameObject:
+    fileID: 0
   m_Name: Verzweifler
-  m_EditorClassIdentifier: 
-  Id: 1711a5e7-94c9-4b34-90f6-0c68090319d4
-  fullName: Verzweifler
-  description: 
-  pokeType: {fileID: 11400000, guid: df744fd8179eb4392915fa0d088ff495, type: 2}
-  maxPP: 0
-  power: 50
-  accuracy: -1
-  statusNonVolatileInflictedTarget: {fileID: 0}
-  statusNonVolatileInflictedSelf: {fileID: 0}
-  statusVolatileInflictedTarget: {fileID: 0}
-  statusVolatileInflictedSelf: {fileID: 0}
-  statModifiersSelf:
-    keys: 
-    values: 
-  statModifiersTarget:
-    keys: 
-    values: 
-  category: {fileID: 11400000, guid: 72a8a7b706eae414f865696998d0a328, type: 2}
-  animationClipPlayer: {fileID: 7400000, guid: fc4031a1273054fe8a29e835226a362b, type: 2}
-  animationClipOpponent: {fileID: 7400000, guid: 8b5b0e11df68479439ec874472e33b64,
-    type: 2}
-  sound: {fileID: 8300000, guid: 8e76abe5e5cc2a74ba948ebd9c3f625d, type: 3}
-  usesCryForSound: 0
-  hasSpecialUsageText: 1
-  specialUsageText: "<attacking-pkmn-name> hat keine Attacken mehr \xFCbrig!|<default-usage-text>"
-  recoil: 0.5
+  m_ObjectHideFlags: 0
+  m_PrefabAsset:
+    fileID: 0
+  m_PrefabInstance:
+    fileID: 0
+  m_Script:
+    fileID: 11500000
+    guid: b1ad4e1adf674fb4c84e18fd7a0d4f6c
+    type: 3

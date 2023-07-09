@@ -26,6 +26,14 @@ SKIP_KEYS = [
     "Id",
 ]
 
+INTERFACE_VALUE_KEYS = [
+    "levelToMoveDataMap"
+]
+
+INTERFACE_KEY_KEYS = [
+    "effectiveness"
+]
+
 def load_yaml(path):
     with open(path, 'r') as file:
         file.readline()
@@ -67,25 +75,45 @@ for path in paths:
     # print("")
     # print(old_data)
 
-
     for key in old_data[WRAPPER_KEY]:
         if key in SKIP_KEYS:
             continue
 
-        key_new = old_key_to_new(key)
-
-        if key_new not in new_data[WRAPPER_KEY]:
-            if key in new_data[WRAPPER_KEY]:
-                key_new = key
+        if key == "effectiveness":
+            key_new = "Effectiveness"
+        else:
+            if "Data/Pokemon" in old_path and key == "fullName":
+                key_new = old_key_to_new("speciesName")
             else:
-                print(path)
-                print("\tNot found:", key_new, key)
-                continue
+                key_new = old_key_to_new(key)
 
-        new_data[WRAPPER_KEY][key_new] = old_data[WRAPPER_KEY][key]
+            if key_new not in new_data[WRAPPER_KEY]:
+                if key in new_data[WRAPPER_KEY]:
+                    key_new = key
+                else:
+                    print(path)
+                    print("\tNot found:", key_new, key)
+                    continue
+
+        value = old_data[WRAPPER_KEY][key]
+
+        if value is None:
+            value = ""
+        elif key in INTERFACE_VALUE_KEYS:
+            entries = []
+            for entry in value["values"]:
+                entries.append({"_underlyingValue": entry})
+            value = {"keys": value["keys"], "valuesInterface": entries}
+        elif key in INTERFACE_KEY_KEYS:
+            entries = []
+            for entry in value["keys"]:
+                entries.append({"_underlyingValue": entry})
+            value = {"values": value["values"], "keysInterface": entries}
+
+        new_data[WRAPPER_KEY][key_new] = value
         
 
     save_yaml(done_path, new_data)
-    save_yaml(old_path, new_data)
+    save_yaml(new_path, new_data)
 
 
