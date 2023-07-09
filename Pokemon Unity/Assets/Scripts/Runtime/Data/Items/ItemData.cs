@@ -25,18 +25,18 @@ public class ItemData : BaseScriptableObject
     public StatusEffectNonVolatileData nonVolatileStatusHealed;
     public StatusEffectVolatileData volatileStatusHealed;
 
-    public bool canBeUsedOnOwnPokemon => category == ItemCategory.Medicine || category == ItemCategory.Food;
+    public bool CanBeUsedOnOwnPokemon => category == ItemCategory.Medicine || category == ItemCategory.Food;
     public string Description => moveLearned is null ? description : moveLearned.description;
-    public bool healsHP => healsHPFully || hpHealed > 0;
-    public bool healsHPOnly => !healsStatusEffectsNonVolatile && healsHP;
+    public bool HealsHP => healsHPFully || hpHealed > 0;
+    public bool HealsHPOnly => !HealsStatusEffectsNonVolatile && HealsHP;
 
-    public bool healsStatusEffectsNonVolatile => (healsAllStatusEffectsNonVolatile || !(nonVolatileStatusHealed is null));
-    public bool healsStatusEffectsNonVolatileOnly => !healsStatusEffectsVolatile && healsStatusEffectsNonVolatile && !healsHP;
+    public bool HealsStatusEffectsNonVolatile => (healsAllStatusEffectsNonVolatile || !(nonVolatileStatusHealed is null));
+    public bool HealsStatusEffectsNonVolatileOnly => !HealsStatusEffectsVolatile && HealsStatusEffectsNonVolatile && !HealsHP;
     public bool HealsStatusEffectNonVolatile(StatusEffect statusEffect)
         => !(statusEffect is null) && (healsAllStatusEffectsNonVolatile || nonVolatileStatusHealed == statusEffect.data);
 
-    public bool healsStatusEffectsVolatile => (healsAllStatusEffectsVolatile || !(volatileStatusHealed is null));
-    public bool healsStatusEffectsVolatileOnly => !healsAllStatusEffectsNonVolatile && healsStatusEffectsVolatile && !healsHP;
+    public bool HealsStatusEffectsVolatile => (healsAllStatusEffectsVolatile || !(volatileStatusHealed is null));
+    public bool HealsStatusEffectsVolatileOnly => !healsAllStatusEffectsNonVolatile && HealsStatusEffectsVolatile && !HealsHP;
     public bool HealsStatusEffectVolatile(List<StatusEffect> statusEffects)
     {
         if (healsAllStatusEffectsVolatile)

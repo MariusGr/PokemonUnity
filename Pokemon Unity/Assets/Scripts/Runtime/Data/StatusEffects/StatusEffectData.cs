@@ -28,8 +28,8 @@ public abstract class StatusEffectData : BaseScriptableObject
     public float catchRateBonus = 1f;
     public List<PokemonTypeData> immuneTypes;
 
-    public bool isVolatile => GetType() == typeof(StatusEffectVolatileData);
-    public bool isNonVolatile => GetType() == typeof(StatusEffectNonVolatileData);
+    public bool IsVolatile => GetType() == typeof(StatusEffectVolatileData);
+    public bool IsNonVolatile => GetType() == typeof(StatusEffectNonVolatileData);
 
     public int GetDamageAgainstSelf(Pokemon pokemon)
         => powerOfSelfInflictedDamagePerRound < 1 ? 0 : (int)Mathf.Max(0, Mathf.Floor(

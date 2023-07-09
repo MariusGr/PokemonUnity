@@ -809,8 +809,8 @@ public class BattleManager : MonoBehaviour
         // TODO Animation
         Pokemon targetPokemon = GetActivePokemon(targetIndex);
         if (statusEffect is null ||
-            statusEffect.isNonVolatile && !(targetPokemon.statusEffectNonVolatile is null) ||
-            statusEffect.isVolatile && targetPokemon.HasStatusEffectVolatile(statusEffect)
+            statusEffect.IsNonVolatile && !(targetPokemon.statusEffectNonVolatile is null) ||
+            statusEffect.IsVolatile && targetPokemon.HasStatusEffectVolatile(statusEffect)
         )
             yield break;
 

@@ -378,7 +378,7 @@ public class Pokemon
 
     public void InflictWaitingStatusEffect(WaitingStatusEffect statusEffect)
     {
-        if (statusEffect.data.isNonVolatile)
+        if (statusEffect.data.IsNonVolatile)
             waitingStatusEffectsNonVolatile.Add(statusEffect);
         else
             waitingStatusEffectsVolatile.Add(statusEffect);
@@ -422,9 +422,9 @@ public class Pokemon
 
     public void InflictStatusEffect(StatusEffectData statusEffect)
     {
-        if (statusEffect.isVolatile)
+        if (statusEffect.IsVolatile)
             InflictStatusVolatileEffect((StatusEffectVolatileData)statusEffect);
-        else if (statusEffect.isNonVolatile)
+        else if (statusEffect.IsNonVolatile)
             InflictStatusNonVolatileEffect((StatusEffectNonVolatileData)statusEffect);
     }
 
@@ -485,9 +485,9 @@ public class Pokemon
     public void HealHPFully() => hp = maxHp;
     public void HealStatus(StatusEffect statusEffect)
     {
-        if (statusEffect.data.isVolatile)
+        if (statusEffect.data.IsVolatile)
             HealStatusEffectVolatile(statusEffect);
-        else if (statusEffect.data.isNonVolatile)
+        else if (statusEffect.data.IsNonVolatile)
             HealStatusEffectNonVolatile(statusEffect.data);
     }
 
