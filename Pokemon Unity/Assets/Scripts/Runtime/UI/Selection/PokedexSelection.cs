@@ -12,7 +12,7 @@ public class PokedexSelection : ScrollSelection
     [SerializeField] Image selectedType2;
     [SerializeField] Sprite unknownType;
 
-    public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
+    public override void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         DexEntryData[] dexList = new DexEntryData[PokemonData.Count];
         for (int i = 0; i < dexList.Length; i++)

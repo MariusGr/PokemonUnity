@@ -8,10 +8,10 @@ public class ClosableView : InputConsumer
     [SerializeField] AudioClip openSound;
     [SerializeField] AudioClip closeSound;
 
-    protected Action<ISelectableUIElement, bool> callback;
+    protected Action<SelectableUIElement, bool> callback;
 
     public override void Open() => Open(null);
-    public virtual void Open(Action<ISelectableUIElement, bool> callback)
+    public virtual void Open(Action<SelectableUIElement, bool> callback)
     {
         this.callback = callback;
         base.Open();

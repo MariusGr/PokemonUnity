@@ -2,13 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GlobalDialogBox : DialogBox, IDialogBox
+public class GlobalDialogBox : DialogBox
 {
-    static public DialogBox Instance;
+    new static public GlobalDialogBox Instance;
 
-    public GlobalDialogBox()
-    {
-        Instance = this;
-        Services.Register(this as IDialogBox);
-    }
+    public GlobalDialogBox() => Instance = this;
 }

@@ -8,13 +8,11 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     override public CharacterData CharacterData => playerData;
 
     private InputData input = new InputData();
-    private IPauseUI pauseUI;
     private Door currentEntrance = null;
 
     private void Start()
     {
         InputManager.Instance.Register(this);
-        pauseUI = Services.Get<IPauseUI>();
         DebugExtensions.DebugExtension.Log(playerData.pokemons);
         SignUpForPause();
     }
@@ -43,7 +41,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
         if (input.submit.pressed && !character.Movement.moving)
             character.TryInteract();
         else if (input.start.pressed && !character.Movement.moving)
-            pauseUI.Open();
+            PauseUI.Instance.Open();
 
         return false;
     }

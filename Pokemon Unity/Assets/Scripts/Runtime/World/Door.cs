@@ -36,7 +36,7 @@ public class Door : MonoBehaviour, IInteractable
 
     private IEnumerator ShowMessage()
     {
-        yield return Services.Get<IDialogBox>().DrawText("Abgeschlossen.", closeAfterFinish: true);
+        yield return DialogBox.Instance.DrawText("Abgeschlossen.", closeAfterFinish: true);
         EventManager.Unpause();
     }
 
@@ -52,9 +52,9 @@ public class Door : MonoBehaviour, IInteractable
 
     private IEnumerator EnterCoroutine()
     {
-        yield return Services.Get<IFadeBlack>().FadeToBlack();
+        yield return FadeBlack.Instance.FadeToBlack();
         PlayerCharacter.Instance.TravelToEntrance(otherSide);
-        yield return Services.Get<IFadeBlack>().FadeFromBlack();
+        yield return FadeBlack.Instance.FadeFromBlack();
         EventManager.Unpause();
     }
 }

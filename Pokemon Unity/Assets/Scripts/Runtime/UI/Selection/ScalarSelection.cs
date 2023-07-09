@@ -11,10 +11,10 @@ public class ScalarSelection : SelectionWindow
 
     private Func<InputData, bool> otherAxisInputCallback;
 
-    public void Open(Action<ISelectableUIElement, bool> callback, int startSelection, Func<InputData, bool> otherAxisInputCallback)
+    public void Open(Action<SelectableUIElement, bool> callback, int startSelection, Func<InputData, bool> otherAxisInputCallback)
         => Open(callback, false, startSelection, otherAxisInputCallback);
 
-    public void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection, Func<InputData, bool> otherAxisInputCallback)
+    public void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection, Func<InputData, bool> otherAxisInputCallback)
     {
         this.otherAxisInputCallback = otherAxisInputCallback;
         base.Open(callback, forceSelection, startSelection);

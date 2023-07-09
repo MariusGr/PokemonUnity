@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RegionUI : MonoBehaviour, IRegionUI
+public class RegionUI : MonoBehaviour
 {
+    public static RegionUI Instance;
+
     [SerializeField] new Animation animation;
     [SerializeField] RectTransform boxTransform;
     [SerializeField] ShadowedText text;
 
-    public RegionUI() => Services.Register(this as IRegionUI);
+    public RegionUI() => Instance = this;
 
     private void Start()
     {

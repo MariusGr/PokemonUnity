@@ -25,7 +25,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
 
     override public void Initialize()
     {
-        Services.Get<ISaveGameManager>().Register(this);
+        SaveGameManager.Instance.Register(this);
     }
 
     public void Interact(Character player)
@@ -33,7 +33,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
         if (wantsToBattle && npcData.hasBeenDefeated)
         {
             character.Movement.LookInPlayerDirection();
-            Services.Get<IDialogBox>().DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true);
+            DialogBox.Instance.DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true);
         }
         else
         {
@@ -44,7 +44,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
             else
             {
                 character.Movement.LookInPlayerDirection();
-                Services.Get<IDialogBox>().DrawText(npcData.defaultText, DialogBoxContinueMode.User, true);
+                DialogBox.Instance.DrawText(npcData.defaultText, DialogBoxContinueMode.User, true);
             }
         }
     }
@@ -67,8 +67,8 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
         yield return MoveToPosition(player.position, direction, 1);
 
         player.Movement.LookInDirection(-direction);
-        yield return Services.Get<IDialogBox>().DrawText(npcData.challengeText, DialogBoxContinueMode.User, true);
-        Services.Get<IBattleManager>().StartNewBattle(player.characterData, npcData, BattleEndReaction);
+        yield return DialogBox.Instance.DrawText(npcData.challengeText, DialogBoxContinueMode.User, true);
+        BattleManager.Instance.StartNewBattle(player.characterData, npcData, BattleEndReaction);
     }
 
     public bool BattleEndReaction(bool npcDefeated)
@@ -76,7 +76,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
         battlingNPCs.Remove(this);
 
         if (npcDefeated)
-            Services.Get<IDialogBox>().DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
+            DialogBox.Instance.DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
         else
             transform.position = character.startPosition;
 

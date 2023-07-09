@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class SelectionWindow : ClosableView, ISelectionWindow
+public abstract class SelectionWindow : ClosableView
 {
     [SerializeField] protected SelectableUIElement[] elements;
     [SerializeField] private AudioClip selectSound;
 
-    protected ISelectableUIElement[] _elements;
+    protected SelectableUIElement[] _elements;
 
-    public ISelectableUIElement selectedElement => _elements is null ? null : _elements[selectedIndex];
+    public SelectableUIElement selectedElement => _elements is null ? null : _elements[selectedIndex];
 
     public int selectedIndex { get; protected set; } = 0;
 
     private bool forceSelection = false;
 
     public override void Open() => Open(null, false, 0);
-    public override void Open(Action<ISelectableUIElement, bool> callback) => Open(callback, false, 0);
-    public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, 0);
-    public virtual void Open(Action<ISelectableUIElement, bool> callback, int startSelection) => Open(callback, false, startSelection);
-    public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
+    public override void Open(Action<SelectableUIElement, bool> callback) => Open(callback, false, 0);
+    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, 0);
+    public virtual void Open(Action<SelectableUIElement, bool> callback, int startSelection) => Open(callback, false, startSelection);
+    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         this.forceSelection = forceSelection;
 
@@ -74,7 +74,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
     public virtual void AssignElements() => AssignElements(new object[elements.Length]);
     public virtual void AssignElements(object[] payloads)
     {
-        _elements = new ISelectableUIElement[elements.Length];
+        _elements = new SelectableUIElement[elements.Length];
 
         for (int i = 0; i < payloads.Length; i++)
         {
@@ -105,7 +105,7 @@ public abstract class SelectionWindow : ClosableView, ISelectionWindow
         SfxHandler.Play(selectSound);
     }
 
-    virtual protected void SelectElement(ISelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.GetIndex());
+    virtual protected void SelectElement(SelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.GetIndex());
     virtual protected void ChooseSelectedElement() => callback?.Invoke(selectedElement, false);/* TODO sound*/
     public void DeselectSelection() => selectedElement.Deselect();
 

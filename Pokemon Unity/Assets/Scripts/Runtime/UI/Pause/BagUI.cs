@@ -19,7 +19,7 @@ public class BagUI : ItemSelection
     private int choosenItemViewIndex = -1;
     private bool inBattle = false;
 
-    public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
+    public override void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         AssignElements();
         partySelection.Open(null, -1, ProcessInput);
@@ -29,7 +29,7 @@ public class BagUI : ItemSelection
         choosenItemViewIndex = -1;
     }
 
-    public void OpenBattle(Action<ISelectableUIElement, bool> callback)
+    public void OpenBattle(Action<SelectableUIElement, bool> callback)
     {
         Open(callback);
         inBattle = true;
@@ -136,7 +136,7 @@ public class BagUI : ItemSelection
         return false;
     }
 
-    private void ChooseItem(ISelectableUIElement selection, bool goBack)
+    private void ChooseItem(SelectableUIElement selection, bool goBack)
     {
         if (HandleGoBack(goBack) || !selection.IsAssigned())
             return;
@@ -144,14 +144,14 @@ public class BagUI : ItemSelection
         StartCoroutine(ChooseItemCoroutine(selection));
     }
 
-    private IEnumerator ChooseItemCoroutine(ISelectableUIElement selection)
+    private IEnumerator ChooseItemCoroutine(SelectableUIElement selection)
     {
         ItemBagListEntryUI entry = (ItemBagListEntryUI)selection;
         if (inBattle && entry.item.data.usableOnBattleOpponent)
         {
             if (entry.item.data.catchesPokemon)
             {
-                if (!Services.Get<IBattleManager>().OpponentIsWild())
+                if (!BattleManager.Instance.OpponentIsWild())
                 {
                     yield return GlobalDialogBox.Instance.DrawText(
                         "Du kannst keine Bälle in einem Trainer-Kampf verwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
@@ -175,7 +175,7 @@ public class BagUI : ItemSelection
         }
     }
 
-    private void ChoosePokemon(ISelectableUIElement selection, bool goBack)
+    private void ChoosePokemon(SelectableUIElement selection, bool goBack)
     {
         if (!activeItemSelection.itemHasBeenChoosen || HandleGoBack(goBack))
             return;

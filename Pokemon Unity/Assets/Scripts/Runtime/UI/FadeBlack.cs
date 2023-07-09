@@ -2,20 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FadeBlack : AnimatedSprite, IFadeBlack
+public class FadeBlack : AnimatedSprite
 {
+    public static FadeBlack Instance;
+
     [SerializeField] AnimationClip fadeToBlack;
     [SerializeField] AnimationClip fadeFromBlack;
 
-    FadeBlack() => Services.Register(this as IFadeBlack);
-
-    public IEnumerator FadeToBlack()
-    {
-        return PlayAnimation(fadeToBlack);
-    }
-
-    public IEnumerator FadeFromBlack()
-    {
-        return PlayAnimation(fadeFromBlack);
-    }
+    FadeBlack() => Instance = this;
+    public IEnumerator FadeToBlack() => PlayAnimation(fadeToBlack);
+    public IEnumerator FadeFromBlack() => PlayAnimation(fadeFromBlack);
 }

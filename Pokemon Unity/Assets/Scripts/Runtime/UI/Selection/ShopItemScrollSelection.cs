@@ -9,7 +9,7 @@ public class ShopItemScrollSelection : ItemScrollSelection
 
     private Action<ItemData> selectedCallback;
 
-    public void Open(Action<ISelectableUIElement, bool> callback, Action<ItemData> selectedCallback)
+    public void Open(Action<SelectableUIElement, bool> callback, Action<ItemData> selectedCallback)
     {
         this.selectedCallback = selectedCallback;
         base.Open(callback);

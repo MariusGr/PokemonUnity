@@ -15,7 +15,7 @@ public class ScrollSelection : ScalarSelection
     private int scrollDownStart;
     private int scrollUpStart;
 
-    public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
+    public override void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         viewFrameStart = 0;
         base.Open(callback, forceSelection, startSelection);

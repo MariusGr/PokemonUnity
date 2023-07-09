@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
 
-public class PlayerCharacter : Character, IPlayerCharacter, ISavable
+public class PlayerCharacter : Character, ISavable
 {
     public static PlayerCharacter Instance { get; private set; }
     
@@ -12,24 +12,14 @@ public class PlayerCharacter : Character, IPlayerCharacter, ISavable
     private PlayerData playerData => (PlayerData)characterData;
     private CharacterControllerPlayer playerController => (CharacterControllerPlayer)Controller;
 
-    public PlayerCharacter()
-    {
-        Instance = this;
-        Services.Register(this as IPlayerCharacter);
-    }
+    public PlayerCharacter() => Instance = this;
 
     private void Awake() => Initialize();
-
-    protected override void Initialize()
-    {
-        base.Initialize();
-        Services.Get<ISaveGameManager>().Register(this);
-    }
 
     public Coroutine Defeat() => StartCoroutine(DefeatCoroutine());
     private IEnumerator DefeatCoroutine()
     {
-        yield return Services.Get<IDialogBox>().DrawText($"Tja... ab ins Poke-Center. Schei?e gelaufen...", DialogBoxContinueMode.User, closeAfterFinish: true);
+        yield return DialogBox.Instance.DrawText($"Tja... ab ins Poke-Center. Schei?e gelaufen...", DialogBoxContinueMode.User, closeAfterFinish: true);
         PlayerData.Instance.HealAllPokemons();
         transform.position = playerData.lastPokeCenterEntrance.position;
         Movement.LookInDirection(Direction.Down);

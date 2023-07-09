@@ -5,30 +5,16 @@ using SimpleJSON;
 using System;
 using System.IO;
 
-public class SaveGameManager : MonoBehaviour, ISaveGameManager
+public class SaveGameManager : MonoBehaviour
 {
     public static SaveGameManager Instance;
 
     private string path => Application.persistentDataPath + "/savegame.sav";
     private Dictionary<string, ISavable> savables = new Dictionary<string, ISavable>();
 
-    //public static JSONArray vector3ToJSON()
-
-    public SaveGameManager()
-    {
-        Instance = this;
-        Services.Register(this as ISaveGameManager);
-    }
-
-    private void Start()
-    {
-        LoadGame();
-    }
-
-    public void Register(ISavable savable)
-    {
-        savables[savable.GetKey()] = savable;
-    }
+    public SaveGameManager() => Instance = this;
+    private void Start() => LoadGame();
+    public void Register(ISavable savable) => savables[savable.GetKey()] = savable;
 
     public void InitializeJSON()
     {

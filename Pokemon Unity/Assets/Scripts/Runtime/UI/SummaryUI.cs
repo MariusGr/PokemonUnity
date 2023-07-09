@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
+public class SummaryUI : PlayerPokemonStatsBattleUI
 {
     [SerializeField] Image pokemonImage;
     [SerializeField] ShadowedText dexNoText;
@@ -58,7 +58,7 @@ public class SummaryUI : PlayerPokemonStatsBattleUI, IUIView
         RefreshMoveSelection(moveSelection.selectedElement.GetPayload());
     }
 
-    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback) => moveSelection.Open(callback);
+    public void OpenMoveSelection(System.Action<SelectableUIElement, bool> callback) => moveSelection.Open(callback);
 
     public void CloseMoveSelection()
     {

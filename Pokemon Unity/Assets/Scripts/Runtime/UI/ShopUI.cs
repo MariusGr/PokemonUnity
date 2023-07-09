@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShopUI : ItemSelection, IShopUI
+public class ShopUI : ItemSelection
 {
+    public static ShopUI Instance;
+
     [SerializeField] private DialogBox dialogBox;
     [SerializeField] private ShopItemScrollSelection itemSelection;
     [SerializeField] private TextCycleSelection cycleSelection;
@@ -12,14 +14,14 @@ public class ShopUI : ItemSelection, IShopUI
     [SerializeField] private ShadowedText inBagCountText;
     [SerializeField] private AudioClip buySound;
 
-    public ShopUI() => Services.Register(this as IShopUI);
+    public ShopUI() => Instance = this;
 
     private ItemData chosenItem;
 
     private void RefreshMoney() => moneyText.text = $"\n{Money.FormatMoneyToString(PlayerData.Instance.money)}";
     private void RefreshInBagCount(ItemData item) => inBagCountText.text = $"\nx  {PlayerData.Instance.GetItemCount(item)}";
 
-    public void Open(Action<ISelectableUIElement, bool> callback, ItemData[] items)
+    public void Open(Action<SelectableUIElement, bool> callback, ItemData[] items)
     {
         Open(callback);
         RefreshMoney();
@@ -35,7 +37,7 @@ public class ShopUI : ItemSelection, IShopUI
     }
 
     private void SelectItem(ItemData item) => RefreshInBagCount(item);
-    private void ChooseItem(ISelectableUIElement selection, bool goBack)
+    private void ChooseItem(SelectableUIElement selection, bool goBack)
     {
         if (goBack)
         {
@@ -48,7 +50,7 @@ public class ShopUI : ItemSelection, IShopUI
         cycleSelection.Open(ChooseQuantity, chosenItem.price);
     }
 
-    private void ChooseQuantity(ISelectableUIElement selection, bool goBack)
+    private void ChooseQuantity(SelectableUIElement selection, bool goBack)
     {
         if (goBack)
         {

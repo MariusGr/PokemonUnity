@@ -19,12 +19,12 @@ public class CharacterControllerPokecenterAI : CharacterControllerBase, IInterac
 
     private IEnumerator HealCoroutine()
     {
-        yield return Services.Get<IDialogBox>().DrawText(greetingText, DialogBoxContinueMode.User, true);
-        Services.Get<IDialogBox>().DrawText("Geht los!", DialogBoxContinueMode.External, true);
+        yield return DialogBox.Instance.DrawText(greetingText, DialogBoxContinueMode.User, true);
+        DialogBox.Instance.DrawText("Geht los!", DialogBoxContinueMode.External, true);
         PlayerData.Instance.HealAllPokemons();
         BgmHandler.Instance.PlayMFX(healMusic);
         yield return new WaitForSeconds(healMusic.length);
         EventManager.Unpause();
-        Services.Get<IDialogBox>().DrawText(byeText, DialogBoxContinueMode.User, true);
+        DialogBox.Instance.DrawText(byeText, DialogBoxContinueMode.User, true);
     }
 }

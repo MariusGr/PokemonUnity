@@ -9,7 +9,7 @@ public class SelectableItemQuantity : SelectableUIElement
 
     public float GetTotalPrice() => basePrice * count;
     public string GetTotalPriceString() => Money.FormatMoneyToString(GetTotalPrice());
-    public override ISelectableUIElement GetNeighbour(Direction direction) => null;
+    public override SelectableUIElement GetNeighbour(Direction direction) => null;
     public override void AssignElement(object payload)
     {
         basePrice = (float)payload;

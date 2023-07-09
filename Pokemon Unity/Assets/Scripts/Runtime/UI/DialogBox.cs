@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class DialogBox : MonoBehaviour, IInputConsumer
 {
+    public static DialogBox Instance;
+
     [SerializeField] Transform dialogBoxT;
     [SerializeField] Transform dialogBoxTrn;
 
@@ -46,6 +48,8 @@ public class DialogBox : MonoBehaviour, IInputConsumer
         { Effectiveness.Weak, "Es ist nicht sehr effektiv..." },
         { Effectiveness.Normal, "" },
     };
+
+    public DialogBox() => Instance = this;
 
     void Awake()
     {

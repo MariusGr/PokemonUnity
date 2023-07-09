@@ -12,16 +12,16 @@ public class PartySelection : SelectionGraphWindow
     private void DrawIntroText() => GlobalDialogBox.Instance.DrawText("W?hle ein Pokemon.", DialogBoxContinueMode.External, lines: 1);
 
     public virtual void Open(bool battle, bool forceSelection) => Open(null, forceSelection, 0, battle);
-    public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, bool battle) => Open(callback, forceSelection, 0, battle);
-    public virtual void Open(Action<ISelectableUIElement, bool> callback, int startSelection, bool battle) => Open(callback, false, startSelection, battle);
+    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, bool battle) => Open(callback, forceSelection, 0, battle);
+    public virtual void Open(Action<SelectableUIElement, bool> callback, int startSelection, bool battle) => Open(callback, false, startSelection, battle);
 
-    public virtual void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection, bool battle)
+    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection, bool battle)
     {
         this.battle = battle;
         Open(callback, forceSelection, startSelection);
     }
 
-    public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
+    public override void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         AssignElements(PlayerData.Instance.pokemons.ToArray());
         base.Open(callback, forceSelection, startSelection);
@@ -47,7 +47,7 @@ public class PartySelection : SelectionGraphWindow
             base.GoBack();
     }
 
-    private void CloseSummary(ISelectableUIElement selection, bool goBack)
+    private void CloseSummary(SelectableUIElement selection, bool goBack)
     {
         if (goBack)
             SummarySelection.Instance.Close();

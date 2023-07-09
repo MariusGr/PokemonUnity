@@ -16,13 +16,13 @@ public class SummarySelection : ScalarSelection
 
     public SummarySelection() => Instance = this;
 
-    public override void Open(Action<ISelectableUIElement, bool> callback, int pokemonIndex)
+    public override void Open(Action<SelectableUIElement, bool> callback, int pokemonIndex)
     {
         SetPokemon(pokemonIndex);
         Open(callback);
     }
 
-    public override void Open(Action<ISelectableUIElement, bool> callback)
+    public override void Open(Action<SelectableUIElement, bool> callback)
     {
         ui.Open();
         base.Open(callback);
@@ -48,7 +48,7 @@ public class SummarySelection : ScalarSelection
             GoBack();
     }
 
-    private void ChooseMove(ISelectableUIElement selection, bool goBack)
+    private void ChooseMove(SelectableUIElement selection, bool goBack)
     {
         if(goBack)
         {

@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class ItemPawn : MonoBehaviour, IInteractable, ISavable
 {
+    public static ItemPawn Instance;
+
     [SerializeField] Item item;
     [SerializeField] AudioClip pickUpMusic;
 
-    private void Awake()
-    {
-        Services.Get<ISaveGameManager>().Register(this);
-    }
+    public ItemPawn() => Instance = this;
 
     public string GetKey()
     {
@@ -45,10 +44,10 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
     {
         PlayerData.Instance.GiveItem(item);
         BgmHandler.Instance.PlayMFX(pickUpMusic);
-        Services.Get<IDialogBox>().DrawText(
+        DialogBox.Instance.DrawText(
             $"{player.characterData.name} findet {item.data.name}!", DialogBoxContinueMode.External);
         yield return new WaitForSeconds(pickUpMusic.length);
-        Services.Get<IDialogBox>().Close();
+        DialogBox.Instance.Close();
         gameObject.SetActive(false);
         EventManager.Unpause();
     }

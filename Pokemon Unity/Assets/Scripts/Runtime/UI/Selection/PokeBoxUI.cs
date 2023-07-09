@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
+public class PokeBoxUI : NestedGallerySelection
 {
+    public static PokeBoxUI Instance;
+
     [SerializeField] ScalarSelection partySelection;
     [SerializeField] ScrollSelection boxSelection;
     [SerializeField] SelectableUIElement partySelectableElement;
@@ -14,16 +16,16 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
     private Pokemon chosenBoxPokemon;
     private string notEnoughAlivePokemonsErrorMessage = "Du musst mindestens ein unbesiegtes Pokémon im Team behalten!";
 
-    public PokeBoxUI() => Services.Register(this as IPokeBoxUI);
+    public PokeBoxUI() => Instance = this;
 
     private bool BoxIsEmpty() => PlayerData.Instance.pokemonsInBox.Count < 1;
 
-    public override void Open(Action<ISelectableUIElement, bool> callback)
+    public override void Open(Action<SelectableUIElement, bool> callback)
     {
         Open(callback, false, 1);
     }
 
-    public override void Open(Action<ISelectableUIElement, bool> callback, bool forceSelection, int startSelection)
+    public override void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         AssignElements();
         partySelection.Open(null, false, -1);
@@ -70,7 +72,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
             activeSelection.Open(ChooseBoxPokemon, activeSelection.selectedIndex, ProcessInput);
     }
 
-    private void ChooseBoxPokemon(ISelectableUIElement selection, bool goBack)
+    private void ChooseBoxPokemon(SelectableUIElement selection, bool goBack)
     {
         if (!(selection is null))
         {
@@ -94,7 +96,7 @@ public class PokeBoxUI : NestedGallerySelection, IPokeBoxUI
         ChoosePokemon(chosenBoxPokemon, goBack);
     }
 
-    private void ChoosePartyPokemon(ISelectableUIElement selection, bool goBack)
+    private void ChoosePartyPokemon(SelectableUIElement selection, bool goBack)
     {
         if (!(selection is null))
         {

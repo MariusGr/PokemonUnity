@@ -9,7 +9,7 @@ public class TextCycleSelection : ScalarSelection
 
     private SelectableItemQuantity selectedQuantity => (SelectableItemQuantity)selectedElement;
 
-    public void Open(Action<ISelectableUIElement, bool> callback, float price)
+    public void Open(Action<SelectableUIElement, bool> callback, float price)
     {
         AssignElements(price);
         base.Open(callback);

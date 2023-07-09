@@ -10,10 +10,6 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
 
     public override CharacterData CharacterData { get => null; }
 
-    private IShopUI shopUI;
-
-    private void Awake() => shopUI = Services.Get<IShopUI>();
-
     public void Interact(Character player)
     {
         EventManager.Pause();
@@ -23,14 +19,14 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
 
     private IEnumerator ShopCoroutine()
     {
-        yield return Services.Get<IDialogBox>().DrawText(greetingText, DialogBoxContinueMode.User, true);
-        shopUI.Open(CloseShop, items);
+        yield return DialogBox.Instance.DrawText(greetingText, DialogBoxContinueMode.User, true);
+        ShopUI.Instance.Open(CloseShop, items);
     }
 
-    private void CloseShop(ISelectableUIElement selection, bool goBack)
+    private void CloseShop(SelectableUIElement selection, bool goBack)
     {
-        shopUI.Close();
+        ShopUI.Instance.Close();
         EventManager.Unpause();
-        Services.Get<IDialogBox>().DrawText(byeText, DialogBoxContinueMode.User, true);
+        DialogBox.Instance.DrawText(byeText, DialogBoxContinueMode.User, true);
     }
 }

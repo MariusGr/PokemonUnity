@@ -1,13 +1,15 @@
 using UnityEngine;
 
-public class PauseUI : SelectionGraphWindow, IPauseUI
+public class PauseUI : SelectionGraphWindow
 {
+    public static PauseUI Instance;
+
     [SerializeField] PokedexSelection dexView;
     [SerializeField] PartySelection partyView;
     [SerializeField] BagUI bagView;
     [SerializeField] SaveGameUI saveGameView;
 
-    public PauseUI() => Services.Register(this as IPauseUI);
+    public PauseUI() => Instance = this;
 
     private void Awake()
     {
@@ -16,7 +18,7 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
 
     public override void Open()
     {
-        Open((ISelectableUIElement selection, bool goBack) =>
+        Open((SelectableUIElement selection, bool goBack) =>
         {
             if (goBack || selection is null)
                 Close();
@@ -49,19 +51,19 @@ public class PauseUI : SelectionGraphWindow, IPauseUI
             saveGameView.Open(CloseSaveGameView);
     }
 
-    private void CloseDexView(ISelectableUIElement selection, bool goBack)
+    private void CloseDexView(SelectableUIElement selection, bool goBack)
     {
         if (goBack)
             dexView.Close();
     }
 
-    private void CloseBagView(ISelectableUIElement selection, bool goBack)
+    private void CloseBagView(SelectableUIElement selection, bool goBack)
     {
         if (goBack)
             bagView.Close();
     }
 
-    private void ClosePartyView(ISelectableUIElement selection, bool goBack)
+    private void ClosePartyView(SelectableUIElement selection, bool goBack)
     {
         if (goBack)
             partyView.Close();

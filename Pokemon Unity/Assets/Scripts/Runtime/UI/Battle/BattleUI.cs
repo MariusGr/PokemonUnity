@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleUI : InputConsumer, IBattleUI
+public class BattleUI : InputConsumer
 {
+    public static BattleUI Instance;
+
     [SerializeField] private Canvas canvas;
     [SerializeField] private BattleMenu battleMenu;
     [SerializeField] private PartySelection partySelection;
@@ -23,7 +25,7 @@ public class BattleUI : InputConsumer, IBattleUI
     private PokemonStatsUI[] stats;
     private PokemonSprite[] pokemonSprites;
 
-    public BattleUI() => Services.Register(this as IBattleUI);
+    public BattleUI() => Instance = this;
 
     private void Awake()
     {
@@ -124,13 +126,13 @@ public class BattleUI : InputConsumer, IBattleUI
     }
 
     public void OpenBattleMenu(System.Action<BattleOption, bool> callback)
-        => battleMenu.Open((ISelectableUIElement selection, bool goBack)
+        => battleMenu.Open((SelectableUIElement selection, bool goBack)
             => callback(selection is null ? BattleOption.None : ((BattleMenuButton)selection).option, false));
-    public void OpenPokemonSwitchSelection(System.Action<ISelectableUIElement, bool> callback, bool forceSelection)
+    public void OpenPokemonSwitchSelection(System.Action<SelectableUIElement, bool> callback, bool forceSelection)
         => partySelection.Open(callback, forceSelection: forceSelection, startSelection: PlayerData.Instance.GetFirstAlivePokemonIndex(), battle: true);
-    public void OpenBagSelection(System.Action<ISelectableUIElement, bool> callback)
+    public void OpenBagSelection(System.Action<SelectableUIElement, bool> callback)
         => bagSelection.OpenBattle(callback);
-    public void OpenMoveSelection(System.Action<ISelectableUIElement, bool> callback, Pokemon pokemon)
+    public void OpenMoveSelection(System.Action<SelectableUIElement, bool> callback, Pokemon pokemon)
     {
         moveSelectionUI.AssignElements(pokemon.moves.ToArray());
         moveSelectionUI.Open(callback);
