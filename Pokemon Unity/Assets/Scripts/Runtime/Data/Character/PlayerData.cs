@@ -71,6 +71,9 @@ public class PlayerData : CharacterData
 
     public bool HasCaughtPokemon(PokemonData pokemon) => caughtPokemons.Contains(pokemon);
     public bool HasSeenPokemon(PokemonData pokemon) => seenPokemons.Contains(pokemon);
+    public bool HasCaughtAllPokemons() => caughtPokemons.Count > 1;
+            //if (caughtPokemons.Count >= PokemonData.Count)
+            //TODO use this
 
     public void CatchPokemon(Pokemon pokemon)
     {

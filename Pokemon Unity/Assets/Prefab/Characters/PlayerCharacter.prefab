@@ -336,3 +336,5 @@ MonoBehaviour:
   controller: {fileID: 4499516146788302776}
   movement: {fileID: 7054229538022620670}
   animator: {fileID: 7239874394638884250}
+  caughtAllPokemonsStoryEvent: {fileID: 11400000, guid: a8285051db9844ae7a786fac70daabb2,
+    type: 2}

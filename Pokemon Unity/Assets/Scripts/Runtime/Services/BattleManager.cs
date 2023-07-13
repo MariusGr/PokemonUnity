@@ -83,7 +83,7 @@ public class BattleManager : MonoBehaviour
         evolvingPokemons = new HashSet<Pokemon>();
     }
 
-    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, Func<bool, bool> encounterEndtionCallback)
+    public void StartNewEncounter(CharacterData playerData, Pokemon wildPokemon, Action<bool> encounterEndtionCallback)
     {
         print("StartNewEncounter");
         this.wildPokemon = wildPokemon;
@@ -97,14 +97,14 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(StartNewEncounterCoroutine(encounterEndtionCallback));
     }
 
-    IEnumerator StartNewEncounterCoroutine(Func<bool, bool> encounterEndtionCallback)
+    IEnumerator StartNewEncounterCoroutine(Action<bool> encounterEndtionCallback)
     {
         yield return Reset();
         unfaintedPlayerPokemons[wildPokemon] = new HashSet<Pokemon>() { playerPokemon };
         yield return RoundCoroutine(encounterEndtionCallback);
     }
 
-    public void StartNewBattle(CharacterData playerData, NPCData opponentData, Func<bool, bool> npcBattleEndReactionCallback)
+    public void StartNewBattle(CharacterData playerData, NPCData opponentData, Action<bool> npcBattleEndReactionCallback)
     {
         print("StartNewBattle");
         opponentIsWild = false;
@@ -119,7 +119,7 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(StartNewBattleCoroutine(npcBattleEndReactionCallback));
     }
 
-    IEnumerator StartNewBattleCoroutine(Func<bool, bool> npcBattleEndReactionCallback)
+    IEnumerator StartNewBattleCoroutine(Action<bool> npcBattleEndReactionCallback)
     {
         yield return Reset();
 
@@ -140,7 +140,7 @@ public class BattleManager : MonoBehaviour
         state.Equals(BattleState.Ran) ||
         state.Equals(BattleState.OpponentCaught);
 
-    private IEnumerator EndBattle(Func<bool, bool> npcBattleEndReactionCallback)
+    private IEnumerator EndBattle(Action<bool> npcBattleEndReactionCallback)
     {
         // TODO: ui close animation
         DialogBox.Instance.Close();
@@ -154,7 +154,7 @@ public class BattleManager : MonoBehaviour
         npcBattleEndReactionCallback?.Invoke(state.Equals(BattleState.OpponentDefeated));
     }
 
-    private IEnumerator RoundCoroutine(Func<bool, bool> npcBattleEndReactionCallback)
+    private IEnumerator RoundCoroutine(Action<bool> npcBattleEndReactionCallback)
     {
         while (true)
         {

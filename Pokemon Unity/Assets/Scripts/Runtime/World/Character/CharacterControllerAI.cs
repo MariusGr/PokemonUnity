@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISavable
 {
-    private static List<CharacterControllerAI> battlingNPCs = new List<CharacterControllerAI>();
+    private static readonly List<CharacterControllerAI> battlingNPCs = new List<CharacterControllerAI>();
 
     public static bool CheckAllNPCVision()
     {
@@ -20,7 +20,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
     [SerializeField] public float challengeVisionDistance = 5f;
     [SerializeField] private AudioClip challengeMusicTrack;
 
-    public bool willChallengePlayer => wantsToBattle && !npcData.IsDefeated() && !npcData.hasBeenDefeated;
+    public bool WillChallengePlayer => wantsToBattle && !npcData.IsDefeated() && !npcData.hasBeenDefeated;
     override public CharacterData CharacterData => npcData;
 
     override public void Initialize()
@@ -71,7 +71,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
         BattleManager.Instance.StartNewBattle(player.characterData, npcData, BattleEndReaction);
     }
 
-    public bool BattleEndReaction(bool npcDefeated)
+    public void BattleEndReaction(bool npcDefeated)
     {
         battlingNPCs.Remove(this);
 
@@ -81,7 +81,6 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
             transform.position = character.startPosition;
 
         EventManager.Unpause();
-        return true;
     }
 
     public bool CheckChallengeVision()
@@ -137,14 +136,14 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
         JSONNode jsonData = json[GetKey()];
         npcData.hasBeenDefeated = jsonData["hasBeenDefeated"];
         character.LoadDefault();
-        if (willChallengePlayer)
+        if (WillChallengePlayer)
             battlingNPCs.Add(this);
     }
 
     public void LoadDefault()
     {
         character.LoadDefault();
-        if (willChallengePlayer)
+        if (WillChallengePlayer)
             battlingNPCs.Add(this);
     }
 }

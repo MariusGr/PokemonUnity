@@ -92,9 +92,11 @@ public class EncounterArea : MonoBehaviour
         BattleManager.Instance.StartNewEncounter(PlayerData.Instance, pokemon, EncounterEndReaction);
     }
 
-    public bool EncounterEndReaction(bool wildPokemonDefeated)
+    public void EncounterEndReaction(bool wildPokemonDefeated)
     {
         DialogBox.Instance.Close();
-        return true;
+
+        if (PlayerData.Instance.HasCaughtAllPokemons())
+            PlayerCharacter.Instance.OnCaughtAllPokemons();
     }
 }

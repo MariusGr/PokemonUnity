@@ -11,7 +11,6 @@ public class EventManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        Debug.Log(Screen.width + "  " + Screen.height);
         Screen.SetResolution(2960, 1440, FullScreenMode.FullScreenWindow);
     }
 

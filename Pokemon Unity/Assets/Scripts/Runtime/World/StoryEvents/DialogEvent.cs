@@ -10,5 +10,6 @@ public class DialogEvent : StoryEvent
     protected override void Invoke()
     {
         base.Invoke();
+        GlobalDialogBox.Instance.DrawText(text, DialogBoxContinueMode.User, true);
     }
 }

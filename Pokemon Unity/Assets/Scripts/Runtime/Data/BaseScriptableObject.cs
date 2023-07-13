@@ -53,7 +53,6 @@ public class BaseScriptableObject : ScriptableObject
             AssignNewUID();
         }
 
-        Debug.Log(Id);
         instances[Id] = this;
     }
 }

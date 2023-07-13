@@ -4,16 +4,17 @@ using UnityEngine;
 
 public abstract class StoryEvent : BaseScriptableObject
 {
-    private bool disabled = false;
+    private bool happened = false;
 
     public void TryInvoke()
     {
-        if (!disabled)
+        Debug.Log(happened);
+        if (!happened)
             Invoke();
     }
 
     virtual protected void Invoke()
     {
-        disabled = true;
+        happened = true;
     }
 }
