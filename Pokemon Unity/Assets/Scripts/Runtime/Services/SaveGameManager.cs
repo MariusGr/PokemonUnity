@@ -9,8 +9,9 @@ public class SaveGameManager : MonoBehaviour
 {
     public static SaveGameManager Instance;
 
-    private string path => Application.persistentDataPath + "/savegame.sav";
-    private Dictionary<string, ISavable> savables = new Dictionary<string, ISavable>();
+    [SerializeField] private bool removeSaveGame;
+    private string Path => Application.persistentDataPath + "/savegame.sav";
+    private readonly Dictionary<string, ISavable> savables = new Dictionary<string, ISavable>();
 
     public SaveGameManager() => Instance = this;
     private void Start() => LoadGame();
@@ -20,16 +21,16 @@ public class SaveGameManager : MonoBehaviour
     {
         try
         {
-            if (!File.Exists(path))
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
+            if (!File.Exists(Path))
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
 
-            File.WriteAllText(path, "{}");
+            File.WriteAllText(Path, "{}");
         }
         catch (Exception e)
         {
             Debug.LogWarning(string.Format(
                 "Could not access gesture json file {0}: {1}",
-                path,
+                Path,
                 e
             ));
         }
@@ -41,33 +42,31 @@ public class SaveGameManager : MonoBehaviour
     public void WriteJSON(JSONObject json)
     {
         string jsonString = json.ToString();
-        File.WriteAllText(path, jsonString);
-        Debug.Log($"Wrote to json {path}: {jsonString}");
+        File.WriteAllText(Path, jsonString);
+        Debug.Log($"Wrote to json {Path}: {jsonString}");
     }
 
     public JSONObject LoadFromJSON()
     {
-        string jsonText = "{}";
-
         // create file of non-existent
-        if (!File.Exists(path))
+        if (!File.Exists(Path) || removeSaveGame)
         {
             InitializeJSON();
             return null;
         }
 
         // read file if existent
-        jsonText = File.ReadAllText(path);
+        string jsonText = File.ReadAllText(Path);
 
         // Length of 3 is an estimated minimum length the file should have to be valid.
         // This length will be below that of the file is empty or has been non-existent.
-        if (File.ReadAllText(path).Length < 3)
+        if (File.ReadAllText(Path).Length < 3)
         {
             InitializeJSON();
             return null;
         }
 
-        Debug.Log($"Loading game from {path}...");
+        Debug.Log($"Loading game from {Path}...");
         return (JSONObject)JSON.Parse(jsonText);
     }
 

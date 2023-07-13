@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class ItemPawn : MonoBehaviour, IInteractable, ISavable
 {
-    public static ItemPawn Instance;
-
     [SerializeField] Item item;
     [SerializeField] AudioClip pickUpMusic;
 
-    public ItemPawn() => Instance = this;
+    private void Awake() => SaveGameManager.Instance.Register(this);
 
     public string GetKey()
     {
@@ -24,14 +22,8 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
         StartCoroutine(TakeItem(player));
     }
 
-    public void LoadDefault()
-    {
-    }
-
-    public void LoadFromJSON(JSONObject json)
-    {
-        gameObject.SetActive(!json[GetKey()]["taken"]);
-    }
+    public void LoadDefault() { }
+    public void LoadFromJSON(JSONObject json) => gameObject.SetActive(!json[GetKey()]["taken"]);
 
     public JSONNode ToJSON()
     {

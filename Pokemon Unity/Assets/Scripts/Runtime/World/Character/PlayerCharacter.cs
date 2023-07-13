@@ -16,6 +16,11 @@ public class PlayerCharacter : Character, ISavable
 
     private void Awake() => Initialize();
 
+    protected override void Initialize()
+    {
+        SaveGameManager.Instance.Register(this);
+        base.Initialize();
+    }
     public Coroutine Defeat() => StartCoroutine(DefeatCoroutine());
     private IEnumerator DefeatCoroutine()
     {
