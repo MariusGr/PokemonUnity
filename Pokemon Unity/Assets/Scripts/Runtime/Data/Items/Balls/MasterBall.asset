@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
+  m_Name: MasterBall
+  m_EditorClassIdentifier: 
+  Id: 5ff65fcc-0036-42c9-ba25-513564623ddc
+  fullName: Meisterball
+  category: 0
+  price: 999
+  icon: {fileID: 21300000, guid: 90c10f1fda5f72045bb14395f6f296c4, type: 3}
+  details: 
+  description: "Der beste BALL. F\xE4ngt das POK\xE9MON garantiert. "
+  moveLearned: {fileID: 0}
+  stacks: 1
+  consumable: 1
+  usableOnBattleOpponent: 1
+  catchesPokemon: 1
+  catchRateBonus: 9999
+  revives: 0
+  healsHPFully: 0
+  hpHealed: 0
+  healsAllStatusEffectsNonVolatile: 0
+  healsAllStatusEffectsVolatile: 0
+  nonVolatileStatusHealed: {fileID: 0}
+  volatileStatusHealed: {fileID: 0}
