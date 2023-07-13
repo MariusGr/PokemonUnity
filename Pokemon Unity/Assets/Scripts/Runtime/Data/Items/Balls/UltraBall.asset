@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dedbb7a70a1684c44b309d274f3d1cc3, type: 3}
-  m_Name: Ultra Ball
+  m_Name: UltraBall
   m_EditorClassIdentifier: 
   Id: a7214933-683b-4922-9b2e-a2a6db154712
   fullName: Hyperball
