@@ -23,10 +23,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
     public bool WillChallengePlayer => wantsToBattle && !npcData.IsDefeated() && !npcData.hasBeenDefeated;
     override public CharacterData CharacterData => npcData;
 
-    override public void Initialize()
-    {
-        SaveGameManager.Instance.Register(this);
-    }
+    override public void Initialize() => SaveGameManager.Register(this);
 
     public void Interact(Character player)
     {

@@ -29,11 +29,7 @@ public class BaseScriptableObject : ScriptableObject
     [ScriptableObjectId]
     public string Id;
     private static Dictionary<string, BaseScriptableObject> instances = new Dictionary<string, BaseScriptableObject>();
-    public static BaseScriptableObject Get(string id)
-    {
-        Debug.Log($"{id}");
-        return instances[id];
-    }
+    public static BaseScriptableObject Get(string id) => instances[id];
 
     public void AssignNewUID()
     {
@@ -43,15 +39,14 @@ public class BaseScriptableObject : ScriptableObject
 #endif
     }
 
-    private void OnEnable()
+    private void OnEnable() => Initialize();
+    protected void Initialize()
     {
         if (this is null)
             Debug.LogError($"ID is still null on {GetType()}");
 
         while (instances.ContainsKey(Id))
-        {
             AssignNewUID();
-        }
 
         instances[Id] = this;
     }

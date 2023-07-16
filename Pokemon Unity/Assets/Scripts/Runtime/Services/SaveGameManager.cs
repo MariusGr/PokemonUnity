@@ -8,14 +8,14 @@ using System.IO;
 public class SaveGameManager : MonoBehaviour
 {
     public static SaveGameManager Instance;
+    private static readonly Dictionary<string, ISavable> savables = new Dictionary<string, ISavable>();
+    public static void Register(ISavable savable) => savables[savable.GetKey()] = savable;
 
     [SerializeField] private bool removeSaveGame;
     private string Path => Application.persistentDataPath + "/savegame.sav";
-    private readonly Dictionary<string, ISavable> savables = new Dictionary<string, ISavable>();
 
     public SaveGameManager() => Instance = this;
     private void Start() => LoadGame();
-    public void Register(ISavable savable) => savables[savable.GetKey()] = savable;
 
     public void InitializeJSON()
     {
@@ -48,8 +48,13 @@ public class SaveGameManager : MonoBehaviour
 
     public JSONObject LoadFromJSON()
     {
-        // create file of non-existent
-        if (!File.Exists(Path) || removeSaveGame)
+        bool saveGameExists = File.Exists(Path);
+
+        if (removeSaveGame && saveGameExists)
+            File.Delete(Path);
+
+        // create file if non-existent
+        if (!saveGameExists || removeSaveGame)
         {
             InitializeJSON();
             return null;

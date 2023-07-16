@@ -1,20 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using SimpleJSON;
 
-public abstract class StoryEvent : BaseScriptableObject
+public abstract class StoryEvent : BaseScriptableObject, ISavable
 {
-    private bool happened = false;
+    [field: SerializeField] public bool Happened { get; private set; }
+
+    private void OnEnable()
+    {
+        SaveGameManager.Register(this);
+        Initialize();
+    }
 
     public void TryInvoke()
     {
-        Debug.Log(happened);
-        if (!happened)
+        if (!Happened)
             Invoke();
     }
 
-    virtual protected void Invoke()
+    virtual protected void Invoke() => Happened = true;
+    public string GetKey() => Id;
+
+    public JSONNode ToJSON()
     {
-        happened = true;
+        JSONNode json = new JSONObject();
+        json.Add("happened", Happened);
+        return json;
     }
+
+    public void LoadFromJSON(JSONObject json)
+    {
+        JSONNode jsonData = json[GetKey()];
+        Happened = jsonData["happened"];
+    }
+
+    public void LoadDefault() => Happened = false;
 }

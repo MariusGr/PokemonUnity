@@ -20,7 +20,7 @@ public class PlayerCharacter : Character, ISavable
 
     protected override void Initialize()
     {
-        SaveGameManager.Instance.Register(this);
+        SaveGameManager.Register(this);
         base.Initialize();
     }
 

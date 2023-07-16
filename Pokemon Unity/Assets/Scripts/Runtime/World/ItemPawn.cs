@@ -8,7 +8,7 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
     [SerializeField] Item item;
     [SerializeField] AudioClip pickUpMusic;
 
-    private void Awake() => SaveGameManager.Instance.Register(this);
+    private void Awake() => SaveGameManager.Register(this);
 
     public string GetKey()
     {
