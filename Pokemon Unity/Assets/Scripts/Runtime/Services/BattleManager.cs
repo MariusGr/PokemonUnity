@@ -710,14 +710,20 @@ public class BattleManager : MonoBehaviour
                     yield return DialogBox.Instance.DrawText($"Ein Volltreffer!", DialogBoxContinueMode.User);
             }
 
+            // stat modifiers on target
             yield return InflictStatModifiers(target, move.data.statModifiersTarget);
+
+            // non volatile status effect
+            if (UnityEngine.Random.value <= move.data.statusNonVolatileInflictedTargetChance)
+                yield return InflictStatusEffect(target, move.data.statusNonVolatileInflictedTarget, move.data.roundsBeforeFirstEffectNonVolatile);
+            yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf, move.data.roundsBeforeFirstEffectNonVolatile);
+
+            // volatile status effects
             if (UnityEngine.Random.value <= move.data.statusVolatileInflictedTargetChance)
                 yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget, move.data.roundsBeforeFirstEffectVolatile);
-            yield return InflictStatusEffect(target, move.data.statusNonVolatileInflictedTarget, move.data.roundsBeforeFirstEffectNonVolatile);
+            yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf, move.data.roundsBeforeFirstEffectVolatile);
 
-            if (UnityEngine.Random.value <= move.data.statusNonVolatileInflictedTargetChance)
-                yield return InflictStatusEffect(target, move.data.statusVolatileInflictedTarget, move.data.roundsBeforeFirstEffectVolatile);
-            yield return InflictStatusEffect(attacker, move.data.statusNonVolatileInflictedSelf, move.data.roundsBeforeFirstEffectNonVolatile);
+            // stat modifiers on self
             yield return InflictStatModifiers(attacker, move.data.statModifiersSelf);
         }
         else
