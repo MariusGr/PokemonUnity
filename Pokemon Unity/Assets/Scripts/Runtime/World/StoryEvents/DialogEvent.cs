@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-[CreateAssetMenu(fileName = "DialogEvent", menuName = "Story Events/Dialog Event")]
-public class DialogEvent : StoryEvent
+[Serializable]
+public class DialogEvent : StoryEventData
 {
     public string text;
+    public bool tryInteract;
 
-    protected override void Invoke()
+    public override IEnumerator Invoke()
     {
-        base.Invoke();
-        GlobalDialogBox.Instance.DrawText(text, DialogBoxContinueMode.User, true);
+        if (tryInteract)
+            PlayerCharacter.Instance.TryInteract();
+
+        yield return GlobalDialogBox.Instance.DrawText(text, DialogBoxContinueMode.User, true);
     }
 }

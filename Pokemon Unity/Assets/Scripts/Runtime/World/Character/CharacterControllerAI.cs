@@ -27,7 +27,9 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
 
     public void Interact(Character player)
     {
-        if (wantsToBattle && npcData.hasBeenDefeated)
+        if (StoryEvent.EventHappening)
+            character.Movement.LookInPlayerDirection();
+        else if (wantsToBattle && npcData.hasBeenDefeated)
         {
             character.Movement.LookInPlayerDirection();
             DialogBox.Instance.DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true);
@@ -41,7 +43,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
             else
             {
                 character.Movement.LookInPlayerDirection();
-                DialogBox.Instance.DrawText(npcData.defaultText, DialogBoxContinueMode.User, true);
+                DialogBox.Instance.DrawText(npcData.GetDialogText(), DialogBoxContinueMode.User, true);
             }
         }
     }

@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using SimpleJSON;
+using CollectionExtensions;
 
 [Serializable]
 public class NPCData : CharacterData
 {
     public Sprite sprite;
-    public string defaultText;
+    [SerializeField] private string defaultDialogText;
+    [SerializeField] private InspectorFriendlySerializableDictionary<StoryEvent, string> storyEventToDialogText; 
     public string challengeText;
     public string battleDefeatText;
     public string battleWinText;
@@ -22,4 +23,12 @@ public class NPCData : CharacterData
     // TODO take start position
     public string GetKey()
         => $"{GetType()}_{name}_{gameobject.transform.position.x}_{gameobject.transform.position.y}_{gameobject.transform.position.z}";
+
+    public string GetDialogText()
+    {
+        foreach (var entry in storyEventToDialogText)
+            if (entry.Key.Happened)
+                return entry.Value;
+        return defaultDialogText;
+    }
 }

@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System;
 
 public class EventManager : MonoBehaviour
 {
@@ -22,5 +24,14 @@ public class EventManager : MonoBehaviour
     {
         yield return coroutine;
         Unpause();
+    }
+
+    public Coroutine PerformCoroutines(List<IEnumerator> routines, Action onRoutinesFinished = null)
+        => StartCoroutine(PerformCoroutinesRoutine(routines, onRoutinesFinished));
+    private IEnumerator PerformCoroutinesRoutine(List<IEnumerator> routines, Action onRoutinesFinished = null)
+    {
+        foreach (var routine in routines)
+            yield return StartCoroutine(routine);
+        onRoutinesFinished?.Invoke();
     }
 }

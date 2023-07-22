@@ -45,10 +45,12 @@ public class PlayerCharacter : Character, ISavable
         PlayerController.LeaveEntranceTrehshold(entrance);
     }
 
-    public void TravelToEntrance(Door entrance)
+    public void TravelToEntrance(Door entrance) => Teleport(entrance.spawnPosition, -new GridVector(entrance.directionTriggerToEntrance));
+    public void Teleport(Vector3 position, Direction direction) => Teleport(position, new GridVector(direction));
+    public void Teleport(Vector3 position, GridVector direction)
     {
-        transform.position = entrance.spawnPosition;
-        Movement.LookInDirection(-new GridVector(entrance.directionTriggerToEntrance));
+        transform.position = position;
+        Movement.LookInDirection(direction);
     }
 
     public string GetKey()

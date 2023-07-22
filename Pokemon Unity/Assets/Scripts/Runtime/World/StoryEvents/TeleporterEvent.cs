@@ -1,15 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-[CreateAssetMenu(fileName = "TeleporterEvent", menuName = "Story Events/Teleporter Event")]
-public class TeleporterEvent : StoryEvent
+[Serializable]
+public class TeleporterEvent : StoryEventData
 {
-    public Transform target;
+    public string targetKey;
+    public Direction Direction;
 
-    protected override void Invoke()
+    public override IEnumerator Invoke()
     {
-        base.Invoke();
-        
+        if (!TeleportTarget.TryGet(targetKey, out TeleportTarget target))
+        {
+            Debug.LogError($"TeleportTarget with {targetKey} not found!");
+            yield break;
+        }
+
+        EventManager.Pause();
+        yield return FadeBlack.Instance.FadeToBlack();
+        target.TeleportTo(Direction);
+        yield return FadeBlack.Instance.FadeFromBlack();
+        EventManager.Unpause();
     }
 }

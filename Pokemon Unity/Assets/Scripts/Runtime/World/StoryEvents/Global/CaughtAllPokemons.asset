@@ -9,9 +9,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb4fba702cf414e08be51367164d7445, type: 3}
+  m_Script: {fileID: 11500000, guid: ac52bbd7383db4da7b5061af22023fad, type: 3}
   m_Name: CaughtAllPokemons
   m_EditorClassIdentifier: 
-  Id: 9c47791f-b4d8-49ca-b446-dd5485d96fd8
+  Id: 69aad2df-b831-472e-ad06-9e6273d1357c
+  <StoryEvents>k__BackingField:
+  - Type: 0
+    teleporterEvent:
+      targetKey: 
+      Direction: 0
+    dialogEvent:
+      text: Waaauuu!!!|Du hast alle Pokemon gefangen!|Schnell zu Mariuslein und zeigen
+        gehen x3
+      tryInteract: 0
+  - Type: 1
+    teleporterEvent:
+      targetKey: caughtAllPokemons
+      Direction: 4
+    dialogEvent:
+      text: 
+      tryInteract: 0
+  - Type: 0
+    teleporterEvent:
+      targetKey: caughtAllPokemons
+      Direction: 4
+    dialogEvent:
+      text: Wow!|Du hast wirklich die ganzen komischen Pokemon|gefangen, die ich
+        mir hier ausgedacht habe...|Super gemacht, Tessalein!! x3
+      tryInteract: 0
   <Happened>k__BackingField: 1
-  text: Alter du hast alle gefangen!

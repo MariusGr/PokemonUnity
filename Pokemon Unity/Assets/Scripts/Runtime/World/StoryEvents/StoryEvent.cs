@@ -1,27 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using SimpleJSON;
+using System;
+using MyBox;
 
-public abstract class StoryEvent : BaseScriptableObject, ISavable
+[CreateAssetMenu(fileName = "StoryEvent", menuName = "Story Events/Story Event")]
+public class StoryEvent : BaseScriptableObject, ISavable
 {
+    public static bool EventHappening { get; private set; } = false;
+    [field: SerializeField] public Data[] StoryEvents { get; private set; }
     [field: SerializeField] public bool Happened { get; private set; }
 
-    private void OnEnable()
+    public enum StoryEventType
     {
-        SaveGameManager.Register(this);
-        Initialize();
+        Dialog,
+        Teleporter,
     }
+
+    [Serializable]
+    public class Data
+    {
+        public StoryEventType Type;
+        public StoryEventData Value
+        {
+            get
+            {
+                return Type switch
+                {
+                    StoryEventType.Dialog => dialogEvent,
+                    StoryEventType.Teleporter => teleporterEvent,
+                    _ => null,
+                };
+            }
+        }
+
+        [ConditionalField(nameof(Type), false, StoryEventType.Teleporter)]
+        public TeleporterEvent teleporterEvent;
+        [ConditionalField(nameof(Type), false, StoryEventType.Dialog)]
+        public DialogEvent dialogEvent;
+    }
+
+    private void OnEnable() => SaveGameManager.Register(this);
+    public string GetKey() => Id;
 
     public void TryInvoke()
     {
-        if (!Happened)
-            Invoke();
-    }
+        if (Happened)
+            return;
 
-    virtual protected void Invoke() => Happened = true;
-    public string GetKey() => Id;
+        EventHappening = true;
+        Happened = true;
+
+        List<IEnumerator> routines = new List<IEnumerator>();
+        foreach (var storyEvent in StoryEvents)
+            routines.Add(storyEvent.Value.Invoke());
+
+        EventManager.Instance.PerformCoroutines(routines, () => EventHappening = false);
+    }
 
     public JSONNode ToJSON()
     {
