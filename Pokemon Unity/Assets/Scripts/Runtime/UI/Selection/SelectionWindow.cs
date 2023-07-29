@@ -15,13 +15,17 @@ public abstract class SelectionWindow : ClosableView
     public int selectedIndex { get; protected set; } = 0;
 
     private bool forceSelection = false;
+    private int lastSelection = -1;
 
     public override void Open() => Open(null, false, 0);
-    public override void Open(Action<SelectableUIElement, bool> callback) => Open(callback, false, 0);
-    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, 0);
+    public override void Open(Action<SelectableUIElement, bool> callback) => Open(callback, false, -1);
+    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, -1);
     public virtual void Open(Action<SelectableUIElement, bool> callback, int startSelection) => Open(callback, false, startSelection);
     public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
+        startSelection = startSelection > -1 ? startSelection : lastSelection > -1 ? lastSelection : 0;
+
+        print("Open " + startSelection);
         this.forceSelection = forceSelection;
 
         if (_elements is null)
@@ -36,17 +40,15 @@ public abstract class SelectionWindow : ClosableView
 
         AudioClip selectSoundBackup = selectSound;
         selectSound = null;
-        if (startSelection > _elements.Length - 1)
-            SelectElement(_elements.Length - 1);
-        else if (startSelection > -1)
-            SelectElement(startSelection);
+        SelectElement(Math.Min(startSelection, _elements.Length - 1));
         selectSound = selectSoundBackup;
         base.Open(callback);
     }
 
     public override void Close()
     {
-        selectedElement?.Deselect();
+        lastSelection = selectedIndex;
+        if (selectedElement != null) selectedElement.Deselect();
         base.Close();
     }
 
@@ -66,10 +68,7 @@ public abstract class SelectionWindow : ClosableView
         return false;
     }
 
-    public bool ProcessInputChancel(InputData input)
-    {
-        return base.ProcessInput(input);
-    }
+    public bool ProcessInputChancel(InputData input) => base.ProcessInput(input);
 
     public virtual void AssignElements() => AssignElements(new object[elements.Length]);
     public virtual void AssignElements(object[] payloads)
