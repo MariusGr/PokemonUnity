@@ -123,6 +123,9 @@ public class BagUI : ItemSelection
         {
             if (choosenItemViewIndex > -1)
             {
+                // If we are currently in the party selection we need to tab out of it back to the item selection we came from first
+                if (activeSelection == partySelection)
+                    ReturnToItemSelection();
                 // Item is chosen and needs to be unchosen
                 activeItemSelection.ResetItemSelection();
                 choosenItemViewIndex = -1;
