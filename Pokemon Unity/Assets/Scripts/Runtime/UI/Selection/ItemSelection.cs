@@ -4,4 +4,5 @@ using UnityEngine;
 
 public abstract class ItemSelection : NestedGallerySelection
 {
+    // TODO: needed?
 }

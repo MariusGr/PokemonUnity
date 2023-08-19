@@ -5,6 +5,9 @@ using System;
 
 public abstract class SelectionWindow : ClosableView
 {
+    public static readonly int PreviousSelection = -1;
+    public static readonly int NoSelectionOnStart = -2;
+
     [SerializeField] protected SelectableUIElement[] elements;
     [SerializeField] private AudioClip selectSound;
 
@@ -15,21 +18,28 @@ public abstract class SelectionWindow : ClosableView
     public int selectedIndex { get; protected set; } = 0;
 
     private bool forceSelection = false;
-    private int lastSelection = -1;
+    private int previousSelection = -1;
 
-    public override void Open() => Open(null, false, 0);
-    public override void Open(Action<SelectableUIElement, bool> callback) => Open(callback, false, -1);
-    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, -1);
+    public override void Open() => Open(null, false, PreviousSelection);
+    public override void Open(Action<SelectableUIElement, bool> callback) => Open(callback, false, PreviousSelection);
+    public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection) => Open(callback, forceSelection, PreviousSelection);
     public virtual void Open(Action<SelectableUIElement, bool> callback, int startSelection) => Open(callback, false, startSelection);
     public virtual void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
-        startSelection = startSelection > -1 ? startSelection : lastSelection > -1 ? lastSelection : 0;
-
-        print("Open " + startSelection);
-        this.forceSelection = forceSelection;
+        startSelection = startSelection == NoSelectionOnStart ? NoSelectionOnStart :
+            startSelection == PreviousSelection ? previousSelection :
+            startSelection;
 
         if (_elements is null)
             AssignElements();
+
+        bool dontSelectAnything = startSelection == NoSelectionOnStart;
+
+        if (!dontSelectAnything)
+            startSelection = Math.Clamp(startSelection, 0, elements.Length - 1);
+
+        print($"Open {gameObject.name} {startSelection}");
+        this.forceSelection = forceSelection;
 
         for (int i = 0; i < _elements.Length; i++)
         {
@@ -38,16 +48,17 @@ public abstract class SelectionWindow : ClosableView
                 _elements[i].Deselect();
         }
 
-        AudioClip selectSoundBackup = selectSound;
-        selectSound = null;
-        SelectElement(Math.Min(startSelection, _elements.Length - 1));
-        selectSound = selectSoundBackup;
+        print(startSelection != NoSelectionOnStart);
+        if (!dontSelectAnything)
+            SelectElement(startSelection, false);
+        
         base.Open(callback);
     }
 
     public override void Close()
     {
-        lastSelection = selectedIndex;
+        print($"Close {gameObject.name}, set previous to {selectedIndex}");
+        previousSelection = selectedIndex;
         if (selectedElement != null) selectedElement.Deselect();
         base.Close();
     }
@@ -94,18 +105,19 @@ public abstract class SelectionWindow : ClosableView
             element.AssignOnSelectCallback(callback);
     }
 
-    virtual protected void SelectElement(int index) => SelectElement(index, true);
-    virtual protected void SelectElement(int index, bool deselectPreviouslySelected)
+    virtual protected void SelectElement(int index, bool playSound) => SelectElement(index, true, playSound);
+    virtual protected void SelectElement(int index, bool deselectPreviouslySelected, bool playSound)
     {
         if (deselectPreviouslySelected)
             selectedElement.Deselect();
         selectedIndex = index;
         selectedElement.Select();
-        SfxHandler.Play(selectSound);
+        if (playSound) SfxHandler.Play(selectSound);
     }
 
-    virtual protected void SelectElement(SelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.GetIndex());
+    virtual protected void SelectElement(SelectableUIElement element) => SelectElement(element is null ? selectedIndex : element.GetIndex(), true);
     virtual protected void ChooseSelectedElement() => callback?.Invoke(selectedElement, false);/* TODO sound*/
+
     public void DeselectSelection() => selectedElement.Deselect();
 
     protected override void GoBack()

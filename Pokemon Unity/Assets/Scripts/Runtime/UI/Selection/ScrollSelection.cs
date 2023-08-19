@@ -17,12 +17,14 @@ public class ScrollSelection : ScalarSelection
 
     public override void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
+        print("Open " + GetType());
         viewFrameStart = 0;
         base.Open(callback, forceSelection, startSelection);
     }
 
-    protected override void SelectElement(int index)
+    protected override void SelectElement(int index, bool playSound)
     {
+        print("Select " + gameObject.name);
         if (items.Length > slots)
         {
             // scrolling is necessary since not all items fit into the view
@@ -39,7 +41,7 @@ public class ScrollSelection : ScalarSelection
             }
         }
 
-        base.SelectElement(index);
+        base.SelectElement(index, playSound);
     }
 
     protected virtual void MoveViewFrame(int shift)

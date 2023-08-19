@@ -9,9 +9,9 @@ public class BagItemScrollSelection : ItemScrollSelection
     public bool itemHasBeenChoosen => !(choosenItemEntry is null);
     public Item selectedItem => (Item)selectedElement.GetPayload();
 
-    protected override void SelectElement(int index)
+    protected override void SelectElement(int index, bool playSound)
     {
-        base.SelectElement(index);
+        base.SelectElement(index, playSound);
         description.text = selectedItem is null ? "" : selectedItem.data.Description;
     }
 

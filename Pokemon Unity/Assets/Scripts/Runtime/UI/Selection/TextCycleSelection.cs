@@ -29,9 +29,9 @@ public class TextCycleSelection : ScalarSelection
         base.AssignElements(pricePayloads);
     }
 
-    protected override void SelectElement(int index)
+    protected override void SelectElement(int index, bool playSound)
     {
-        base.SelectElement(index);
+        base.SelectElement(index, playSound);
         int count = selectedIndex + 1;
         text.text = $"x  {count.ToString("00")}\n{selectedQuantity.GetTotalPriceString()}";
     }

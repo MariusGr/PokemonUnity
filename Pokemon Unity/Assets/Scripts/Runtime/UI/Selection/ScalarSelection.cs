@@ -49,7 +49,7 @@ public class ScalarSelection : SelectionWindow
             return false;
         if (_elements[nextIndex].IsAssigned())
         {
-            SelectElement(nextIndex);
+            SelectElement(nextIndex, true);
             return true;
         }
         return false;
@@ -67,7 +67,7 @@ public class ScalarSelection : SelectionWindow
             return false;
         if (_elements[nextIndex].IsAssigned())
         {
-            SelectElement(nextIndex);
+            SelectElement(nextIndex, true);
             return true;
         }
         return false;

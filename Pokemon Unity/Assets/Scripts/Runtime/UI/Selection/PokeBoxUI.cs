@@ -14,7 +14,7 @@ public class PokeBoxUI : NestedGallerySelection
 
     private Pokemon chosenPartyPokemon;
     private Pokemon chosenBoxPokemon;
-    private string notEnoughAlivePokemonsErrorMessage = "Du musst mindestens ein unbesiegtes Pokémon im Team behalten!";
+    private string notEnoughAlivePokemonsErrorMessage = "Du musst mindestens ein unbesiegtes Pok?mon im Team behalten!";
 
     public PokeBoxUI() => Instance = this;
 
@@ -36,9 +36,9 @@ public class PokeBoxUI : NestedGallerySelection
     private void SelectOptimalView()
     {
         if (!(chosenBoxPokemon is null) || BoxIsEmpty())
-            SelectElement(0);
+            SelectElement(0, true);
         else
-            SelectElement(1);
+            SelectElement(1, true);
     }
 
     private void ResetChoosing()
@@ -62,7 +62,7 @@ public class PokeBoxUI : NestedGallerySelection
         base.Close();
     }
 
-    protected override void SelectElement(int index)
+    protected override void SelectElement(int index, bool playSound)
     {
         activeSelection.DeselectSelection();
         base.SelectElement(index, false);
@@ -139,7 +139,7 @@ public class PokeBoxUI : NestedGallerySelection
             base.GoBack();
     }
 
-    private void SelectOtherView() => SelectElement(selectedIndex == 0 ? 1 : 0);
+    private void SelectOtherView() => SelectElement(selectedIndex == 0 ? 1 : 0, true);
 
     private IEnumerator ChoosePokemonCoroutine(Pokemon pokemon)
     {
@@ -166,7 +166,7 @@ public class PokeBoxUI : NestedGallerySelection
                 {
                     if (PlayerData.Instance.pokemons.Count < 2)
                     {
-                        yield return GlobalDialogBox.Instance.DrawText("Du musst mindestens ein Pokémon im Team behalten!");
+                        yield return GlobalDialogBox.Instance.DrawText("Du musst mindestens ein Pok?mon im Team behalten!");
                         continue;
                     }
                     else if (PlayerData.Instance.WouldBeDeafeatetWithoutPokemon(pokemon))

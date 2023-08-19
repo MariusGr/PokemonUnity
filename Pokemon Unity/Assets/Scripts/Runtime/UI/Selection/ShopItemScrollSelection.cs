@@ -15,9 +15,9 @@ public class ShopItemScrollSelection : ItemScrollSelection
         base.Open(callback);
     }
 
-    protected override void SelectElement(int index)
+    protected override void SelectElement(int index, bool playSound)
     {
-        base.SelectElement(index);
+        base.SelectElement(index, playSound);
         description.text = selectedItem is null ? "" : selectedItem.Description;
         selectedCallback?.Invoke(selectedItem);
     }

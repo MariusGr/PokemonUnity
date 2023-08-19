@@ -40,9 +40,9 @@ public class PokedexSelection : ScrollSelection
         base.Open(callback, forceSelection, startSelection);
     }
 
-    protected override void SelectElement(int index)
+    protected override void SelectElement(int index, bool playSound)
     {
-        base.SelectElement(index);
+        base.SelectElement(index, playSound);
 
         DexEntryData data = ((PokedexListEntryUI)selectedElement).dexEntryData;
         selectedName.text = data.pokemon is null ? "???" : data.pokemon.fullName;

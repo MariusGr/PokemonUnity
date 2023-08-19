@@ -10,9 +10,10 @@ public class SelectableGameObject : SelectableUIElement
         gameObject.SetActive(true);
     }
 
-    public override void Deselect()
+    public override void Deselect() => Deselect(true);
+    public void Deselect(bool deactivatGameObject)
     {
         base.Deselect();
-        gameObject.SetActive(false);
+        gameObject.SetActive(!deactivatGameObject);
     }
 }

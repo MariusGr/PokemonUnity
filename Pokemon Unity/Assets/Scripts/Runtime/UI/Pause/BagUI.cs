@@ -22,9 +22,9 @@ public class BagUI : ItemSelection
     public override void Open(Action<SelectableUIElement, bool> callback, bool forceSelection, int startSelection)
     {
         AssignElements();
-        partySelection.Open(null, -1, ProcessInput);
         base.Open(callback, forceSelection, 1);
-        itemSelections[ItemCategory.Items].Open(ChooseItem);
+        partySelection.Open(null, NoSelectionOnStart, ProcessInput);
+        itemSelections[ItemCategory.Items].Open(ChooseItem, false, PreviousSelection);
         inBattle = false;
         choosenItemViewIndex = -1;
     }
@@ -54,15 +54,15 @@ public class BagUI : ItemSelection
         base.Close();
     }
 
-    protected override void SelectElement(int index)
+    protected override void SelectElement(int index, bool playSound)
     {
-        activeSelection.DeselectSelection();
         if (activeSelection != partySelection && !activeItemSelection.itemHasBeenChoosen)
         {
+            activeSelection.DeselectSelection();
             activeItemSelection.ResetItemSelection();
             activeSelection.Close();
         }
-        base.SelectElement(index, false);
+        base.SelectElement(index, false, false);
         if (activeSelection == partySelection)
             activeSelection.Open(ChoosePokemon, 0, ProcessInput);
         else
@@ -84,7 +84,7 @@ public class BagUI : ItemSelection
     private void ReturnToItemSelection()
     {
         partySelection.DeselectSelection();
-        SelectElement(choosenItemViewIndex);
+        SelectElement(choosenItemViewIndex, true);
     }
 
     protected override bool TrySelectNegative()
@@ -92,7 +92,7 @@ public class BagUI : ItemSelection
         if (!activeItemSelection.itemHasBeenChoosen && selectedIndex > 1)
             return base.TrySelectNegative();
         if (activeItemSelection.itemHasBeenChoosen)
-            SelectElement(0);
+            SelectElement(0, true);
         return false;
     }
 
@@ -157,7 +157,7 @@ public class BagUI : ItemSelection
                 if (!BattleManager.Instance.OpponentIsWild())
                 {
                     yield return GlobalDialogBox.Instance.DrawText(
-                        "Du kannst keine Bälle in einem Trainer-Kampf verwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
+                        "Du kannst keine B?lle in einem Trainer-Kampf verwenden!", DialogBoxContinueMode.User, closeAfterFinish: true);
                     yield break;
                 }
 
