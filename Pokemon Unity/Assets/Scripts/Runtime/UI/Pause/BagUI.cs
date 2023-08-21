@@ -162,6 +162,7 @@ public class BagUI : ItemSelection
                 }
 
                 yield return GlobalDialogBox.Instance.DrawChoiceBox($"M?chtest du {entry.item.data.fullName} verwenden?");
+                GlobalDialogBox.Instance.Close();
                 if (GlobalDialogBox.Instance.chosenIndex == 1)
                     yield break;
 
