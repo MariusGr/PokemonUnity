@@ -46,7 +46,7 @@ public class ShopUI : ItemSelection
         }
 
         chosenItem = ((ItemShopListEntryUI)selection).item;
-        dialogBox.DrawText($"{chosenItem.fullName}? Aber gerne.\nWie ?", DialogBoxContinueMode.External);
+        dialogBox.DrawText($"{chosenItem.fullName}? Aber gerne.\nWie viele dürfen es sein?", DialogBoxContinueMode.External);
         cycleSelection.Open(ChooseQuantity, chosenItem.price);
     }
 
