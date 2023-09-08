@@ -46,11 +46,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
         return false;
     }
 
-    public void EnterEntranceTrehshold(Door entrance)
-    {
-        currentEntrance = entrance;
-    }
-
+    public void EnterEntranceTrehshold(Door entrance) => currentEntrance = entrance;
     public void LeaveEntranceTrehshold(Door entrance)
     {
         if (currentEntrance == entrance)
