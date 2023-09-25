@@ -11,17 +11,15 @@ public class PlayerCharacter : Character, ISavable
 
     public override bool IsPlayer => true;
 
-    private PlayerData PlayerData => (PlayerData)characterData;
+    private PlayerData PlayerData => (PlayerData)CharacterData;
     private CharacterControllerPlayer PlayerController => (CharacterControllerPlayer)Controller;
 
     public PlayerCharacter() => Instance = this;
 
-    private void Awake() => Initialize();
-
-    protected override void Initialize()
+    protected override void Awake()
     {
         SaveGameManager.Register(this);
-        base.Initialize();
+        base.Awake();
     }
 
     public void OnCaughtAllPokemons() => caughtAllPokemonsStoryEvent.TryInvoke();

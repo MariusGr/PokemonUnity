@@ -21,9 +21,12 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
     [SerializeField] private AudioClip challengeMusicTrack;
 
     public bool WillChallengePlayer => wantsToBattle && !npcData.IsDefeated() && !npcData.hasBeenDefeated;
-    override public CharacterData CharacterData => npcData;
+    public override CharacterData CharacterData => npcData;
 
-    override public void Initialize() => SaveGameManager.Register(this);
+    public override void Initialize()
+    {
+        SaveGameManager.Register(this);
+    }
 
     public void Interact(Character player)
     {
@@ -58,16 +61,16 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
 
     private IEnumerator ChallengeCoroutine(Character player)
     {
-        GridVector direction = GridVector.GetLookAt(character.position, player.position);
+        GridVector direction = GridVector.GetLookAt(character.Position, player.Position);
         character.Movement.LookInDirection(direction);
 
         yield return character.Animator.PlayExclaimBubbleAnimation();
 
-        yield return MoveToPosition(player.position, direction, 1);
+        yield return MoveToPosition(player.Position, direction, 1);
 
         player.Movement.LookInDirection(-direction);
         yield return DialogBox.Instance.DrawText(npcData.challengeText, DialogBoxContinueMode.User, true);
-        BattleManager.Instance.StartNewBattle(player.characterData, npcData, BattleEndReaction);
+        BattleManager.Instance.StartNewBattle(player.CharacterData, npcData, BattleEndReaction);
     }
 
     public void BattleEndReaction(bool npcDefeated)
@@ -77,7 +80,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
         if (npcDefeated)
             DialogBox.Instance.DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
         else
-            transform.position = character.startPosition;
+            transform.position = character.StartPosition;
 
         EventManager.Unpause();
     }
@@ -110,7 +113,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
     {
         character.Movement.LookInDirection(direction);
         target -= keepDistance * direction;
-        while (!new GridVector(transform.position, character.startPosition).Equals(target))
+        while (!new GridVector(transform.position, character.StartPosition).Equals(target))
         {
             yield return new WaitForEndOfFrame();
             character.Movement.ProcessMovement(direction, checkPositionEvents: checkPositionEvents, ignorePaused: true);
@@ -119,7 +122,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
 
     public string GetKey()
     {
-        GridVector startPosition = new GridVector(character.startPosition);
+        GridVector startPosition = new GridVector(character.StartPosition);
         return $"{GetType()}_{startPosition.x}_{startPosition.y}";
     }
 

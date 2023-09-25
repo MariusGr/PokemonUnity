@@ -33,18 +33,18 @@ public class CharacterAnimator : MonoBehaviour
 
     [SerializeField] float interval;
 
-    Dictionary<Tuple<AnimationType, Direction>, Sprite[]> animationSpriteMap;
-    Dictionary<AnimationType, float> animationTypeToInterval;
-    Sprite[] currentImageSequence;
-    int currentSpriteIndex = 0;
-    AnimationType currentAnimation = AnimationType.None;
-    Direction currentDirection = Direction.Down;
-    float lastTickTime = 0;
-    float intervalClock = 0;
+    private Dictionary<Tuple<AnimationType, Direction>, Sprite[]> animationSpriteMap;
+    private Sprite[] currentImageSequence;
+    private int currentSpriteIndex = 0;
+    private AnimationType currentAnimation = AnimationType.None;
+    private Direction currentDirection = Direction.Down;
+    private float lastTickTime = 0;
+    private float intervalClock = 0;
+    private Coroutine tickCoroutine;
 
     private void Awake()
     {
-        animationSpriteMap = new Dictionary<Tuple<AnimationType, Direction>, Sprite[]>()
+        animationSpriteMap = new()
         {
             { new Tuple<AnimationType, Direction>(
                 AnimationType.None, Direction.Right
@@ -85,27 +85,23 @@ public class CharacterAnimator : MonoBehaviour
                 AnimationType.Sprint, Direction.Down
             ), sprintSpritesDown },
         };
-        animationTypeToInterval = new Dictionary<AnimationType, float>()
-        {
-            { AnimationType.Walk, .1f },
-        };
 
         currentImageSequence = walkSpritesDown;
         lastTickTime = Time.time;
     }
 
-    public void Tick()
-        => Tick(currentAnimation, currentDirection);
-
-    public void Tick(AnimationType animation, Direction direction)
+    public void Set(AnimationType animation, Direction direction)
     {
-        float deltaTime = Time.time - lastTickTime;
-        
         if (animation != currentAnimation || direction != currentDirection)
             SetImageSequence(animation, direction);
 
         currentDirection = direction;
         currentAnimation = animation;
+    }
+
+    public void Tick()
+    {
+        float deltaTime = Time.time - lastTickTime;
 
         if (currentAnimation != AnimationType.None)
         {
@@ -122,9 +118,33 @@ public class CharacterAnimator : MonoBehaviour
         lastTickTime = Time.time;
     }
 
+    IEnumerator TickCoroutine()
+    {
+        while(true)
+        {
+            Tick();
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public void StartAnimation()
+    {
+        if (tickCoroutine is not null)
+            return;
+        tickCoroutine = StartCoroutine(TickCoroutine());
+    }
+
+    public void StopAnimation()
+    {
+        if (tickCoroutine is null)
+            return;
+        StopCoroutine(tickCoroutine);
+        tickCoroutine = null;
+    }
+
     private void UpdateSpriteIndex()
     {
-        currentSpriteIndex = currentSpriteIndex % currentImageSequence.Length;
+        currentSpriteIndex %= currentImageSequence.Length;
         renderer.sprite = currentImageSequence[currentSpriteIndex];
     }
 
@@ -138,15 +158,11 @@ public class CharacterAnimator : MonoBehaviour
     {
         if (direction != Direction.None)
             currentImageSequence = animationSpriteMap[new Tuple<AnimationType, Direction>(animation, direction)];
-        intervalClock = 0;
-        currentSpriteIndex = (animation == AnimationType.None) ? 0 : 1;
         UpdateSpriteIndex();
     }
 
     public Coroutine PlayExclaimBubbleAnimation()
-    {
-        return StartCoroutine(ExclaimAnimationCoroutine());
-    }
+        => StartCoroutine(ExclaimAnimationCoroutine());
 
     private IEnumerator ExclaimAnimationCoroutine()
     {

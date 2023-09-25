@@ -22,7 +22,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
         if (paused)
             return;
 
-        if (!character.Movement.moving && !(currentEntrance is null) && input.digitalPad.heldDown == currentEntrance.directionTriggerToEntrance)
+        if (!character.Movement.Moving && !(currentEntrance is null) && input.digitalPad.heldDown == currentEntrance.directionTriggerToEntrance)
         {
             character.Movement.LookInDirection(currentEntrance.directionTriggerToEntrance);
             currentEntrance.Enter();
@@ -38,9 +38,9 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 
         this.input = input;
 
-        if (input.submit.pressed && !character.Movement.moving)
+        if (input.submit.pressed && !character.Movement.Moving)
             character.TryInteract();
-        else if (input.start.pressed && !character.Movement.moving)
+        else if (input.start.pressed && !character.Movement.Moving)
             PauseUI.Instance.Open();
 
         return false;

@@ -12,7 +12,7 @@ public class GridVector
     public static GridVector Down => new GridVector(0, -1);
 
     private GridVector _normalized = null;
-    public GridVector normalized
+    public GridVector Normalized
     {
         get
         {
@@ -47,7 +47,7 @@ public class GridVector
     };
 
     static public GridVector GetLookAt(Vector3 position, Vector3 target) => GetLookAt(new GridVector(position), new GridVector(target));
-    static public GridVector GetLookAt(GridVector position, GridVector target) => (target - position).normalized;
+    static public GridVector GetLookAt(GridVector position, GridVector target) => (target - position).Normalized;
 
     public GridVector(int x = 0, int y = 0)
     {

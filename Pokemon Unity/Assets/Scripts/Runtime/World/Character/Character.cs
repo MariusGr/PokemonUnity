@@ -4,41 +4,44 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-
-    [SerializeField] CharacterControllerBase controller;
-    [SerializeField] CharacterMovement movement;
-    [SerializeField] CharacterAnimator animator;
+    [SerializeField] private Character follower;
+    [SerializeField] private CharacterControllerBase controller;
+    [SerializeField] private CharacterMovement movement;
+    [SerializeField] private CharacterAnimator animator;
 
     public CharacterControllerBase Controller => controller;
     public CharacterMovement Movement => movement;
     public CharacterAnimator Animator => animator;
-    public GridVector position => new GridVector(transform.position);
-    public CharacterData characterData => controller.CharacterData;
-    public Pokemon[] pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.pokemons.ToArray();
-    public Vector3 startPosition { get; private set; }
+    public GridVector Position => new GridVector(transform.position);
+    public CharacterData CharacterData => controller.CharacterData;
+    public Pokemon[] Pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.pokemons.ToArray();
+    public Vector3 StartPosition { get; private set; }
     public virtual bool IsPlayer => false;
 
-    private void Awake() => Initialize();
-    protected virtual void Initialize()
-    {
-        foreach (Pokemon pokemon in pokemons)
-            pokemon.Initialize(characterData);
+    private int layer;
 
-        startPosition = transform.position;
+    protected virtual void Awake()
+    {
+        foreach (Pokemon pokemon in Pokemons)
+            pokemon.Initialize(CharacterData);
+
+        StartPosition = transform.position;
 
         controller.Initialize();
     }
 
+    private void Start() => follower?.Follow(this);
+
     public virtual void LoadDefault()
     {
-        foreach (Pokemon pokemon in pokemons)
+        foreach (Pokemon pokemon in Pokemons)
             pokemon.LoadDefault();
     }
 
     public void Reset()
     {
         movement.LookInStartDirection();
-        transform.position = startPosition;
+        transform.position = StartPosition;
     }
 
     public bool RaycastForward(Vector3 direction, LayerMask layerMask, out RaycastHit hitInfo, float maxDistance = .8f)
@@ -67,5 +70,18 @@ public class Character : MonoBehaviour
         RaycastHit hitInfo;
         if (RaycastForward(movement.CurrentDirectionVector, LayerManager.Instance.InteractableLayerMask, out hitInfo))
             hitInfo.collider.gameObject.GetComponent<IInteractable>()?.Interact(this); ;
+    }
+
+    public void Follow(Character target)
+    {
+        layer = transform.gameObject.layer;
+        LayerManager.SetLayerRecursively(gameObject, LayerManager.FollowerLayer);
+        movement.Follow(target.movement);
+    }
+
+    public void Unfollow()
+    {
+        LayerManager.SetLayerRecursively(gameObject, layer);
+        movement.Unfollow();
     }
 }

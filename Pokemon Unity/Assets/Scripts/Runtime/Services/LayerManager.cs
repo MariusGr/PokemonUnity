@@ -6,6 +6,8 @@ public class LayerManager : MonoBehaviour
 {
     static public LayerManager Instance;
 
+    public LayerManager() => Instance = Instance ?? this;
+
     static public void SetLayerRecursively(GameObject obj, int newLayer)
         => SetLayerRecursively(obj, newLayer, new List<Transform>());
 
@@ -18,23 +20,16 @@ public class LayerManager : MonoBehaviour
             SetLayerRecursively(child.gameObject, newLayer, skip);
     }
 
-    [SerializeField] LayerMask defaultLayerMask;
-    [SerializeField] LayerMask groundLayerMask;
-    [SerializeField] LayerMask movementBlockingLayerMask;
-    [SerializeField] LayerMask interactableLayerMask;
-    [SerializeField] LayerMask playerLayerMask;
-    [SerializeField] LayerMask visionBlockingForAILayerMask;
-    [SerializeField] LayerMask grassLayerMask;
-    [SerializeField] LayerMask entranceLayerMask;
+    [field: SerializeField] public LayerMask DefaultLayerMask { get; private set; }
+    [field: SerializeField] public LayerMask GroundLayerMask { get; private set; }
+    [field: SerializeField] public LayerMask MovementBlockingLayerMask { get; private set; }
+    [field: SerializeField] public LayerMask InteractableLayerMask { get; private set; }
+    [field: SerializeField] public LayerMask PlayerLayerMask { get; private set; }
+    [field: SerializeField] public LayerMask VisionBlockingForAILayerMask { get; private set; }
+    [field: SerializeField] public LayerMask EntranceLayerMask { get; private set; }
+    [field: SerializeField] public LayerMask FollowerLayerMask { get; private set; }
 
-    public LayerMask DefaultLayerMask => defaultLayerMask;
-    public LayerMask GroundLayerMask => groundLayerMask;
-    public LayerMask MovementBlockingLayerMask => movementBlockingLayerMask;
-    public LayerMask InteractableLayerMask => interactableLayerMask;
-    public LayerMask PlayerLayerMask => playerLayerMask;
-    public LayerMask VisionBlockingForAILayerMask => visionBlockingForAILayerMask;
-    public LayerMask GrassLayerMask => grassLayerMask;
-    public LayerMask EntranceLayerMask => entranceLayerMask;
+    public static int FollowerLayer { get; private set; }
 
     public static int ToLayer(int bitmask)
     {
@@ -47,8 +42,8 @@ public class LayerManager : MonoBehaviour
         return result;
     }
 
-    void Awake()
+    private void Awake()
     {
-        Instance = Instance ?? this;
+        FollowerLayer = ToLayer(FollowerLayerMask);
     }
 }
