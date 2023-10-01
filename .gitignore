@@ -55,3 +55,7 @@ git-journal.fish
 # Logs
 [Ll]ogs/
 .DS_Store
+Pokemon Unity/UserSettings/Layouts/default-2021.dwlt
+Pokemon Unity/ProjectSettings/SceneTemplateSettings.json
+Pokemon Unity/ProjectSettings/MemorySettings.asset
+Pokemon Unity/ProjectSettings/boot.config
