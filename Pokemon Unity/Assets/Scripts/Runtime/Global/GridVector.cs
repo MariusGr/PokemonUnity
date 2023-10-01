@@ -55,30 +55,22 @@ public class GridVector
         this.y = y;
     }
 
-    private int RoundToInt(float f)
-    {
-        int result = Mathf.RoundToInt(f);
-        if (Mathf.Abs(result - f) - .5f < .01f)
-            return Mathf.CeilToInt(f);
-        return result;
-    }
-
     public GridVector(Vector3 vector)
     {
-        this.x = RoundToInt(vector.x);
-        this.y = RoundToInt(vector.z);
+        x = Mathf.RoundToInt(vector.x);
+        y = Mathf.RoundToInt(vector.z);
     }
 
     public GridVector(Vector3 vector, bool floorX, bool floorY)
     {
         if (floorX)
-            this.x = Mathf.FloorToInt(vector.x);
+            x = Mathf.FloorToInt(vector.x);
         else
-            this.x = Mathf.CeilToInt(vector.x);
+            x = Mathf.CeilToInt(vector.x);
         if (floorY)
-            this.y = Mathf.FloorToInt(vector.z);
+            y = Mathf.FloorToInt(vector.z);
         else
-            this.y = Mathf.CeilToInt(vector.z);
+            y = Mathf.CeilToInt(vector.z);
     }
 
     /**
