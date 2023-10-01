@@ -61,6 +61,7 @@ public class CharacterMovement : Pausable
             return;
         follower.collider.enabled = false;
         this.follower = follower;
+        follower.LookAtTarget(character.Position, true);
     }
 
     public void Unfollow()
@@ -150,7 +151,7 @@ public class CharacterMovement : Pausable
     private void StopMoving()
     {
         character.Animator.Set(AnimationType.None, currentDirection);
-        follower?.LookInDirection((nextPosition - follower.character.Position).ToDirection(), forceAnimationUpdate: true);
+        follower?.LookInDirection((nextPosition - follower.character.Position).ToDirection(), forceUpdate: true);
     }
 
     public void Teleport(Vector3 position, Direction direction) => Teleport(position, new GridVector(direction));
@@ -163,15 +164,19 @@ public class CharacterMovement : Pausable
     }
 
     public void LookInPlayerDirection() => LookAtTarget(PlayerCharacter.Instance);
-    public void LookAtTarget(Character target) => LookAtTarget(target.Movement.nextPosition);
-    public void LookAtTarget(GridVector target) => LookInDirection(GridVector.GetLookAt(character.Position, target));
+    public void LookAtTarget(Character target, bool forceUpdate = false) => LookAtTarget(target.Movement.nextPosition, forceUpdate);
+    public void LookAtTarget(GridVector target, bool forceUpdate = false) => LookInDirection(GridVector.GetLookAt(character.Position, target), forceUpdate);
     public void LookInStartDirection() => LookInDirection(startDirection);
-    public void LookInDirection(Direction direction, bool forceAnimationUpdate = false) => LookInDirection(new GridVector(direction), forceAnimationUpdate);
-    public void LookInDirection(GridVector direction, bool forceAnimationUpdate = false)
+    public void LookInDirection(Direction direction, bool forceUpdate = false) => LookInDirection(new GridVector(direction), forceUpdate);
+    public void LookInDirection(GridVector direction, bool forceUpdate = false)
     {
-        if (!forceAnimationUpdate && (CurrentDirectionVector.Equals(direction) || direction.magnitude == 0))
+        print(direction);
+        print(CurrentDirectionVector);
+        if (!forceUpdate && (CurrentDirectionVector.Equals(direction) || direction.magnitude == 0))
             return;
         CurrentDirectionVector = direction;
+        print(CurrentDirectionVector);
+        print(currentDirection);
         character.Animator.Set(AnimationType.None, currentDirection);
     }
 
