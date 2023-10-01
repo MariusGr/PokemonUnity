@@ -30,6 +30,8 @@ public class LayerManager : MonoBehaviour
     [field: SerializeField] public LayerMask FollowerLayerMask { get; private set; }
 
     public static int FollowerLayer { get; private set; }
+    public static int InteractableLayer { get; private set; }
+    public static int EntranceLayer { get; private set; }
 
     public static int ToLayer(int bitmask)
     {
@@ -45,5 +47,7 @@ public class LayerManager : MonoBehaviour
     private void Awake()
     {
         FollowerLayer = ToLayer(FollowerLayerMask);
+        InteractableLayer = ToLayer(InteractableLayerMask);
+        EntranceLayer = ToLayer(EntranceLayerMask);
     }
 }

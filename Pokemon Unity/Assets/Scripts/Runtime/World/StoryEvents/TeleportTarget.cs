@@ -15,7 +15,7 @@ public class TeleportTarget : MonoBehaviour
 
     public void TeleportTo(Direction playerFaceDirection)
     {
-        PlayerCharacter.Instance.Teleport(transform.position, playerFaceDirection);
+        PlayerCharacter.Instance.Movement.Teleport(transform.position, playerFaceDirection);
         targetNPC?.Movement.LookInDirection(targetNPCFaceDirection);
     }
 }

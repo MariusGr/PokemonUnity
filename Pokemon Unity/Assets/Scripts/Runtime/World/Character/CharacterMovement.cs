@@ -27,7 +27,6 @@ public class CharacterMovement : Pausable
     private float verticalChanged = 0;
     public bool Moving { get; private set; } = false;
     private bool lastMoving = false;
-    private CharacterMovement following;
 
     private GridVector startDirection;
     private GridVector currentDirectionVector = GridVector.Down;
@@ -40,11 +39,11 @@ public class CharacterMovement : Pausable
         }
     }
 
-    private Action<GridVector, AnimationType, float> onStartMovingOneTile;
-    private Action onStopMoving;
     private readonly Queue<(GridVector position, AnimationType animation, float speed)> moveQueue = new();
     private bool movingThroughMoveQueue = false;
+    private Coroutine moveQueueCoroutine;
     private GridVector nextPosition;
+    private CharacterMovement follower;
 
     private void Awake() => nextPosition = character.Position;
 
@@ -54,32 +53,23 @@ public class CharacterMovement : Pausable
         LookInDirection(currentDirection);
         startDirection = CurrentDirectionVector;
         SignUpForPause();
-
-        if (following is not null)
-            Follow(following);
     }
 
-    public void Follow(CharacterMovement target)
+    public void AddFollower(CharacterMovement follower)
     {
-        collider.enabled = false;
-        following = target;
-        following.onStartMovingOneTile += AddToMoveQueue;
-        following.onStopMoving += StopFollowMovement;
+        if (follower is null)
+            return;
+        follower.collider.enabled = false;
+        this.follower = follower;
     }
 
     public void Unfollow()
     {
-        if (following is null)
+        if (follower is null)
             return;
-        collider.enabled = true;
-        following.onStartMovingOneTile -= AddToMoveQueue;
-        following.onStopMoving -= StopFollowMovement;
-        following = null;
+        follower.collider.enabled = true;
+        follower = null;
     }
-
-    private void OnDestroy() => Unfollow();
-
-    private void StopFollowMovement() => character.Animator.Set(AnimationType.None, (following.nextPosition - character.Position).ToDirection());
 
     protected override void Pause()
     {
@@ -160,15 +150,26 @@ public class CharacterMovement : Pausable
     private void StopMoving()
     {
         character.Animator.Set(AnimationType.None, currentDirection);
-        onStopMoving?.Invoke();
+        follower?.LookInDirection((nextPosition - follower.character.Position).ToDirection(), forceAnimationUpdate: true);
+    }
+
+    public void Teleport(Vector3 position, Direction direction) => Teleport(position, new GridVector(direction));
+    public void Teleport(Vector3 position, GridVector direction)
+    {
+        follower?.StopMoveQueue();
+        transform.position = position;
+        LookInDirection(direction);
+        follower?.Teleport(position - new GridVector(direction), direction);
     }
 
     public void LookInPlayerDirection() => LookAtTarget(PlayerCharacter.Instance);
     public void LookAtTarget(Character target) => LookAtTarget(target.Movement.nextPosition);
     public void LookAtTarget(GridVector target) => LookInDirection(GridVector.GetLookAt(character.Position, target));
-    public void LookInDirection(GridVector direction)
+    public void LookInStartDirection() => LookInDirection(startDirection);
+    public void LookInDirection(Direction direction, bool forceAnimationUpdate = false) => LookInDirection(new GridVector(direction), forceAnimationUpdate);
+    public void LookInDirection(GridVector direction, bool forceAnimationUpdate = false)
     {
-        if (CurrentDirectionVector.Equals(direction) || direction.magnitude == 0)
+        if (!forceAnimationUpdate && (CurrentDirectionVector.Equals(direction) || direction.magnitude == 0))
             return;
         CurrentDirectionVector = direction;
         character.Animator.Set(AnimationType.None, currentDirection);
@@ -196,23 +197,30 @@ public class CharacterMovement : Pausable
         return StartCoroutine(MoveToCoroutine(position, speed, false));
     }
 
-    public void LookInDirection(Direction direction) => LookInDirection(new GridVector(direction));
-    public void LookInStartDirection() => LookInDirection(startDirection);
-
     void AddToMoveQueue(GridVector position, AnimationType animation = AnimationType.Walk, float speed = WalkingSpeed)
     {
         moveQueue.Enqueue((position, animation, speed));
         if (movingThroughMoveQueue)
             return;
         movingThroughMoveQueue = true;
-        StartCoroutine(MoveThroughMoveQueueCoroutine());
+        moveQueueCoroutine = StartCoroutine(MoveThroughMoveQueueCoroutine());
+    }
+
+    public void StopMoveQueue()
+    {
+        if (moveQueueCoroutine is null)
+            return;
+        moveQueue.Clear();
+        StopCoroutine(moveQueueCoroutine);
+        movingThroughMoveQueue = false;
+        moveQueueCoroutine = null;
     }
 
     private IEnumerator MoveThroughMoveQueueCoroutine()
     {
         while (moveQueue.Count > 0)
             yield return MoveToPosition(moveQueue.Dequeue());
-        movingThroughMoveQueue = false;
+        StopMoveQueue();
     }
 
     private Coroutine StartMovingTo(GridVector position, AnimationType animation, float speed, bool checkPositionEvents)
@@ -220,7 +228,7 @@ public class CharacterMovement : Pausable
         Moving = true;
         CurrentDirectionVector = new GridVector(position - transform.position);
         character.Animator.Set(animation, currentDirection);
-        onStartMovingOneTile?.Invoke(new GridVector(transform.position), animation, speed);
+        follower?.AddToMoveQueue(new GridVector(transform.position), animation, speed);
         return StartCoroutine(MoveToCoroutine(position, speed, checkPositionEvents));
     }
 

@@ -5,16 +5,13 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] private Character follower;
-    [SerializeField] private CharacterControllerBase controller;
-    [SerializeField] private CharacterMovement movement;
-    [SerializeField] private CharacterAnimator animator;
+    [field: SerializeField] public CharacterControllerBase Controller { get; private set; }
+    [field: SerializeField] public CharacterMovement Movement { get; private set; }
+    [field: SerializeField] public CharacterAnimator Animator { get; private set; }
 
-    public CharacterControllerBase Controller => controller;
-    public CharacterMovement Movement => movement;
-    public CharacterAnimator Animator => animator;
     public GridVector Position => new GridVector(transform.position);
-    public CharacterData CharacterData => controller.CharacterData;
-    public Pokemon[] Pokemons => controller.CharacterData is null ? new Pokemon[0] : controller.CharacterData.pokemons.ToArray();
+    public CharacterData CharacterData => Controller.CharacterData;
+    public Pokemon[] Pokemons => Controller.CharacterData is null ? new Pokemon[0] : Controller.CharacterData.pokemons.ToArray();
     public Vector3 StartPosition { get; private set; }
     public virtual bool IsPlayer => false;
 
@@ -27,10 +24,10 @@ public class Character : MonoBehaviour
 
         StartPosition = transform.position;
 
-        controller.Initialize();
+        Controller.Initialize();
     }
 
-    private void Start() => follower?.Follow(this);
+    private void Start() => AddFollower(follower);
 
     public virtual void LoadDefault()
     {
@@ -40,7 +37,7 @@ public class Character : MonoBehaviour
 
     public void Reset()
     {
-        movement.LookInStartDirection();
+        Movement.LookInStartDirection();
         transform.position = StartPosition;
     }
 
@@ -63,25 +60,29 @@ public class Character : MonoBehaviour
     }
 
     public bool RaycastForward(LayerMask layerMask)
-        => RaycastForward(movement.CurrentDirectionVector, layerMask);
+        => RaycastForward(Movement.CurrentDirectionVector, layerMask);
 
     public void TryInteract()
     {
         RaycastHit hitInfo;
-        if (RaycastForward(movement.CurrentDirectionVector, LayerManager.Instance.InteractableLayerMask, out hitInfo))
+        if (RaycastForward(Movement.CurrentDirectionVector, LayerManager.Instance.InteractableLayerMask, out hitInfo))
             hitInfo.collider.gameObject.GetComponent<IInteractable>()?.Interact(this); ;
     }
 
-    public void Follow(Character target)
+    public void AddFollower(Character follower)
     {
-        layer = transform.gameObject.layer;
-        LayerManager.SetLayerRecursively(gameObject, LayerManager.FollowerLayer);
-        movement.Follow(target.movement);
+        if (follower is null)
+            return;
+
+        follower.layer = transform.gameObject.layer;
+        LayerManager.SetLayerRecursively(follower.gameObject, LayerManager.FollowerLayer);
+        Movement.AddFollower(follower.Movement);
     }
 
     public void Unfollow()
     {
-        LayerManager.SetLayerRecursively(gameObject, layer);
-        movement.Unfollow();
+        LayerManager.SetLayerRecursively(follower.gameObject, follower.layer);
+        Movement.Unfollow();
+        follower = null;
     }
 }

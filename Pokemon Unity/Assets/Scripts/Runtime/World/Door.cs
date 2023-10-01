@@ -23,9 +23,9 @@ public class Door : MonoBehaviour, IInteractable
         interactionCollider.enabled = locked;
         triggerCollider.enabled = !locked;
         if (locked)
-            gameObject.layer = LayerManager.ToLayer(LayerManager.Instance.InteractableLayerMask);
+            gameObject.layer = LayerManager.InteractableLayer;
         else
-            gameObject.layer = LayerManager.ToLayer(LayerManager.Instance.EntranceLayerMask);
+            gameObject.layer = LayerManager.EntranceLayer;
     }
 
     public void Interact(Character player)

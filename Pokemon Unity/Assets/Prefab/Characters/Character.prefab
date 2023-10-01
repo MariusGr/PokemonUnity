@@ -423,9 +423,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   follower: {fileID: 0}
-  controller: {fileID: 0}
-  movement: {fileID: 4300662377274357611}
-  animator: {fileID: 4482100472371566351}
+  <Controller>k__BackingField: {fileID: 0}
+  <Movement>k__BackingField: {fileID: 4300662377274357611}
+  <Animator>k__BackingField: {fileID: 4482100472371566351}
 --- !u!114 &4300662377274357611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,7 +441,6 @@ MonoBehaviour:
   character: {fileID: 1036652836103217860}
   controller: {fileID: 4906085682500282844}
   currentDirection: 4
-  following: {fileID: 0}
   collider: {fileID: 3388435532939442026}
   walkingSpeed: 5
   sprintingSpeed: 8.5

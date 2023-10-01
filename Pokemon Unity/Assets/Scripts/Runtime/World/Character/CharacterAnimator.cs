@@ -95,6 +95,9 @@ public class CharacterAnimator : MonoBehaviour
         if (animation != currentAnimation || direction != currentDirection)
             SetImageSequence(animation, direction);
 
+        if (direction != currentDirection)
+            print(direction);
+
         currentDirection = direction;
         currentAnimation = animation;
     }

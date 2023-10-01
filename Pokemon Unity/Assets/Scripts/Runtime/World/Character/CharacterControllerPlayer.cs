@@ -7,7 +7,7 @@ public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
     [SerializeField] public PlayerData playerData;
     override public CharacterData CharacterData => playerData;
 
-    private InputData input = new InputData();
+    private InputData input = new();
     private Door currentEntrance = null;
 
     private void Start()

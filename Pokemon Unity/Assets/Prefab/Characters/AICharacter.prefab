@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 4080989562808411878}
+    - target: {fileID: 1036652836103217860, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: <Controller>k__BackingField
+      value: 
+      objectReference: {fileID: 4080989562808411878}
     - target: {fileID: 4482100471133316245, guid: 809c9f42216ed7e4283cfa0fe969633a,
         type: 3}
       propertyPath: m_Layer
@@ -94,12 +99,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 809c9f42216ed7e4283cfa0fe969633a, type: 3}
---- !u!1 &7648897662864623679 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
-    type: 3}
-  m_PrefabInstance: {fileID: 6058970184520949554}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6518721887572901366 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1036652836103217860, guid: 809c9f42216ed7e4283cfa0fe969633a,
@@ -112,6 +111,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2b599edbca8fe449c3d2991a9fafb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7648897662864623679 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6058970184520949554}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &4080989562808411878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,7 +135,10 @@ MonoBehaviour:
     pokemons: []
     gameobject: {fileID: 7648897662864623679}
     sprite: {fileID: 0}
-    defaultText: 
+    defaultDialogText: 
+    storyEventToDialogText:
+      keys: []
+      values: []
     challengeText: 
     battleDefeatText: 
     battleWinText: 

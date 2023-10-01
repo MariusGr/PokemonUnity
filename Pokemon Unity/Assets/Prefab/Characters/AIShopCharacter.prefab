@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 7308352281778148171}
+    - target: {fileID: 1036652836103217860, guid: 809c9f42216ed7e4283cfa0fe969633a,
+        type: 3}
+      propertyPath: <Controller>k__BackingField
+      value: 
+      objectReference: {fileID: 7308352281778148171}
     - target: {fileID: 4482100471133316240, guid: 809c9f42216ed7e4283cfa0fe969633a,
         type: 3}
       propertyPath: m_Sprite
@@ -129,12 +134,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 809c9f42216ed7e4283cfa0fe969633a, type: 3}
---- !u!1 &7467561318510768237 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
-    type: 3}
-  m_PrefabInstance: {fileID: 6454086893945055072}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6337527395386131876 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1036652836103217860, guid: 809c9f42216ed7e4283cfa0fe969633a,
@@ -147,6 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2b599edbca8fe449c3d2991a9fafb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7467561318510768237 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4482100472371566349, guid: 809c9f42216ed7e4283cfa0fe969633a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6454086893945055072}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7308352281778148171
 MonoBehaviour:
   m_ObjectHideFlags: 0

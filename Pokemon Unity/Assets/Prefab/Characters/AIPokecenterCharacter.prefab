@@ -17,6 +17,11 @@ PrefabInstance:
       propertyPath: controller
       value: 
       objectReference: {fileID: 239008912352255042}
+    - target: {fileID: 6337527395386131876, guid: fc3287fb25ce5d94597a0b323f0de039,
+        type: 3}
+      propertyPath: <Controller>k__BackingField
+      value: 
+      objectReference: {fileID: 239008912352255042}
     - target: {fileID: 7308352281778148171, guid: fc3287fb25ce5d94597a0b323f0de039,
         type: 3}
       propertyPath: items.Array.size
@@ -176,12 +181,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 7308352281778148171, guid: fc3287fb25ce5d94597a0b323f0de039, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fc3287fb25ce5d94597a0b323f0de039, type: 3}
---- !u!1 &6934041045812447058 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7467561318510768237, guid: fc3287fb25ce5d94597a0b323f0de039,
-    type: 3}
-  m_PrefabInstance: {fileID: 547384044932380479}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5794964442708259483 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6337527395386131876, guid: fc3287fb25ce5d94597a0b323f0de039,
@@ -194,6 +193,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2b599edbca8fe449c3d2991a9fafb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6934041045812447058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7467561318510768237, guid: fc3287fb25ce5d94597a0b323f0de039,
+    type: 3}
+  m_PrefabInstance: {fileID: 547384044932380479}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &239008912352255042
 MonoBehaviour:
   m_ObjectHideFlags: 0
