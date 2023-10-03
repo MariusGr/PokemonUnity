@@ -1,52 +1,29 @@
-using SimpleJSON;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISavable
+public class CharacterControllerAI : CharacterControllerBase, IInteractable
 {
-    private static readonly List<CharacterControllerAI> battlingNPCs = new List<CharacterControllerAI>();
-
-    public static bool CheckAllNPCVision()
-    {
-        foreach (CharacterControllerAI c in battlingNPCs)
-            if (c.CheckChallengeVision())
-                return true;
-        return false;
-    }
-
-    [SerializeField] public NPCData npcData;
-    [SerializeField] public bool wantsToBattle;
-    [SerializeField] public float challengeVisionDistance = 5f;
-    [SerializeField] private AudioClip challengeMusicTrack;
-
-    public bool WillChallengePlayer => wantsToBattle && !npcData.IsDefeated() && !npcData.hasBeenDefeated;
-    public override CharacterData CharacterData => npcData;
-
-    public override void Initialize()
-    {
-        SaveGameManager.Register(this);
-    }
+    public NpcCharacter NpcCharacter => (NpcCharacter)character;
 
     public void Interact(Character player)
     {
         if (StoryEvent.EventHappening)
             character.Movement.LookInPlayerDirection();
-        else if (wantsToBattle && npcData.hasBeenDefeated)
+        else if (NpcCharacter.NpcData.wantsToBattle && NpcCharacter.NpcData.hasBeenDefeated)
         {
             character.Movement.LookInPlayerDirection();
-            DialogBox.Instance.DrawText(npcData.afterDefeatText, DialogBoxContinueMode.User, true);
+            DialogBox.Instance.DrawText(NpcCharacter.NpcData.afterDefeatText, DialogBoxContinueMode.User, true);
         }
         else
         {
-            if (wantsToBattle)
+            if (NpcCharacter.NpcData.wantsToBattle)
             {
                 Challenge(player);
             }
             else
             {
                 character.Movement.LookInPlayerDirection();
-                DialogBox.Instance.DrawText(npcData.GetDialogText(), DialogBoxContinueMode.User, true);
+                DialogBox.Instance.DrawText(NpcCharacter.NpcData.GetDialogText(), DialogBoxContinueMode.User, true);
             }
         }
     }
@@ -55,7 +32,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
     {
         print("Challenge");
         EventManager.Pause();
-        BgmHandler.Instance.PlayOverlay(challengeMusicTrack);
+        BgmHandler.Instance.PlayOverlay(NpcCharacter.NpcData.challengeMusicTrack);
         StartCoroutine(ChallengeCoroutine(player));
     }
 
@@ -69,16 +46,17 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
         yield return MoveToPosition(player.Position, direction, 1);
 
         player.Movement.LookInDirection(-direction);
-        yield return DialogBox.Instance.DrawText(npcData.challengeText, DialogBoxContinueMode.User, true);
-        BattleManager.Instance.StartNewBattle(player.CharacterData, npcData, BattleEndReaction);
+        yield return DialogBox.Instance.DrawText(NpcCharacter.NpcData.challengeText, DialogBoxContinueMode.User, true);
+        BattleManager.Instance.StartNewBattle(player.Data, NpcCharacter.NpcData, BattleEndReaction);
     }
 
     public void BattleEndReaction(bool npcDefeated)
     {
-        battlingNPCs.Remove(this);
-
         if (npcDefeated)
-            DialogBox.Instance.DrawText(npcData.defeatedText, DialogBoxContinueMode.User, true);
+        {
+            NpcCharacter.Defeat();
+            DialogBox.Instance.DrawText(NpcCharacter.NpcData.defeatedText, DialogBoxContinueMode.User, true);
+        }
         else
             transform.position = character.StartPosition;
 
@@ -92,7 +70,7 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
             character.Movement.CurrentDirectionVector,
             LayerManager.Instance.VisionBlockingForAILayerMask,
             out hitInfo,
-            maxDistance: challengeVisionDistance - .2f)
+            maxDistance: NpcCharacter.NpcData.challengeVisionDistance - .2f)
         )
         {
             Character otherCharacter = hitInfo.collider.gameObject.GetComponent<Character>();
@@ -118,34 +96,5 @@ public class CharacterControllerAI : CharacterControllerBase, IInteractable, ISa
             yield return new WaitForEndOfFrame();
             character.Movement.ProcessMovement(direction, checkPositionEvents: checkPositionEvents, ignorePaused: true);
         }
-    }
-
-    public string GetKey()
-    {
-        GridVector startPosition = new GridVector(character.StartPosition);
-        return $"{GetType()}_{startPosition.x}_{startPosition.y}";
-    }
-
-    public JSONNode ToJSON()
-    {
-        JSONNode json = new JSONObject();
-        json.Add("hasBeenDefeated", npcData.hasBeenDefeated);
-        return json;
-    }
-
-    public void LoadFromJSON(JSONObject json)
-    {
-        JSONNode jsonData = json[GetKey()];
-        npcData.hasBeenDefeated = jsonData["hasBeenDefeated"];
-        character.LoadDefault();
-        if (WillChallengePlayer)
-            battlingNPCs.Add(this);
-    }
-
-    public void LoadDefault()
-    {
-        character.LoadDefault();
-        if (WillChallengePlayer)
-            battlingNPCs.Add(this);
     }
 }

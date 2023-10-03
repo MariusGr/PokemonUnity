@@ -37,7 +37,7 @@ public class BattleManager : MonoBehaviour
 
     private BattleState state;
     private CharacterData playerData;
-    private NPCData opponentData;
+    private NpcData opponentData;
     private int[] pokemonIndex = new int[] { 0, 0 };
     private bool[] isDefeated = new bool[] { false, false };
     private bool opponentIsWild = false;
@@ -104,7 +104,7 @@ public class BattleManager : MonoBehaviour
         yield return RoundCoroutine(encounterEndtionCallback);
     }
 
-    public void StartNewBattle(CharacterData playerData, NPCData opponentData, Action<bool> npcBattleEndReactionCallback)
+    public void StartNewBattle(CharacterData playerData, NpcData opponentData, Action<bool> npcBattleEndReactionCallback)
     {
         print("StartNewBattle");
         opponentIsWild = false;
@@ -633,7 +633,7 @@ public class BattleManager : MonoBehaviour
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
         => pokemon.Name == other.Name ? (
-            character is null ? (pokemon == opponentPokemon ? $"Wildes {pokemon.Name}" : pokemon.Name) : $"{character.nameGenitive} {pokemon.Name}"
+            character is null ? (pokemon == opponentPokemon ? $"Wildes {pokemon.Name}" : pokemon.Name) : $"{character.NameGenitive} {pokemon.Name}"
         ) : pokemon.Name;
 
     private IEnumerator MoveCoroutine(int attacker, int target, Move move)
@@ -1010,14 +1010,13 @@ public class BattleManager : MonoBehaviour
             // AI opponent has been defeated
             if (loserIsTrainer)
             {
-                NPCData npc = (NPCData)loser;
+                NpcData npc = (NpcData)loser;
                 yield return DialogBox.Instance.DrawText(new string[]
                 {
                     npc.battleDefeatText,
                     $"Du erhältst {loser.GetPriceMoneyFormatted()}.",
                 }, DialogBoxContinueMode.User);
                 ((PlayerData)winner).GiveMoney(loser.GetPriceMoney());
-                npc.hasBeenDefeated = true;
             }
 
             state = BattleState.OpponentDefeated;
@@ -1029,7 +1028,7 @@ public class BattleManager : MonoBehaviour
 
             if (winnerIsTrainer)
             {
-                NPCData npc = (NPCData)winner;
+                NpcData npc = (NpcData)winner;
                 yield return DialogBox.Instance.DrawText(new string[]
                 {
                     npc.battleWinText,

@@ -8,7 +8,7 @@ using System.Linq;
 public abstract class CharacterData
 {
     public string name;
-    public string nameGenitive => name.Length > 0 && name[name.Length - 1] == 's' ? $"{name}'" : $"{name}s";
+    public string NameGenitive => name.Length > 0 && name[name.Length - 1] == 's' ? $"{name}'" : $"{name}s";
     public List<Pokemon> pokemons;
     public GameObject gameobject;
 

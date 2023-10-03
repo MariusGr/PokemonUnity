@@ -1,14 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterControllerPokecenterAI : CharacterControllerBase, IInteractable
 {
-    [SerializeField] string greetingText = "Ich heil jetzt mal ganz dreist deine Pokémon!";
+    [SerializeField] string greetingText = "Ich heil jetzt mal ganz dreist deine Pok?mon!";
     [SerializeField] string byeText = "Krass, dass das einfach umsonst ist, ne?";
     [SerializeField] AudioClip healMusic;
-
-    public override CharacterData CharacterData { get => null; }
 
     public void Interact(Character player)
     {

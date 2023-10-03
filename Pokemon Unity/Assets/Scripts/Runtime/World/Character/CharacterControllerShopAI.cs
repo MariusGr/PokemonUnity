@@ -8,8 +8,6 @@ public class CharacterControllerShopAI : CharacterControllerBase, IInteractable
     [SerializeField] string byeText = "Beehre uns bald wieder!";
     [SerializeField] ItemData[] items;
 
-    public override CharacterData CharacterData { get => null; }
-
     public void Interact(Character player)
     {
         EventManager.Pause();

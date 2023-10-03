@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3636749031260085127
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1669548061800148968, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_Name
+      value: Character NPC Pokecenter
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148970, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: renderer
+      value: 
+      objectReference: {fileID: 2689562553261524978}
+    - target: {fileID: 1669548061800148970, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: exclaimBubble
+      value: 
+      objectReference: {fileID: 8687226401404215883}
+    - target: {fileID: 1669548061800148970, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: idleSpritesUp.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: ccaf77e45cc6ef341b398972c52eef1a,
+        type: 3}
+    - target: {fileID: 1669548061800148970, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: idleSpritesDown.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300016, guid: cdeda8067c16def4facf74eb0fc8ab1d,
+        type: 3}
+    - target: {fileID: 1669548061800148970, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: idleSpritesLeft.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300024, guid: ccaf77e45cc6ef341b398972c52eef1a,
+        type: 3}
+    - target: {fileID: 1669548061800148970, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: idleSpritesRight.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300008, guid: ccaf77e45cc6ef341b398972c52eef1a,
+        type: 3}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1669548061800148971, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3184891905096790271, guid: 78524f96a3aa74e99a216f183f5c9f92,
+        type: 3}
+      propertyPath: <Controller>k__BackingField
+      value: 
+      objectReference: {fileID: 4238005360919057312}
+    m_RemovedComponents:
+    - {fileID: 2619402567655855809, guid: 78524f96a3aa74e99a216f183f5c9f92, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 78524f96a3aa74e99a216f183f5c9f92, type: 3}
+--- !u!114 &2182928234890357624 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3184891905096790271, guid: 78524f96a3aa74e99a216f183f5c9f92,
+    type: 3}
+  m_PrefabInstance: {fileID: 3636749031260085127}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2689562551821988975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b37ebbd6bfd714d888b26080b31a3fb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2689562551821988975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1669548061800148968, guid: 78524f96a3aa74e99a216f183f5c9f92,
+    type: 3}
+  m_PrefabInstance: {fileID: 3636749031260085127}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4238005360919057312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2689562551821988975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18908eaeb2d881440a49cba403e3c670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <character>k__BackingField: {fileID: 2182928234890357624}
+  greetingText: Ich heil jetzt mal ganz dreist deine Pok?mon!
+  byeText: Krass, dass das einfach umsonst ist, ne?
+  healMusic: {fileID: 8300000, guid: 28a54d59c51dbc9429ef1e114f513c66, type: 3}
+--- !u!212 &2689562553261524978 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1669548061109017717, guid: 78524f96a3aa74e99a216f183f5c9f92,
+    type: 3}
+  m_PrefabInstance: {fileID: 3636749031260085127}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8687226401404215883 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5401902394014906828, guid: 78524f96a3aa74e99a216f183f5c9f92,
+    type: 3}
+  m_PrefabInstance: {fileID: 3636749031260085127}
+  m_PrefabAsset: {fileID: 0}

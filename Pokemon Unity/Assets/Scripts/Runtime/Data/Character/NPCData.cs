@@ -5,7 +5,7 @@ using System;
 using CollectionExtensions;
 
 [Serializable]
-public class NPCData : CharacterData
+public class NpcData : CharacterData
 {
     public Sprite sprite;
     [SerializeField] private string defaultDialogText;
@@ -17,6 +17,9 @@ public class NPCData : CharacterData
     public string defeatedText;
     public float priceMoneyBase = 0;
     public bool hasBeenDefeated = false;
+    public bool wantsToBattle;
+    public float challengeVisionDistance = 5f;
+    public AudioClip challengeMusicTrack;
 
     override public float GetPriceMoney() => pokemons[pokemons.Count - 1].level * priceMoneyBase;
 

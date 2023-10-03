@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour, ISavable
 {
-    [SerializeField] private Character follower;
     [field: SerializeField] public CharacterControllerBase Controller { get; private set; }
     [field: SerializeField] public CharacterMovement Movement { get; private set; }
     [field: SerializeField] public CharacterAnimator Animator { get; private set; }
+    [SerializeField] private Character follower;
 
-    public GridVector Position => new GridVector(transform.position);
-    public CharacterData CharacterData => Controller.CharacterData;
-    public Pokemon[] Pokemons => Controller.CharacterData is null ? new Pokemon[0] : Controller.CharacterData.pokemons.ToArray();
+    public abstract CharacterData Data { get; }
+
+    public GridVector Position => new(transform.position);
+    public Pokemon[] Pokemons => Data is null ? new Pokemon[0] : Data.pokemons.ToArray();
     public Vector3 StartPosition { get; private set; }
     public virtual bool IsPlayer => false;
 
@@ -20,19 +22,12 @@ public class Character : MonoBehaviour
     protected virtual void Awake()
     {
         foreach (Pokemon pokemon in Pokemons)
-            pokemon.Initialize(CharacterData);
+            pokemon.Initialize(Data);
 
         StartPosition = transform.position;
 
         Controller.Initialize();
-    }
-
-    private void Start() => AddFollower(follower);
-
-    public virtual void LoadDefault()
-    {
-        foreach (Pokemon pokemon in Pokemons)
-            pokemon.LoadDefault();
+        SaveGameManager.Register(this);
     }
 
     public void Reset()
@@ -84,5 +79,48 @@ public class Character : MonoBehaviour
         LayerManager.SetLayerRecursively(follower.gameObject, follower.layer);
         Movement.Unfollow();
         follower = null;
+    }
+
+    public abstract string GetKey();
+
+    public virtual JSONNode ToJSON()
+    {
+        JSONNode json = new JSONObject();
+
+        var hasFollower = follower is not null;
+        json.Add("hasFollower", hasFollower);
+        if (hasFollower)
+        {
+            json.Add("followerPosition", follower.transform.position);
+            json.Add("followerKey", follower.GetKey());
+        }
+
+        return json;
+    }
+
+    public virtual void LoadFromJSON(JSONObject json)
+    {
+        JSONNode jsonData = json[GetKey()];
+
+        if (jsonData["hasFollower"].AsBool || follower is not null)
+        {
+            if (follower is null)
+                follower = SaveGameManager.GetSavable(jsonData["followerKey"]) as Character;
+            follower.transform.position = jsonData["followerPosition"];
+            AddFollower(follower);
+        }
+    }
+
+    public virtual void LoadDefault()
+    {
+        PokemonsLoadDefault();
+        if (follower is not null)
+            AddFollower(follower);
+    }
+
+    protected void PokemonsLoadDefault()
+    {
+        foreach (Pokemon pokemon in Pokemons)
+            pokemon.LoadDefault();
     }
 }

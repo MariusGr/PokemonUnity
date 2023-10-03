@@ -1,9 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
 
-public class PlayerCharacter : Character, ISavable
+public class PlayerCharacter : Character
 {
     public static PlayerCharacter Instance { get; private set; }
 
@@ -11,16 +10,11 @@ public class PlayerCharacter : Character, ISavable
 
     public override bool IsPlayer => true;
 
-    private PlayerData PlayerData => (PlayerData)CharacterData;
+    [field: SerializeField] public PlayerData PlayerData { get; private set; }
+    public override CharacterData Data => PlayerData;
     private CharacterControllerPlayer PlayerController => (CharacterControllerPlayer)Controller;
 
     public PlayerCharacter() => Instance = this;
-
-    protected override void Awake()
-    {
-        SaveGameManager.Register(this);
-        base.Awake();
-    }
 
     public void OnCaughtAllPokemons() => caughtAllPokemonsStoryEvent.TryInvoke();
 
@@ -33,26 +27,16 @@ public class PlayerCharacter : Character, ISavable
         Movement.LookInDirection(Direction.Down);
     }
 
-    public void EnterEntranceTreshhold(Door entrance)
-    {
-        PlayerController.EnterEntranceTrehshold(entrance);
-    }
-
-    public void LeaveEntranceTrehshold(Door entrance)
-    {
-        PlayerController.LeaveEntranceTrehshold(entrance);
-    }
-
+    public void EnterEntranceTreshhold(Door entrance) => PlayerController.EnterEntranceTrehshold(entrance);
+    public void LeaveEntranceTrehshold(Door entrance) => PlayerController.LeaveEntranceTrehshold(entrance);
     public void TravelToEntrance(Door entrance) => Movement.Teleport(entrance.spawnPosition, -new GridVector(entrance.directionTriggerToEntrance));
 
-    public string GetKey()
-        => $"{GetType()}";
+    public override string GetKey() => $"{GetType()}";
 
-    public JSONNode ToJSON()
+    public override JSONNode ToJSON()
     {
-        JSONNode json = new JSONObject();
+        JSONNode json = base.ToJSON();
 
-        //json.Add("name", playerData.name);
         json.Add("money", PlayerData.money);
         json.Add("position", transform.position);
         json.Add("direction", (Vector3)Movement.CurrentDirectionVector);
@@ -60,16 +44,15 @@ public class PlayerCharacter : Character, ISavable
         json.Add("pokemons", PlayerData.PokemonsToJSON());
         json.Add("pokemonsInBox", PlayerData.PokemonsInBoxToJSON());
         json.Add("pokemonsSeen", PlayerData.SeenPokemonsToJSON());
-        //json.Add("lastPokeCenterEntrance", );
+        // TODO: save last pokemon center
         //json.Add("lastPokeCenterEntrance", );
 
         return json;
     }
 
-    public void LoadFromJSON(JSONObject json)
+    public override void LoadFromJSON(JSONObject json)
     {
         JSONNode jsonData = json[GetKey()];
-        //playerData.name = jsonData["name"];
         PlayerData.money = jsonData["money"];
         transform.position = jsonData["position"];
         Movement.LookInDirection(new GridVector(jsonData["direction"]));
@@ -77,6 +60,7 @@ public class PlayerCharacter : Character, ISavable
         PlayerData.LoadPokemonsFromJSON((JSONArray)jsonData["pokemons"]);
         PlayerData.LoadPokemonsInBoxFromJSON((JSONArray)jsonData["pokemonsInBox"]);
         PlayerData.LoadSeenPokemonsFromJSON((JSONArray)jsonData["pokemonsSeen"]);
+        base.LoadFromJSON(json);
     }
 
     public override void LoadDefault()

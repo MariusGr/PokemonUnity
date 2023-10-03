@@ -44,6 +44,7 @@ public class CharacterMovement : Pausable
     private Coroutine moveQueueCoroutine;
     private GridVector nextPosition;
     private CharacterMovement follower;
+    public bool Following { get; private set; } 
 
     private void Awake() => nextPosition = character.Position;
 
@@ -62,6 +63,7 @@ public class CharacterMovement : Pausable
         follower.collider.enabled = false;
         this.follower = follower;
         follower.LookAtTarget(character.Position, true);
+        follower.Following = true;
     }
 
     public void Unfollow()
@@ -69,6 +71,7 @@ public class CharacterMovement : Pausable
         if (follower is null)
             return;
         follower.collider.enabled = true;
+        follower.Following = false;
         follower = null;
     }
 
@@ -170,13 +173,9 @@ public class CharacterMovement : Pausable
     public void LookInDirection(Direction direction, bool forceUpdate = false) => LookInDirection(new GridVector(direction), forceUpdate);
     public void LookInDirection(GridVector direction, bool forceUpdate = false)
     {
-        print(direction);
-        print(CurrentDirectionVector);
         if (!forceUpdate && (CurrentDirectionVector.Equals(direction) || direction.magnitude == 0))
             return;
         CurrentDirectionVector = direction;
-        print(CurrentDirectionVector);
-        print(currentDirection);
         character.Animator.Set(AnimationType.None, currentDirection);
     }
 
@@ -190,6 +189,8 @@ public class CharacterMovement : Pausable
                 StartMovingTo(new GridVector(transform.position + direction), animation, speed, checkPositionEvents);
             return true;
         }
+        else
+            character.Animator.Set(AnimationType.None, currentDirection);
         return false;
     }
 

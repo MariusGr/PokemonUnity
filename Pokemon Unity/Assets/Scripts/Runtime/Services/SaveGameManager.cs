@@ -8,8 +8,9 @@ using System.IO;
 public class SaveGameManager : MonoBehaviour
 {
     public static SaveGameManager Instance;
-    private static readonly Dictionary<string, ISavable> savables = new Dictionary<string, ISavable>();
+    private static readonly Dictionary<string, ISavable> savables = new();
     public static void Register(ISavable savable) => savables[savable.GetKey()] = savable;
+    public static ISavable GetSavable(string key) => savables.GetValueOrDefault(key);
 
     [SerializeField] private bool removeSaveGame;
     private string Path => Application.persistentDataPath + "/savegame.sav";

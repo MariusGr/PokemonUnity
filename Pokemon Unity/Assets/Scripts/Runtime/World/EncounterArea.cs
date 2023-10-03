@@ -37,7 +37,7 @@ public class EncounterArea : MonoBehaviour
     // TODO: should this be here in this class? Maybe own class!
     public static void CheckPositionRelatedEvents()
     {
-        if (CharacterControllerAI.CheckAllNPCVision())
+        if (NpcCharacter.CheckAllNPCVision())
             return;
         if (!(currentArea is null))
             currentArea.CheckEncounter();

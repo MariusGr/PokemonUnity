@@ -4,16 +4,12 @@ using UnityEngine;
 
 public class CharacterControllerPlayer : CharacterControllerBase, IInputConsumer
 {
-    [SerializeField] public PlayerData playerData;
-    override public CharacterData CharacterData => playerData;
-
     private InputData input = new();
     private Door currentEntrance = null;
 
     private void Start()
     {
         InputManager.Instance.Register(this);
-        DebugExtensions.DebugExtension.Log(playerData.pokemons);
         SignUpForPause();
     }
 
