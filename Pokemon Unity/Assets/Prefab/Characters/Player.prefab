@@ -194,6 +194,11 @@ PrefabInstance:
       propertyPath: character
       value: 
       objectReference: {fileID: 845170346935724170}
+    - target: {fileID: 6609797659104464253, guid: 721751c0e21f04f9ea343552af9c3aab,
+        type: 3}
+      propertyPath: lookOnlySeconds
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 6784159330363072131, guid: 721751c0e21f04f9ea343552af9c3aab,
         type: 3}
       propertyPath: m_Layer
@@ -267,7 +272,7 @@ PrefabInstance:
     - target: {fileID: 6784159332127943963, guid: 721751c0e21f04f9ea343552af9c3aab,
         type: 3}
       propertyPath: m_Name
-      value: Character Player
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6784159332127943963, guid: 721751c0e21f04f9ea343552af9c3aab,
         type: 3}

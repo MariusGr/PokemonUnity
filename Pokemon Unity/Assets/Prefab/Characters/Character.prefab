@@ -508,6 +508,8 @@ MonoBehaviour:
   character: {fileID: 0}
   controller: {fileID: 2594170938358322122}
   currentDirection: 4
+  lookOnlySeconds: 0.1
+  fullStopDelaySeconds: 0.2
   collider: {fileID: 5698063413030735228}
   walkingSpeed: 5
   sprintingSpeed: 8.5

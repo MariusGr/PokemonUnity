@@ -17,6 +17,8 @@ public class CharacterMovement : Pausable
     [SerializeField] private Character character;
     [SerializeField] private CharacterController controller;
     [SerializeField] private Direction currentDirection = Direction.Down;
+    [SerializeField] private float lookOnlySeconds = .2f;
+    [SerializeField] private float fullStopDelaySeconds = .2f;
     [SerializeField] private new BoxCollider collider;
 
     public float walkingSpeed = 3f;
@@ -27,6 +29,7 @@ public class CharacterMovement : Pausable
     private float verticalChanged = 0;
     public bool Moving { get; private set; } = false;
     private bool lastMoving = false;
+    private float fullStopSpring;
 
     private GridVector startDirection;
     private GridVector currentDirectionVector = GridVector.Down;
@@ -114,7 +117,11 @@ public class CharacterMovement : Pausable
         }
 
         if (Moving)
+        {
+            fullStopSpring = Mathf.Min(1f, fullStopSpring + Time.deltaTime / fullStopDelaySeconds);
             return;
+        }
+        fullStopSpring = Mathf.Max(0, fullStopSpring - Time.deltaTime / fullStopDelaySeconds);
 
         bool horizontalActive = horizontal != 0;
         bool verticalActive = vertical != 0;
@@ -129,20 +136,34 @@ public class CharacterMovement : Pausable
         horizontalLast = horizontal;
         verticalLast = vertical;
 
+        bool lookOnly;
         if (verticalChanged > horizontalChanged && verticalActive)
+        {
             moveVertical = true;
+            lookOnly = WillOnlyLookDirectionChange(verticalChanged);
+        }
         else if (horizontalActive)
+        {
             moveHorizontal = true;
+            lookOnly = WillOnlyLookDirectionChange(horizontalChanged);
+        }
         else
         {
             moveHorizontal = horizontalActive;
             moveVertical = verticalActive;
+            lookOnly = false;
         }
 
         bool success = false;
         Vector3 direction = moveVertical ? Vector3.forward * Mathf.Sign(vertical) : moveHorizontal ? Vector3.right * Mathf.Sign(horizontal) : Vector3.zero;
         if (moveVertical || moveHorizontal)
-            success = MoveInDirection(direction, animation, currentSpeed, checkPositionEvents);
+            if (lookOnly)
+            {
+                LookInDirection(direction, true);
+                success = true;
+            }
+            else
+                success = MoveInDirection(direction, animation, currentSpeed, checkPositionEvents);
 
         // TODO: Always gets triggered twice
         if (!success && lastMoving)
@@ -150,6 +171,9 @@ public class CharacterMovement : Pausable
 
         lastMoving = Moving;
     }
+
+    private bool WillOnlyLookDirectionChange(float timeSincePress)
+        => fullStopSpring <= Mathf.Epsilon &&  Time.time - timeSincePress < lookOnlySeconds;
 
     private void StopMoving()
     {
@@ -170,6 +194,7 @@ public class CharacterMovement : Pausable
     public void LookAtTarget(Character target, bool forceUpdate = false) => LookAtTarget(target.Movement.nextPosition, forceUpdate);
     public void LookAtTarget(GridVector target, bool forceUpdate = false) => LookInDirection(GridVector.GetLookAt(character.Position, target), forceUpdate);
     public void LookInStartDirection() => LookInDirection(startDirection);
+    public void LookInDirection(Vector3 direction, bool forceUpdate = false) => LookInDirection(new GridVector(direction), forceUpdate);
     public void LookInDirection(Direction direction, bool forceUpdate = false) => LookInDirection(new GridVector(direction), forceUpdate);
     public void LookInDirection(GridVector direction, bool forceUpdate = false)
     {
