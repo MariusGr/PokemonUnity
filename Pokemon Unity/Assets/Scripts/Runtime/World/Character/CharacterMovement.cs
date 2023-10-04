@@ -63,7 +63,6 @@ public class CharacterMovement : Pausable
     {
         if (follower is null)
             return;
-        follower.collider.enabled = false;
         this.follower = follower;
         follower.LookAtTarget(character.Position, true);
         follower.Following = true;
