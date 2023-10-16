@@ -43,15 +43,8 @@ public class EncounterArea : MonoBehaviour
             currentArea.CheckEncounter();
     }
 
-    public void Enter()
-    {
-        currentArea = this;
-    }
-
-    public void Leave()
-    {
-        currentArea = null;
-    }
+    public void Enter() => currentArea = this;
+    public void Leave() => currentArea = null;
 
     public void CheckEncounter()
     {

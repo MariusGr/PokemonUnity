@@ -90,7 +90,7 @@ PrefabInstance:
     - target: {fileID: 6784159332127943963, guid: 721751c0e21f04f9ea343552af9c3aab,
         type: 3}
       propertyPath: m_Name
-      value: Character NPC
+      value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 6784159332127943963, guid: 721751c0e21f04f9ea343552af9c3aab,
         type: 3}
@@ -99,6 +99,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 721751c0e21f04f9ea343552af9c3aab, type: 3}
+--- !u!65 &441026853536386959 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 5698063413030735228, guid: 721751c0e21f04f9ea343552af9c3aab,
+    type: 3}
+  m_PrefabInstance: {fileID: 5263936013350798067}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1348817201729654670 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6609797659104464253, guid: 721751c0e21f04f9ea343552af9c3aab,
@@ -145,6 +151,7 @@ MonoBehaviour:
   <Controller>k__BackingField: {fileID: 2619402567655855809}
   <Movement>k__BackingField: {fileID: 1348817201729654670}
   <Animator>k__BackingField: {fileID: 1669548061800148970}
+  <Collider>k__BackingField: {fileID: 441026853536386959}
   follower: {fileID: 0}
   <NpcData>k__BackingField:
     name: Bot

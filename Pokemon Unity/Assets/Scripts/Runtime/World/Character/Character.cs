@@ -8,6 +8,7 @@ public abstract class Character : MonoBehaviour, ISavable
     [field: SerializeField] public CharacterControllerBase Controller { get; private set; }
     [field: SerializeField] public CharacterMovement Movement { get; private set; }
     [field: SerializeField] public CharacterAnimator Animator { get; private set; }
+    [field: SerializeField] public BoxCollider Collider { get; private set; }
     [SerializeField] private Character follower;
 
     public abstract CharacterData Data { get; }

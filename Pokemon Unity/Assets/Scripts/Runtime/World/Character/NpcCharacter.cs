@@ -27,7 +27,7 @@ public class NpcCharacter : Character
 
     public override string GetKey()
     {
-        GridVector startPosition = new GridVector(StartPosition);
+        GridVector startPosition = new(StartPosition);
         return $"{GetType()}_{startPosition.x}_{startPosition.y}";
     }
 

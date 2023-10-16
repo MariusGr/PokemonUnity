@@ -332,6 +332,7 @@ MonoBehaviour:
   <Controller>k__BackingField: {fileID: 8142744472584252189}
   <Movement>k__BackingField: {fileID: 660446862824128325}
   <Animator>k__BackingField: {fileID: 916196551232413473}
+  <Collider>k__BackingField: {fileID: 2126615343695576900}
   follower: {fileID: 0}
   caughtAllPokemonsStoryEvent: {fileID: 11400000, guid: a8285051db9844ae7a786fac70daabb2,
     type: 2}
@@ -366,3 +367,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <character>k__BackingField: {fileID: 845170346935724170}
+--- !u!65 &2126615343695576900 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 5698063413030735228, guid: 721751c0e21f04f9ea343552af9c3aab,
+    type: 3}
+  m_PrefabInstance: {fileID: 5949491637234594360}
+  m_PrefabAsset: {fileID: 0}

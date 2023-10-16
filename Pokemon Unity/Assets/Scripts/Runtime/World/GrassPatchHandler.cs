@@ -19,14 +19,22 @@ public class GrassPatchHandler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        area.Enter();
         overlay.SetActive(true);
+
+        if (other.gameObject != PlayerCharacter.Instance.Collider.gameObject)
+            return;
+
+        area.Enter();
         SfxHandler.Play(walkClip, Random.Range(0.85f, 1.1f));
     }
 
     void OnTriggerExit(Collider other)
     {
-        area.Leave();
         overlay.SetActive(false);
+
+        if (other.gameObject != PlayerCharacter.Instance.Collider.gameObject)
+            return;
+
+        area.Leave();
     }
 }

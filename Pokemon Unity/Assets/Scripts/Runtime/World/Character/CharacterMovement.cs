@@ -19,7 +19,6 @@ public class CharacterMovement : Pausable
     [SerializeField] private Direction currentDirection = Direction.Down;
     [SerializeField] private float lookOnlySeconds = .2f;
     [SerializeField] private float fullStopDelaySeconds = .2f;
-    [SerializeField] private new BoxCollider collider;
 
     public float walkingSpeed = 3f;
     public float sprintingSpeed = 6f;
@@ -72,7 +71,6 @@ public class CharacterMovement : Pausable
     {
         if (follower is null)
             return;
-        follower.collider.enabled = true;
         follower.Following = false;
         follower = null;
     }
@@ -278,7 +276,7 @@ public class CharacterMovement : Pausable
 
         transform.position = target + Vector3.up * transform.position.y;
 
-        if (checkPositionEvents)
+        if (checkPositionEvents && character.IsPlayer && !Following)
         {
             bool playerHasBeenDefeated = false;
             yield return PokemonManager.Instance.HandleWalkDamage(() => playerHasBeenDefeated = true);
