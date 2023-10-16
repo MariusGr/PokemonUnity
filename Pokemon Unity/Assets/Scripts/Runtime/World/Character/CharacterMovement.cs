@@ -183,6 +183,7 @@ public class CharacterMovement : Pausable
     {
         follower?.StopMoveQueue();
         transform.position = position;
+        nextPosition = new(position);
         LookInDirection(direction);
         follower?.Teleport(position - new GridVector(direction), direction);
     }
