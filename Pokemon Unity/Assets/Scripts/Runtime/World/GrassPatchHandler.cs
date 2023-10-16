@@ -10,6 +10,7 @@ public class GrassPatchHandler : MonoBehaviour
     public AudioClip walkClip;
 
     private GrassCluster area;
+    private GameObject currentOccupoier;
 
     void Start()
     {
@@ -19,6 +20,7 @@ public class GrassPatchHandler : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        currentOccupoier = other.gameObject;
         overlay.SetActive(true);
 
         if (other.gameObject != PlayerCharacter.Instance.Collider.gameObject)
@@ -30,6 +32,10 @@ public class GrassPatchHandler : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        if (other.gameObject != currentOccupoier)
+            return;
+
+        currentOccupoier = null;
         overlay.SetActive(false);
 
         if (other.gameObject != PlayerCharacter.Instance.Collider.gameObject)
