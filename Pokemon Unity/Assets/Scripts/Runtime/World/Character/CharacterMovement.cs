@@ -79,7 +79,6 @@ public class CharacterMovement : Pausable
         }
 
         transform.position = new(transform.position.x, closestY, transform.position.z);
-        print(closestY);
     }
 
     public void AddFollower(CharacterMovement follower)
