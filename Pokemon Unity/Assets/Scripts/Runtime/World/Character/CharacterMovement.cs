@@ -58,6 +58,30 @@ public class CharacterMovement : Pausable
         SignUpForPause();
     }
 
+    public void PlaceOnGround()
+    {
+        var hits = Physics.RaycastAll(new(transform.position + Vector3.up * 999f, Vector3.down),
+                                      Mathf.Infinity,
+                                      LayerManager.Instance.GroundLayerMask);
+        if (hits.Length == 0)
+            return;
+
+        float closestY = transform.position.y;
+        float closestDistance = Mathf.Infinity;
+        foreach(var hit in hits)
+        {
+            var distance = Vector3.Distance(hit.point, transform.position);
+            if (distance >= closestDistance)
+                continue;
+
+            closestDistance = distance;
+            closestY = hit.point.y;
+        }
+
+        transform.position = new(transform.position.x, closestY, transform.position.z);
+        print(closestY);
+    }
+
     public void AddFollower(CharacterMovement follower)
     {
         if (follower is null)

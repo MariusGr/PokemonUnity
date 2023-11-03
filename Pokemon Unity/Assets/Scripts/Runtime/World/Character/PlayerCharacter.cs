@@ -87,7 +87,8 @@ public class PlayerCharacter : Character
             throw new Exception($"No free location at character {gameObject.name} found for follower NPC!");
 
         var follower = Instantiate(prefab).GetComponent<Character>();
-        follower.transform.position = Position + new GridVector(freeDirection);
+        follower.transform.position = transform.position + new GridVector(freeDirection);
+        follower.Movement.PlaceOnGround();
         AddFollower(follower);
     }
 }
