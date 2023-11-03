@@ -1,12 +1,15 @@
 using System.Collections;
 using UnityEngine;
 using SimpleJSON;
+using System.Linq;
+using System;
 
 public class PlayerCharacter : Character
 {
     public static PlayerCharacter Instance { get; private set; }
 
     [SerializeField] private StoryEvent caughtAllPokemonsStoryEvent;
+    [SerializeField] private PokemonData entonData;
 
     public override bool IsPlayer => true;
 
@@ -50,16 +53,15 @@ public class PlayerCharacter : Character
         return json;
     }
 
-    public override void LoadFromJSON(JSONObject json)
+    public override void LoadFromJSON(JSONNode json)
     {
-        JSONNode jsonData = json[GetKey()];
-        PlayerData.money = jsonData["money"];
-        transform.position = jsonData["position"];
-        Movement.LookInDirection(new GridVector(jsonData["direction"]));
-        PlayerData.LoadItemsFromJSON((JSONArray)jsonData["items"]);
-        PlayerData.LoadPokemonsFromJSON((JSONArray)jsonData["pokemons"]);
-        PlayerData.LoadPokemonsInBoxFromJSON((JSONArray)jsonData["pokemonsInBox"]);
-        PlayerData.LoadSeenPokemonsFromJSON((JSONArray)jsonData["pokemonsSeen"]);
+        PlayerData.money = json["money"];
+        transform.position = json["position"];
+        Movement.LookInDirection(new GridVector(json["direction"]));
+        PlayerData.LoadItemsFromJSON((JSONArray)json["items"]);
+        PlayerData.LoadPokemonsFromJSON((JSONArray)json["pokemons"]);
+        PlayerData.LoadPokemonsInBoxFromJSON((JSONArray)json["pokemonsInBox"]);
+        PlayerData.LoadSeenPokemonsFromJSON((JSONArray)json["pokemonsSeen"]);
         base.LoadFromJSON(json);
     }
 
@@ -67,5 +69,25 @@ public class PlayerCharacter : Character
     {
         PlayerData.LoadDefault();
         base.LoadDefault();
+
+        // Does player have Tessa`s Enton and is it still alive?
+        DebugExtensions.DebugExtension.Log(PlayerData.pokemons);
+        var tessasEnton = PlayerData.pokemons.Where(x => x.data == entonData && x.id == 0 && !x.isFainted);
+        if (tessasEnton.Count() == 0)
+            return;
+
+        // if so, place Enton follower NPC
+        PlaceFollower(tessasEnton.First().data.characterPrefab);
+    }
+
+    private void PlaceFollower(GameObject prefab, Direction direction = Direction.Up)
+    {
+        var freeDirection = Movement.GetMovableDirection(direction);
+        if (freeDirection == Direction.None)
+            throw new Exception($"No free location at character {gameObject.name} found for follower NPC!");
+
+        var follower = Instantiate(prefab).GetComponent<Character>();
+        follower.transform.position = Position + new GridVector(freeDirection);
+        AddFollower(follower);
     }
 }

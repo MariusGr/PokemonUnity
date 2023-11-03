@@ -14,14 +14,15 @@ public class PokemonData : BaseScriptableObject
     public Sprite frontSprite;
     public Sprite backSprite;
     public Sprite[] icons;
-    public Sprite icon => icons[0];
+    public Sprite Icon => icons[0];
+    public GameObject characterPrefab;
     public PokemonTypeData[] pokemonTypes;
     public int evolutionLevel;
     public PokemonData evolution;
     public EncounterRarity encounterRarity;
     public int catchRate;
-    public AudioClip cry => cries[Random.Range(0, cries.Length)];
-    public AudioClip faintCry => faintCries.Length > 0 ? faintCries[Random.Range(0, faintCries.Length)] : cry;
+    public AudioClip Cry => cries[Random.Range(0, cries.Length)];
+    public AudioClip FaintCry => faintCries.Length > 0 ? faintCries[Random.Range(0, faintCries.Length)] : Cry;
     [SerializeField] private AudioClip[] cries;
     [SerializeField] private AudioClip[] faintCries;
 

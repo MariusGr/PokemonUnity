@@ -12,7 +12,7 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
 
     public string GetKey()
     {
-        GridVector position = new GridVector(transform.position);
+        GridVector position = new(transform.position);
         return $"{item.data.GetType()}_{position.x}_{position.y}";
     }
 
@@ -23,7 +23,7 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
     }
 
     public void LoadDefault() { }
-    public void LoadFromJSON(JSONObject json) => gameObject.SetActive(!json[GetKey()]["taken"]);
+    public void LoadFromJSON(JSONNode json) => gameObject.SetActive(!json["taken"]);
 
     public JSONNode ToJSON()
     {

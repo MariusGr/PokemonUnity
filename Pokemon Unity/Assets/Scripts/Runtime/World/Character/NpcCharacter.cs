@@ -40,10 +40,9 @@ public class NpcCharacter : Character
         return json;
     }
 
-    public override void LoadFromJSON(JSONObject json)
+    public override void LoadFromJSON(JSONNode json)
     {
-        JSONNode jsonData = json[GetKey()];
-        NpcData.hasBeenDefeated = jsonData["hasBeenDefeated"];
+        NpcData.hasBeenDefeated = json["hasBeenDefeated"];
         if (WillChallengePlayer)
             battlingNPCs.Add(this);
         base.LoadFromJSON(json);

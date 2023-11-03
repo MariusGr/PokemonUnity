@@ -7,6 +7,6 @@ public interface ISavable
 {
     public string GetKey();
     public JSONNode ToJSON();
-    public void LoadFromJSON(JSONObject json);
+    public void LoadFromJSON(JSONNode json);
     public void LoadDefault();
 }

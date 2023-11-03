@@ -9,14 +9,35 @@ public class SaveGameManager : MonoBehaviour
 {
     public static SaveGameManager Instance;
     private static readonly Dictionary<string, ISavable> savables = new();
-    public static void Register(ISavable savable) => savables[savable.GetKey()] = savable;
+
+    public static void Register(ISavable savable)
+    {
+        savables[savable.GetKey()] = savable;
+
+        if (jsonData is null)
+        {
+            savable.LoadDefault();
+            return;
+        }
+
+        var key = savable.GetKey();
+        if (!jsonData.HasKey(key))
+        {
+            Debug.Log($"No save data found for key \"{key}\" ({savable})");
+            return;
+        }
+
+        savable.LoadFromJSON(jsonData[key]);
+    }
+
     public static ISavable GetSavable(string key) => savables.GetValueOrDefault(key);
 
     [SerializeField] private bool removeSaveGame;
-    private string Path => Application.persistentDataPath + "/savegame.sav";
+    private static string Path => Application.persistentDataPath + "/savegame.sav";
+    private static JSONNode jsonData = null;
 
     public SaveGameManager() => Instance = this;
-    private void Start() => LoadGame();
+    private void Awake() => LoadGame();
 
     public void InitializeJSON()
     {
@@ -35,9 +56,6 @@ public class SaveGameManager : MonoBehaviour
                 e
             ));
         }
-
-        foreach (KeyValuePair<string, ISavable> entry in savables)
-            entry.Value.LoadDefault();
     }
 
     public void WriteJSON(JSONObject json)
@@ -76,16 +94,7 @@ public class SaveGameManager : MonoBehaviour
         return (JSONObject)JSON.Parse(jsonText);
     }
 
-    public void LoadGame()
-    {
-        JSONObject json = LoadFromJSON();
-
-        if (json is null)
-            return;
-
-        foreach (KeyValuePair<string, ISavable> entry in savables)
-            entry.Value.LoadFromJSON(json);
-    }
+    public void LoadGame() => jsonData = LoadFromJSON();
 
     public void SaveGame()
     {

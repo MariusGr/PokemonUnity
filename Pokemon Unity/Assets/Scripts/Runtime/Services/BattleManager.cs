@@ -628,7 +628,7 @@ public class BattleManager : MonoBehaviour
 
         // TODO Animate pokemon deployment
         BattleUI.Instance.SwitchToPokemon(characterIndex, pokemon);
-        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(pokemon.data.cry));
+        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(pokemon.data.Cry));
     }
 
     string GetUniqueIdentifier(Pokemon pokemon, Pokemon other, CharacterData character)
@@ -687,7 +687,7 @@ public class BattleManager : MonoBehaviour
 
             // Animation
             if (move.data.usesCryForSound)
-                SfxHandler.Play(attackerPokemon.data.cry);
+                SfxHandler.Play(attackerPokemon.data.Cry);
             else if (!(move.data.sound is null))
                 SfxHandler.Play(move.data.sound);
 
@@ -937,7 +937,7 @@ public class BattleManager : MonoBehaviour
     {
         DialogBox.Instance.DrawText($"{pokemonIdentifier} wurde besiegt!", DialogBoxContinueMode.External);
 
-        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(GetActivePokemon(characterIndex).data.faintCry));
+        yield return new WaitForSeconds(BgmHandler.Instance.PlayMFX(GetActivePokemon(characterIndex).data.FaintCry));
         SfxHandler.Play(faintSound);
         yield return BattleUI.Instance.PlayFaintAnimation(characterIndex);
 

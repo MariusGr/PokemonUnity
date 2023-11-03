@@ -293,4 +293,24 @@ public class CharacterMovement : Pausable
 
     bool IsMovable(Vector3 direction)
         => !character.RaycastForward(direction, layerMask: LayerManager.Instance.MovementBlockingLayerMask);
+
+    public Direction GetMovableDirection(Direction preference = Direction.None)
+    {
+        HashSet<Direction> directions = new();
+        foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+            directions.Add(direction);
+        directions.Remove(Direction.None);
+        directions.Remove(preference);
+
+        // Make a list of all directions where the preference is in first position
+        List<Direction> directionsList = new() { preference };
+        directionsList.AddRange(directions);
+
+        // Check direction for blockage and choose first free direction for return value
+        foreach (var direction in directions)
+            if (IsMovable(new GridVector(direction)))
+                return direction;
+
+        return Direction.None;
+    }
 }

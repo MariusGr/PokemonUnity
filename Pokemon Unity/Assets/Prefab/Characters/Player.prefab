@@ -336,6 +336,7 @@ MonoBehaviour:
   follower: {fileID: 0}
   caughtAllPokemonsStoryEvent: {fileID: 11400000, guid: a8285051db9844ae7a786fac70daabb2,
     type: 2}
+  entonData: {fileID: 11400000, guid: 2a8ea2f412b134ab4a8ca0eca5bf4b1e, type: 2}
   <PlayerData>k__BackingField:
     name: Tessa
     pokemons:

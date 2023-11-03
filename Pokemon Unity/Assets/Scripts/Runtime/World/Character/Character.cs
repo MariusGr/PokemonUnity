@@ -99,15 +99,13 @@ public abstract class Character : MonoBehaviour, ISavable
         return json;
     }
 
-    public virtual void LoadFromJSON(JSONObject json)
+    public virtual void LoadFromJSON(JSONNode json)
     {
-        JSONNode jsonData = json[GetKey()];
-
-        if (jsonData["hasFollower"].AsBool || follower is not null)
+        if (json["hasFollower"].AsBool || follower is not null)
         {
             if (follower is null)
-                follower = SaveGameManager.GetSavable(jsonData["followerKey"]) as Character;
-            follower.transform.position = jsonData["followerPosition"];
+                follower = SaveGameManager.GetSavable(json["followerKey"]) as Character;
+            follower.transform.position = json["followerPosition"];
             AddFollower(follower);
         }
     }

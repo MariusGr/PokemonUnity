@@ -66,11 +66,7 @@ public class StoryEvent : BaseScriptableObject, ISavable
         return json;
     }
 
-    public void LoadFromJSON(JSONObject json)
-    {
-        JSONNode jsonData = json[GetKey()];
-        Happened = jsonData["happened"];
-    }
+    public void LoadFromJSON(JSONNode json) => Happened = json["happened"];
 
     public void LoadDefault() => Happened = false;
 }

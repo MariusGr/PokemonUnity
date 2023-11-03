@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ccacc46fede42d2ad98f6b249be0f8, type: 3}
   m_Name: Enton
   m_EditorClassIdentifier: 
-  Id: 0ca6c6bf-9606-4abf-8810-eb492c4fd2dc
+  Id: 6b5563e3-80af-44fe-ac3d-02749453d63d
   dex: 1
   fullName: Enton
   description: Hat immer Kopf aua x3
@@ -21,6 +21,8 @@ MonoBehaviour:
   icons:
   - {fileID: -5320860673121723558, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
   - {fileID: -5776730608683299111, guid: dd7dd0a214effdd459458f3871963a84, type: 3}
+  characterPrefab: {fileID: 2044078641459208160, guid: 2ac25da1b1a244eadb40db26f7f7a3aa,
+    type: 3}
   pokemonTypes:
   - {fileID: 11400000, guid: 5f24d8694adb0444b9320a89b2326680, type: 2}
   evolutionLevel: -1
