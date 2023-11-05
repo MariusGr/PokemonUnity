@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using SimpleJSON;
 using System.Linq;
-using System;
 
 public class PlayerCharacter : Character
 {
@@ -47,6 +46,7 @@ public class PlayerCharacter : Character
         json.Add("pokemons", PlayerData.PokemonsToJSON());
         json.Add("pokemonsInBox", PlayerData.PokemonsInBoxToJSON());
         json.Add("pokemonsSeen", PlayerData.SeenPokemonsToJSON());
+
         // TODO: save last pokemon center
         //json.Add("lastPokeCenterEntrance", );
 
@@ -62,6 +62,7 @@ public class PlayerCharacter : Character
         PlayerData.LoadPokemonsFromJSON((JSONArray)json["pokemons"]);
         PlayerData.LoadPokemonsInBoxFromJSON((JSONArray)json["pokemonsInBox"]);
         PlayerData.LoadSeenPokemonsFromJSON((JSONArray)json["pokemonsSeen"]);
+
         base.LoadFromJSON(json);
     }
 
@@ -72,23 +73,12 @@ public class PlayerCharacter : Character
 
         // Does player have Tessa`s Enton and is it still alive?
         DebugExtensions.DebugExtension.Log(PlayerData.pokemons);
-        var tessasEnton = PlayerData.pokemons.Where(x => x.data == entonData && x.id == 0 && !x.isFainted);
-        if (tessasEnton.Count() == 0)
+        var tessasEntonIndex = PlayerData.pokemons.FindIndex(x => x.data == entonData && x.id == 0 && !x.isFainted);
+
+        if (tessasEntonIndex < 0)
             return;
 
         // if so, place Enton follower NPC
-        PlaceFollower(tessasEnton.First().data.characterPrefab);
-    }
-
-    private void PlaceFollower(GameObject prefab, Direction direction = Direction.Up)
-    {
-        var freeDirection = Movement.GetMovableDirection(direction);
-        if (freeDirection == Direction.None)
-            throw new Exception($"No free location at character {gameObject.name} found for follower NPC!");
-
-        var follower = Instantiate(prefab).GetComponent<Character>();
-        follower.transform.position = transform.position + new GridVector(freeDirection);
-        follower.Movement.PlaceOnGround();
-        AddFollower(follower);
+        PlaceFollowerPokemon(tessasEntonIndex);
     }
 }

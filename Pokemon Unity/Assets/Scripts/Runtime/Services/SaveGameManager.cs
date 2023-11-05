@@ -4,32 +4,14 @@ using UnityEngine;
 using SimpleJSON;
 using System;
 using System.IO;
+using System.Linq;
 
 public class SaveGameManager : MonoBehaviour
 {
     public static SaveGameManager Instance;
     private static readonly Dictionary<string, ISavable> savables = new();
 
-    public static void Register(ISavable savable)
-    {
-        savables[savable.GetKey()] = savable;
-
-        if (jsonData is null)
-        {
-            savable.LoadDefault();
-            return;
-        }
-
-        var key = savable.GetKey();
-        if (!jsonData.HasKey(key))
-        {
-            Debug.Log($"No save data found for key \"{key}\" ({savable})");
-            return;
-        }
-
-        savable.LoadFromJSON(jsonData[key]);
-    }
-
+    public static void Register(ISavable savable) => savables[savable.GetKey()] = savable;
     public static ISavable GetSavable(string key) => savables.GetValueOrDefault(key);
 
     [SerializeField] private bool removeSaveGame;
@@ -38,6 +20,27 @@ public class SaveGameManager : MonoBehaviour
 
     public SaveGameManager() => Instance = this;
     private void Awake() => LoadGame();
+    private void Start()
+    {
+        ISavable[] savablesList = savables.Values.ToArray();
+        foreach(var savable in savablesList)
+        {
+            if (jsonData is null)
+            {
+                savable.LoadDefault();
+                continue;
+            }
+
+            var key = savable.GetKey();
+            if (!jsonData.HasKey(key))
+            {
+                Debug.Log($"No save data found for key \"{key}\" ({savable})");
+                continue;
+            }
+
+            savable.LoadFromJSON(jsonData[key]);
+        }
+    }
 
     public void InitializeJSON()
     {

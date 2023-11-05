@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
+using System;
 
 public abstract class Character : MonoBehaviour, ISavable
 {
@@ -10,6 +11,7 @@ public abstract class Character : MonoBehaviour, ISavable
     [field: SerializeField] public CharacterAnimator Animator { get; private set; }
     [field: SerializeField] public BoxCollider Collider { get; private set; }
     [SerializeField] private Character follower;
+    [SerializeField] private int followerPokemonTeamIndex = -1;
 
     public abstract CharacterData Data { get; }
 
@@ -65,14 +67,17 @@ public abstract class Character : MonoBehaviour, ISavable
             hitInfo.collider.gameObject.GetComponent<IInteractable>()?.Interact(this); ;
     }
 
-    public void AddFollower(Character follower)
+    public void SetFollower(Character follower, bool characterIsFromTeam)
     {
         if (follower is null)
             return;
 
         follower.layer = transform.gameObject.layer;
         LayerManager.SetLayerRecursively(follower.gameObject, LayerManager.FollowerLayer);
-        Movement.AddFollower(follower.Movement);
+        Movement.SetFollower(follower.Movement);
+        this.follower = follower;
+
+        followerPokemonTeamIndex = characterIsFromTeam ? followerPokemonTeamIndex : -1;
     }
 
     public void Unfollow()
@@ -80,6 +85,35 @@ public abstract class Character : MonoBehaviour, ISavable
         LayerManager.SetLayerRecursively(follower.gameObject, follower.layer);
         Movement.Unfollow();
         follower = null;
+    }
+
+    protected void PlaceFollowerPokemon(int index, Direction direction = Direction.Up)
+    {
+        followerPokemonTeamIndex = index;
+        PlaceFollower(Data.pokemons[followerPokemonTeamIndex].data.characterPrefab, direction);
+    }
+
+    private void PlaceFollower(JSONNode json)
+    {
+        PlaceFollower(Data.pokemons[json["teamIndex"]].data.characterPrefab, json["position"]);
+        follower.LoadFromJSON(json["character"]);
+    }
+
+    protected void PlaceFollower(GameObject prefab, Direction direction = Direction.Up)
+    {
+        var freeDirection = Movement.GetMovableDirection(direction);
+        if (freeDirection == Direction.None)
+            throw new Exception($"No free location at character {gameObject.name} found for follower NPC!");
+
+        PlaceFollower(prefab, transform.position + new GridVector(freeDirection));
+        follower.Movement.PlaceOnGround();
+    }
+
+    private void PlaceFollower(GameObject prefab, Vector3 position)
+    {
+        var newFollower = Instantiate(prefab).GetComponent<Character>();
+        newFollower.transform.position = position;
+        SetFollower(newFollower, true);
     }
 
     public abstract string GetKey();
@@ -90,23 +124,38 @@ public abstract class Character : MonoBehaviour, ISavable
 
         var hasFollower = follower is not null;
         json.Add("hasFollower", hasFollower);
+
+        JSONNode followerJSON = null;
+
         if (hasFollower)
         {
-            json.Add("followerPosition", follower.transform.position);
-            json.Add("followerKey", follower.GetKey());
+            followerJSON = new JSONObject();
+            followerJSON["character"] = follower.ToJSON();
+            followerJSON["teamIndex"] = followerPokemonTeamIndex;
+            followerJSON.Add("position", follower.transform.position);
+            followerJSON.Add("key", follower.GetKey());
         }
+
+        json.Add("follower", followerJSON);
 
         return json;
     }
 
     public virtual void LoadFromJSON(JSONNode json)
     {
-        if (json["hasFollower"].AsBool || follower is not null)
+        if (json["hasFollower"].AsBool)
         {
-            if (follower is null)
-                follower = SaveGameManager.GetSavable(json["followerKey"]) as Character;
-            follower.transform.position = json["followerPosition"];
-            AddFollower(follower);
+            JSONNode followerJSON = json["follower"];
+
+            followerPokemonTeamIndex = followerJSON["teamIndex"];
+
+            if (followerPokemonTeamIndex > -1)
+                PlaceFollower(followerJSON);
+            else
+            {
+                follower = SaveGameManager.GetSavable(followerJSON["key"]) as Character;
+                SetFollower(follower, false);
+            }
         }
     }
 
@@ -114,7 +163,7 @@ public abstract class Character : MonoBehaviour, ISavable
     {
         PokemonsLoadDefault();
         if (follower is not null)
-            AddFollower(follower);
+            SetFollower(follower, false);
     }
 
     protected void PokemonsLoadDefault()

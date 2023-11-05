@@ -81,7 +81,7 @@ public class CharacterMovement : Pausable
         transform.position = new(transform.position.x, closestY, transform.position.z);
     }
 
-    public void AddFollower(CharacterMovement follower)
+    public void SetFollower(CharacterMovement follower)
     {
         if (follower is null)
             return;
