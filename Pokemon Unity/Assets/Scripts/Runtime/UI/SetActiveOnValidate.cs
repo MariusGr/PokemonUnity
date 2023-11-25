@@ -6,5 +6,5 @@ public class SetActiveOnValidate : MonoBehaviour
 {
     [SerializeField] private bool active;
 
-    private void OnValidate() => gameObject.SetActive(active);
+    private void OnValidate() => gameObject.SetActive(active && Application.isPlaying);
 }
