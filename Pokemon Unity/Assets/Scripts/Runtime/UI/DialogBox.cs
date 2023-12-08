@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class DialogBox : MonoBehaviour, IInputConsumer
 {
     public static DialogBox Instance;
+    private const float lineOffset = 8f;
 
     [SerializeField] Transform dialogBoxT;
     [SerializeField] Transform dialogBoxTrn;
@@ -30,9 +31,11 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     private Coroutine currentCoroutine;
     private bool automaticContinueBlocked = false;
-    InputData input = new InputData();
+    InputData input = new();
 
-    private float charPerSec = 60f;
+    public Text TextField => dialogBoxText;
+
+    private readonly float charPerSec = 60f;
     public float scrollSpeed = 0.1f;
 
     public int chosenIndex;
@@ -106,25 +109,49 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
     {
-        Open();
-        currentCoroutine = StartCoroutine(DrawStringsCoroutine(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish, lines));
-        return currentCoroutine;
+        return DrawText(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish, lines);
     }
 
     public Coroutine DrawText(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
-        => DrawText(TextKeyManager.PlaceNewLineChars(text).Split('\t'), continueMode, closeAfterFinish, lines);
-
-    public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {
         Open();
-        currentCoroutine = StartCoroutine(DrawStringsCoroutine(text, continueMode, closeAfterFinish, lines));
+        return StartCoroutine(DrawTextRoutine(text, continueMode, closeAfterFinish, lines));
+    }
+
+    private IEnumerator DrawTextRoutine(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
+    {
+        dialogBoxText.text = text;
+        yield return new WaitForEndOfFrame();
+        print(dialogBoxText.cachedTextGenerator.lineCount);
+        var linesInfo = new List<UILineInfo>();
+        dialogBoxText.cachedTextGenerator.GetLines(linesInfo);
+        var linesContent = new List<string>();
+        for (int i = 0; i < linesInfo.Count; i += lines)
+        {
+            string content;
+            if (i < linesInfo.Count - 1)
+                content = text.Substring(linesInfo[i].startCharIdx, linesInfo[i + lines].startCharIdx - linesInfo[i].startCharIdx);
+            else
+                content = text.Substring(linesInfo[i].startCharIdx);
+            print(content);
+            linesContent.Add(content);
+        }
+
+        DebugExtensions.DebugExtension.Log(linesInfo);
+        yield return DrawText(linesContent.ToArray(), continueMode, closeAfterFinish, lines);
+    }
+
+    public Coroutine DrawText(string[] text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
+    {
+        Open();
+        currentCoroutine = StartCoroutine(DrawStringsRoutine(text, continueMode, closeAfterFinish, lines));
         return currentCoroutine;
     }
 
     IEnumerator DrawStringsRoutine(string text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
-        => DrawStringsCoroutine(new string[] { text }, continueMode, closeAfterFinish);
+        => DrawStringsRoutine(new string[] { text }, continueMode, closeAfterFinish);
 
-    IEnumerator DrawStringsCoroutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
+    IEnumerator DrawStringsRoutine(string[] text, DialogBoxContinueMode continueMode, bool closeAfterFinish = false, int lines = 2)
     {
         DrawDialogBox(lines);
 
@@ -300,20 +327,9 @@ public class DialogBox : MonoBehaviour, IInputConsumer
         }
     }
 
-    public void DrawDialogBox()
-    {
-        StartCoroutine(DrawDialogBox(defaultDialogLines, new Color(1, 1, 1, 1), false));
-    }
-
-    public void DrawDialogBox(int lines)
-    {
-        StartCoroutine(DrawDialogBox(lines, new Color(1, 1, 1, 1), false));
-    }
-
-    public void DrawSignBox(Color tint)
-    {
-        StartCoroutine(DrawDialogBox(defaultDialogLines, tint, true));
-    }
+    public void DrawDialogBox() => StartCoroutine(DrawDialogBox(defaultDialogLines, new Color(1, 1, 1, 1), false));
+    public void DrawDialogBox(int lines) => StartCoroutine(DrawDialogBox(lines, new Color(1, 1, 1, 1), false));
+    public void DrawSignBox(Color tint) => StartCoroutine(DrawDialogBox(defaultDialogLines, tint, true));
 
     private IEnumerator DrawDialogBox(int lines, Color tint, bool sign)
     {

@@ -20,7 +20,7 @@ public static class TextKeyManager
         { Stat.Evasion, "Fluchtwert" },
     };
 
-    readonly private static string placeHolder = "#+#+#+#+";
+    private const string placeHolder = "#+#+#+#+";
     readonly private static Dictionary<int, string> statModificationToDescription = new Dictionary<int, string>()
     {
         { 3, "steigt extrem" },
