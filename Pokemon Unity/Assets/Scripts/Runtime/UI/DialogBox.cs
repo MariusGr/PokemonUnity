@@ -94,25 +94,16 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     public bool IsOpen() => gameObject.activeSelf;
 
-    public void DrawTextPausing(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
-    {
-        Open();
-        EventManager.Pause();
-        StartCoroutine(DrawTextUnpausing(text, continueMode, closeAfterFinish, lines));
-    }
+    public Coroutine DrawText(Effectiveness effectiveness,
+                              DialogBoxContinueMode continueMode = DialogBoxContinueMode.User,
+                              bool closeAfterFinish = false,
+                              int lines = 2)
+        => DrawText(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish, lines);
 
-    private IEnumerator DrawTextUnpausing(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
-    {
-        yield return DrawText(text, continueMode, closeAfterFinish, lines);
-        EventManager.Unpause();
-    }
-
-    public Coroutine DrawText(Effectiveness effectiveness, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
-    {
-        return DrawText(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish, lines);
-    }
-
-    public Coroutine DrawText(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
+    public Coroutine DrawText(string text,
+                              DialogBoxContinueMode continueMode = DialogBoxContinueMode.User,
+                              bool closeAfterFinish = false,
+                              int lines = 2)
     {
         Open();
         return StartCoroutine(DrawTextRoutine(text, continueMode, closeAfterFinish, lines));
@@ -399,21 +390,7 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     public IEnumerator DrawChoiceBox(string[] choices, string[] flavourText, int startIndex)
     {
-        yield return StartCoroutine(DrawChoiceBox(choices, flavourText, startIndex, defaultChoiceY, defaultChoiceWidth))
-            ;
-    }
-
-    public IEnumerator DrawChoiceBox(string[] choices, int yPosition, int width)
-    {
-        yield return
-            StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, -1, defaultChoiceY, defaultChoiceWidth, chancelIndex: 1));
-    }
-
-    public IEnumerator DrawChoiceBox(string[] choices, int startIndex, int yPosition, int width)
-    {
-        yield return
-            StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, startIndex, defaultChoiceY,
-                defaultChoiceWidth, chancelIndex: 1));
+        yield return StartCoroutine(DrawChoiceBox(choices, flavourText, startIndex, defaultChoiceY, defaultChoiceWidth));
     }
 
     public IEnumerator DrawChoiceBox(string[] choices, string[] flavourText, int startIndex, int yPosition, int width, int chancelIndex = -1)
