@@ -37,6 +37,7 @@ public class DialogBox : MonoBehaviour, IInputConsumer
     public Text TextField => dialogBoxText;
 
     private readonly float charPerSec = 60f;
+    public static readonly char NewParagraphCharacter = '\t';
     public float scrollSpeed = 0.1f;
 
     public int chosenIndex;
@@ -46,7 +47,8 @@ public class DialogBox : MonoBehaviour, IInputConsumer
     public int defaultChoiceY = 0;
     public int defaultDialogLines = 2;
 
-    private Dictionary<Effectiveness, string> EffectivenessToTextMap = new Dictionary<Effectiveness, string> {
+    private readonly Dictionary<Effectiveness, string> EffectivenessToTextMap = new()
+    {
         { Effectiveness.Ineffecitve, "Es hat keinen Effekt." },
         { Effectiveness.Strong, "Es ist sehr effektiv!" },
         { Effectiveness.Weak, "Es ist nicht sehr effektiv..." },
@@ -99,7 +101,7 @@ public class DialogBox : MonoBehaviour, IInputConsumer
                               DialogBoxContinueMode continueMode = DialogBoxContinueMode.User,
                               bool closeAfterFinish = false,
                               int lines = 2)
-        => DrawText(new string[] { EffectivenessToTextMap[effectiveness] }, continueMode, closeAfterFinish, lines);
+        => DrawText(EffectivenessToTextMap[effectiveness], continueMode, closeAfterFinish, lines);
 
     public Coroutine DrawText(string text,
                               DialogBoxContinueMode continueMode = DialogBoxContinueMode.User,
@@ -110,9 +112,13 @@ public class DialogBox : MonoBehaviour, IInputConsumer
         return StartCoroutine(DrawTextRoutine(text, continueMode, closeAfterFinish, lines));
     }
 
-    private IEnumerator DrawTextRoutine(string text, DialogBoxContinueMode continueMode = DialogBoxContinueMode.User, bool closeAfterFinish = false, int lines = 2)
+    private IEnumerator DrawTextRoutine(string text,
+                                        DialogBoxContinueMode continueMode = DialogBoxContinueMode.User,
+                                        bool closeAfterFinish = false,
+                                        int lines = 2)
     {
-        dialogBoxText.text = text;
+        var processedDialogText = TextKeyManager.ProcessText(text);
+        dialogBoxText.text = processedDialogText;
         yield return new WaitForEndOfFrame();
         print(dialogBoxText.cachedTextGenerator.lineCount);
         var linesInfo = new List<UILineInfo>();
@@ -121,10 +127,16 @@ public class DialogBox : MonoBehaviour, IInputConsumer
         for (int i = 0; i < linesInfo.Count; i += lines)
         {
             string content;
-            if (i < linesInfo.Count - 1)
-                content = text.Substring(linesInfo[i].startCharIdx, linesInfo[i + lines].startCharIdx - linesInfo[i].startCharIdx);
+            int length;
+            // Is this not the last line?
+            if (i + lines < linesInfo.Count - 1)
+                length = linesInfo[i + lines].startCharIdx - linesInfo[i].startCharIdx;
             else
-                content = text.Substring(linesInfo[i].startCharIdx);
+                // Last line: We need to take all characters till end of text
+                length = processedDialogText.Length - linesInfo[i].startCharIdx;
+
+            content = processedDialogText.Substring(linesInfo[i].startCharIdx, length);
+
             print(content);
             linesContent.Add(content);
         }
@@ -197,7 +209,7 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     private IEnumerator DrawTextRoutine(string text, float secPerChar, bool silent)
     {
-        string[] words = text.Split(new char[] {' '});
+        string[] words = text.Split(new char[] { ' ' });
 
         if (!silent)
         {
@@ -331,11 +343,11 @@ public class DialogBox : MonoBehaviour, IInputConsumer
         dialogBoxTextShadow.text = dialogBoxText.text;
 
         dialogBox.rectTransform.sizeDelta = new Vector2(dialogBox.rectTransform.sizeDelta.x,
-            Mathf.Round((float) lines * 14f) + 16f);
+            Mathf.Round((float)lines * 14f) + 16f);
         dialogBoxBorder.rectTransform.sizeDelta = new Vector2(dialogBox.rectTransform.sizeDelta.x,
             dialogBox.rectTransform.sizeDelta.y);
         dialogBoxText.rectTransform.localPosition = new Vector3(dialogBoxText.rectTransform.localPosition.x,
-            -37f + Mathf.Round((float) lines * 14f), 0);
+            -37f + Mathf.Round((float)lines * 14f), 0);
         dialogBoxTextShadow.rectTransform.localPosition = new Vector3(
             dialogBoxTextShadow.rectTransform.localPosition.x, dialogBoxText.rectTransform.localPosition.y - 1f, 0);
 
@@ -370,7 +382,7 @@ public class DialogBox : MonoBehaviour, IInputConsumer
     public IEnumerator DrawChoiceBox(int startIndex)
     {
         yield return
-            StartCoroutine(DrawChoiceBox(new string[] {"Yes", "No"}, null, startIndex, defaultChoiceY,
+            StartCoroutine(DrawChoiceBox(new string[] { "Yes", "No" }, null, startIndex, defaultChoiceY,
                 defaultChoiceWidth, chancelIndex: 1));
     }
 

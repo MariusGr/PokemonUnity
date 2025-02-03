@@ -34,7 +34,7 @@ public class ShadowedText : MonoBehaviour
         get => _text;
         set {
             _text = value;
-            string textMultiLine = TextKeyManager.PlaceNewLineChars(_text);
+            string textMultiLine = TextKeyManager.ProcessText(_text);
             textDefault.text = textMultiLine;
             textShadowDefault.text = textMultiLine;
             if(!smallText && TextIsTooWide())
