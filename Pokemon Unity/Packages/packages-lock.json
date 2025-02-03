@@ -1,13 +1,50 @@
 {
   "dependencies": {
     "com.domybest.mybox": {
-      "version": "https://github.com/Deadcows/MyBox.git",
+      "version": "https://github.com/MariusGr/MyBox.git#develop",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.ugui": "1.0.0"
       },
-      "hash": "e250b932c64c9624f807ff2dad658da80dc09b8e"
+      "hash": "6ec659c0c940665d06ba10310d9758f9b502e347"
+    },
+    "com.mariusgripp.einheits-kiste": {
+      "version": "https://github.com/MariusGr/einheits-kiste.git#develop-package",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.solidalloy.util": "1.39.0"
+      },
+      "hash": "e3ee669aee80462075477b124482d272346f2689"
+    },
+    "com.solidalloy.type-references": {
+      "version": "2.16.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.solidalloy.util": "1.40.0",
+        "com.unity.settings-manager": "1.0.3",
+        "com.solidalloy.unity-dropdown": "1.2.0"
+      },
+      "url": "https://package.openupm.com"
+    },
+    "com.solidalloy.unity-dropdown": {
+      "version": "1.2.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.solidalloy.util": "1.40.0",
+        "org.nuget.system.memory": "4.5.4"
+      },
+      "url": "https://package.openupm.com"
+    },
+    "com.solidalloy.util": {
+      "version": "1.40.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -47,8 +84,8 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.services.analytics": "1.0.4",
-        "com.unity.ugui": "1.0.0"
+        "com.unity.ugui": "1.0.0",
+        "com.unity.services.analytics": "1.0.4"
       },
       "url": "https://packages.unity.com"
     },
@@ -105,10 +142,10 @@
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
-        "com.unity.modules.unitywebrequest": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.services.core": "1.12.5",
         "com.unity.modules.androidjni": "1.0.0",
-        "com.unity.services.core": "1.12.5"
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -118,8 +155,8 @@
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0",
-        "com.unity.services.core": "1.12.4"
+        "com.unity.services.core": "1.12.4",
+        "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -128,10 +165,17 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.androidjni": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.unity.modules.androidjni": "1.0.0"
+        "com.unity.modules.unitywebrequest": "1.0.0"
       },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.settings-manager": {
+      "version": "2.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.sysroot": {
@@ -166,9 +210,9 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
+        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
-        "com.unity.modules.audio": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0"
       },
       "url": "https://packages.unity.com"
@@ -201,6 +245,38 @@
         "com.unity.modules.xr": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "org.nuget.system.buffers": {
+      "version": "4.5.1",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
+    "org.nuget.system.memory": {
+      "version": "4.5.4",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "org.nuget.system.buffers": "4.5.1",
+        "org.nuget.system.numerics.vectors": "4.4.0",
+        "org.nuget.system.runtime.compilerservices.unsafe": "4.5.3"
+      },
+      "url": "https://package.openupm.com"
+    },
+    "org.nuget.system.numerics.vectors": {
+      "version": "4.4.0",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
+    "org.nuget.system.runtime.compilerservices.unsafe": {
+      "version": "4.5.3",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

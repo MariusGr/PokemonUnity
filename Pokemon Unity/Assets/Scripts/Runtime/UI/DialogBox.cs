@@ -6,13 +6,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using EinheitsKiste;
 
 public class DialogBox : MonoBehaviour, IInputConsumer
 {
     public static DialogBox Instance;
     private const float lineOffset = 8f;
 
-    [SerializeField] Transform dialogBoxT;
+    [SerializeField, KeyObjectReference(searchOnlyOnSelf: true)] private Canvas _canvas;
     [SerializeField] Transform dialogBoxTrn;
 
     public string debugBoxString;
@@ -82,17 +83,17 @@ public class DialogBox : MonoBehaviour, IInputConsumer
     {
         print("Open Dialogbox");
         Clear();
-        gameObject.SetActive(true);
+        _canvas.enabled = true;
     }
 
     public void Close()
     {
         print("Close Dialogbox");
         Clear();
-        gameObject.SetActive(false);
+        _canvas.enabled = false;
     }
 
-    public bool IsOpen() => gameObject.activeSelf;
+    public bool IsOpen() => _canvas.enabled;
 
     public Coroutine DrawText(Effectiveness effectiveness,
                               DialogBoxContinueMode continueMode = DialogBoxContinueMode.User,
@@ -324,11 +325,6 @@ public class DialogBox : MonoBehaviour, IInputConsumer
 
     private IEnumerator DrawDialogBox(int lines, Color tint, bool sign)
     {
-        dialogBox.gameObject.SetActive(true);
-        //dialogBoxBorder.sprite = (sign)
-        //    ? null
-        //    : Resources.Load<Sprite>("Frame/dialog" + PlayerPrefs.GetInt("frameStyle"));
-        //dialogBox.sprite = (sign) ? Resources.Load<Sprite>("Frame/signBG") : Resources.Load<Sprite>("Frame/dialogBG");
         dialogBox.color = tint;
         dialogBoxText.text = "";
         dialogBoxText.color = (sign) ? new Color(1f, 1f, 1f, 1f) : new Color(0.0625f, 0.0625f, 0.0625f, 1f);
@@ -482,11 +478,7 @@ public class DialogBox : MonoBehaviour, IInputConsumer
                 -dialogBox.rectTransform.sizeDelta.y * increment);
             yield return null;
         }
-        dialogBox.gameObject.SetActive(false);
     }
 
-    public void UndrawChoiceBox()
-    {
-        choiceBox.gameObject.SetActive(false);
-    }
+    public void UndrawChoiceBox() => choiceBox.gameObject.SetActive(false);
 }
