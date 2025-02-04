@@ -37,7 +37,7 @@ public class ItemPawn : MonoBehaviour, IInteractable, ISavable
         PlayerData.Instance.GiveItem(item);
         BgmHandler.Instance.PlayMFX(pickUpMusic);
         DialogBox.Instance.DrawText(
-            $"{player.Data.name} findet {item.data.name}!", DialogBoxContinueMode.External);
+            $"{player.Data.name} findet {item.data.fullName}!", DialogBoxContinueMode.External);
         yield return new WaitForSeconds(pickUpMusic.length);
         DialogBox.Instance.Close();
         gameObject.SetActive(false);
